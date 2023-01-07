@@ -72,10 +72,12 @@
 
 - 在每个服务的**application-dev.yml**文件中配置**mysql、redis、rabbitmq**相应的地址或账号密码
 
-- 在**acimage_common**模块的下的**application.yml**配置 **nacos** 地址
-
+- 在**acimage_common**模块的下的**application.yml**配置 **nacos** 地址、**sentinel**地址（**sentinel**不配也不影响运行）
 - **前台登录**：用户：wk，密码：wk123456 
   （还有几个用户可以从数据库sql文件看到，密码均为 用户名123456）
+- 端口：**acimage_user**: 8100 ** **acimage_image** 8090 **acimage_community** 8080
+
+  
 
 ## 技术选型
 
