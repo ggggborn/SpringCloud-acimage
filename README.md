@@ -1,4 +1,4 @@
-## 项目介绍
+# AC印象
 
 <p align="center">
 <img src="https://img.shields.io/badge/JDK-18+-green.svg" ></img>
@@ -8,7 +8,9 @@
 <img src="https://img.shields.io/badge/mybatis--plus-3.4.1-green" ></img>
 </p>
 
-**AC印象** ( **ACImage**) 是一个**前后端分离的SpringCloud**论坛系统。**Web** 端使用 **Vue** + **ElementUi** 。后端使用 **SpringCloud** + **Mybatis-plus**。
+## 项目介绍
+
+**AC印象** ( **acimage**) 是一个**前后端分离的SpringCloud**论坛系统。**Web** 端使用 **Vue** + **ElementUi** 。后端使用 **SpringCloud**+**Mybatis-Plus**+**Reids**+**Rabbitmq**。
 
 **首页**
 
@@ -20,13 +22,13 @@
 
 前台
 
-- 酷炫的以图识图功能，即上传图片，识别出论坛内相似图片及其所在话题。
+- 以图识图功能，即上传图片，识别出论坛内相似图片及其所在话题。
 - 话题的发表、评论、收藏、排行（分别按收藏数、浏览量、活跃时间排行）
 - 用户排行（分别按话题数、被收藏数排行）
-- 个人动态
+- 个人动态、信息
 - 展示最新活跃话题
 - 登录、注册、登出
-- 已经相关的crud
+- 以及相关的crud
 
 `后台暂时只完成首页轮播图片的管理`
 
@@ -42,35 +44,37 @@
 
 ## 项目目录
 
-后端服务
+**后端服务**
 
-- acimage_admin: 管理系统`（尚未完善）`
-- acimage_user：用户中心
-- acimage_community：负责论坛主要功能
-- acimage_image：负责以图识图，图片、头像等相关服务
-- acimage_gateway：网关`（目前只负责转发请求）` 
+- **acimage_admin**: 管理系统`（尚未完善）`
+- **acimage_user**：用户中心
+- **acimage_community**：负责论坛主要功能
+- **acimage_image**：负责以图识图，图片、头像等相关服务
+- **acimage_gateway**：网关`（目前只负责转发请求）` 
 
-后端模块
+**后端模块**
 
-- acimage_common：公共模块，存放实体类、公共的拦截器或服务等
-- acimage_feign：feign接口及相应配置和fallbackfactory
+- **acimage_common**：公共模块，存放实体类、公共的拦截器或服务等
+- **acimage_feign**：feign接口及相应配置和fallbackfactory
 
-前端
+**前端**
 
-- vue_acimage_admin：后台管理页面`（尚未完善）`
-- vue_acimage_web：门户网站
+- **vue_acimage_admin**：后台管理页面`（尚未完善）`
+- **vue_acimage_web**：门户网站
 
-其它
+**其它**
 
-- doc: 一些文档和数据库文件
+- **doc**: 一些文档和数据库文件
 
 ## 开发环境运行
 
-在每个服务的**application-dev.yml**文件中
+- 将**doc/sql** 下的三个数据库分别导入到**mysql**中，三个数据库分别是三个前台服务对应的数据库
 
-配置**mysql、redis、rabbitmq、nacos**相应的地址或账号密码
+- 在每个服务的**application-dev.yml**文件中配置**mysql、redis、rabbitmq**相应的地址或账号密码
 
-- **前台登录**：用户：wk，密码：test123456 
+- 在**acimage_common**模块的下的**application.yml**配置 **nacos** 地址
+
+- **前台登录**：用户：wk，密码：wk123456 
   （还有几个用户可以从数据库sql文件看到，密码均为 用户名123456）
 
 ## 技术选型
