@@ -57,10 +57,10 @@ public class QiniuUtils {
         uploadManager = new UploadManager(cfg);
         auth = Auth.create(accessKey, secretKey);
         uploadToken = auth.uploadToken(bucket);
-        System.out.println(accessKey);
-        System.out.println(secretKey);
-        System.out.println(bucket);
-        System.out.println(domain);
+//        System.out.println(accessKey);
+//        System.out.println(secretKey);
+//        System.out.println(bucket);
+//        System.out.println(domain);
     }
 
     public void setAccessKey(String accessKey) {

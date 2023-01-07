@@ -45,7 +45,6 @@
 							<el-image :lazy=" true" :src="$global.trueImageUrl(image.url)" class="image-of-images">
 							</el-image>
 							<div class="image-description">
-								<!-- 								<template v-if="!isModifyTopic"> -->
 								{{image.description}}
 								<template v-if="topic.id==$global.USER_ID()">
 									<div class="image-description-edit-button">

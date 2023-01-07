@@ -28,7 +28,7 @@ global.popupMsgIfOk = function(request,msg) {
 	});
 }
 
-global.baseImageUrl='http://rlqaxj6tc.hn-bkt.clouddn.com/';
+global.baseImageUrl='http://rn4idqeh8.hn-bkt.clouddn.com/';
 
 global.trueImageUrl = function(url) {
 	return global.baseImageUrl+url;

@@ -7,7 +7,7 @@
 					
 					<div class="topics-header">
 						<i class="el-icon-chat-round topics-header-icon" style=""></i>
-						<div class="topics-header-title">AcImage论坛</div>
+						<div class="topics-header-title">AC论坛</div>
 						<div style="margin-top:-20px;">
 							<el-divider direction="horizontal"></el-divider>
 						</div>
@@ -57,11 +57,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="forum-right-wrapper">
+<!-- 			<div class="forum-right-wrapper">
 				<div class="user-rank-header">
 					<i class="el-icon-office-building"></i>用户排行
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

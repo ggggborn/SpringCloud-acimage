@@ -29,3 +29,13 @@ spring:
       direct:
         auto-startup: false #生产者是否自动启动
         acknowledge-mode: manual # 手动应答
+  redis:
+    host: 192.168.130.128
+    port: 6379
+    password: redis
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8 #最大空闲连接
+        min-idle: 0 #最小空闲连接
+        max-wait: 100ms #连接等待时间

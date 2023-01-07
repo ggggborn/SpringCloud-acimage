@@ -35,7 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 //    @Autowired
 //    StarQueryService starQueryService;
 
-    @QueryRedis(keyPrefix = "acimage:users:profile:userId:", expire = 7L, unit = TimeUnit.SECONDS)
+    @QueryRedis(keyPrefix = "acimage:users:profile:userId:", expire = 2L, unit = TimeUnit.SECONDS)
     @Override
     public ProfileVo getProfile() {
         UserCommunityStatistic userStatistic = userCsClient.queryUserCommunityStatistic(UserContext.getUserId()).getData();

@@ -20,6 +20,7 @@ body{
 }
 
 .forum-left-wrapper{
+	margin-left:160px;
 	width:700px;
 	display: inline-block;
 	background-color: white;

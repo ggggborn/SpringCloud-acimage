@@ -1,3 +1,5 @@
+## 项目介绍
+
 <p align="center">
 <img src="https://img.shields.io/badge/JDK-18+-green.svg" ></img>
 <img src="https://img.shields.io/badge/springboot-2.6.11-green" ></img>
@@ -6,9 +8,13 @@
 <img src="https://img.shields.io/badge/mybatis--plus-3.4.1-green" ></img>
 </p>
 
-## 项目介绍
+**AC印象** ( **ACImage**) 是一个**前后端分离的SpringCloud**论坛系统。**Web** 端使用 **Vue** + **ElementUi** 。后端使用 **SpringCloud** + **Mybatis-plus**。
 
-**AC印象** ( **ACImage**) 是一个**基于微服务架构的前后端分离的论坛系统**。**Web** 端使用 **Vue** + **ElementUi** 。后端使用 **SpringCloud** + **Mybatis-plus**进行开发。
+**首页**
+
+<p align="center">
+<img src="./doc/images/home.png" ></img>
+</p>
 
 ## 项目功能
 
@@ -26,12 +32,12 @@
 
 ## 项目特点
 
-- jwt实现单点登录
-- 利用**redis+lua脚本+定时任务**对变动比较频繁的数据（浏览量、收藏数、评论数等）定时持久化
-- 采用 **AOP** + 自定义注解 自动缓存数据到redis
-- 利用redis实现排行榜，对变动实时更新
-- 利用rabbitmq同步冗余字段及异步执行一些操作
-- 利用dhash算法实现以图识图功能，效果还不错
+- **JWT**实现单点登录
+- 利用**Redis+Lua脚本+定时任务**对变动比较频繁的数据（浏览量、收藏数、评论数等）定时持久化
+- 采用 **AOP** + 自定义注解 自动缓存数据到**Redis**
+- 利用**Redis**实现排行榜，对变动实时更新
+- 利用**Rabbitmq**同步冗余字段及异步执行一些操作
+- 利用**Dhash**算法实现以图识图功能，效果还不错
 - 启动时对热门数据预热
 
 ## 项目目录
@@ -115,25 +121,33 @@
 - [ ] 增加elasticsearch全文搜索及日志集成
 - [ ] 完善sentinel和nacos等配置和使用
 - [ ] 增加爬虫模块
+- [ ] 完善单元测试
 - [ ] 等等等
 
-目前完成的功能还比较少，正好适合大家二次开发（手动狗头）
+目前完成的功能还比较少，正好适合大家二次开发（手动狗头）。还不抓紧
 
 ## 交流
 
-项目起初是为了学习技术搭建的，由于能力有限，还有很多不完善的地方，欢迎各位能够指正。如果有人感兴趣（多么希望真的有人感兴趣 手动捂脸）或者该项目遇到什么问题或有什么建议，可加qq 1179836161 交流联系。
+项目起初是为了学习技术搭建的，由于能力有限，还有很多不完善的地方，欢迎各位能够指正。如果有人感兴趣（多么希望真的有人感兴趣 手动捂脸）或者该项目遇到什么问题或有什么建议，可加qq 1179836161 交流联系，备注：acimage。
+
+## 网站截图
+
+ **Web端** 
+![image text](./doc/images/home1.png)             
+![image text](./doc/images/home2.png)            
+![image text](./doc/images/login.png)             
+![image text](./doc/images/search.png)           
+![image text](./doc/images/search_result1.png)              
+![image text](./doc/images/search_result2.png)               
+![image text](./doc/images/profile.png)          
+![image text](./doc/images/my_activity.png)               
+![image text](./doc/images/forum.png)        
+![image text](./doc/images/topic_home1.png)               
+![image text](./doc/images/topic_home2.png)        
+![image text](./doc/images/publish.png)               
+
+`Admin端 只完成了 首页轮播图片管理，暂时不放出来`  
 
 ## 开源协议
 
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
-
-## 网站截图
-
-| **Web端**                                               |                                                       |
-| ![image text](./doc/images/web/index.png)              | ![image text](./doc/images/web/index2.png)            |
-| ![image text](./doc/images/web/index2.png)             | ![image text](./doc/images/web/content.png)           |
-| ![image text](./doc/images/web/login.png)              | ![image text](./doc/images/web/about.png)             |
-| ![image text](./doc/images/web/sort.png)               | ![image text](./doc/images/web/classify.png)          |
-| ![image text](./doc/images/web/time.png)               | ![image text](./doc/images/web/messageBox.png)        |
-
-`Admin端 只完成了 首页轮播图片管理，暂时不放出来`  
