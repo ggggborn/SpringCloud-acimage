@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.user.dao.UserDao" >
+<!--    <resultMap id="UserInfoWithTopicCountStarCount" type="UserPrivacy">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="username" column="username"/>-->
+<!--        <result property="email" column="email"/>-->
+<!--        <result property="photoUrl" column="photo_url"/>-->
+<!--        <result property="registerTime" column="register_time"/>-->
+<!--        <association property="topicCount" javaType="Integer" column="id" select="com.acimage.community.dao.TopicDao.countTopics"/>-->
+<!--        <association property="starCount" javaType="Integer" column="id" select="com.acimage.community.dao.StarDao.countStarsOwnedBy"/>-->
+
+<!--    </resultMap>-->
+
+<!--    <select id="selectUserInfoWithTopicCountStarCountById" resultMap="UserInfoWithTopicCountStarCount">-->
+<!--        select * from tb_user where id=#{id}-->
+<!--    </select>-->
+
+</mapper>

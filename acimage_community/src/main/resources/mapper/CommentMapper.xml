@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.community.dao.CommentDao" >
+    <resultMap id="commentWithTopic" type="Comment">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="topic" javaType="Topic" column="topic_id" select="com.acimage.community.dao.TopicDao.selectById"/>
+    </resultMap>
+
+    <resultMap id="commentWithUser" type="Comment">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="user" javaType="User" column="user_id" select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+    </resultMap>
+
+    <select id="selectCommentsWithUserByTopicId" resultMap="commentWithUser">
+        select * from tb_comment where topic_id = #{topicId} order by create_time asc
+    </select>
+
+    <select id="selectCommentsWithUser" resultMap="commentWithUser">
+        select * from tb_comment where topic_id=#{topicId} order by create_time asc limit #{startIndex},#{recordNumber}
+    </select>
+
+    <select id="selectCommentsWithTopicOrderByCreateTime" resultMap="commentWithTopic">
+        select * from tb_comment where user_id=#{userId} order by create_time desc limit #{startIndex},#{recordNumber}
+    </select>
+
+</mapper>

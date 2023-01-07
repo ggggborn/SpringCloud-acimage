@@ -1,0 +1,29 @@
+package com.acimage.user.model.domain;
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+public class UserPrivacy {
+
+    private Long id;
+    private String pwd;
+    private String salt;
+    private String email;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date registerTime;
+
+    public UserPrivacy(Long id, String pwd, String salt, String email) {
+        this.id = id;
+        this.pwd = pwd;
+        this.salt = salt;
+        this.email = email;
+    }
+
+}

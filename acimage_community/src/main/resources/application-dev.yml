@@ -1,0 +1,24 @@
+
+server:
+  port: 8080
+
+spring:
+  config:
+    activate:
+      on-profile:
+        - dev
+  rabbitmq:
+    virtual-host: /acimage
+    host: 192.168.130.128
+    port: 5672
+    username: acimage
+    password: acimage
+    listener:
+      simple:
+        auto-startup: false #消费者是否自动启动
+      direct:
+        auto-startup: false #生产者是否自动启动
+  datasource:
+    url: jdbc:mysql://localhost:3306/acimage_community?useSSl=false&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: mysql

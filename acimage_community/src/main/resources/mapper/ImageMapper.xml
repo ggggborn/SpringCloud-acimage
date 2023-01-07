@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.community.dao.ImageDao" >
+
+    <resultMap id="imageWithTopic" type="Image">
+        <id property="id" column="id"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="description" column="description"/>
+        <association property="topic" javaType="Topic" column="topic_id" select="com.acimage.community.dao.TopicDao.selectTopicWithUser"/>
+    </resultMap>
+
+    <insert id="insertList" >
+            insert into tb_image(id,topic_id,size,description,url) values
+            <foreach collection="list" item="image" index="index" separator=",">
+                ( #{image.id},#{image.topicId},#{image.size},#{image.description},#{image.url} )
+            </foreach>
+    </insert>
+
+    <update id="updateDescription" >
+            <foreach collection="list" item="idAndDescription" index="index" separator=";">
+                update tb_image set description=#{idAndDescription.value} where id=#{idAndDescription.key}
+            </foreach>
+    </update>
+
+    <select id="selectImagesWithTopic" resultMap="imageWithTopic">
+        select * from tb_image where id in
+        <foreach collection="list" item="imageId" index="index" separator="," open="(" close=")">
+           #{imageId}
+        </foreach>
+    </select>
+
+</mapper>

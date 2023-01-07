@@ -1,0 +1,26 @@
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+      routes:
+        - id: community-service-route
+          uri: lb://community-service
+          predicates:
+            - Path=/api/community/**
+        - id: image-service-route
+          uri: lb://image-service
+          predicates:
+            - Path=/api/image/**
+        - id: user-service-route
+          uri: lb://user-service
+          predicates:
+            - Path=/api/user/**
+        - id: admin-service-route
+          uri: lb://admin-service
+          predicates:
+            - Path=/api/admin/**
+

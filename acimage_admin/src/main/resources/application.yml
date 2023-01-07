@@ -1,0 +1,36 @@
+
+spring:
+  profiles:
+    include: common,qiniu
+    active: dev
+  application:
+    name: admin-service #服务名称
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 55MB
+#  rabbitmq:
+#    host: 192.168.130.128
+#    port: 5672
+#    username: acimage
+#    password: acimage
+#    virtual-host: /acimage
+#    listener:
+#      simple:
+#        auto-startup: false #消费者是否启动
+#      direct:
+#        auto-startup: false #生产者是否启动
+
+
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tb_
+
+
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    max-connections: 20 # 最大的连接数
+    max-connections-per-route: 5 # 每个路径的最大连接数

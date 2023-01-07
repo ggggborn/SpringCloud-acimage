@@ -1,0 +1,36 @@
+
+.activity-content{
+	position: relative;
+	padding:10px;
+	margin-top: 10px;
+	padding-bottom: 20px;
+}
+
+.activity-title{
+	font-size: 16px;
+	margin-top:-5px;
+}
+
+.activity-title-label{
+	color:#AAAAAA;
+	font-size:15px;
+}
+
+.activity-medium{
+	display:inline-block;
+	vertical-align: top;
+	margin-left:10px;
+	width:300px;
+}
+
+.activity-time{
+	margin-top:5px;
+	color:#999999;
+	font-size:16px;
+}
+
+.activity-right{
+	display:inline-block;
+	vertical-align: top;
+	float:right;
+}

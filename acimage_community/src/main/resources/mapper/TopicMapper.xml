@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.community.dao.TopicDao">
+    <resultMap id="topicWithUser" type="Topic">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="pageView" column="page_view"/>
+        <result property="starCount" column="star_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="activityTime" column="activity_time"/>
+        <result property="firstImageUrl" column="first_image_url"/>
+        <association property="user" javaType="User" column="user_id"
+                     select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+    </resultMap>
+
+
+    <resultMap id="topicWithUserImages" type="Topic">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="pageView" column="page_view"/>
+        <result property="starCount" column="star_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="activityTime" column="activity_time"/>
+        <result property="firstImageUrl" column="first_image_url"/>
+        <association property="user" javaType="User" column="user_id"
+                     select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+        <collection property="images" ofType="Image" column="id"
+                    select="com.acimage.community.dao.ImageDao.selectListOrderById"/>
+    </resultMap>
+
+
+    <update id="updatePvByIncrement">
+        <foreach collection="idAndIncrements" item="idAndIncrement" index="index" separator=";">
+            update tb_topic set page_view=page_view+#{idAndIncrement.value} where id=#{idAndIncrement.key}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateColumnByIncrement">
+        <foreach collection="idAndIncrements" item="idAndIncrement" index="index" separator=";">
+            update tb_topic set ${column} = ${column} + #{idAndIncrement.value} where id=#{idAndIncrement.key}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateActivityTime">
+        <foreach collection="idAndActivityTimes" item="idAndActivityTime" index="index" separator=";">
+            update tb_topic set activity_time = #{idAndActivityTime.value} where id=#{idAndActivityTime.key}
+        </foreach>
+    </update>
+
+
+    <select id="selectTopicWithUserBasic" resultMap="topicWithUser">
+        select * from tb_topic where id=#{id}
+    </select>
+
+    <select id="selectTopicsWithUserImagesOrderByPageView" resultMap="topicWithUserImages">
+        select * from tb_topic where create_time>#{startTime} order by page_view desc
+        <if test="limit!=null">
+            limit #{limit}
+        </if>
+    </select>
+
+    <select id="selectTopicsWithUserOrderBy" resultMap="topicWithUser">
+        select * from tb_topic order by ${column} desc limit #{limit}
+    </select>
+
+    <select id="selectTopicsWithUserBasicByIds" resultMap="topicWithUser">
+        select * from tb_topic where id in
+        <foreach collection="ids" item="id" index="index" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+
+
+    <select id="selectTopicsWithUserImagesOrderByCreateTime" resultMap="topicWithUserImages">
+        select * from tb_topic where user_id=#{userId} order by create_time desc limit #{startIndex},#{recordNumber}
+    </select>
+
+
+
+
+</mapper>

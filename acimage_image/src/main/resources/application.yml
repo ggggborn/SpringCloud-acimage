@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    include: common,qiniu
+    active: dev
+  application:
+    name: image-service
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 55MB
+
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    max-connections: 20 # 最大的连接数
+    max-connections-per-route: 5 # 每个路径的最大连接数
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.acimage.image.model.domain,com.acimage.common.model.domain
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+  global-config:
+    db-config:
+      table-prefix: tb_
+
+

@@ -1,0 +1,11 @@
+
+.user-comment-container{
+	text-align: center;
+	width:100%;
+	margin-bottom: 20px;
+}
+
+.user-comment-container>div{
+	display: inline-block;
+	vertical-align: top;
+}

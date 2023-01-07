@@ -1,0 +1,31 @@
+server:
+  port: 8090
+
+spring:
+  config:
+    activate:
+      on-profile:
+        - dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/acimage_image?useSSl=false&allowMultiQueries=true&serverTimezone=UTC
+    username: root
+    password: mysql
+  rabbitmq:
+    host: 192.168.130.128
+    port: 5672
+    username: acimage
+    password: acimage
+    virtual-host: /acimage
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动应答
+        auto-startup: false #消费者是否自动启动
+        prefetch: 1 #每次从队列中取一个,轮询分发，默认是公平分发
+        retry:
+          max-attempts: 5 # 重试次数
+          enabled: true # 开启重试
+      direct:
+        auto-startup: false #生产者是否自动启动
+        acknowledge-mode: manual # 手动应答

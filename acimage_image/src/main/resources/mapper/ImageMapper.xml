@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.image.dao.ImageDao" >
+
+    <insert id="insertList" >
+            insert into tb_image(id,topic_id,size,description,url) values
+            <foreach collection="list" item="image" index="index" separator=",">
+                ( #{image.id},#{image.topicId},#{image.size},#{image.description},#{image.url} )
+            </foreach>
+    </insert>
+
+    <update id="updateDescription" >
+            <foreach collection="list" item="idAndDescription" index="index" separator=";">
+                update tb_image set description=#{idAndDescription.value} where id=#{idAndDescription.key}
+            </foreach>
+    </update>
+
+</mapper>
