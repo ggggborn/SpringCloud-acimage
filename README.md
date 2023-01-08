@@ -51,7 +51,7 @@
 - **acimage_user**：用户中心
 - **acimage_community**：负责论坛主要功能
 - **acimage_image**：负责以图识图，图片、头像等相关服务
-- **acimage_gateway**：网关`（目前只负责转发请求）` 
+- **acimage_gateway**：网关，负责身份认证及粗略地限流
 
 **后端模块**
 

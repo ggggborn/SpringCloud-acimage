@@ -1,22 +1,16 @@
 package com.acimage.common.web.interceptor;
 
+import com.acimage.common.global.consts.HeaderKey;
+import com.acimage.common.utils.IpUtils;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
-import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.service.TokenService;
-import com.acimage.common.global.enums.TokenStatus;
-import com.acimage.common.exception.NullTokenException;
-import com.acimage.common.global.annotation.utils.AuthenticationUtils;
-import com.acimage.common.utils.IpUtils;
 import com.acimage.common.utils.JwtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,49 +26,21 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //设置ip
-        String ip = IpUtils.getOriginUserIp(request);
-        UserContext.setIp(ip);
 
-        //请求静态资源则无需验证token
-        if (handler instanceof ResourceHttpRequestHandler) {
-            UserContext.setTokenStatus(TokenStatus.PASS_TOKEN_VERIFY);
-            return true;
-        }
+        String ip = IpUtils.getIp(request);
+        String token = request.getHeader(HeaderKey.AUTHORIZATION);;
 
-        if (handler instanceof HandlerMethod handlerMethod) {
-            //获取该方法权限类型，优先注解顺序：方法、类
-            AuthenticationType authenticationType = AuthenticationUtils.getAuthenticationType(handlerMethod);
-            //无登录权限要求则放行
-            if (authenticationType == null || authenticationType == AuthenticationType.NONE) {
-                UserContext.setTokenStatus(TokenStatus.PASS_TOKEN_VERIFY);
-                return true;
-            }
-        }
-
-        //获取token
-        String token = tokenService.getToken(request);
-
-        //验证token，验证不通过抛出异常
         try {
             JwtUtils.verifyToken(token);
-        } catch (NullTokenException e1) {
-            UserContext.setTokenStatus(TokenStatus.NULL);
-            return true;
-        } catch (TokenExpiredException e2) {
-            UserContext.setTokenStatus(TokenStatus.EXPIRE);
-            return true;
-        } catch (JWTVerificationException e3) {
-            UserContext.setTokenStatus(TokenStatus.INVALID);
+        } catch (JWTVerificationException e1) {
             return true;
         }
 
         if (!tokenService.isMatch(token, ip)) {
-            UserContext.setTokenStatus(TokenStatus.MISMATCH_IP);
-        } else {
-            UserContext.setTokenStatus(TokenStatus.VALID);
+            return true;
         }
 
+        //设置当前用户信息
         UserContext.saveCurrentUserInfo(JwtUtils.getUserId(token), JwtUtils.getUsername(token), JwtUtils.getPhotoUrl(token));
         return true;
     }

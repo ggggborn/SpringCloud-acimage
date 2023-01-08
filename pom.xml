@@ -163,12 +163,7 @@
                 <version>${loadbalancer.version}</version>
             </dependency>
 
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <!--（起码1.2.48以上）因为这个版本一下存在漏洞-->
-                <version>${fastjson.version}</version>
-            </dependency>
+
 
         </dependencies>
 

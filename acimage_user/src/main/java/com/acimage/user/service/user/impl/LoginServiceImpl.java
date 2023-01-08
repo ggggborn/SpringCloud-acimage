@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.exception.BusinessException;
 
+import com.acimage.common.global.consts.HeaderKey;
 import com.acimage.common.model.domain.User;
 import com.acimage.common.model.domain.UserBasic;
 import com.acimage.common.service.TokenService;
@@ -139,7 +140,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void logout(HttpServletRequest request) {
         //获取cookie中的token
-        String token = tokenService.getToken(request);
+        String token = request.getHeader(HeaderKey.AUTHORIZATION);
         tokenService.invalidate(token);
     }
 

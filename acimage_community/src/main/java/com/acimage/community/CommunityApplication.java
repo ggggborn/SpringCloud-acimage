@@ -1,5 +1,6 @@
 package com.acimage.community;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 
+@Slf4j
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableScheduling
@@ -20,6 +22,6 @@ public class CommunityApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CommunityApplication.class, args);
-		System.out.println("http://localhost:81/");
+		log.info("------------->>>Community启动<<<-------------");
 	}
 }

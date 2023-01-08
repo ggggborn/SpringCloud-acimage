@@ -2,9 +2,8 @@ package com.acimage.image.web.controller;
 
 
 import com.acimage.common.global.annotation.Authentication;
-import com.acimage.common.global.consts.FileFormatConsts;
+import com.acimage.common.global.consts.FileFormat;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.common.model.domain.Image;
 import com.acimage.common.model.domain.Topic;
 import com.acimage.common.result.Result;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Size;
-import java.util.List;
 
 
 @RestController
@@ -49,7 +47,7 @@ public class ImageController {
                 return Result.fail("图片文件名长度小于2");
             }
             String format = FileUtils.formatOf(originName);
-            if (!FileFormatConsts.ALLOWED_IMAGE_FORMAT.contains(format)) {
+            if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
                 return Result.fail("图片格式需为jpg，jpeg，png");
             }
         }

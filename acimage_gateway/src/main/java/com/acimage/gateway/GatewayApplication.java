@@ -11,13 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @EnableDiscoveryClient
-@ComponentScan
 @SpringBootApplication
 public class GatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
-        log.info("------------->>>gateway启动<<<-------------");
+        log.info("------------->>>Gateway启动<<<-------------");
     }
 
 }

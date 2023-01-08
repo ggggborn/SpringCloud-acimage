@@ -84,11 +84,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--fastjson-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
+
 
         <!--validation依赖，用于数据校验-->
         <dependency>

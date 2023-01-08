@@ -1,4 +1,3 @@
-
 spring:
   profiles:
     active: dev
@@ -11,16 +10,35 @@ spring:
           uri: lb://community-service
           predicates:
             - Path=/api/community/**
+
         - id: image-service-route
           uri: lb://image-service
           predicates:
             - Path=/api/image/**
+
         - id: user-service-route
           uri: lb://user-service
           predicates:
             - Path=/api/user/**
+
         - id: admin-service-route
           uri: lb://admin-service
           predicates:
             - Path=/api/admin/**
+      filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10 #补充速率
+            redis-rate-limiter.burstCapacity: 50 #桶容量
+            key-resolver: "#{@ipKeyResolver}" #这个必须要配置，否则返回403
+
+
+
+ignore:
+  urls:
+    - /api/community/topics/recentHot
+    - /api/community/topics/recommend
+    - /api/community/topics/info/*
+    - /api/community/users/rank/*
+
 

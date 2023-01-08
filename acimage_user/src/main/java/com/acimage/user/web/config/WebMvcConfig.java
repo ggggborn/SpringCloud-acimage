@@ -1,9 +1,9 @@
 package com.acimage.user.web.config;
 
 
-import com.acimage.common.web.interceptor.IpInterceptor;
+
 import com.acimage.common.web.interceptor.JwtInterceptor;
-import com.acimage.common.web.interceptor.PermissionInterceptor;
+import com.acimage.common.web.interceptor.AccessInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,20 +20,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     JwtInterceptor jwtInterceptor;
-    @Autowired
-    IpInterceptor ipInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> commonExcludePathPatterns = new ArrayList<>(
                 Arrays.asList("/templates/**", "/static/**", "/", "/storage/**", "/favicon.ico", "/error"));
 
-        registry.addInterceptor(ipInterceptor).addPathPatterns("/**").order(10);
-
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
                 .excludePathPatterns(commonExcludePathPatterns).order(20);
 
-        registry.addInterceptor(new PermissionInterceptor()).addPathPatterns("/**")
+        registry.addInterceptor(new AccessInterceptor()).addPathPatterns("/**")
                 .excludePathPatterns(commonExcludePathPatterns).order(30);
     }
 

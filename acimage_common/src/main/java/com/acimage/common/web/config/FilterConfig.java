@@ -9,6 +9,10 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 @Configuration
 public class FilterConfig {
 
+    /**
+     * 设置编码
+     * @return
+     */
     @Bean
     public FilterRegistrationBean<CharacterEncodingFilter> registerFilter1(){
         FilterRegistrationBean<CharacterEncodingFilter> registerFilter=new FilterRegistrationBean<>();
@@ -19,6 +23,10 @@ public class FilterConfig {
         return registerFilter;
     }
 
+    /**
+     * 设置HiddenHttpMethod，支持put、get、delete等请求
+     * @return
+     */
     @Bean
     public FilterRegistrationBean<HiddenHttpMethodFilter> registerFilter2(){
         FilterRegistrationBean<HiddenHttpMethodFilter> registerFilter=new FilterRegistrationBean<>();

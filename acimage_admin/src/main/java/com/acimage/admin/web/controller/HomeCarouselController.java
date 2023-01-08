@@ -3,7 +3,7 @@ package com.acimage.admin.web.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.acimage.admin.service.HomeCarouselService;
-import com.acimage.common.global.consts.FileFormatConsts;
+import com.acimage.common.global.consts.FileFormat;
 import com.acimage.common.model.domain.SpImage;
 import com.acimage.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ public class HomeCarouselController {
                            @RequestParam("description") @Size(min = SpImage.DESC_MIN, max = SpImage.DESC_MAX, message = SpImage.DESC_INVALID_MSG) String description) {
         String originName=imageFile.getOriginalFilename();
         String format = StrUtil.subAfter(originName, '.', true);
-        if (!FileFormatConsts.ALLOWED_IMAGE_FORMAT.contains(format)) {
+        if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
             return Result.fail("图片格式需为jpg，jpeg，png");
         }
         homeCarouselService.saveHomeCarouselImage(imageFile, description);
@@ -52,7 +52,7 @@ public class HomeCarouselController {
                                  @RequestParam("image") MultipartFile imageFile) {
         String originName=imageFile.getOriginalFilename();
         String format = StrUtil.subAfter(originName, '.', true);
-        if (!FileFormatConsts.ALLOWED_IMAGE_FORMAT.contains(format)) {
+        if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
             return Result.fail("图片格式需为jpg，jpeg，png");
         }
         homeCarouselService.coverHomeCarouselImage(id, imageFile);
