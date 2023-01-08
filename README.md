@@ -112,7 +112,7 @@
 | vue-dompurify-html   | 防xss攻击   |
 | @tinymce/tinymce-vue | 富文本编辑器   |
 
-## 未来计划
+## Todo
 
 - [x] 将图片存储在七牛云中
 - [x] 使用富文本编辑器编辑发表话题
