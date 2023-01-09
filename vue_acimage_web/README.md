@@ -1,25 +1,27 @@
 # vue_acimage_web
->acimage网页端
 
-##dependencies
->参考package.json
+> acimage网页端
 
-## Project setup
+## clone仓库
+
 ```
-npm install
+git clone https://github.com/ggggborn/SpringCloud-acimage.git
 ```
 
-### Compiles and hot-reloads for development
+## 进入到vue_acimage_web目录
+
+```
+cd vue_acimage_web
+```
+
+## 安装依赖
+
+```
+npm install -i
+```
+
+## 运行
+
 ```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
