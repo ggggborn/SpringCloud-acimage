@@ -39,6 +39,8 @@ public class LogAdvice {
         Object[] args = joinPoint.getArgs();
         Parameter[] parameters = method.getParameters();
 
+        long startTime=System.currentTimeMillis();
+
         //记录入参
         StringBuilder argsString = new StringBuilder();
         argsString.append(method.getName());
@@ -67,6 +69,8 @@ public class LogAdvice {
             String returnValue = obj == null ? "" : obj.toString();
             log.info(method.getName() + " 返回值-->" + returnValue);
         }
+
+        log.info("{}耗时 {}ms",method.getName(),System.currentTimeMillis()-startTime);
 
         return obj;
     }

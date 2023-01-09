@@ -28,6 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String ip = IpUtils.getIp(request);
+        UserContext.setIp(ip);
         String token = request.getHeader(HeaderKey.AUTHORIZATION);;
 
         try {

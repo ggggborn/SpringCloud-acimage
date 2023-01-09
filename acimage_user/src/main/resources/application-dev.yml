@@ -32,3 +32,6 @@ spring:
         max-idle: 8 #最大空闲连接
         min-idle: 0 #最小空闲连接
         max-wait: 100ms #连接等待时间
+  cloud:
+    nacos:
+      server-addr: localhost:8848 #nacos 服务地址

@@ -19,6 +19,7 @@ public class AccessInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String ip = IpUtils.getIp(request);
+        UserContext.setIp(ip);
 
         log.info("access 用户:{} 访问:{} {} ip:{}",
                 UserContext.getUsername(), request.getRequestURI(), request.getMethod(), ip);

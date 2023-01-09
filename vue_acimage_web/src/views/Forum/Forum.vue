@@ -26,7 +26,7 @@
 												{{$global.omitStr(topic.title,15)}}
 											</router-link>
 										</div>
-										<div class="topic-time">
+										<div class="topic-data">
 											更新于 {{topic.activityTime}}
 											| <i class="el-icon-star-off"></i>{{topic.starCount}}
 											| <i class="el-icon-view"> </i>{{topic.pageView}}

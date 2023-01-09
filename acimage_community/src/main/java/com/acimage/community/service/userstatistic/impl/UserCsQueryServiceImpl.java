@@ -2,6 +2,7 @@ package com.acimage.community.service.userstatistic.impl;
 
 import com.acimage.common.model.domain.UserCommunityStatistic;
 import com.acimage.common.redis.annotation.QueryRedis;
+import com.acimage.common.redis.enums.DataType;
 import com.acimage.community.dao.UserCommunityStatisticDao;
 import com.acimage.community.service.userstatistic.UserCsQueryService;
 import com.acimage.community.service.userstatistic.consts.KeyConstants;
@@ -14,9 +15,8 @@ public class UserCsQueryServiceImpl implements UserCsQueryService {
     UserCommunityStatisticDao userCsDao;
 
     @Override
-    @QueryRedis(keyPrefix = KeyConstants.STRINGKP_USER_STATISTIC,expire = 10L)
-    public UserCommunityStatistic getUserCommunityStatistic(long userId){
+    @QueryRedis(keyPrefix = KeyConstants.STRINGKP_USER_STATISTIC, expire = 10L, dataType = DataType.HASH)
+    public UserCommunityStatistic getUserCommunityStatistic(long userId) {
         return userCsDao.selectById(userId);
-
     }
 }

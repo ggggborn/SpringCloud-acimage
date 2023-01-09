@@ -5,10 +5,6 @@ spring:
       filter:
         enabled: true
   cloud:
-    nacos:
-      server-addr: localhost:8848 #nacos 服务地址
-      discovery:
-        enabled: true #关闭nacos发现，用于调试
     sentinel:
       eager: true
       transport:

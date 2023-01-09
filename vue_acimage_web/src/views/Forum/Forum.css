@@ -41,6 +41,7 @@ body{
 	position:relative;
 	height:60px;
 	text-align: center;
+	margin-bottom: 16px;
 }
 
 .topics-header-icon{
@@ -57,6 +58,8 @@ body{
 }
 
 .topic-item{
+	margin-bottom: -20px;
+	margin-top:-20px;
 	padding-left:10px;
 	padding-right:10px;
 }
@@ -73,14 +76,13 @@ body{
 	font-size:18px;
 }
 
-.topic-time{
-	margin-top:5px;
+.topic-data{
 	color:#999999;
 	font-size:14px;
 }
 
 .topic-content{
-	margin-top:5px;
+	margin-top:2px;
 	color:#999999;
 	font-size:16px;
 }

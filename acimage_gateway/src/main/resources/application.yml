@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: dev2
   application:
     name: gateway-server
   cloud:
@@ -39,6 +39,9 @@ ignore:
     - /api/community/topics/recentHot
     - /api/community/topics/recommend
     - /api/community/topics/info/*
-    - /api/community/users/rank/*
+    - /api/community/users/rank/**
+    - /api/image/spImages/homeCarousel
+    - /api/user/logins/**
+    - /api/user/isExist/**
 
 
