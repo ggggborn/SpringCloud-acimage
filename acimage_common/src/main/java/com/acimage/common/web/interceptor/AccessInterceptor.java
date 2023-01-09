@@ -1,6 +1,7 @@
 package com.acimage.common.web.interceptor;
 
 import com.acimage.common.global.context.UserContext;
+import com.acimage.common.utils.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AccessInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ip = UserContext.getIp();
+        String ip = IpUtils.getIp(request);
 
         log.info("access 用户:{} 访问:{} {} ip:{}",
                 UserContext.getUsername(), request.getRequestURI(), request.getMethod(), ip);

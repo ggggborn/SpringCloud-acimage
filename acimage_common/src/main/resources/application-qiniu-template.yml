@@ -1,0 +1,6 @@
+#七牛云配置
+qiniu:
+  access-key:
+  secret-key:
+  bucket:
+  domain:

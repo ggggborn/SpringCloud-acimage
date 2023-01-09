@@ -4,8 +4,8 @@
 <img src="https://img.shields.io/badge/JDK-18+-green.svg" ></img>
 <img src="https://img.shields.io/badge/springboot-2.6.11-green" ></img>
 <img src="https://img.shields.io/badge/SpringCloud-2021.0.3-brightgreen" ></img>
-<img src="https://img.shields.io/badge/vue-2.6.14-green" ></img>
 <img src="https://img.shields.io/badge/mybatis--plus-3.4.1-green" ></img>
+<img src="https://img.shields.io/badge/vue-2.6.14-green" ></img>
 </p>
 
 ## 项目介绍
@@ -67,18 +67,34 @@
 
 - **doc**: 一些文档和数据库文件
 
-## 开发环境运行
+## 后端开发环境运行
 
 - 将**doc/sql** 下的三个数据库分别导入到**mysql**中，三个数据库分别是三个前台服务对应的数据库
 
-- 在每个服务的**application-dev.yml**文件中配置**mysql、redis、rabbitmq**相应的地址或账号密码
+- 在每个服务的**application-dev.yml**文件中配置**mysql、redis、rabbitmq**、**nacos**相应的地址或账号密码
+
+- 填写**acimage_common**中的**application-qiniu-template.yml**中的七牛云账号信息，包括**access-key**、**secret-key**、**domian**、**bucket**，或者给这四个属性随便赋值（不能为空，否则**NPE**），但是这样无法使用上传图片。并将**application-qiniu-template.yml**重命名为**application-qiniu.yml**
 
 - 在**acimage_common**模块的下的**application.yml**配置 **nacos** 地址、**sentinel**地址（**sentinel**不配也不影响运行）
 
-- **前台登录**：用户：wk，密码：wk123456 
-  （还有几个用户可以从数据库sql文件看到，密码均为 用户名123456）
+- 启动**nacos、redis、rabbitmq、mysql**
 
-- 端口：**acimage_user**: 8100  **acimage_image** 8090 **acimage_community** 8080
+- 依次启动**acimage_user**、**acimage_community**、**acimage_image**、**acimage_gateway**，不这样启动的话可能会由于**rabbitmq**队列创建和绑定顺序的问题报错，如果遇到了，则全部服务再重新启动一遍。
+
+- 运行前端（具体看**vue_acimage_web**的**README**）后点击默认弹出的链接即可访问首页
+
+- **前台登录**：用户：wk，密码：wk123456 
+  （还有几个用户可以从数据库sql文件看到，密码均为  用户名123456）
+
+- 端口：
+  
+  - **acimage_user**: 8100  
+  
+  - **acimage_image** : 8090 
+  
+  - **acimage_community**: 8080
+  
+  - **acimage_gateway**: 8070
 
 ## 技术选型
 
@@ -135,7 +151,7 @@
 
 ## 交流
 
-项目起初是为了学习技术搭建的，由于能力有限，还有很多不完善的地方，欢迎各位能够指正。如果有人感兴趣（多么希望真的有人感兴趣 手动捂脸）或者该项目遇到什么问题或有什么建议，可加qq 1179836161 交流联系，备注：acimage。
+项目起初是为了学习技术搭建的，由于能力有限，还有很多不完善的地方，欢迎各位能够指正。如果有人感兴趣（多么希望真的有人感兴趣 手动捂脸）或者该项目遇到什么问题或有什么建议提issue，可联系邮箱1179836161@qq.com。目前完成的功能还比较少，欢迎一起开发。
 
 ## 网站截图
 
