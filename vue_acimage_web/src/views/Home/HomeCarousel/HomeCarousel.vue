@@ -10,7 +10,7 @@
 		</el-carousel>
 		<!-- 图片走马灯end -->
 		<div class="carousel-description">
-			<span style="margin-left:10px;">{{images[index].description}}</span>
+			<span style="margin-left:10px;">{{currentDescription}}</span>
 		</div>
 	</div>
 </template>
@@ -24,53 +24,23 @@
 		data() {
 			return {
 				index: 0,
-				images: [{
-						id: 0,
-						url: 'static/image/0.jpeg',
-						description: '欢迎来到..'
-					},
-					{
-						id: 1,
-						url: 'static/image/1.jpeg',
-						description: '欢迎来到....'
-					},
-					{
-						id: 2,
-						url: 'static/image/2.jpeg',
-						description: '欢迎来到......'
-					},
+				images: [
+					// {
+					// 	id: 2,
+					// 	url: 'static/image/2.jpeg',
+					// 	description: '欢迎来到......'
+					// },
 				]
 			}
 		},
-		// props: {
-		// 	images: [{
-		// 			id: 0,
-		// 			url: 'static/image/0.jpeg',
-		// 			description: '欢迎来到..'
-		// 		},
-		// 		{
-		// 			id:1,
-		// 			url: 'static/image/1.jpeg',
-		// 			description: '欢迎来到....'
-		// 		},
-		// 		{
-		// 			id:2,
-		// 			url: 'static/image/2.jpeg',
-		// 			description: '欢迎来到......'
-		// 		},
-		// 	]
-		// 	// imageSrcs: {
-		// 	// 	default () {
-		// 	// 		return ['static/image/0.jpeg', 'static/image/1.jpeg', '/static/image/2.jpeg'];
-		// 	// 	}
-		// 	// },
-		// 	// descriptions:{
-		// 	// 	default () {
-		// 	// 		return ['欢迎来到..','欢迎来到....','欢迎来到......'];
-		// 	// 	}
-		// 	// }
-
-		// },
+		computed:{
+			currentDescription(){
+				if(this.images.length==0){
+					return '';
+				}
+				return this.$global.omitStr(this.images[this.index].description,20);
+			}
+		},
 		mounted() {
 			let _this = this;
 			queryHomeCarousel().then(result => {

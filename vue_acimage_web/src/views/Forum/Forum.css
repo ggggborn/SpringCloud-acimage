@@ -92,7 +92,12 @@ body{
 	vertical-align: top;
 }
 
-
+.item-right-image{
+	height:100px;
+	width:100px;
+	border-radius: 3px;
+	margin-top:4px;
+}
 
 .forum-right-wrapper{
 		width:300px;

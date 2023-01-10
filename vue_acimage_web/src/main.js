@@ -20,6 +20,10 @@ Vue.prototype.$global=global
 Vue.use(VueDOMPurifyHTML)
 
 Vue.config.productionTip = false
+if(process.env.VUE_APP_MOCK){
+	require('../mock')
+}
+
 
 new Vue({
   render: h => h(App),

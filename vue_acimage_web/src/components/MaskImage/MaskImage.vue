@@ -1,10 +1,10 @@
 <template>
 	<div class="mask-image-container">
-		<div style="" class="image-container">
+		<div class="image-container">
 			<img :src="imageUrl" width="250px" height="150px" style="object-fit:cover;object-position:center" />
 		</div>
 		<div class="image-mask">
-			<div class="image-info" style="margin-top:10px;">
+			<div class="image-info">
 				{{$global.omitStr(title,18)}}
 			</div>
 			<div class="image-info image-info-bottom">

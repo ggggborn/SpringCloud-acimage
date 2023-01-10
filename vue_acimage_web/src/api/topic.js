@@ -46,9 +46,9 @@ export let deleteTopic = function(topicId) {
 	return request.delete('/api/community/topics/' + topicId)
 }
 
-export let modifyTopicAndImageDescriptions = function(data) {
-	return request.put('/api/community/topics', data);
-}
+// export let modifyTopicAndImageDescriptions = function(data) {
+// 	return request.put('/api/community/topics', data);
+// }
 
 export let queryRecentHotTopics = function() {
 	return request.get('/api/community/topics/recentHot');

@@ -26,7 +26,6 @@ import java.util.List;
 @Component
 @RabbitListener(queues = "sync-user-queue")
 public class SyncUserConsumer {
-//    private static final String SYNC_USER_QUEUE = "sync-user-queue";
 
     @Autowired
     UserBasicWriteService userBasicWriteService;

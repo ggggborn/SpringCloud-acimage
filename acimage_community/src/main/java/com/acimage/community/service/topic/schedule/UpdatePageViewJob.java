@@ -5,8 +5,11 @@ import com.acimage.common.utils.RedisUtils;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.service.topic.consts.KeyConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -14,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class UpdatePageViewSchedule {
+public class UpdatePageViewJob extends QuartzJobBean {
     private final long FIXED_RATE_MINUTES = 57L;
     @Autowired
     RedisUtils redisUtils;
@@ -24,17 +27,19 @@ public class UpdatePageViewSchedule {
     /**
      * 从redis中获取话题的新增浏览量并写入到数据库中
      */
-    @Scheduled(fixedRate = FIXED_RATE_MINUTES, timeUnit = TimeUnit.MINUTES)
-    private void savePageViewTask() {
+
+
+    @Override
+    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         //批量更新到数据库的大小
         final int BATCH_SIZE = 10;
+        log.info("start 系统定时任务：保存浏览量变化");
 
         //获取哪些话题被记录了浏览量
         List<Long> topicIdList = redisUtils.membersForSet(KeyConstants.SETK_RECORDING_PV_INCREMENT, Long.class);
         if (CollectionUtil.isEmpty(topicIdList)) {
             return;
         }
-        log.info("start 系统定时任务：保存浏览量变化");
         StringBuilder logString = new StringBuilder();
         int index = 0;
 

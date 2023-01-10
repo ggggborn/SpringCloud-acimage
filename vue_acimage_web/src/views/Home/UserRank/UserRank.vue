@@ -1,15 +1,15 @@
 <template>
 	<div class="user-rank-wrapper">
-		<div class="user-rank-header">
-			<i class="el-icon-office-building"></i>用户排行
+		<div class="user-rank-thumbnail">
+			<img :src="$global.trueImageUrl('/test/test3.jpg')" />
+			<div class="thumbnail-white-gradient">
+				<div class="header-title">排行</div>
+			</div>
 		</div>
-		<div class="sort-choice-container">
-			<span class="sort-hint">排序方式</span>
-			<el-button class="gray-color" type="text" size="mini" @click="onClickSortByStarCount">被收藏数
-			</el-button>
-			<el-button class="gray-color" type="text" size="mini" @click="onClickSortByTopicCount">话题数
-			</el-button>
-		</div>
+		<el-tabs type="card" style="margin-top:-5px;" v-model="sortMode" >
+			<el-tab-pane label="最多star" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
+			<el-tab-pane label="最多话题" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
+		</el-tabs>
 		<template v-for="user in users">
 			<div class="user-item-container" :key="user.id">
 				<div class="user-item-left">
@@ -22,7 +22,7 @@
 						{{user.username}}
 					</div>
 					<div class="user-item-right-bottom">
-						<div>{{user.starCount}}</div> <span>被收藏</span>
+						<div>{{user.starCount}}</div> <span>star</span>
 						<div>{{user.topicCount}}</div> <span>话题</span>
 					</div>
 				</div>
@@ -44,30 +44,24 @@
 		name: 'UserRank',
 		data() {
 			return {
-				sortMode: Mode.starCount,
-				users: [{
-						id: 0,
-						username: 'xlg',
-						photoUrl: '',
-						starCount: 888,
-						topicCount: 888,
-					},
-					{
-						id: 1,
-						username: 'xlg',
-						photoUrl: '',
-						starCount: 666,
-						topicCount: 777,
-					}
+				sortMode: 'starCount',
+				users: [
+					// {
+					// 	id: 0,
+					// 	username: 'xlg',
+					// 	photoUrl: '',
+					// 	starCount: 888,
+					// 	topicCount: 888,
+					// },
 				]
 			}
 		},
 		watch: {
 			sortMode: {
 				handler(newVal) {
-					if (newVal == Mode.starCount) {
+					if (newVal == "starCount") {
 						this.getUserPageRankByStarCount(1);
-					} else if (newVal == Mode.topicCount) {
+					} else if (newVal == "topicCount") {
 						this.getUserPageRankByTopicCount(1);
 					}
 				}
@@ -94,11 +88,11 @@
 					}
 				});
 			},
-			onClickSortByStarCount(){
-				this.sortMode=Mode.starCount;
+			onClickSortByStarCount() {
+				this.sortMode = Mode.starCount;
 			},
-			onClickSortByTopicCount(){
-				this.sortMode=Mode.topicCount;
+			onClickSortByTopicCount() {
+				this.sortMode = Mode.topicCount;
 			},
 
 		}

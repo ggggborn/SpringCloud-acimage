@@ -43,7 +43,7 @@
 								</div>
 								<div class="item-right">
 									<el-image :src="$global.trueImageUrl(topic.firstImageUrl)" fit="cover"
-										style="height:90px;width:90px;border-radius: 3px">
+										class="item-right-image">
 									</el-image>
 								</div>
 							</div>

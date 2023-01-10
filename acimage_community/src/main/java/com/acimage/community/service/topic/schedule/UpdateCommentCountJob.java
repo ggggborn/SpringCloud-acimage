@@ -8,8 +8,11 @@ import com.acimage.common.utils.RedisUtils;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.service.topic.consts.KeyConstants;
 import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,27 +21,23 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
-public class UpdateCommentCountSchedule {
-    private final long FIXED_RATE_MINUTES = 11L;
+public class UpdateCommentCountJob extends QuartzJobBean {
+
     @Autowired
     RedisUtils redisUtils;
     @Autowired
     TopicSpAttrWriteService topicSpAttrWriteService;
 
-    /**
-     * 从redis中获取话题的新增浏览量并写入到数据库中
-     */
-    @Scheduled(fixedRate = FIXED_RATE_MINUTES, timeUnit = TimeUnit.MINUTES)
-    private void saveCommentCountTask() {
+    @Override
+    protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         //批量更新到数据库的大小
         final int BATCH_SIZE = 10;
-
+        log.info("start 系统定时任务：保存评论数变化");
         //获取哪些话题评论数有变化
         List<Long> topicIdList = redisUtils.membersForSet(KeyConstants.SETK_RECORDING_COMMENT_COUNT_INCREMENT, Long.class);
         if (CollectionUtil.isEmpty(topicIdList)) {
             return;
         }
-        log.info("start 系统定时任务：保存评论数变化");
         StringBuilder logString = new StringBuilder();
 
         int index = 0;
@@ -86,8 +85,6 @@ public class UpdateCommentCountSchedule {
                 logString = new StringBuilder();
             }
         }
-
-
         log.info("end 系统定时任务：保存评论数变化");
     }
 }

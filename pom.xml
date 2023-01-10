@@ -46,6 +46,8 @@
         <loadbalancer.version>3.1.1</loadbalancer.version>
         <qiniu.version>[7.7.0, 7.10.99]</qiniu.version>
         <fastjson.version>2.0.21</fastjson.version>
+<!--        <quartz.version>3.0.1</quartz.version>-->
+<!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
     </properties>
 
@@ -163,7 +165,17 @@
                 <version>${loadbalancer.version}</version>
             </dependency>
 
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-quartz</artifactId>-->
+<!--                <version>${quartz.version}</version>-->
+<!--            </dependency>-->
 
+<!--            <dependency>-->
+<!--                <groupId>org.quartz-scheduler</groupId>-->
+<!--                <artifactId>quartz</artifactId>-->
+<!--                <version>${quartz-scheduler.version}</version>-->
+<!--            </dependency>-->
 
         </dependencies>
 

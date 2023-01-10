@@ -35,7 +35,7 @@
 					</router-link>
 				</template>
 			</div>
-			
+
 			<div class="user-rank-container">
 				<user-rank></user-rank>
 			</div>
@@ -50,11 +50,12 @@
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
 	import MaskImage from '@/components/MaskImage/MaskImage.vue'
 	import FloatImage from '@/components/FloatImage/FloatImage.vue'
-	
-	
-	import {queryRecentHotTopics,queryRecommendTopics} from '@/api/topic.js'
-	
-	import {Code} from '@/utils/result.js'
+
+
+	import { queryRecentHotTopics, queryRecommendTopics } from '@/api/topic.js'
+	import axios from 'axios'
+
+	import { Code } from '@/utils/result.js'
 
 	export default {
 		name: 'HomeA',
@@ -67,45 +68,54 @@
 		},
 		data() {
 			return {
-				recentHotTopics: [{
-					id:0,
-					title: '加载中...',
-					starCount: 888,
-					pageView: 88888,
-					createTime: '2022-2-22 22:22:22',
-					user: {
-						username: '加载中...',
-						photoUrl: ''
-					},
-					firstImageUrl:'',
-				}],
-				recommendTopics: [{
-					id:0,
-					title: '加载中...',
-					starCount: 888,
-					pageView: 88888,
-					createTime: '2022-2-22 22:22:22',
-					user: {
-						username: '加载中...',
-						photoUrl: ''
-					},
-					firstImageUrl:'',
-				}]
+				recentHotTopics: [
+				// 	{
+				// 	id: 0,
+				// 	title: '加载中...',
+				// 	starCount: 888,
+				// 	pageView: 88888,
+				// 	createTime: '2022-2-22 22:22:22',
+				// 	user: {
+				// 		username: '加载中...',
+				// 		photoUrl: ''
+				// 	},
+				// 	firstImageUrl: '',
+				// }, 
+				],
+				recommendTopics: [
+					// 	{
+					// 	id: 0,
+					// 	title: '加载中...',
+					// 	starCount: 888,
+					// 	pageView: 88888,
+					// 	createTime: '2022-2-22 22:22:22',
+					// 	user: {
+					// 		username: '加载中...',
+					// 		photoUrl: ''
+					// 	},
+					// 	firstImageUrl: '',
+					// },
+				]
 			};
 
 		},
 		mounted() {
 			let _this = this;
-			queryRecentHotTopics().then(result=>{
+			console.log(process.env.VUE_APP_MOCK);
+			queryRecentHotTopics().then(result => {
 				if (result.code == Code.OK) {
 					_this.recentHotTopics = result.data;
 				}
-			})
-			queryRecommendTopics().then(result=>{
+				console.log(result)
+			});
+			queryRecommendTopics().then(result => {
 				if (result.code == Code.OK) {
 					_this.recommendTopics = result.data;
 				}
-			})
+			});
+
+
+
 		},
 		computed: {
 

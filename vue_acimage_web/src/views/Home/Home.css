@@ -6,6 +6,7 @@
 
 .home-main{
 	width:1040px;
+/* 	margin-left: 5vw; */
 	margin-left: calc( (100% - 510px - 520px) / 2 );
 	margin-top: 15px;
 	display: block;
