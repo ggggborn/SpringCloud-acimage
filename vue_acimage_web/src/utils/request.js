@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Message, MessageBox, Loading, Notification } from 'element-ui';
 import MessageUtils from '@/utils/MessageUtils'
 import { Code } from '@/utils/result.js';
-import global from '@/utils/global.js'
+import store from '@/store'
 
 // const service = axios.create({
 // 	baseURL: "http://127.0.0.1:8080/projectName",//请求地址前缀
@@ -20,7 +20,7 @@ service.interceptors.request.use(
 		// config.headers['arg1'] = "arg1Value";
 
 		//开始loading
-		config.headers['authorization'] = global.TOKEN();
+		config.headers['authorization'] = store.state.token;
 		requestNum++;
 		if (loading == null) {
 			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~' });

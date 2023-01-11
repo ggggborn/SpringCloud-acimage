@@ -1,13 +1,8 @@
 import axios from 'axios';
-import {
-	Message,
-	MessageBox,
-	Loading,
-	Notification
-} from 'element-ui';
-import {
-	Code
-} from '@/utils/result.js';
+import { Message, MessageBox, Loading, Notification } from 'element-ui';
+import MessageUtils from '@/utils/MessageUtils'
+import { Code } from '@/utils/result.js';
+import store from '@/store'
 
 // const service = axios.create({
 // 	baseURL: "http://127.0.0.1:8080/projectName",//请求地址前缀
@@ -25,21 +20,14 @@ service.interceptors.request.use(
 		// config.headers['arg1'] = "arg1Value";
 
 		//开始loading
+		config.headers['authorization'] = store.state.token;
 		requestNum++;
 		if (loading == null) {
-			loading = Loading.service({
-				fullscreen: true,
-				text: '正在努力加载中~'
-			});
+			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~' });
 		} else if (loading != null && requestNum > 0) {
-			loading = Loading.service({
-				fullscreen: true,
-				text: '正在努力加载中~'
-			});
+			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~' });
 		}
-
-		return config
-
+		return config;
 	},
 	error => {
 		requestNum = 0;
@@ -58,15 +46,9 @@ service.interceptors.response.use(
 		if (loading == null || requestNum <= 0) {
 			loading.close()
 		}
-
 		const result = response.data;
 		if (result.code == Code.ERR) {
-			Notification({
-				title: '提示',
-				message: result.msg,
-				type: 'warning',
-				duration: 2 * 1000
-			});
+			MessageUtils.notice(result.msg, 2)
 		} else if (result.code == Code.OK) {
 			return response.data;
 		} else {
@@ -76,18 +58,13 @@ service.interceptors.response.use(
 		}
 	},
 	error => {
-
+		//拦截到失败的数据
 		console.log('错误码', error)
 		// 出错了直接关闭loading
 		requestNum = 0
 		loading.close();
-		//拦截到失败的数据
-		Notification({
-			title: '提示',
-			message: error,
-			type: 'warning',
-			duration: 2 * 1000
-		});
+
+		MessageUtils.notice(error, 4)
 		return Promise.reject(error);
 	}
 );

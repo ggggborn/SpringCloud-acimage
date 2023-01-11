@@ -48,8 +48,6 @@
 				</el-table-column>
 			</el-table-column>
 		</el-table>
-
-		<!-- 各种弹出框 -->
 		<!-- 修改描述弹出框 -->
 		<el-dialog title="修改描述" :visible.sync="descriptionModifyVisible">
 			<el-form>
@@ -62,7 +60,6 @@
 				<el-button type="primary" @click="modifyDescription(currentModifyId)">确 定</el-button>
 			</div>
 		</el-dialog>
-
 		<!-- 覆盖图片对话框 -->
 		<el-dialog title="覆盖图片" :visible.sync="coverImageVisible">
 			<el-form>
@@ -79,7 +76,6 @@
 				<el-button type="primary" @click="coverImage(coverImageId)">确 定</el-button>
 			</div>
 		</el-dialog>
-
 		<!-- 新增图片对话框 -->
 		<el-dialog title="新增图片" :visible.sync="addImageVisible">
 			<el-form :model="addImageForm" :rules="rules" ref="addImageForm">
@@ -120,7 +116,7 @@
 				queryCurrentHomeCarousel
 	} from '@/api/HomeCarousel.js'
 	import {Code} from '@/utils/result.js'
-	import {delayRefresh} from '@/utils/CommonUtils.js'
+	import CommonUtils from '@/utils/CommonUtils.js'
 
 	export default {
 		name: 'HomeCarousel',
@@ -212,21 +208,21 @@
 				});
 				this.addImageVisible=false;
 				
-				delayRefresh(2);
+				CommonUtils.delayRefresh(2);
 			},
 			deleteImage(imageId){
 				let params={'id':imageId};
 				this.$global.popupMsgIfOk(deleteHomeCarouselImage(params),'删除成功');
 				this.deleteConfirmVisible=false;
 				
-				delayRefresh(2);
+				CommonUtils.delayRefresh(2);
 			},
 			modifyDescription(imageId){
 				let params={'id':imageId,'description':this.newDescription};
 				this.$global.popupMsgIfOk(modifyHomeCarouselDescription(params),'修改成功');
 				this.descriptionModifyVisible=false;
 				
-				delayRefresh(2);
+				CommonUtils.delayRefresh(2);
 				
 			},
 			coverImage(imageId){
@@ -241,7 +237,7 @@
 				this.$global.popupMsgIfOk(coverHomeCarouselImage(reqData),'覆盖成功');
 				this.coverImageVisible = false;
 				
-				delayRefresh(2);
+				CommonUtils.delayRefresh(2);
 			},
 			getHomeCarouselImages(){
 				queryCurrentHomeCarousel().then(result=>{

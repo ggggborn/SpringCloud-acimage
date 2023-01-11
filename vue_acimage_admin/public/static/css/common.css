@@ -1,3 +1,8 @@
+body{
+	margin:0px;
+	padding:0px;
+}
+
 /* 隐藏上传图片时的+号 */
 .upload-plus-disabled .el-upload--picture-card {
 	display: none;
@@ -5,4 +10,13 @@
 
 .no-underline{
 	text-decoration: none;
+}
+
+/* 改变router-link颜色变化 */
+.router-link-item{
+	color:#666666;
+}
+
+.router-link-item:hover{
+	color:#0074A0;
 }

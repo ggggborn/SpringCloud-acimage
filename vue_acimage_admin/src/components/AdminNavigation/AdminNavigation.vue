@@ -1,21 +1,25 @@
 <template>
 	<div class="admin-navigation">
 		<div class="tac">
-			<el-menu default-active="1" class="el-menu-vertical-demo" background-color="#666666" text-color="#fff"
+			<el-menu default-active="0" class="el-menu-vertical-demo" background-color="#666666" text-color="#fff"
 				active-text-color="#ffd04b">
 				<el-menu-item index="1">
 					<i class="el-icon-house"></i>
-					<span slot="title">首页管理</span>
+					<span slot="title">监控数据</span>
 				</el-menu-item>
 				<el-submenu index="2">
 					<template slot="title">
 						<i class="el-icon-location"></i>
-						<span>首页管理</span>
+						<span>社区管理</span>
 					</template>
 					<el-menu-item-group>
-						<router-link to="/home/carsoul" class="no-underline">
-							<el-menu-item index="2-1">走马灯图片</el-menu-item>
-						</router-link>
+						<el-submenu index="2-0">
+							<template slot="title">首页管理</template>
+							<router-link to="/home/carousel" class="no-underline">
+								<el-menu-item index="2-4-1">走马灯图片</el-menu-item>
+							</router-link>
+							<el-menu-item index="2-4-2">选项1</el-menu-item>
+						</el-submenu>
 						<el-menu-item index="2-2">选项2</el-menu-item>
 					</el-menu-item-group>
 					<el-menu-item-group title="分组2">

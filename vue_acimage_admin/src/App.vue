@@ -4,36 +4,31 @@
 		<div class="wrapper-right">
 			<router-view></router-view>
 		</div>
-		
 	</div>
 </template>
 
 <script>
 	import AdminNavigation from '@/components/AdminNavigation/AdminNavigation.vue'
-
 	export default {
 		name: 'App',
 		components: {
-			AdminNavigation
+			AdminNavigation,
+		},
+		created() {
+			// this.$store.commit('init');
+			this.$store.commit('init');
 		}
 	}
 </script>
 
 <style>
-/* 	#app {
-		font-family: Avenir, Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-	} */
 	
 	body{
 		margin:0px;
 	}
 	
 	.wrapper-right{
-		margin-left:210px;
+		margin-left:145px;
 		display: inline-block;
 		vertical-align: top;
 	}
