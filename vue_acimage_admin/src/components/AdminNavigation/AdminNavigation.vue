@@ -30,10 +30,12 @@
 						<el-menu-item index="2-4-1">选项1</el-menu-item>
 					</el-submenu>
 				</el-submenu>
-				<el-menu-item index="3">
-					<i class="el-icon-document"></i>
-					<span slot="title">导航三</span>
-				</el-menu-item>
+				<router-link to="/auth" class="no-underline">
+					<el-menu-item index="3">
+						<i class="el-icon-document"></i>
+						<span slot="title">权限管理</span>
+					</el-menu-item>
+				</router-link>
 				<el-menu-item index="4">
 					<i class="el-icon-setting"></i>
 					<span slot="title">导航四</span>

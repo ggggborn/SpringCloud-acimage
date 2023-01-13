@@ -12,18 +12,28 @@
 						{{ scope.row.id }}
 					</template>
 				</el-table-column>
-				<el-table-column label="权限标识" width="120">
-					<template slot-scope="scope">
-						<i class="el-icon-time"></i>
-						<span>{{ scope.row.updateTime}}</span>
-					</template>
-				</el-table-column>
+
 				<el-table-column label="角色" width="120">
 					<template slot-scope="scope">
-						<img :src="$global.trueImageUrl(scope.row.url)" alt="" style="width: 100px;height: 100px">
+						{{ scope.row.role }}
+					</template>
+				</el-table-column>
+				<el-table-column label="权限标识" width="120">
+					<template slot-scope="scope">
+						<span>{{ scope.row.code}}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="描述" width="180">
+					<template slot-scope="scope">
+						{{ scope.row.description }}
+					</template>
+				</el-table-column>
+				<el-table-column label="修改时间" width="100">
+					<template slot-scope="scope">
+						{{ scope.row.updateTime}}
+					</template>
+				</el-table-column>
+				<el-table-column label="修改人id" width="100">
 					<template slot-scope="scope">
 						{{ scope.row.description }}
 					</template>
@@ -44,15 +54,19 @@
 			</el-table-column>
 		</el-table>
 		<!-- 修改描述弹出框 -->
-		<el-dialog title="修改描述" :visible.sync="descriptionModifyVisible">
+		<el-dialog title="新增授权" :visible.sync="descriptionModifyVisible">
 			<el-form>
-				<el-form-item label="输入新描述">
-					<el-input autocomplete="off" v-model="newDescription" maxlength="30"></el-input>
+				<el-form-item label="权限标识">
+					<el-select v-model="selectedPermission" placeholder="请选择权限码" label="sadas">
+						<template v-for="item in permissions">
+							<el-option :label="item.code" :value="item.id" :key="item.id"></el-option>
+						</template>
+					</el-select>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
 				<el-button @click="descriptionModifyVisible = false">取 消</el-button>
-				<el-button type="primary" @click="modifyDescription(currentModifyId)">确 定</el-button>
+				<el-button type="primary" @click="submitAddAuthorize">确 定</el-button>
 			</div>
 		</el-dialog>
 		<!-- 覆盖图片对话框 -->
@@ -103,64 +117,75 @@
 </template>
 
 <script>
-	import  { 
-				addHomeCarouselImage,
-				modifyHomeCarouselDescription,
-				deleteHomeCarouselImage,
-				coverHomeCarouselImage,
-				queryCurrentHomeCarousel
+	import {
+		addHomeCarouselImage,
+		modifyHomeCarouselDescription,
+		deleteHomeCarouselImage,
+		coverHomeCarouselImage,
+		queryCurrentHomeCarousel
 	} from '@/api/HomeCarousel.js'
-	import {Code} from '@/utils/result.js'
+	import { Code } from '@/utils/result.js'
 	import CommonUtils from '@/utils/CommonUtils.js'
 
 	export default {
 		name: 'AuthManage',
 		data() {
 			return {
+				permissions: [{
+						id: 1,
+						code: "user:add"
+					},
+					{
+						id: 2,
+						code: "user:update"
+					}
+				],
+				selectedPermission:1,
 				//修改图片
 				descriptionModifyVisible: false,
-				currentModifyId:0,
+				currentModifyId: 0,
 				newDescription: '',
 				//删除图片
 				deleteConfirmVisible: false,
-				currentDeleteId:0,
+				currentDeleteId: 0,
 				//覆盖图片
 				coverImageVisible: false,
 				coverImageList: [],
-				coverImageId:0,
+				coverImageId: 0,
 
-				homeCarouselImages: [
-					// {
-					// 	id:100861008610086,
-					// 	updateTime: '2016-05-02 22:22:22',
-					// 	description: '好看的',
-					// 	url: '',
-					// 	size: 1008610,
-					// },
-				],
+				homeCarouselImages: [{
+					id: 100861008,
+					updateTime: '2016-05-02 22:22:22',
+					description: '好看的',
+					role: "dasda",
+					code: "user:add"
+				}, ],
 				//新增图片
-				addImageList:[],
-				addImageVisible:false,
-				addImageForm:{
-					description:'',
+				addImageList: [],
+				addImageVisible: false,
+				addImageForm: {
+					description: '',
 				},
-				rules:{
+				rules: {
 					description: [
 						{ required: true, message: '请输入描述', trigger: 'blur' },
 						{ min: 2, max: 30, message: '长度在 2 到 30 个字符', trigger: 'blur' }
 					],
 				}
-				
+
 			};
 		},
 		mounted() {
 			this.getHomeCarouselImages();
 		},
 		methods: {
-			handleRemove(file, fileList){},
+			handleRemove(file, fileList) {},
 			handleCoverImageChange(file, fileList) {
 				this.coverImageList = fileList;
 				console.log(this.coverImageList);
+			},
+			submitAddAuthorize(){
+				alert(this.selectedPermission);
 			},
 			handleAddImageChange(file, fileList) {
 				this.addImageList = fileList;
@@ -171,82 +196,82 @@
 			},
 			handleEdit(index, row) {
 				this.newDescription = row.description;
-				this.currentModifyId=row.id;
+				this.currentModifyId = row.id;
 				this.descriptionModifyVisible = true;
 			},
 			handleCover(index, row) {
 				this.coverImageVisible = true;
-				this.coverImageId=row.id;
+				this.coverImageId = row.id;
 				console.log(index, row);
 			},
 			handleDelete(index, row) {
 				this.deleteConfirmVisible = true;
-				this.currentDeleteId=row.id;
+				this.currentDeleteId = row.id;
 			},
 			addImage() {
-				if(this.addImageList.length==0){
+				if (this.addImageList.length == 0) {
 					this.$global.popupHint("请选择至少一张图片");
 					return;
 				}
-				if(this.validateInputOfAddImage('addImageForm')==false){
+				if (this.validateInputOfAddImage('addImageForm') == false) {
 					return;
 				}
-				
+
 				let reqData = new FormData();
 				reqData.append("description", this.addImageForm.description);
-				reqData.append("image",this.addImageList[0].raw);
-				
-				addHomeCarouselImage(reqData).then(result=>{
+				reqData.append("image", this.addImageList[0].raw);
+
+				addHomeCarouselImage(reqData).then(result => {
 					if (result.code == Code.OK) {
 						this.$global.popupSuccess('增加成功');
 					}
 				});
-				this.addImageVisible=false;
-				
+				this.addImageVisible = false;
+
 				CommonUtils.delayRefresh(2);
 			},
-			deleteImage(imageId){
-				let params={'id':imageId};
-				this.$global.popupMsgIfOk(deleteHomeCarouselImage(params),'删除成功');
-				this.deleteConfirmVisible=false;
-				
+			deleteImage(imageId) {
+				let params = { 'id': imageId };
+				this.$global.popupMsgIfOk(deleteHomeCarouselImage(params), '删除成功');
+				this.deleteConfirmVisible = false;
+
 				CommonUtils.delayRefresh(2);
 			},
-			modifyDescription(imageId){
-				let params={'id':imageId,'description':this.newDescription};
-				this.$global.popupMsgIfOk(modifyHomeCarouselDescription(params),'修改成功');
-				this.descriptionModifyVisible=false;
-				
+			modifyDescription(imageId) {
+				let params = { 'id': imageId, 'description': this.newDescription };
+				this.$global.popupMsgIfOk(modifyHomeCarouselDescription(params), '修改成功');
+				this.descriptionModifyVisible = false;
+
 				CommonUtils.delayRefresh(2);
-				
+
 			},
-			coverImage(imageId){
-				if(this.coverImageList.length==0){
+			coverImage(imageId) {
+				if (this.coverImageList.length == 0) {
 					this.$global.popupHint("请选择至少一张图片");
 					return;
 				}
-				
+
 				let reqData = new FormData();
 				reqData.append("id", imageId);
-				reqData.append("image",this.coverImageList[0].raw);
-				this.$global.popupMsgIfOk(coverHomeCarouselImage(reqData),'覆盖成功');
+				reqData.append("image", this.coverImageList[0].raw);
+				this.$global.popupMsgIfOk(coverHomeCarouselImage(reqData), '覆盖成功');
 				this.coverImageVisible = false;
-				
+
 				CommonUtils.delayRefresh(2);
 			},
-			getHomeCarouselImages(){
-				queryCurrentHomeCarousel().then(result=>{
-					if(result.code==Code.OK){
-						this.homeCarouselImages=result.data;
+			getHomeCarouselImages() {
+				queryCurrentHomeCarousel().then(result => {
+					if (result.code == Code.OK) {
+						this.homeCarouselImages = result.data;
 					}
 				});
-				
+
 			},
-			validateInputOfAddImage(formRef){
-				let returnValue=true;
+			validateInputOfAddImage(formRef) {
+				let returnValue = true;
 				this.$refs[formRef].validate((valid) => {
 					if (!valid) {
-						returnValue= false;
+						returnValue = false;
 					}
 				});
 				return returnValue;
@@ -260,13 +285,14 @@
 	.wrapper {
 		width: calc(100vw - 200px);
 		display: block;
+		margin-top: 60px;
 	}
 
 	.table-container {
 		width: 100%;
 		margin-left: 5%;
 	}
-	
+
 	/* 	.upload-container {
 			width: 800px;
 			border: 2px solid skyblue;

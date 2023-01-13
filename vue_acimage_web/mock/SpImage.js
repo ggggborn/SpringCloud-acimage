@@ -6,7 +6,7 @@ Mock.mock('/api/image/spImages/homeCarousel', 'get', {
 	'data|2': [{
 			id: '@id()',
 			description: '@cparagraph()',
-			url: '/test/test1.jpg',
+			url: '/test/test1.jpeg',
 		},
 		{
 			id: '@id()',
