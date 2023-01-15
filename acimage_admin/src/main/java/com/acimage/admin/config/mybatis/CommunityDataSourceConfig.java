@@ -18,8 +18,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
-@Configuration
-@MapperScan(basePackages = "com.acimage.admin.dao.community", sqlSessionFactoryRef = "communitySqlSessionFactory")
+//@Configuration
+//@MapperScan(basePackages = "com.acimage.admin.dao.community", sqlSessionFactoryRef = "communitySqlSessionFactory")
 public class CommunityDataSourceConfig {
 
     @Bean(name = "communityDataSource")

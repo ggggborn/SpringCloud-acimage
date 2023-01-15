@@ -46,6 +46,7 @@
         <loadbalancer.version>3.1.1</loadbalancer.version>
         <qiniu.version>[7.7.0, 7.10.99]</qiniu.version>
         <fastjson.version>2.0.21</fastjson.version>
+        <dynamic-datesource.version>3.5.1</dynamic-datesource.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->
 <!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
@@ -163,6 +164,12 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-loadbalancer</artifactId>
                 <version>${loadbalancer.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datesource.version}</version>
             </dependency>
 
 <!--            <dependency>-->

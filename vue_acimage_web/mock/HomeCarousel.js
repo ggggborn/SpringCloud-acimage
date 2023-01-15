@@ -1,7 +1,7 @@
 import Mock from 'mockjs'
 import { Code } from '@/utils/result.js'
 
-Mock.mock('/api/image/spImages/homeCarousel', 'get', {
+Mock.mock('/api/image/homeCarousels/all', 'get', {
 	code: Code.OK,
 	'data|2': [{
 			id: '@id()',

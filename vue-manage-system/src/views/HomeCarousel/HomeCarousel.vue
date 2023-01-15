@@ -17,7 +17,7 @@
 						{{scope.$index+1}}
 					</template>
 				</el-table-column>
-				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
+				<el-table-column prop="id" label="ID" width="120" align="center"></el-table-column>
 
 				<el-table-column label="图片" align="center">
 					<template #default="scope">
@@ -113,16 +113,16 @@
 </template>
 
 <script setup lang="ts" name="HomeCarousel">
-	import { ref, reactive } from 'vue';
+	import { ref, reactive, onMounted } from 'vue';
 	import { UploadFile } from 'element-plus';
 	import { Plus } from '@element-plus/icons-vue';
 
 	import {
-		addHomeCarouselImage,
-		modifyHomeCarouselDescription,
-		deleteHomeCarouselImage,
-		coverHomeCarouselImage,
-		queryCurrentHomeCarousel
+		add,
+		modifyDescription,
+		deleteById,
+		coverImage,
+		queryCurrent
 	} from '@/api/HomeCarousel';
 	import { Code } from '@/utils/result';
 	import CommonUtils from '@/utils/CommonUtils';
@@ -137,7 +137,7 @@
 		size: number;
 	}
 	//查询首页图片
-	let homeCarousel = reactive < Image[] > ([{
+	let homeCarousel = ref < Image[] > ([{
 		id: 1008610086,
 		updateTime: '2016-05-02 22:22:22',
 		description: '好看的',
@@ -146,9 +146,9 @@
 	}]);
 
 	const getData = () => {
-		queryCurrentHomeCarousel().then((res: any) => {
+		queryCurrent().then((res: any) => {
 			if (res.code == Code.OK) {
-				homeCarousel = res.data;
+				homeCarousel.value = res.data;
 			}
 		});
 	}
@@ -161,7 +161,7 @@
 	});
 	let editVisible = ref(false);
 	const handleEdit = (index: number, row: Image) => {
-		editForm.id = homeCarousel[index].id;
+		editForm.id = homeCarousel.value[index].id;
 		editForm.description = row.description;
 		editVisible.value = true;
 	};
@@ -170,7 +170,7 @@
 			description: editForm.description,
 			id: editForm.id
 		};
-		modifyHomeCarouselDescription(params).then((res: any) => {
+		modifyDescription(params).then((res: any) => {
 			if (res.code == Code.OK) {
 				MessageUtils.success("修改成功", 1);
 				CommonUtils.delayRefresh(1);
@@ -197,11 +197,13 @@
 		let reqData: any = new FormData();
 		reqData.append("id", coverId);
 		reqData.append("image", coverImageList.value[0].raw);
-		coverHomeCarouselImage(reqData).then((res: any) => {
+		coverImage(reqData).then((res: any) => {
 			if (res.code == Code.OK) {
-				MessageUtils.success("成功", 1)
+				MessageUtils.success("成功", 1);
+				CommonUtils.delayRefresh(1);
 			}
 		})
+		coverVisible.value = false;
 	}
 
 	//新增
@@ -225,7 +227,7 @@
 		reqData.append("description", addImageForm.description);
 		reqData.append("image", addImageList.value[0].raw);
 
-		addHomeCarouselImage(reqData).then((res: any) => {
+		add(reqData).then((res: any) => {
 			if (res.code == Code.OK) {
 				MessageUtils.success("新增成功", 1);
 				CommonUtils.delayRefresh(0.5);
@@ -237,12 +239,12 @@
 	//删除
 	const handleDelete = (index: number) => {
 		MessageUtils.confirm("确定删除吗？操作不可逆！").then(() => {
-			const deleteId = homeCarousel[index].id;
-			deleteHomeCarouselImage(deleteId)
+			const deleteId = homeCarousel.value[index].id;
+			deleteById(deleteId)
 				.then((res: any) => {
 					if (res.code == Code.OK) {
-						MessageUtils.success("新增成功", 1);
-						CommonUtils.delayRefresh(0.5);
+						MessageUtils.success("删除成功", 1);
+						CommonUtils.delayRefresh(1);
 					}
 				})
 		}).catch(e => e);

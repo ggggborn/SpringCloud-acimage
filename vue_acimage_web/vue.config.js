@@ -19,6 +19,5 @@ module.exports = {
 				changeOrigin: true, // 允许跨域请求
 			},
 		},
-
 	}
 }

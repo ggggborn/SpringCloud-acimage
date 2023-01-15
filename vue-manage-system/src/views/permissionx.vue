@@ -22,7 +22,7 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="permission">
+<script setup lang="ts" name="permissionx">
 import { ref } from 'vue';
 import { ElTree } from 'element-plus';
 import { usePermissStore } from '@/store/permiss';

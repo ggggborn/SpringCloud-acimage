@@ -10,7 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableScheduling
-@ComponentScan(value={"com.acimage.common","com.acimage.admin"})
+@ComponentScan(value={"com.acimage"})
+@MapperScan(basePackages = {"com.acimage.admin.dao"})
 public class AdminApplication {
 
 	public static void main(String[] args) {

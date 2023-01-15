@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+
 // export function addImageIntoHomeCarousel(reqData, _this) {
 // 	$.ajax({
 // 		url: "/api/admin/SpImages/upload",
@@ -23,24 +24,24 @@ import request from '@/utils/request'
 // 	});
 // }
 
-export function addHomeCarouselImage(reqData) {
-	const config = { 'Content-type': 'multipart/form-data' };
-	return request.post("/api/admin/SpImages/homeCarousel", reqData, config);
+export function add(formData) {
+	const config : any = { 'Content-type': 'multipart/form-data' };
+	return request.post("/api/admin/homeCarousels", formData, config);
 }
 
-export function deleteHomeCarouselImage(id) {
-	return request.delete("/api/admin/SpImages/homeCarousel/"+id);
+export function deleteById(id) {
+	return request.delete("/api/admin/homeCarousels/"+id);
 }
 
-export function modifyHomeCarouselDescription(params) {
+export function modifyDescription(params) {
 	let config = { params: params };
-	return request.put("/api/admin/SpImages/homeCarousel/description", {}, config);
+	return request.put("/api/admin/homeCarousels/description", {}, config);
 }
 
-export function coverHomeCarouselImage(reqData) {
-	return request.post("/api/admin/SpImages/homeCarousel/cover", reqData);
+export function coverImage(reqData) {
+	return request.post("/api/admin/homeCarousels/cover", reqData);
 }
 
-export function queryCurrentHomeCarousel() {
-	return request.get("/api/admin/SpImages/homeCarousel/current");
+export function queryCurrent() {
+	return request.get("/api/admin/homeCarousels/current");
 }

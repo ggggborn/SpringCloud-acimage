@@ -110,7 +110,12 @@ const items = [
 			{
 			    index: '/role',
 			    title: '角色',
-			    permiss: '5',
+			    permiss: '1',
+			},
+			{
+			    index: '/permission',
+			    title: '权限',
+			    permiss: '1',
 			},
             {
                 index: '/upload',
@@ -150,7 +155,7 @@ const items = [
     },
     {
         icon: 'Warning',
-        index: '/permission',
+        index: '/permissionx',
         title: '权限管理',
         permiss: '13',
     },

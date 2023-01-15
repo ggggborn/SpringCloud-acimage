@@ -16,7 +16,7 @@
 </template>
 
 <script>
-	import { queryHomeCarousel } from '@/api/SpImage.js'
+	import { queryHomeCarousel } from '@/api/HomeCarousel.js'
 	import { Code } from '@/utils/result.js'
 
 	export default {

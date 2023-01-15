@@ -1,4 +1,4 @@
 import Mock from 'mockjs'
 require('./topic.js')
-require('./SpImage.js')
+require('./HomeCarousel.js')
 require('./UserRank.js')

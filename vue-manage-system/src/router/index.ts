@@ -50,6 +50,15 @@ const routes: RouteRecordRaw[] = [
 			    },
 			    component: () =>import(/* webpackChunkName: "role" */ '../views/role/role.vue'),
 			},
+			{
+			    path: '/permission',
+			    name: 'permission',
+			    meta: {
+			        title: '权限',
+			        permiss: '1',
+			    },
+			    component: () =>import(/* webpackChunkName: "permission" */ '../views/permission/permission.vue'),
+			},
             {
                 path: '/charts',
                 name: 'basecharts',
@@ -87,13 +96,13 @@ const routes: RouteRecordRaw[] = [
                 component: () => import(/* webpackChunkName: "donate" */ '../views/donate.vue'),
             },
             {
-                path: '/permission',
-                name: 'permission',
+                path: '/permissionx',
+                name: 'permissionx',
                 meta: {
                     title: '权限管理',
                     permiss: '13',
                 },
-                component: () => import(/* webpackChunkName: "permission" */ '../views/permission.vue'),
+                component: () => import(/* webpackChunkName: "permissionx" */ '../views/permissionx.vue'),
             },
             {
                 path: '/upload',

@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.acimage.admin.dao.image.SpImageDao" >
+<mapper namespace="com.acimage.admin.dao.image.HomeCarouselDao" >
 
-<select id="count" resultType="SpImage">
-    select * from tb_sp_image
+<select id="count" resultType="HomeCarousel">
+    select * from tb_home_carousel
 </select>
 
 </mapper>
