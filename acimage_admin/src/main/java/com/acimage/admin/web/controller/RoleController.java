@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController
@@ -27,7 +26,7 @@ public class RoleController {
     RoleWriteService roleWriteService;
 
     @GetMapping("/all")
-    public Result<List<Role>> queryAll(){
+    public Result<List<Role>> queryAllRoles(){
         return Result.ok(roleQueryService.listAll());
     }
 

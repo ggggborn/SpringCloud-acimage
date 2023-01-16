@@ -36,15 +36,15 @@
 				</el-table-column>
 			</el-table>
 			<div class="pagination">
-				<el-pagination background layout="total, prev, pager, next" v-model:current-page="queryPage.pageNo"
-					:page-size="queryPage.pageSize" :total="totalCount" @current-change="getPermissionPage">
+				<el-pagination background layout="total, prev, pager, next" v-model:current-page="query.pageNo"
+					:page-size="query.pageSize" :total="totalCount" @current-change="handlePageNoChange">
 				</el-pagination>
 			</div>
 
 
 			<div class="mgb20 tree-wrapper">
 				权限树
-				<el-tree ref="tree" :data="permissionTree" node-key="id" default-expand-all show-checkbox />
+				<el-tree ref="tree" :data="permissionTree" node-key="id" default-expand-all />
 			</div>
 		</div>
 		<!-- 新增权限对话框 -->
@@ -111,6 +111,7 @@
 
 <script setup lang="ts" name="authorize">
 	import { ref, reactive } from 'vue';
+	import { useRoute,useRouter } from "vue-router"
 	import { Plus } from '@element-plus/icons-vue';
 	import {
 		queryModules,
@@ -125,8 +126,8 @@
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 
-
-	interface Permission {
+	
+	export interface Permission {
 		id: number;
 		parentId: number;
 		parent ? : null | Permission;
@@ -140,18 +141,7 @@
 	}
 
 	//查询模块
-	let moduleList = ref < Permission[] > ([{
-		id: 1,
-		code: 'user:update',
-		label: '用户更新信息',
-		parentId: -1,
-		parent: null,
-		isModule: false,
-		note: '用户',
-		createTime: '2022-2-22',
-		updateTime: '2022-2-22',
-		children: null
-	}]);
+	let moduleList = ref < Permission[] > ([]);
 	const getModules = () => {
 		queryModules().then((res: any) => {
 			if (res.code == Code.OK) {
@@ -174,47 +164,42 @@
 		updateTime: '2022-2-22',
 		children: []
 	}]);
+	const combineAsLabel = (node: Permission) => {
+		node.label = CommonUtils.isEmpty(node.code) ? node.label : node.code + '|' + node.label;
+		for (let item of node.children!) {
+			combineAsLabel(item);
+		}
+	}
 	const getPermissionTree = () => {
 		queryPermissionTree().then((res: any) => {
 			if (res.code == Code.OK) {
 				permissionTree.value = res.data;
+				for (let item of permissionTree.value!) {
+					combineAsLabel(item);
+				}
 			}
 		})
 	};
 	getPermissionTree();
 
-
 	//查询权限列表
-	let permissionList = ref < Permission[] > ([{
-		id: 1,
-		code: 'user:update',
-		label: '用户更新信息',
-		parentId: -1,
-		parent: {
-			id: 1,
-			code: 'user:update',
-			label: '社区模块',
-			parentId: -1,
-			parent: null,
-			isModule: false,
-			note: '用户',
-			createTime: '2022-2-22',
-			updateTime: '2022-2-22',
-			children: null
-		},
-		isModule: false,
-		note: '用户',
-		createTime: '2022-2-22',
-		updateTime: '2022-2-22',
-		children: null
-	}]);
-	let queryPage = ref({
-		pageNo: 1,
+	const route=useRoute();
+	// const router=useRouter();
+	let permissionList = ref < Permission[] > ([]);
+	let query= ref({
+		pageNo: parseInt(route.params.pageNo[0]),
 		pageSize: 10
 	});
+	const handlePageNoChange=()=>{
+		window.location.href="/#/permission/"+query.value.pageNo;
+		// router.replace({name:"permission",params:{pageNo:queryPage.value.pageNo.toString()}})
+		// route.path.replace('pageNo', queryPage.value.pageNo.toString())
+		// route.params.pageNo=queryPage.value.pageNo.toString();
+		getPermissionPage();
+	}
 	const totalCount = ref(1);
 	const getPermissionPage = () => {
-		pagePermission(queryPage.value.pageNo, queryPage.value.pageSize).then((res: any) => {
+		pagePermission(query.value.pageNo, query.value.pageSize).then((res: any) => {
 			if (res.code == Code.OK) {
 				permissionList.value = res.data.dataList;
 				totalCount.value = res.data.totalCount;

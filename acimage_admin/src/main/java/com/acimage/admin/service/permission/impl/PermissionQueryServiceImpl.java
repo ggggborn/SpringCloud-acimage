@@ -19,10 +19,13 @@ public class PermissionQueryServiceImpl implements PermissionQueryService {
     PermissionDao permissionDao;
 
     @Override
+    public Permission getPermission(int id){
+        return permissionDao.selectById(id);
+    }
+    @Override
     public List<Permission> getPermissionTree(){
         return permissionDao.selectTreeByParentId(null);
     }
-
     @Override
     public Page<Permission> pagePermissionsWithParent(int pageNo,int pageSize){
         int startIndex= PageUtils.startIndexOf(pageNo,pageSize);

@@ -51,7 +51,7 @@ const routes: RouteRecordRaw[] = [
 			    component: () =>import(/* webpackChunkName: "role" */ '../views/role/role.vue'),
 			},
 			{
-			    path: '/permission',
+			    path: '/permission/:pageNo',
 			    name: 'permission',
 			    meta: {
 			        title: '权限',
@@ -63,7 +63,7 @@ const routes: RouteRecordRaw[] = [
 			    path: '/authorize',
 			    name: 'authorize',
 			    meta: {
-			        title: '权限',
+			        title: '授权',
 			        permiss: '1',
 			    },
 			    component: () =>import(/* webpackChunkName: "authorize" */ '../views/authorize/authorize.vue'),

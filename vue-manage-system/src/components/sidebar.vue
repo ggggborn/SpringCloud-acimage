@@ -113,7 +113,7 @@ const items = [
 			    permiss: '1',
 			},
 			{
-			    index: '/permission',
+			    index: '/permission/1',
 			    title: '权限',
 			    permiss: '1',
 			},

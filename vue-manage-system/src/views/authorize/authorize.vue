@@ -2,127 +2,41 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-					<el-option key="1" label="广东省" value="广东省"></el-option>
-					<el-option key="2" label="湖南省" value="湖南省"></el-option>
+				<el-select v-model="query.roleId" placeholder="角色" class="handle-select mr10" @change="getRoleAuthorizeList">
+					<el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
+					</el-option>
 				</el-select>
-				<el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
-				<el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
+				<el-button type="primary" :icon="Search" @click="getRoleAuthorizeList">刷新</el-button>
 			</div>
-		
+
 			<div class="mgb20 tree-wrapper">
 				权限树
-				<el-tree ref="tree" :data="permissionTree" node-key="id" default-expand-all show-checkbox />
+				<el-tree class="leaf-chekabel-only" ref="treeRef" :data="permissionTree" node-key="id"
+					default-expand-all check-strictly show-checkbox :default-checked-keys="checkedKeys"
+					@check="handleCheck" />
 			</div>
 		</div>
-		<!-- 新增权限对话框 -->
-		<el-dialog title="新增权限" v-model="addVisible">
-			<el-form :model="addForm">
-				<el-form-item label="父级模块(可为空)">
-					<el-select v-model="addForm.parentId" placeholder="父级模块(可为空)" class="handle-select mr10" clearable>
-						<el-option v-for="item in moduleList" :key="item.id" :label="item.label" :value="item.id">
-						</el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="权限码">
-					<el-input v-model="addForm.code"></el-input>
-				</el-form-item>
-				<el-form-item label="名称">
-					<el-input v-model="addForm.label"></el-input>
-				</el-form-item>
-				<el-form-item label="是否是模块">
-					<el-select v-model="addForm.isModule" class="handle-select mr10" clearable>
-						<el-option key="1" label="是" :value="true"></el-option>
-						<el-option key="1" label="否" :value="false"></el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="备注">
-					<el-input v-model="addForm.note"></el-input>
-				</el-form-item>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="addVisible = false">取 消</el-button>
-					<el-button type="primary" @click="saveAdd">确 定</el-button>
-				</span>
-			</template>
-		</el-dialog>
-		<!-- 编辑弹出框 -->
-		<el-dialog title="编辑" v-model="editVisible">
-			<el-form label-width="120px">
-				<el-form-item label="父级模块(可为空)">
-					<el-select v-model="editForm.parentId" placeholder="父级模块(可为空)" class="handle-select mr10" clearable>
-						<el-option v-for="item in moduleList" :key="item.id" :label="item.label" :value="item.id">
-						</el-option>
-					</el-select>
-				</el-form-item>
-				<el-form-item label="权限码(慎重修改)">
-					<el-input v-model="editForm.code" maxlength="20"></el-input>
-				</el-form-item>
-				<el-form-item label="名称">
-					<el-input v-model="editForm.label" maxlength="20"></el-input>
-				</el-form-item>
-				<el-form-item label="备注">
-					<el-input v-model="editForm.note" maxlength="20"></el-input>
-				</el-form-item>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="editVisible = false">取 消</el-button>
-					<el-button type="primary" @click="saveEdit">确 定</el-button>
-				</span>
-			</template>
-		</el-dialog>
 
 	</div>
 </template>
 
-<script setup lang="ts" name="permission">
+<script setup lang="ts" name="authorize">
 	import { ref, reactive } from 'vue';
-	import {Role} from '@/views/role/role.vue'
-	import { Plus } from '@element-plus/icons-vue';
-	import {
-		queryModules,
-		queryPermissionTree,
-		pagePermission,
-		addPermission,
-		modifyPermission,
-		deletePermission
-	} from '@/api/permission';
+	import { ElTree } from 'element-plus'
+	import { Role } from '@/views/role/role.vue'
+	import { Permission } from '@/views/permission/permission.vue'
+
+	import { queryAllRoles } from '@/api/role';
+	import { queryPermissionTree } from '@/api/permission';
+	import { queryRoleAuthorize, addAuthorize, deleteAuthorize } from '@/api/authorize';
+	import { Search } from '@element-plus/icons-vue';
 
 	import { Code } from '@/utils/result';
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 
-
-	interface Permission {
-		id: number;
-		parentId: number;
-		parent ? : null | Permission;
-		code: null | string;
-		note: string;
-		isModule: boolean;
-		label: string;
-		createTime: string;
-		updateTime: string;
-		children ? : null | Permission[];
-	}
-
-
-
 	//查询权限树
-	let permissionTree = ref < Permission[] > ([{
-		id: 1,
-		code: 'user:update',
-		label: '用户更新信息',
-		parentId: -1,
-		parent: null,
-		isModule: false,
-		note: '用户',
-		createTime: '2022-2-22',
-		updateTime: '2022-2-22',
-		children: []
-	}]);
+	let permissionTree = ref < Permission[] > ([]);
 	const getPermissionTree = () => {
 		queryPermissionTree().then((res: any) => {
 			if (res.code == Code.OK) {
@@ -132,87 +46,121 @@
 	};
 	getPermissionTree();
 
-
-	//查询角色权限树
-	let queryRolePermission = ref({
-		roleId:-1
-	});
-	const totalCount = ref(1);
-	const getPermissionPage = () => {
-		pagePermission(queryPage.value.pageNo, queryPage.value.pageSize).then((res: any) => {
+	//查询所有角色
+	let roleList = ref < Role[] > ([{
+		id: 1,
+		roleName: 'user',
+		createTime: '2022-2-22',
+		updateTime: '2022-2-22',
+		note: '用户',
+	}]);
+	const getRoleList = () => {
+		queryAllRoles().then((res: any) => {
 			if (res.code == Code.OK) {
-				permissionList.value = res.data.dataList;
-				totalCount.value = res.data.totalCount;
+				roleList.value = res.data;
 			}
 		})
 	};
-	getPermissionPage();
+	getRoleList();
 
-	//新增权限
-	let addVisible = ref(false);
-	let addForm = reactive({
-		isModule: false,
-		code: '',
-		label: '',
-		parentId: null,
-		note: '',
-	});
-	const saveAdd = () => {
-		addPermission(addForm).then((res: any) => {
-			if (res.code == Code.OK) {
-				MessageUtils.success("增加成功", 1);
-				CommonUtils.delayRefresh(1);
-			}
-		});
-		addVisible.value = false;
-	};
 
-	//编辑
-	let editVisible = ref(false);
-	let editForm = reactive({
-		id: 0,
-		code: null,
-		label: '',
-		parentId: null,
-		note: '',
-	});
-	const handleEdit = (row: any) => {
-		editForm.id = row.id;
-		editForm.code = row.code;
-		editForm.label = row.label;
-		editForm.note = row.note;
-		editForm.parentId = row.parentId;
-		editVisible.value = true;
-	};
-	const saveEdit = () => {
-		modifyPermission(editForm).then((res: any) => {
-			if (res.code = Code.OK) {
-				MessageUtils.success("修改成功", 1);
-				CommonUtils.delayRefresh(1);
-				editVisible.value = false;
-			}
-		});
-	};
+	//查询角色权限
+	let roleAuthorizeList = ref([]);
+	let query = reactive({
+		roleId: -1,
+	})
+	const getRoleAuthorizeList = () => {
+		if (query.roleId != -1) {
+			queryRoleAuthorize(query.roleId).then((res: any) => {
+				if (res.code == Code.OK) {
+					roleAuthorizeList.value = res.data;
+					initCheckedKeys();
+				}
+			})
+		}
+	}
 
-	//删除
-	const handleDelete = (index: number) => {
-		MessageUtils.confirm("确定删除吗？操作不可逆！").then(() => {
-			const deleteId = permissionList.value[index].id;
-			deletePermission(deleteId)
-				.then((res: any) => {
-					if (res.code == Code.OK) {
-						MessageUtils.success("删除成功", 1);
-						CommonUtils.delayRefresh(1);
+	let checkedKeys = ref < number[] > ([]);
+	const initCheckedKeys = () => {
+		checkedKeys = ref < number[] > ([]);;
+		for (const item of roleAuthorizeList.value) {
+			checkedKeys.value.push(item.permissionId);
+		}
+		treeRef.value!.setCheckedKeys(checkedKeys.value, false);
+	}
+
+	//选中节点复选框时触发
+	interface Tree {
+		id: number
+		label: string
+		children ? : Tree[]
+	}
+	const treeRef = ref < InstanceType < typeof ElTree >> ()
+	const handleCheck = (node: Permission) => {
+		if(node.isModule){
+			treeRef.value!.setCheckedKeys(checkedKeys.value, false);
+			MessageUtils.notice("不可操作模块",1);
+			return false;
+		}
+		MessageUtils.confirm("是否改变该权限").then(() => {
+			if (checkedKeys.value.includes(node.id)) {
+				saveDelete(query.roleId, node.id);
+				checkedKeys.value.forEach((value, index) => {
+					if (value == node.id) {
+						checkedKeys.value.slice(index, 1);
 					}
 				})
-		}).catch(e => e);
+			} else {
+				saveAdd(query.roleId, node.id);
+				checkedKeys.value.push(node.id);
+			}
+			return false;
+		}).catch(() => {
+			treeRef.value!.setCheckedKeys(checkedKeys.value, false);
+		})
+
+		return true;
+	};
+
+	const saveAdd = (roleId: number, permissionId: number) => {
+		let formData: FormData = new FormData();
+		formData.append("roleId", roleId.toString());
+		formData.append("permissionId", permissionId.toString());
+		addAuthorize(formData).then((res: any) => {
+			if (res.code == Code.OK) {
+				MessageUtils.success("修改成功", 1);
+			}
+		})
+	}
+
+	const saveDelete = (roleId: number, permissionId: number) => {
+		deleteAuthorize(roleId, permissionId).then((res: any) => {
+			if (res.code == Code.OK) {
+				MessageUtils.success("修改成功", 1);
+			}
+		})
 	}
 </script>
 
 <style scoped>
-	.hide :deep() .el-upload--picture-card {
-		display: none;
+	/* 只能选叶子节点 */
+	.leaf-chekabel-only :deep() .el-tree-node {
+
+		.is-leaf+.el-checkbox .el-checkbox__inner {
+
+			display: inline-block;
+
+		}
+
+		.el-checkbox__input>.el-checkbox__inner {
+
+			display: none;
+
+		}
+
 	}
+
+
 
 	.handle-box {
 		margin-bottom: 20px;
