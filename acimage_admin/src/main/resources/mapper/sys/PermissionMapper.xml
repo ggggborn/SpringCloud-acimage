@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.admin.dao.sys.PermissionDao">
+
+    <resultMap id="permissionTree" type="Permission">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="label" column="label"/>
+        <result property="note" column="note"/>
+        <result property="isModule" column="is_module"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="children" ofType="Permission" column="id"
+                    select="com.acimage.admin.dao.sys.PermissionDao.selectTreeByParentId"/>
+    </resultMap>
+
+    <resultMap id="permissionWithParent" type="Permission">
+        <id property="id" column="id"/>
+        <result property="code" column="code"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="label" column="label"/>
+        <result property="note" column="note"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <association property="parent" javaType="Permission" column="parent_id"
+                     select="com.acimage.admin.dao.sys.PermissionDao.selectById"/>
+    </resultMap>
+
+    <select id="selectTreeByParentId" resultMap="permissionTree">
+        select * from tb_permission where
+        <choose>
+            <when test="parentId == null">
+                parent_id is null
+            </when>
+            <otherwise>
+                parent_id=#{parentId}
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectPermissionsWithParent" resultMap="permissionWithParent">
+        select * from tb_permission limit #{startIndex},#{recordNumber}
+    </select>
+
+</mapper>

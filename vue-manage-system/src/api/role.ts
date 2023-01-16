@@ -1,19 +1,19 @@
 import request from '@/utils/request'
 
 
-export function queryAll() {
+export function queryAllRoles() {
 	return request.get("/api/admin/roles/all");
 }
 
-export function add(data) {
+export function addRole(data) {
 	return request.post("/api/admin/roles", data);
 }
 
-export function deleteById(id) {
+export function deleteRole(id) {
 	return request.delete("/api/admin/roles/"+id);
 }
 
-export function modify(data) {
+export function modifyRole(data) {
 	return request.put("/api/admin/roles", data);
 }
 

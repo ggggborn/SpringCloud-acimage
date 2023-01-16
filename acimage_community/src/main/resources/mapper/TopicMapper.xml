@@ -80,9 +80,6 @@
         </foreach>
     </select>
 
-
-
-
     <select id="selectTopicsWithUserImagesOrderByCreateTime" resultMap="topicWithUserImages">
         select * from tb_topic where user_id=#{userId} order by create_time desc limit #{startIndex},#{recordNumber}
     </select>

@@ -72,7 +72,7 @@
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="addVisible = false">取 消</el-button>
-					<el-button type="primary" @click="addRole">确 定</el-button>
+					<el-button type="primary" @click="saveAdd">确 定</el-button>
 				</span>
 			</template>
 		</el-dialog>
@@ -83,13 +83,13 @@
 <script setup lang="ts" name="role">
 	import { ref, reactive } from 'vue';
 	import { Plus } from '@element-plus/icons-vue';
-	import { queryAll, add, deleteById, modify } from '@/api/role';
+	import { queryAllRoles, addRole, deleteRole, modifyRole } from '@/api/role';
 
 	import { Code } from '@/utils/result';
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 
-	interface Role {
+	export interface Role {
 		id: number;
 		roleName: string;
 		note: string;
@@ -105,14 +105,14 @@
 		updateTime: '2022-2-22',
 		note: '用户',
 	}]);
-	const getData = () => {
-		queryAll().then((res: any) => {
+	const getRoleList = () => {
+		queryAllRoles().then((res: any) => {
 			if (res.code == Code.OK) {
 				roleList.value = res.data;
 			}
 		})
 	};
-	getData();
+	getRoleList();
 
 	//新增角色
 	let addVisible = ref(false);
@@ -120,8 +120,8 @@
 		roleName: '',
 		note: '',
 	});
-	const addRole = () => {
-		add(addForm).then((res: any) => {
+	const saveAdd = () => {
+		addRole(addForm).then((res: any) => {
 			if (res.code == Code.OK) {
 				MessageUtils.success("增加成功", 1);
 				CommonUtils.delayRefresh(1);
@@ -144,7 +144,7 @@
 		editVisible.value=true;
 	};
 	const saveEdit = () => {
-		modify(editForm).then((res: any) => {
+		modifyRole(editForm).then((res: any) => {
 			if(res.code=Code.OK){
 				MessageUtils.success("修改成功", 1);
 				CommonUtils.delayRefresh(1);
@@ -157,7 +157,7 @@
 	const handleDelete = (index: number) => {
 		MessageUtils.confirm("确定删除吗？操作不可逆！").then(() => {
 			const deleteId = roleList.value[index].id;
-			deleteById(deleteId)
+			deleteRole(deleteId)
 				.then((res: any) => {
 					if (res.code == Code.OK) {
 						MessageUtils.success("删除成功", 1);

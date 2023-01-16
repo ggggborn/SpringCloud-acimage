@@ -99,7 +99,7 @@ const items = [
     {
         icon: 'Edit',
         index: '3',
-        title: '表单相关',
+        title: '权限管理',
         permiss: '4',
         subs: [
             {
@@ -115,6 +115,11 @@ const items = [
 			{
 			    index: '/permission',
 			    title: '权限',
+			    permiss: '1',
+			},
+			{
+			    index: '/authorize',
+			    title: '授权',
 			    permiss: '1',
 			},
             {

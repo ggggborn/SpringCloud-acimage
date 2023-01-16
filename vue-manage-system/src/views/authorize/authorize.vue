@@ -2,46 +2,14 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-button type="primary" :icon="Plus" @click="addVisible=true">新增</el-button>
+				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
+					<el-option key="1" label="广东省" value="广东省"></el-option>
+					<el-option key="2" label="湖南省" value="湖南省"></el-option>
+				</el-select>
+				<el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+				<el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button>
 			</div>
-			<el-table :data="permissionList" border class="table" ref="multipleTable"
-				header-cell-class-name="table-header">
-				<el-table-column label="序号" width="55" align="center">
-					<template #default="scope">
-						{{scope.$index+1}}
-					</template>
-				</el-table-column>
-				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-				<el-table-column prop="label" label="名称"></el-table-column>
-				<el-table-column prop="code" label="权限码" width="120"></el-table-column>
-				<el-table-column prop="isModule" label="是否是模块"></el-table-column>
-				<el-table-column label="父模块" width="60" align="center">
-					<template #default="scope">
-						{{CommonUtils.isEmpty(scope.row.parent)?'无':scope.row.parent.label}}
-					</template>
-				</el-table-column>
-				<el-table-column prop="note" label="备注"></el-table-column>
-				<el-table-column prop="createTime" label="创建时间"></el-table-column>
-				<el-table-column prop="updateTime" label="修改时间"></el-table-column>
-
-				<el-table-column label="操作" width="220" align="center">
-					<template #default="scope">
-						<el-button size="small" @click="handleEdit(scope.row)">
-							编辑
-						</el-button>
-						<el-button type="danger" size="small" @click="handleDelete(scope.$index)">
-							删除
-						</el-button>
-					</template>
-				</el-table-column>
-			</el-table>
-			<div class="pagination">
-				<el-pagination background layout="total, prev, pager, next" v-model:current-page="queryPage.pageNo"
-					:page-size="queryPage.pageSize" :total="totalCount" @current-change="getPermissionPage">
-				</el-pagination>
-			</div>
-
-
+		
 			<div class="mgb20 tree-wrapper">
 				权限树
 				<el-tree ref="tree" :data="permissionTree" node-key="id" default-expand-all show-checkbox />
@@ -109,8 +77,9 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="authorize">
+<script setup lang="ts" name="permission">
 	import { ref, reactive } from 'vue';
+	import {Role} from '@/views/role/role.vue'
 	import { Plus } from '@element-plus/icons-vue';
 	import {
 		queryModules,
@@ -139,27 +108,7 @@
 		children ? : null | Permission[];
 	}
 
-	//查询模块
-	let moduleList = ref < Permission[] > ([{
-		id: 1,
-		code: 'user:update',
-		label: '用户更新信息',
-		parentId: -1,
-		parent: null,
-		isModule: false,
-		note: '用户',
-		createTime: '2022-2-22',
-		updateTime: '2022-2-22',
-		children: null
-	}]);
-	const getModules = () => {
-		queryModules().then((res: any) => {
-			if (res.code == Code.OK) {
-				moduleList.value = res.data;
-			}
-		})
-	};
-	getModules();
+
 
 	//查询权限树
 	let permissionTree = ref < Permission[] > ([{
@@ -184,33 +133,9 @@
 	getPermissionTree();
 
 
-	//查询权限列表
-	let permissionList = ref < Permission[] > ([{
-		id: 1,
-		code: 'user:update',
-		label: '用户更新信息',
-		parentId: -1,
-		parent: {
-			id: 1,
-			code: 'user:update',
-			label: '社区模块',
-			parentId: -1,
-			parent: null,
-			isModule: false,
-			note: '用户',
-			createTime: '2022-2-22',
-			updateTime: '2022-2-22',
-			children: null
-		},
-		isModule: false,
-		note: '用户',
-		createTime: '2022-2-22',
-		updateTime: '2022-2-22',
-		children: null
-	}]);
-	let queryPage = ref({
-		pageNo: 1,
-		pageSize: 10
+	//查询角色权限树
+	let queryRolePermission = ref({
+		roleId:-1
 	});
 	const totalCount = ref(1);
 	const getPermissionPage = () => {
