@@ -51,6 +51,11 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     }
 
     @Override
+    public String saveImage(Image image) {
+        return null;
+    }
+
+    @Override
     public void removeImages(long topicId) {
         LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
         qw.eq(Image::getTopicId, topicId);
@@ -112,5 +117,10 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
             images.add(image);
         }
         return images;
+    }
+
+    @Override
+    public Image createImage(MultipartFile imageFile, String urlPrefix) {
+        return null;
     }
 }

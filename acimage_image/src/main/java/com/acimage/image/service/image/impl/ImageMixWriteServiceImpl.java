@@ -7,6 +7,7 @@ import com.acimage.common.model.domain.Image;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.utils.RedisUtils;
 import com.acimage.common.utils.common.ListUtils;
+import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.image.dao.ImageDao;
 import com.acimage.image.global.consts.StorePrefixConstants;
 import com.acimage.image.service.image.ImageMixWriteService;
@@ -31,6 +32,8 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     RedisUtils redisUtils;
     @Autowired
     ImageDao imageDao;
+    @Autowired
+    MinioUtils minioUtils;
 
     @Override
     public String uploadImageFilesAndSaveImages(MultipartFile[] imageFiles) {
@@ -64,6 +67,13 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
         //保存
         imageWriteService.saveImages(imageList);
         return ListUtils.extract(Image::getId, imageList);
+    }
+
+    @Override
+    public String uploadAndSaveImage(MultipartFile imageFile) {
+        String url="asdasdjahj.jpeg";
+        //上传
+        return minioUtils.upload(imageFile, url);
     }
 
     @Override

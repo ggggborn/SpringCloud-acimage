@@ -98,7 +98,7 @@ public class LoginServiceImpl implements LoginService {
         String defaultPhotoUrl = "";
         //mq发送消息
         syncUserMqProducer.sendAddUserMessage(new UserBasic(userId, username, defaultPhotoUrl));
-        return tokenService.createToken(userId, username, defaultPhotoUrl);
+        return tokenService.createAndRecordToken(userId, username, defaultPhotoUrl);
 
     }
 
@@ -133,7 +133,7 @@ public class LoginServiceImpl implements LoginService {
         }
 
         //返回token
-        return tokenService.createToken(userId, username, user.getPhotoUrl());
+        return tokenService.createAndRecordToken(userId, username, user.getPhotoUrl());
 
     }
 

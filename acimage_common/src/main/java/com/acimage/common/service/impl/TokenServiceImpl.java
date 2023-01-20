@@ -20,7 +20,7 @@ public class TokenServiceImpl implements TokenService {
 
 
     @Override
-    public String createToken(long userId, String username, String photoUrl){
+    public String createAndRecordToken(long userId, String username, String photoUrl){
         //生成token
         String token = JwtUtils.createToken(userId, username,photoUrl);
         //记录token和ip的对应

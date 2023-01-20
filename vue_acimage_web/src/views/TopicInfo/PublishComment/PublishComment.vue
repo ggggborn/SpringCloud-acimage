@@ -1,7 +1,7 @@
 <template>
 	<div class="user-comment-container">
 		<div>
-			<el-avatar :src="$store.state.photoUrl" :size="60"></el-avatar>
+			<el-avatar :src="$store.getters.truePhotoUrl" :size="60"></el-avatar>
 		</div>
 		<div>
 			<el-input type="textarea" :rows="3" style="width:400px;" maxlength="200" placeholder="快来发表友好的评论吧~"

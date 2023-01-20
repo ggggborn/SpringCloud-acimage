@@ -1,7 +1,7 @@
 <template>
 	<div class="user-rank-wrapper">
 		<div class="user-rank-thumbnail">
-			<img :src="$global.trueImageUrl('/test/test3.jpg')" />
+			<img src="static/image/user-rank-header.jpg" />
 			<div class="thumbnail-white-gradient">
 				<div class="header-title">排行</div>
 			</div>

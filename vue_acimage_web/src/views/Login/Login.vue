@@ -115,7 +115,7 @@
 					};
 					doRegister(user).then(result => {
 						if (result.code == Code.OK) {
-							_this.$global.setToken(result.data);
+							_this.$store.commit('setToken',result.data);
 							MessageUtils.success("注册成功", 1);
 							setTimeout(()=> {_this.$router.push({ path: '/' })}, 500);
 						}
@@ -145,7 +145,7 @@
 					doLogin(user)
 						.then(result => {
 							if (result.code == Code.OK) {
-								_this.$global.setToken(result.data);
+								_this.$store.commit('setToken',result.data);
 								MessageUtils.success('登录成功', 1);
 								setTimeout(() => { _this.$router.push({ path: '/' }); }, 500);
 							}

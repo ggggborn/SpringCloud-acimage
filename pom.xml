@@ -47,6 +47,7 @@
         <qiniu.version>[7.7.0, 7.10.99]</qiniu.version>
         <fastjson.version>2.0.21</fastjson.version>
         <dynamic-datesource.version>3.5.1</dynamic-datesource.version>
+        <minio.version>8.2.1</minio.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->
 <!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
@@ -170,6 +171,12 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-datesource.version}</version>
+            </dependency>
+<!--minio-->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
 
 <!--            <dependency>-->

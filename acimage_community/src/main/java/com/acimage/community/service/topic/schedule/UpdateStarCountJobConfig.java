@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UpdateStarCountJobConfig {
-
+    //3分钟
     private String cron ="0 */3 * * * ?";
 
     @Bean

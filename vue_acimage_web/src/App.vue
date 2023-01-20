@@ -11,7 +11,7 @@
 		name: 'App',
 		created() {
 			// this.$store.commit('init');
-			this.$store.commit('setToken',"xxxx");
+			this.$store.commit("init");
 		}
 	}
 </script>

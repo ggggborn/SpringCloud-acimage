@@ -47,6 +47,11 @@ export let uploadTopicImages = function(reqData) {
 	return request.post('/api/image/images/upload/topicImages', reqData, config);
 }
 
+export let uploadTopicImage = function(reqData) {
+	let config = { 'Content-type': 'multipart/form-data' };
+	return request.post('/api/image/images/upload/topicImage', reqData, config);
+}
+
 export let modifyDescription = function(imageId, description) {
 	return request.put('/api/image/images/description/' + imageId + '/' + description);
 }

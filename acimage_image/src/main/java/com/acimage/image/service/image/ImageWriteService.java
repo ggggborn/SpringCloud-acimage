@@ -11,17 +11,18 @@ import java.util.List;
 
 public interface ImageWriteService extends IService<Image> {
 
+    @Deprecated
     void saveImages(List<Image> images);
+    String saveImage(Image image);
     void removeImages(long topicId);
-
+    @Deprecated
     void updateDescription(long imageId, String description);
-
     @Transactional
     void updateDescriptions(List<Long> imageIds,List<String> descriptions);
-
     void updateTopicId(List<Long> imageIds,long topicId);
-
+    @Deprecated
     List<Image> createImages(MultipartFile[] imageFiles, String urlPrefix);
+    Image createImage(MultipartFile imageFile,String urlPrefix);
 
 
 }

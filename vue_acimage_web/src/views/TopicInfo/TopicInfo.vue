@@ -35,8 +35,8 @@
 					<el-divider direction="horizontal"></el-divider>
 				</div>
 				<!--话题内容 -->
-				<div style="width:720px;margin-left:40px;margin-bottom:60px;">
-					<div v-html="topic.content"></div>
+				<div class="topic-html-container">
+					<div v-dompurify-html="topic.content"></div>
 				</div>
 				<!--话题图片-->
 				<div class="images-container">

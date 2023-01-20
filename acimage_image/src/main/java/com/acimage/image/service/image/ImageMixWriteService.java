@@ -12,6 +12,9 @@ public interface ImageMixWriteService {
 
     @Transactional(rollbackFor = Exception.class)
     List<Long> uploadAndSaveImages(MultipartFile[] imageFiles);
+
+    String uploadAndSaveImage(MultipartFile imageFile);
+
     @Transactional(rollbackFor = Exception.class)
     String updateTopicIdAndReturnFirstImageUrl(String serviceToken, long topicId);
 }

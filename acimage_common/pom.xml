@@ -84,6 +84,11 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+        </dependency>
+
 
 
         <!--validation依赖，用于数据校验-->

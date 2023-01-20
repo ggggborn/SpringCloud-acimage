@@ -49,7 +49,7 @@ public class UserWriteServiceImpl implements UserWriteService {
                 .set(User::getUsername, username);
         userDao.update(null, qw);
 
-        String token = tokenService.createToken(UserContext.getUserId(), username, UserContext.getPhotoUrl());
+        String token = tokenService.createAndRecordToken(UserContext.getUserId(), username, UserContext.getPhotoUrl());
         //删除redis数据
         String key = KeyConstants.STRINGKP_USER + UserContext.getUserId();
         redisUtils.delete(key);
@@ -80,7 +80,7 @@ public class UserWriteServiceImpl implements UserWriteService {
         }
 
         //返回新凭证
-        String token = tokenService.createToken(UserContext.getUserId(), UserContext.getUsername(), newPhotoUrl);
+        String token = tokenService.createAndRecordToken(UserContext.getUserId(), UserContext.getUsername(), newPhotoUrl);
 
         //删除redis数据
         String key = KeyConstants.STRINGKP_USER + UserContext.getUserId();
@@ -104,7 +104,7 @@ public class UserWriteServiceImpl implements UserWriteService {
         //mq发送同步用户头像消息
         syncUserMqProducer.sendSyncUserPhotoUrlMessage(new UserIdWithPhotoUrl(UserContext.getUserId(),newPhotoUrl));
         //返回新token
-        return tokenService.createToken(UserContext.getUserId(), UserContext.getUsername(), newPhotoUrl);
+        return tokenService.createAndRecordToken(UserContext.getUserId(), UserContext.getUsername(), newPhotoUrl);
 
     }
 }

@@ -58,10 +58,23 @@ public class ImageController {
         return Result.ok(serviceToken);
     }
 
+    @PostMapping("/upload/topicImage")
+    public Result<String> uploadTopicImage(@RequestParam("imageFile") MultipartFile imageFile) {
+        //校验图片数量
+        String originName = imageFile.getOriginalFilename();
+
+        String format = FileUtils.formatOf(originName);
+        if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
+            return Result.fail("图片格式需为jpg，jpeg，png");
+        }
+        log.info("用户：{} 话题: 上传话题图片", UserContext.getUsername());
+        return Result.ok(imageMixWriteService.uploadAndSaveImage(imageFile));
+    }
+
     @PutMapping("/description/{id}/{description}")
-    public Result<?> modifyDescription(@PathVariable Long id,@PathVariable @Size(min = Image.DESCRIPTION_MIN, max = Image.DESCRIPTION_MAX,
-            message = Image.DESCRIPTION_VALIDATION_MSG) String description){
-            imageWriteService.updateDescription(id,description);
+    public Result<?> modifyDescription(@PathVariable Long id, @PathVariable @Size(min = Image.DESCRIPTION_MIN, max = Image.DESCRIPTION_MAX,
+            message = Image.DESCRIPTION_VALIDATION_MSG) String description) {
+        imageWriteService.updateDescription(id, description);
         return Result.ok();
     }
 
