@@ -10,7 +10,7 @@
         <result property="parentId" column="parent_id"/>
         <result property="label" column="label"/>
         <result property="note" column="note"/>
-        <result property="isModule" column="is_module"/>
+        <result property="module" column="module"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <collection property="children" ofType="Permission" column="id"
@@ -23,6 +23,7 @@
         <result property="parentId" column="parent_id"/>
         <result property="label" column="label"/>
         <result property="note" column="note"/>
+        <result property="module" column="module"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <association property="parent" javaType="Permission" column="parent_id"

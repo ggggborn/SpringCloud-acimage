@@ -5,6 +5,8 @@ import io.minio.errors.*;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@ConditionalOnClass(MinioClient.class)
 public class MinioUtils {
     @Autowired
     MinioClient minioClient;

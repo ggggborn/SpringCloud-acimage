@@ -29,7 +29,7 @@
 				<el-table-column prop="description" label="描述"></el-table-column>
 				<el-table-column prop="updateTime" label="更新时间"></el-table-column>
 				<el-table-column label="文件大小">
-					<template #default="scope">{{ Math.ceil(scope.row.size/1000) }}</template>
+					<template #default="scope">{{ Math.ceil(scope.row.size/1000) }}KB</template>
 				</el-table-column>
 
 				<el-table-column label="操作" width="220" align="center">
@@ -128,6 +128,7 @@
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 	import global from '@/utils/global'
+	
 
 	interface Image {
 		id: number;

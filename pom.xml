@@ -48,6 +48,7 @@
         <fastjson.version>2.0.21</fastjson.version>
         <dynamic-datesource.version>3.5.1</dynamic-datesource.version>
         <minio.version>8.2.1</minio.version>
+        <sensitive-word.version>0.2.0</sensitive-word.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->
 <!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
@@ -172,11 +173,17 @@
                 <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
                 <version>${dynamic-datesource.version}</version>
             </dependency>
-<!--minio-->
+            <!--minio-->
             <dependency>
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+            <!--敏感词过滤-->
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sensitive-word</artifactId>
+            <version>${sensitive-word.version}</version>
             </dependency>
 
 <!--            <dependency>-->

@@ -22,7 +22,7 @@ public class AuthorizeWriteServiceImpl implements AuthorizeWriteService {
     @Override
     public void save(int roleId, int permissionId){
         Permission permission=permissionQueryService.getPermission(permissionId);
-        if(permission.getIsModule()){
+        if(permission.isModule()){
             throw new BusinessException("该结点为模块，不可授权");
         }
         Authorize authorize=new Authorize(roleId,permissionId);

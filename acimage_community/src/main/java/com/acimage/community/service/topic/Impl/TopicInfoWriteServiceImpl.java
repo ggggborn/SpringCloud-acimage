@@ -52,6 +52,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     @Resource
     ApplicationContext applicationContext;
 
+
+
     @Override
     public long saveTopicAndImages(TopicAddReq topicAddReq) {
         //生成id

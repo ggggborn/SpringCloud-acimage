@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import CommonUtils from '@/utils/CommonUtils'
 import MessageUtils from '@/utils/MessageUtils'
-import StringUtls from '@/utils/StringUtils'
-
 import Config from '@/config'
 import { Code } from '@/utils/result'
 import StringUtils from '@/utils/StringUtils'
 
-let global = {};
+let global: any = {};
 
 
 //消息提示功能
@@ -65,7 +63,7 @@ global.truePhotoUrl = function(url) {
 }
 
 //获取分享链接
-global.getTopicUrl = function(topicId) {
+global.getTopicUrl = function(topicId: number) {
 	return '/topic/' + topicId;
 }
 
@@ -120,9 +118,9 @@ global.omitStr = function(content, totalLength) {
 	}
 }
 
-global.html2Text= function(contentHtml,limitLength) {
-	let content=StringUtils.html2Text(contentHtml);
-	if(limitLength==undefined){
+global.html2Text = function(contentHtml, limitLength) {
+	let content = StringUtils.html2Text(contentHtml);
+	if (limitLength == undefined) {
 		return content;
 	}
 	if (content.length > limitLength) {

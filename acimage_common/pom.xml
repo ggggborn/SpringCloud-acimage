@@ -83,13 +83,18 @@
             <version>3.14.2</version>
             <scope>compile</scope>
         </dependency>
-
+        <!--minio-->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
+            <optional>true</optional>
         </dependency>
-
-
+        <!--敏感词过滤-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>sensitive-word</artifactId>
+            <optional>true</optional>
+        </dependency>
 
         <!--validation依赖，用于数据校验-->
         <dependency>

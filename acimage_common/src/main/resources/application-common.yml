@@ -19,3 +19,9 @@ feign:
 #自定义配置
 my-config:
   enable-mq: true
+
+minio:
+  endpoint: http://43.136.68.91:9090
+  accessKey: minio123
+  secretKey: minio123
+  bucket: 555

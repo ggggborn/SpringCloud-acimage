@@ -37,7 +37,7 @@ public class PermissionQueryServiceImpl implements PermissionQueryService {
     @Override
     public List<Permission> listModules(){
         LambdaQueryWrapper<Permission> qw=new LambdaQueryWrapper<>();
-        qw.eq(Permission::getIsModule,true);
+        qw.eq(Permission::isModule,true);
         return permissionDao.selectList(qw);
     }
 }
