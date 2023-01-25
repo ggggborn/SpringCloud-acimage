@@ -3,10 +3,27 @@ import request from '@/utils/request.js'
 
 export let addTopicAndUploadImages = function(formData) {
 	let config = { 'Content-type': 'multipart/form-data' };
-	return request.post('/api/topics/', formData, config);
+	return request.post('/api/community/topics/', formData, config);
 }
 
-export let addTopic = function(data) {
+export let addTopic = function(formData) {
+	let config = { 'Content-type': 'multipart/form-data' };
+	return request.post('/api/community/topics/', formData, config);
+}
+
+// export let addTopic = function(data) {
+// 	// let urlParams = new URLSearchParams();
+// 	// for (let imageId of imageIds) {
+// 	// 	urlParams.append("imageIds", imageId);
+// 	// }
+// 	// let config = {  params: urlParams }
+// 	// let config = {
+// 	// 	header: { 'Content-Type': 'application/json' }
+// 	// };
+// 	return request.post('/api/community/topics', data);
+// }
+
+export let modifyTitle = function(id, title) {
 	// let urlParams = new URLSearchParams();
 	// for (let imageId of imageIds) {
 	// 	urlParams.append("imageIds", imageId);
@@ -15,19 +32,7 @@ export let addTopic = function(data) {
 	// let config = {
 	// 	header: { 'Content-Type': 'application/json' }
 	// };
-	return request.post('/api/community/topics', data);
-}
-
-export let modifyTitle = function(id,title) {
-	// let urlParams = new URLSearchParams();
-	// for (let imageId of imageIds) {
-	// 	urlParams.append("imageIds", imageId);
-	// }
-	// let config = {  params: urlParams }
-	// let config = {
-	// 	header: { 'Content-Type': 'application/json' }
-	// };
-	return request.put('/api/community/topics/title/'+id+'/'+title);
+	return request.put('/api/community/topics/title/' + id + '/' + title);
 }
 
 export let modifyContent = function(data) {
@@ -39,7 +44,7 @@ export let modifyContent = function(data) {
 	// let config = {
 	// 	header: { 'Content-Type': 'application/json' }
 	// };
-	return request.put('/api/community/topics/content',data);
+	return request.put('/api/community/topics/content', data);
 }
 
 export let deleteTopic = function(topicId) {

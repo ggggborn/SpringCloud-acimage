@@ -7,6 +7,7 @@ import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -99,10 +100,11 @@ public class MinioUtils {
         }
     }
 
-    public String generateUrl(String suffix, Date uploadTime, @Nullable String prefix) {
+    public String generateUrl(@Nullable String prefix, Date uploadTime,String suffix) {
         String formatPattern = "yyyy/MM/dd";
         String newPrefix = prefix == null ? "" : prefix + "/";
         SimpleDateFormat formatter = new SimpleDateFormat(formatPattern);
         return newPrefix + formatter.format(uploadTime) + "/" + suffix;
     }
+
 }

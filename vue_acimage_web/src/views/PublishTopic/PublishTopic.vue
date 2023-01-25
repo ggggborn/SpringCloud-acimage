@@ -88,15 +88,15 @@
 					MessageUtils.notice("请选择至少一张图片");
 					return false;
 				}
-				
-				if (this.title.length<4) {
+
+				if (this.title.length < 4) {
 					MessageUtils.notice("标题字数4以上");
 					return false;
-				}else if(this.title.length>30){
+				} else if (this.title.length > 30) {
 					MessageUtils.notice("标题字数30以内");
 					return false;
 				}
-				
+
 				let text = this.$refs['editBoard'].Html.toString();
 				// text.replace(new RegExp("</?[^>]+>", "gm"), "");
 				// // eslint-disable-next-line
@@ -106,7 +106,7 @@
 				if (pureText.trim().length <= 4) {
 					MessageUtils.notice("内容至少要四个字符");
 					return false;
-				}else if(text.length>500){
+				} else if (text.length > 5000) {
 					MessageUtils.notice("文本过长，请缩减");
 					return false;
 				}
@@ -116,31 +116,40 @@
 				if (this.validateForm() == false) {
 					return;
 				}
-				let reqUploadImageData = new FormData();
+				let addTopicForm = new FormData();
 				//加图片加入到表单数据中
 				for (let image of this.imageList) {
-					reqUploadImageData.append("imageFiles", image.raw);
+					addTopicForm.append("coverImage", image.raw);
 				}
+				addTopicForm.append("html", this.$refs['editBoard'].Html);
+				addTopicForm.append("title", this.title);
 
 				let addTopicReq = {};
-				addTopicReq["content"]=this.$refs['editBoard'].Html;
-				addTopicReq["title"]=this.title;
+				addTopicReq["html"] = this.$refs['editBoard'].Html;
+				addTopicReq["title"] = this.title;
 
 				let _this = this;
-				uploadTopicImages(reqUploadImageData).then(result => {
-					if (result.code == Code.OK) {
-						let serviceToken = result.data;
-						addTopicReq["serviceToken"]=serviceToken;
-
-						addTopic(addTopicReq).then(result => {
-							if (result.code == Code.OK) {
-								MessageUtils.success("发表成功", 1);
-								let url = '/topic/' + result.data;
-								setTimeout(() => { _this.$router.push({ path: url }); }, 500);
-							}
-						})
+				addTopic(addTopicForm).then(res => {
+					if (res.code == Code.OK) {
+						MessageUtils.success("发表成功", 1);
+						let url = '/topic/' + res.data;
+						setTimeout(() => { _this.$router.push({ path: url }); }, 500);
 					}
-				});
+				})
+				// uploadTopicImages(reqUploadImageData).then(result => {
+				// 	if (result.code == Code.OK) {
+				// 		let serviceToken = result.data;
+				// 		addTopicReq["serviceToken"]=serviceToken;
+
+				// 		addTopic(addTopicReq).then(result => {
+				// 			if (result.code == Code.OK) {
+				// 				MessageUtils.success("发表成功", 1);
+				// 				let url = '/topic/' + result.data;
+				// 				setTimeout(() => { _this.$router.push({ path: url }); }, 500);
+				// 			}
+				// 		})
+				// 	}
+				// });
 
 			}
 

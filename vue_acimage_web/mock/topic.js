@@ -13,7 +13,7 @@ Mock.mock('/api/community/topics/recentHot', 'get', {
 				username: '@cname()',
 				photoUrl: ''
 			},
-			firstImageUrl: 'test/test1.jpeg',
+			coverImageUrl: 'test/test1.jpeg',
 		},
 		{
 			id: '@id()',
@@ -25,7 +25,7 @@ Mock.mock('/api/community/topics/recentHot', 'get', {
 				username: '@cname()',
 				photoUrl: ''
 			},
-			firstImageUrl: 'topicImage/2022/12/02/1573240094587424768',
+			coverImageUrl: 'topicImage/2022/12/02/1573240094587424768',
 		},
 	]
 })
@@ -42,7 +42,7 @@ Mock.mock('/api/community/topics/recommend', 'get', {
 				username: '@cname()',
 				photoUrl: ''
 			},
-			firstImageUrl: 'test/test1.jpeg',
+			coverImageUrl: 'test/test1.jpeg',
 		},
 		{
 			id: '@integer()',
@@ -54,7 +54,7 @@ Mock.mock('/api/community/topics/recommend', 'get', {
 				username: '@cname()',
 				photoUrl: ''
 			},
-			firstImageUrl: 'topicImage/2022/12/02/1573240094587424768',
+			coverImageUrl: 'topicImage/2022/12/02/1573240094587424768',
 		},
 	]
 })
@@ -71,7 +71,7 @@ Mock.mock('/api/community/topics/pageRecentTopics/1', 'get', {
 			starCount: 666,
 			pageView: 777,
 			commentCount: 888,
-			firstImageUrl: 'test/test2.jpeg',
+			coverImageUrl: 'test/test2.jpeg',
 			images: [{
 				id: 0
 			}],

@@ -36,10 +36,10 @@
 				</div>
 				<!--话题内容 -->
 				<div class="topic-html-container">
-					<div v-dompurify-html="topic.content"></div>
+					<div v-dompurify-html="topic.html"></div>
 				</div>
 				<!--话题图片-->
-				<div class="images-container">
+<!-- 				<div class="images-container">
 					<template v-for="(image,index)  in topic.images">
 						<div :key="image.id">
 							<el-image :lazy=" true" :src="$global.trueImageUrl(image.url)" class="image-of-images">
@@ -56,7 +56,7 @@
 							</div>
 						</div>
 					</template>
-				</div>
+				</div> -->
 
 
 				<div style="text-align: center;margin-top:20px;">
@@ -156,7 +156,7 @@
 
 		<!-- 修改内容对话框 -->
 		<el-dialog title="修改内容" :visible.sync="contentModifyVisible" width="800px">
-			<edit-board ref="editBoard" width="720px" :html="topic.content"></edit-board>
+			<edit-board ref="editBoard" width="720px" :html="topic.html"></edit-board>
 			<div slot="footer" class="dialog-footer">
 				<!-- <el-button @click="contentModifyVisible = false">重置</el-button> -->
 				<el-button @click="contentModifyVisible = false">取 消</el-button>
@@ -242,18 +242,7 @@
 					pageView: 996,
 					starCount: 996,
 					commentCount: 20,
-					images: [{
-							id: 0,
-							description: '无名之图',
-							url: ''
-						},
-						{
-							id: 1,
-							description: '无名之图',
-							url: ''
-						}
-					],
-					content: `这些图片辛苦找来的，大家且看且珍惜`,
+					html: `这些图片辛苦找来的，大家且看且珍惜`,
 					comments: [{
 						id: 0,
 						userId: 996,

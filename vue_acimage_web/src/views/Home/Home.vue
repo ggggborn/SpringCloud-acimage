@@ -9,7 +9,7 @@
 			<div class="mask-images-container">
 				<template v-for="topic in recommendTopics">
 					<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" :underline="false">
-						<mask-image :image-url="$global.trueImageUrl(topic.firstImageUrl)" :title="topic.title"
+						<mask-image :image-url="$global.trueImageUrl(topic.coverImageUrl)" :title="topic.title"
 							:star-count="topic.starCount" :page-view="topic.pageView" :username="topic.user.username">
 						</mask-image>
 					</router-link>
@@ -30,7 +30,7 @@
 						<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
 							:username="topic.user.username" :create-time="topic.createTime"
 							:photo-url="$global.truePhotoUrl(topic.user.photoUrl)"
-							:image-url="$global.trueImageUrl(topic.firstImageUrl)">
+							:image-url="$global.trueImageUrl(topic.coverImageUrl)">
 						</float-image>
 					</router-link>
 				</template>
@@ -79,7 +79,7 @@
 				// 		username: '加载中...',
 				// 		photoUrl: ''
 				// 	},
-				// 	firstImageUrl: '',
+				// 	coverImageUrl: '',
 				// }, 
 				],
 				recommendTopics: [
@@ -93,7 +93,7 @@
 					// 		username: '加载中...',
 					// 		photoUrl: ''
 					// 	},
-					// 	firstImageUrl: '',
+					// 	coverImageUrl: '',
 					// },
 				]
 			};

@@ -4,8 +4,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.model.domain.Image;
+import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.image.dao.ImageDao;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -71,7 +74,9 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
 
     @Override
     public String uploadAndSaveImage(MultipartFile imageFile) {
-        String url="asdasdjahj.jpeg";
+        long imageId= IdGenerator.getSnowflakeNextId();
+        String suffix=String.format("%s.%s",imageId, FileUtils.formatOf(imageFile));
+        String url=minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE,new Date(),suffix);
         //上传
         return minioUtils.upload(imageFile, url);
     }

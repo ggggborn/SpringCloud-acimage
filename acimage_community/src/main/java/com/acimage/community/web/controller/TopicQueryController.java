@@ -7,6 +7,7 @@ import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.global.consts.PageSizeConsts;
+import com.acimage.community.model.vo.TopicInfoVo;
 import com.acimage.community.service.topic.TopicInfoQueryService;
 import com.acimage.community.service.topic.annotation.RecordPageView;
 import com.acimage.common.global.context.UserContext;
@@ -33,9 +34,9 @@ public class TopicQueryController {
     @RecordPageView
     @Authentication(type = AuthenticationType.NONE)
     @GetMapping("/info/{id}")
-    public Result queryTopicAndFirstCommentPage(@TopicId @Positive @PathVariable("id") Long id) {
-        Topic topic = topicInfoQueryService.getTopicInfoAndFirstCommentPage(id);
-        return Result.ok(topic);
+    public Result<TopicInfoVo> queryTopicAndFirstCommentPage(@TopicId @Positive @PathVariable("id") Long id) {
+        TopicInfoVo topicInfoVo = topicInfoQueryService.getTopicInfoAndFirstCommentPage(id);
+        return Result.ok(topicInfoVo);
     }
 
     @Authentication(type = AuthenticationType.NONE)

@@ -60,9 +60,8 @@ public class ImageController {
 
     @PostMapping("/upload/topicImage")
     public Result<String> uploadTopicImage(@RequestParam("imageFile") MultipartFile imageFile) {
-        //校验图片数量
-        String originName = imageFile.getOriginalFilename();
 
+        String originName = imageFile.getOriginalFilename();
         String format = FileUtils.formatOf(originName);
         if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
             return Result.fail("图片格式需为jpg，jpeg，png");

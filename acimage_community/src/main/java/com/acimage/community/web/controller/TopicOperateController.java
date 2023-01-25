@@ -2,10 +2,13 @@ package com.acimage.community.web.controller;
 
 
 import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.global.consts.FileFormat;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.Topic;
 import com.acimage.common.result.Result;
+import com.acimage.common.utils.common.FileUtils;
 import com.acimage.community.model.request.TopicAddReq;
+import com.acimage.community.model.request.TopicAddReqBak2;
 import com.acimage.community.model.request.TopicModifyContentReq;
 import com.acimage.community.service.topic.TopicInfoWriteService;
 import com.acimage.community.service.topic.TopicWriteService;
@@ -13,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.validation.constraints.Positive;
@@ -31,11 +35,26 @@ public class TopicOperateController {
     @Autowired
     TopicWriteService topicWriteService;
 
-    @PostMapping
-    public Result<Long> addTopic(@Validated @RequestBody TopicAddReq topicAddReq) {
+    @Deprecated
+    @PostMapping("/dadsad")
+    public Result<Long> addTopicBak(@Validated @RequestBody TopicAddReqBak2 topicAddReqBak2) {
         //校验图片数量
-        log.info("user：{} 发表话题 参数:{}", UserContext.getUsername(), topicAddReq);
-        long topicId = topicInfoWriteService.saveTopicAndImages(topicAddReq);
+        log.info("user：{} 发表话题 参数:{}", UserContext.getUsername(), topicAddReqBak2);
+        long topicId = topicInfoWriteService.saveTopicAndImages(topicAddReqBak2);
+        return Result.ok(topicId);
+    }
+
+
+    @PostMapping
+    public Result<Long> addTopic(@Validated @ModelAttribute TopicAddReq topicAddReq,@RequestParam("coverImage") MultipartFile coverImage) {
+        log.info("用户：{} 请求新增话题{}", UserContext.getUsername(),topicAddReq);
+        String originName = coverImage.getOriginalFilename();
+        String format = FileUtils.formatOf(originName);
+        if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
+            return Result.fail("图片格式需为jpg，jpeg，png");
+        }
+        log.info("用户：{} 话题: 新增话题{}", UserContext.getUsername(),topicAddReq);
+        long topicId=topicInfoWriteService.saveTopicAndCoverImage(topicAddReq,coverImage);
         return Result.ok(topicId);
     }
 

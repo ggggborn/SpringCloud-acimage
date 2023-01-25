@@ -46,7 +46,7 @@ export default new Vuex.Store({
 		},
 		removeToken(state) {
 			localStorage.removeItem("token");
-			state.commit('init')
+			this.commit('init')
 		}
 	},
 	// 操作异步操作mutation

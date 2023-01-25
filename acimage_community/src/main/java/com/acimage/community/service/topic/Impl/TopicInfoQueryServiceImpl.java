@@ -1,5 +1,6 @@
 package com.acimage.community.service.topic.Impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import com.acimage.common.exception.BusinessException;
@@ -9,16 +10,15 @@ import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.community.dao.TopicDao;
 import com.acimage.common.model.page.Page;
+import com.acimage.community.model.vo.TopicInfoVo;
 import com.acimage.community.service.comment.CommentInfoService;
-import com.acimage.community.service.topic.TopicInfoQueryService;
-import com.acimage.community.service.topic.TopicQueryService;
-import com.acimage.community.service.topic.TopicRankQueryService;
-import com.acimage.community.service.topic.TopicSpAttrQueryService;
+import com.acimage.community.service.topic.*;
 import com.acimage.community.service.topic.enums.TopicAttribute;
 import com.acimage.community.service.userstatistic.UserCsQueryService;
 import com.acimage.feign.client.ImageClient;
 import com.acimage.feign.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +47,8 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     ImageClient imageClient;
     @Autowired
     UserClient userClient;
+    @Autowired
+    TopicHtmlQueryService topicHtmlQueryService;
 
 
     @Override
@@ -56,7 +58,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     }
 
     @Override
-    public Topic getTopicInfoAndFirstCommentPage(long topicId) {
+    public TopicInfoVo getTopicInfoAndFirstCommentPage(long topicId) {
 
         Topic topic = topicQueryService.getTopic(topicId);
 
@@ -64,11 +66,13 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             log.error("user:{} 查询 话题:{} error：不存在或已被删除", UserContext.getUsername(), topicId);
             throw new BusinessException("话题不存在或已被删除");
         }
+        TopicInfoVo topicInfoVo=new TopicInfoVo();
+        BeanUtil.copyProperties(topic,topicInfoVo,false);
 
         //查找首页评论
         int pageNo = 1;
         List<Comment> comments = commentInfoService.pageCommentsWithUser(topicId, pageNo);
-        topic.setComments(comments);
+        topicInfoVo.setComments(comments);
 
         //设置浏览量、收藏量、评论数
         topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.COMMENT_COUNT, TopicAttribute.STAR_COUNT, TopicAttribute.PAGE_VIEW);
@@ -79,11 +83,14 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             user.setStarCount(userStatistic.getStarCount());
             user.setTopicCount(userStatistic.getTopicCount());
         }
-        topic.setUser(user);
-        List<Image> imageList = imageClient.queryTopicImages(topic.getId()).getData();
-        topic.setImages(imageList);
+        topicInfoVo.setUser(user);
+        String html=topicHtmlQueryService.getTopicHtml(topicId).getHtml();
+        topicInfoVo.setHtml(html);
 
-        return topic;
+//        List<Image> imageList = imageClient.queryTopicImages(topic.getId()).getData();
+//        topic.setImages(imageList);
+
+        return topicInfoVo;
     }
 
     @Override

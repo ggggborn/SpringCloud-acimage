@@ -14,7 +14,7 @@
         <result property="starCount" column="star_count"/>
         <result property="commentCount" column="comment_count"/>
         <result property="activityTime" column="activity_time"/>
-        <result property="firstImageUrl" column="first_image_url"/>
+        <result property="coverImageUrl" column="cover_image_url"/>
         <association property="user" javaType="User" column="user_id"
                      select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
     </resultMap>
@@ -31,7 +31,7 @@
         <result property="starCount" column="star_count"/>
         <result property="commentCount" column="comment_count"/>
         <result property="activityTime" column="activity_time"/>
-        <result property="firstImageUrl" column="first_image_url"/>
+        <result property="coverImageUrl" column="cover_image_url"/>
         <association property="user" javaType="User" column="user_id"
                      select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
         <collection property="images" ofType="Image" column="id"

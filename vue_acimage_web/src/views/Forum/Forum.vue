@@ -42,7 +42,7 @@
 									</div>
 								</div>
 								<div class="item-right">
-									<el-image :src="$global.trueImageUrl(topic.firstImageUrl)" fit="cover"
+									<el-image :src="topic.coverImageUrl" fit="cover"
 										class="item-right-image">
 									</el-image>
 								</div>
@@ -93,7 +93,7 @@
 						starCount: 666,
 						pageView: 777,
 						commentCount: 888,
-						firstImageUrl: '',
+						coverImageUrl: '',
 						images: [{
 							id: 0
 						}],
@@ -110,7 +110,7 @@
 						starCount: 666,
 						pageView: 777,
 						commentCount: 888,
-						firstImageUrl: '',
+						coverImageUrl: '',
 						images: [{
 							id: 0
 						}],

@@ -56,6 +56,11 @@ public class FileUtils {
         return StrUtil.subAfter(fileName,".",true);
     }
 
+    public static String formatOf(MultipartFile multipartFile){
+        String fileName=multipartFile.getOriginalFilename();
+        return StrUtil.subAfter(fileName,".",true);
+    }
+
     public static List<String> formatsOf(MultipartFile[] multipartFiles){
         if(multipartFiles==null){
             return null;

@@ -1,10 +1,16 @@
 package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
 import com.acimage.common.model.domain.Topic;
 import com.acimage.common.result.Result;
+import com.acimage.common.utils.HtmlUtils;
+import com.acimage.common.utils.common.FileUtils;
+import com.acimage.common.utils.minio.MinioUtils;
+import com.acimage.community.global.consts.StorePrefixConst;
 import com.acimage.community.listener.event.PublishTopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
+import com.acimage.community.model.request.TopicAddReqBak2;
 import com.acimage.community.mq.producer.HashImageMqProducer;
 import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
 import com.acimage.community.service.comment.CommentWriteService;
@@ -15,10 +21,12 @@ import com.acimage.common.exception.BusinessException;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.community.service.userstatistic.UserCsWriteService;
 import com.acimage.feign.client.ImageClient;
+import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.annotation.Resource;
@@ -41,24 +49,28 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     TopicWriteService topicWriteService;
     @Autowired
     ImageClient imageClient;
-
     @Autowired
     HashImageMqProducer hashImageMqProducer;
     @Autowired
     RemoveTopicImagesMqProducer removeTopicImagesMqProducer;
-
     @Autowired
     UserCsWriteService userCsWriteService;
+    @Autowired
+    TopicHtmlWriteService topicHtmlWriteService;
+    @Autowired
+    MinioUtils minioUtils;
+    @Autowired
+    SensitiveWordBs sensitiveWordBs;
     @Resource
     ApplicationContext applicationContext;
 
 
 
     @Override
-    public long saveTopicAndImages(TopicAddReq topicAddReq) {
+    public long saveTopicAndImages(TopicAddReqBak2 topicAddReqBak2) {
         //生成id
         long topicId = IdGenerator.getSnowflakeNextId();
-        String serviceToken = topicAddReq.getServiceToken();
+        String serviceToken = topicAddReqBak2.getServiceToken();
 
         //从image-service获取话题首张图url
         String firstImageUrl;
@@ -72,11 +84,11 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         Date now = new Date();
         //转化
         Topic topic = new Topic();
-        BeanUtil.copyProperties(topicAddReq, topic, false);
+        BeanUtil.copyProperties(topicAddReqBak2, topic, false);
         topic.setId(topicId);
         topic.setCreateTime(now);
         topic.setUserId(UserContext.getUserId());
-        topic.setFirstImageUrl(firstImageUrl);
+        topic.setCoverImageUrl(firstImageUrl);
         //插入topic
         topicWriteService.save(topic);
 
@@ -92,10 +104,10 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     }
 
     @Override
-    public long saveTopicAndImagesBak(TopicAddReq topicAddReq) {
+    public long saveTopicAndImagesBak(TopicAddReqBak2 topicAddReqBak2) {
         //生成id
         long topicId = IdGenerator.getSnowflakeNextId();
-        String serviceToken = topicAddReq.getServiceToken();
+        String serviceToken = topicAddReqBak2.getServiceToken();
 
         //从image-service获取话题首张图url
         String firstImageUrl;
@@ -109,12 +121,12 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         Date now = new Date();
         //转化
         Topic topic = new Topic();
-        BeanUtil.copyProperties(topicAddReq, topic, false);
+        BeanUtil.copyProperties(topicAddReqBak2, topic, false);
         topic.setId(topicId);
         topic.setCreateTime(now);
         topic.setUpdateTime(now);
         topic.setUserId(UserContext.getUserId());
-        topic.setFirstImageUrl(firstImageUrl);
+        topic.setCoverImageUrl(firstImageUrl);
         //插入topic
         topicWriteService.save(topic);
 
@@ -124,6 +136,43 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         hashImageMqProducer.sendHashImagesMessage(topicId);
 
 
+        return topicId;
+    }
+
+    @Override
+    public long saveTopicAndCoverImage(TopicAddReq topicAddReq, MultipartFile coverImage) {
+        //生成id
+        long topicId = IdGenerator.getSnowflakeNextId();
+        Date now = new Date();
+        String suffix=String.format("%s.%s",topicId, FileUtils.formatOf(coverImage));
+        String url=minioUtils.generateUrl(StorePrefixConst.COVER_IMAGE,now,suffix);
+        String coverImageUrl=minioUtils.upload(coverImage,url);
+        //过滤标题
+        String filterTile=sensitiveWordBs.replace(topicAddReq.getTitle());
+        //过滤内容
+        String filterHtml=sensitiveWordBs.replace(topicAddReq.getHtml());
+        String content= HtmlUtils.html2Text(filterHtml);
+        //提取前200个字作为文本内容
+        String subContent= StrUtil.subPre(content,Topic.CONTENT_MAX);
+        //转化
+        Topic topic = new Topic();
+        topic.setId(topicId);
+        topic.setTitle(filterTile);
+        topic.setContent(subContent);
+        topic.setCreateTime(now);
+        topic.setUpdateTime(now);
+        topic.setActivityTime(now);
+        topic.setUserId(UserContext.getUserId());
+        topic.setCoverImageUrl(coverImageUrl);
+        //保存topic
+        topicWriteService.save(topic);
+        //保存话题html
+        topicHtmlWriteService.save(topicId,topicAddReq.getHtml());
+
+        //更新最新活跃时间
+        topicSpAttrWriteService.changeActivityTime(topicId, now);
+//        //发送消息告诉image-service对图片哈希处理
+//        hashImageMqProducer.sendHashImagesMessage(topicId);
         return topicId;
     }
 
