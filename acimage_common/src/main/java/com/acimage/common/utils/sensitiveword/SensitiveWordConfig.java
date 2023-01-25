@@ -18,6 +18,8 @@ public class SensitiveWordConfig {
     public SensitiveWordBs sensitiveWordBs() {
         SensitiveWordBs sensitiveWordBs = SensitiveWordBs.newInstance()
                 .wordAllow(WordAllows.chains(WordAllows.system(), wordAllow))
+                .enableNumCheck(false)
+                .enableEmailCheck(false)
                 // 各种其他配置
                 .init();
 

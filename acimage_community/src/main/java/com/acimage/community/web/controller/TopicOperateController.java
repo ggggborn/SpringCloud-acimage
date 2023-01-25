@@ -48,8 +48,7 @@ public class TopicOperateController {
     @PostMapping
     public Result<Long> addTopic(@Validated @ModelAttribute TopicAddReq topicAddReq,@RequestParam("coverImage") MultipartFile coverImage) {
         log.info("用户：{} 请求新增话题{}", UserContext.getUsername(),topicAddReq);
-        String originName = coverImage.getOriginalFilename();
-        String format = FileUtils.formatOf(originName);
+        String format = FileUtils.formatOf(coverImage);
         if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
             return Result.fail("图片格式需为jpg，jpeg，png");
         }

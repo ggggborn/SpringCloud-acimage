@@ -49,6 +49,7 @@
         <dynamic-datesource.version>3.5.1</dynamic-datesource.version>
         <minio.version>8.2.1</minio.version>
         <sensitive-word.version>0.2.0</sensitive-word.version>
+        <toolgood-words.version>3.0.3.1</toolgood-words.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->
 <!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
@@ -184,6 +185,12 @@
                 <groupId>com.github.houbb</groupId>
                 <artifactId>sensitive-word</artifactId>
             <version>${sensitive-word.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.toolgood</groupId>
+                <artifactId>toolgood-words</artifactId>
+                <version>${toolgood-words.version}</version>
             </dependency>
 
 <!--            <dependency>-->

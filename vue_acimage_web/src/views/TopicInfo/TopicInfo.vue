@@ -301,11 +301,11 @@
 						});
 				}
 			},
-			handleEditImageDescription(index) {
-				this.imageDescriptionModifyVisible = true;
-				this.imageDescriptionModify = this.topic.images[index].description;
-				this.imageIdBeingModified = this.topic.images[index].id;
-			},
+			// handleEditImageDescription(index) {
+			// 	this.imageDescriptionModifyVisible = true;
+			// 	this.imageDescriptionModify = this.topic.images[index].description;
+			// 	this.imageIdBeingModified = this.topic.images[index].id;
+			// },
 			onConfirmModifyImageDescription() {
 				modifyDescription(this.imageIdBeingModified, this.imageDescriptionModify).then(result => {
 					if (result.code == Code.OK) {
@@ -336,9 +336,9 @@
 				this.isModifyTopic = false;
 				this.descriptionsModify = [];
 				this.contentModify = this.topic.content;
-				for (let image of this.topic.images) {
-					this.descriptionsModify.push(image.description);
-				}
+				// for (let image of this.topic.images) {
+				// 	this.descriptionsModify.push(image.description);
+				// }
 				this.titleModify = this.topic.title;
 				this.contentModify = this.topic.content;
 			},

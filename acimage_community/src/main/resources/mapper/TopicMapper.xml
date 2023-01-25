@@ -41,25 +41,25 @@
 
     <update id="updatePvByIncrement">
         <foreach collection="idAndIncrements" item="idAndIncrement" index="index" separator=";">
-            update tb_topic set page_view=page_view+#{idAndIncrement.value} where id=#{idAndIncrement.key}
+            update tb_topic set page_view=page_view+#{idAndIncrement.value} where id=#{idAndIncrement.key} and deleted=0
         </foreach>
     </update>
 
     <update id="batchUpdateColumnByIncrement">
         <foreach collection="idAndIncrements" item="idAndIncrement" index="index" separator=";">
-            update tb_topic set ${column} = ${column} + #{idAndIncrement.value} where id=#{idAndIncrement.key}
+            update tb_topic set ${column} = ${column} + #{idAndIncrement.value} where id=#{idAndIncrement.key} and deleted=0
         </foreach>
     </update>
 
     <update id="batchUpdateActivityTime">
         <foreach collection="idAndActivityTimes" item="idAndActivityTime" index="index" separator=";">
-            update tb_topic set activity_time = #{idAndActivityTime.value} where id=#{idAndActivityTime.key}
+            update tb_topic set activity_time = #{idAndActivityTime.value} where id=#{idAndActivityTime.key} and deleted=0
         </foreach>
     </update>
 
 
     <select id="selectTopicWithUserBasic" resultMap="topicWithUser">
-        select * from tb_topic where id=#{id}
+        select * from tb_topic where id=#{id} and deleted=0
     </select>
 
     <select id="selectTopicsWithUserImagesOrderByPageView" resultMap="topicWithUserImages">
@@ -70,18 +70,18 @@
     </select>
 
     <select id="selectTopicsWithUserOrderBy" resultMap="topicWithUser">
-        select * from tb_topic order by ${column} desc limit #{limit}
+        select * from tb_topic where deleted=0 order by ${column} desc limit #{limit}
     </select>
 
     <select id="selectTopicsWithUserBasicByIds" resultMap="topicWithUser">
-        select * from tb_topic where id in
+        select * from tb_topic where deleted=0 and id in
         <foreach collection="ids" item="id" index="index" separator="," open="(" close=")">
             #{id}
         </foreach>
     </select>
 
     <select id="selectTopicsWithUserImagesOrderByCreateTime" resultMap="topicWithUserImages">
-        select * from tb_topic where user_id=#{userId} order by create_time desc limit #{startIndex},#{recordNumber}
+        select * from tb_topic where user_id=#{userId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
     </select>
 
 

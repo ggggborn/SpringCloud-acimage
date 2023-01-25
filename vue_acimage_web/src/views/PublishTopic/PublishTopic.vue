@@ -89,13 +89,13 @@
 					return false;
 				}
 
-				if (this.title.length < 4) {
-					MessageUtils.notice("标题字数4以上");
-					return false;
-				} else if (this.title.length > 30) {
-					MessageUtils.notice("标题字数30以内");
-					return false;
-				}
+				// if (this.title.length < 4) {
+				// 	MessageUtils.notice("标题字数4以上");
+				// 	return false;
+				// } else if (this.title.length > 30) {
+				// 	MessageUtils.notice("标题字数30以内");
+				// 	return false;
+				// }
 
 				let text = this.$refs['editBoard'].Html.toString();
 				// text.replace(new RegExp("</?[^>]+>", "gm"), "");

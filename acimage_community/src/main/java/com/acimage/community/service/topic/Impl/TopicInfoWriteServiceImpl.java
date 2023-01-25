@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.acimage.common.model.domain.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.HtmlUtils;
+import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.community.global.consts.StorePrefixConst;
@@ -61,6 +62,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     MinioUtils minioUtils;
     @Autowired
     SensitiveWordBs sensitiveWordBs;
+    @Autowired
+    SensitiveWordUtils sensitiveWordUtils;
     @Resource
     ApplicationContext applicationContext;
 
@@ -148,10 +151,10 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         String url=minioUtils.generateUrl(StorePrefixConst.COVER_IMAGE,now,suffix);
         String coverImageUrl=minioUtils.upload(coverImage,url);
         //过滤标题
-        String filterTile=sensitiveWordBs.replace(topicAddReq.getTitle());
+        String filterTile=SensitiveWordUtils.filter(topicAddReq.getTitle());
         //过滤内容
-        String filterHtml=sensitiveWordBs.replace(topicAddReq.getHtml());
-        String content= HtmlUtils.html2Text(filterHtml);
+        String text= HtmlUtils.html2Text(topicAddReq.getHtml());
+        String content= SensitiveWordUtils.filter(text);
         //提取前200个字作为文本内容
         String subContent= StrUtil.subPre(content,Topic.CONTENT_MAX);
         //转化
@@ -194,6 +197,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //删除评论
         commentWriteService.removeComments(topicId);
         //删除话题
+        topicHtmlWriteService.remove(topicId);
         topicWriteService.remove(topicId);
 
         //发送删除图片的消息
