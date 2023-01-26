@@ -1,7 +1,7 @@
 package com.acimage.community.service.topic.Impl;
 
 import com.acimage.common.model.domain.Topic;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicRankWriteService;
 import com.acimage.community.service.topic.consts.KeyConstants;
 import com.acimage.community.service.topic.enums.TopicAttribute;

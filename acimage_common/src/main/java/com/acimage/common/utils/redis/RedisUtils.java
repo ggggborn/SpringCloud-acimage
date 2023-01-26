@@ -1,4 +1,4 @@
-package com.acimage.common.utils;
+package com.acimage.common.utils.redis;
 
 
 import cn.hutool.core.collection.CollectionUtil;

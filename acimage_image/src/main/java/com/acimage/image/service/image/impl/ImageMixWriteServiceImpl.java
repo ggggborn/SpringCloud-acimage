@@ -6,7 +6,7 @@ import com.acimage.common.exception.BusinessException;
 import com.acimage.common.model.domain.Image;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
@@ -81,15 +81,15 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
 
     @Override
     public String uploadAndSaveImage(MultipartFile imageFile) {
-        long imageId= IdGenerator.getSnowflakeNextId();
-        String suffix=String.format("%s.%s",imageId, FileUtils.formatOf(imageFile));
-        String url=minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE,new Date(),suffix);
+        long imageId = IdGenerator.getSnowflakeNextId();
+        String suffix = String.format("%s.%s", imageId, FileUtils.formatOf(imageFile));
+        String url = minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE, new Date(), suffix);
         //上传
-        String totalUrl=minioUtils.upload(imageFile, url);
-        int size=(int)imageFile.getSize();
+        String totalUrl = minioUtils.upload(imageFile, url);
+        int size = (int) imageFile.getSize();
         //保存到数据库
-        String fileName=imageFile.getOriginalFilename();
-        imageWriteService.saveImage(totalUrl,size,fileName);
+        String fileName = imageFile.getOriginalFilename();
+        imageWriteService.saveImage(totalUrl, size, fileName);
         return totalUrl;
     }
 
@@ -114,13 +114,25 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     }
 
 
-
     @Override
     public void removeTopicImages(long topicId, List<String> imageUrls) {
+        if (CollectionUtil.isEmpty(imageUrls)) {
+            return;
+        }
         //找到要删除的图片id
-        List<Long> imageIds=imageQueryService.listImageIds(topicId,imageUrls);
+        List<Long> imageIds = imageQueryService.listImageIds(topicId, imageUrls);
         //删除图片
-        imageWriteService.removeImages(topicId,imageUrls);
+        imageWriteService.removeImages(topicId, imageUrls);
+        //删除图片哈希
+        imageHashWriteService.removeImageHashes(imageIds);
+    }
+
+    @Override
+    public void removeTopicImages(long topicId) {
+        //找到要删除的图片id
+        List<Long> imageIds = imageQueryService.listImageIds(topicId);
+        //删除图片
+        imageWriteService.removeImages(topicId);
         //删除图片哈希
         imageHashWriteService.removeImageHashes(imageIds);
     }

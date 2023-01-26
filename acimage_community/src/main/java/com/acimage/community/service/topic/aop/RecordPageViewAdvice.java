@@ -3,7 +3,7 @@ package com.acimage.community.service.topic.aop;
 
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.utils.common.AopUtils;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.service.topic.TopicSpAttrQueryService;
 import com.acimage.community.service.topic.consts.KeyConstants;

@@ -1,5 +1,6 @@
 package com.acimage.common.model.mq.dto;
 
+import com.acimage.common.global.enums.ServiceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,4 +22,6 @@ public class HashImagesUpdateDto {
      * 话题内移除的图片链接
      */
     private List<String> removeImageUrls;
+
+    private ServiceType serviceType;
 }

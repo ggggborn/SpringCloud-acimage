@@ -11,7 +11,7 @@ import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.service.TokenService;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.global.consts.StorePrefixConst;
 import com.acimage.user.mq.produce.SyncUserMqProducer;

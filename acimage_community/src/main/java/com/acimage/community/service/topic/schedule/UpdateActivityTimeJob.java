@@ -1,14 +1,13 @@
 package com.acimage.community.service.topic.schedule;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.service.topic.consts.KeyConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j

@@ -8,6 +8,7 @@ import com.acimage.common.model.mq.dto.ImageIdWithUrl;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
+import com.acimage.image.service.image.ImageMixWriteService;
 import com.acimage.image.service.image.ImageQueryService;
 import com.acimage.image.service.image.ImageWriteService;
 import com.acimage.image.service.imagehash.SearchImageService;
@@ -41,6 +42,8 @@ public class HashImageConsumer {
     ImageQueryService imageQueryService;
     @Autowired
     ImageWriteService imageWriteService;
+    @Autowired
+    ImageMixWriteService imageMixWriteService;
 
     @PostConstruct
     public void init() {
@@ -147,52 +150,68 @@ public class HashImageConsumer {
 
     @RabbitHandler
     public void hashTopicImagesFromMinio(Channel channel, Message message, HashImagesUpdateDto updateDto) {
-        long topicId = -1L;
+
         try {
-            topicId = updateDto.getTopicId();
-            log.info("开始哈希图片 {}", updateDto);
-            List<String> addImageUrlList = updateDto.getAddImageUrls();
-            //获取实际存在的图片
-            List<Image> images = imageQueryService.listImagesForHavingNullTopicId(addImageUrlList);
-            for (Image image : images) {
-                //下载图片到本地
-                String tempFilePath = String.format("%s/%s", tempDirectory, image.getId()+IdUtil.fastSimpleUUID());
-                minioUtils.download(image.getUrl(), tempFilePath);
-                File tempFile = new File(tempFilePath);
-                FileInputStream is = null;
-                try {
-                    is = new FileInputStream(tempFilePath);
-                    //将图片哈希并存到数据库
-                    searchImageService.hashImageByDhashAlgorithm(is, image.getId());
-                } catch (FileNotFoundException e) {
-                    log.error("系统错误 文件不存在{}", tempFilePath);
-                    return;
-                } finally {
-                    if (is != null) {
-                        is.close();
+            long topicId = updateDto.getTopicId();
+            switch (updateDto.getServiceType()) {
+                case ADD, UPDATE:
+                    log.info("开始哈希图片 {}", updateDto);
+                    List<String> addImageUrlList = updateDto.getAddImageUrls();
+                    //获取实际存在的图片
+                    List<Image> images = imageQueryService.listImagesForHavingNullTopicId(addImageUrlList);
+                    for (Image image : images) {
+                        //下载图片到本地
+                        String tempFilePath = String.format("%s/%s", tempDirectory, image.getId() + IdUtil.fastSimpleUUID());
+                        try {
+                            minioUtils.download(image.getUrl(), tempFilePath);
+                        } catch (Exception e) {
+                            log.error("哈希图片时下载出错 error:{} url:{}", e.getLocalizedMessage(), image.getUrl());
+                            continue;
+                        }
+                        File tempFile = new File(tempFilePath);
+                        FileInputStream is = null;
+                        try {
+                            is = new FileInputStream(tempFilePath);
+                            //将图片哈希并存到数据库
+                            searchImageService.hashImageByDhashAlgorithm(is, image.getId());
+                        } catch (FileNotFoundException e) {
+                            log.error("系统错误 文件不存在{}", tempFilePath);
+                            return;
+                        } finally {
+                            if (is != null) {
+                                is.close();
+                            }
+                        }
+                        tempFile.delete();
                     }
-                }
-                tempFile.delete();
+                    //更新图片对应话题id
+                    List<Long> imageIds = ListUtils.extract(Image::getId, images);
+                    imageWriteService.updateTopicIdForHavingNullTopicId(imageIds, topicId);
+
+                    //删除图片
+                    List<String> removeImageUrlList = updateDto.getAddImageUrls();
+                    imageMixWriteService.removeTopicImages(topicId, removeImageUrlList);
+                    break;
+                    
+                case DELETE:
+                    imageMixWriteService.removeTopicImages(topicId);
             }
-            //更新图片对应话题id
-            List<Long> imageIds = ListUtils.extract(Image::getId, images);
-            imageWriteService.updateTopicIdForHavingNullTopicId(imageIds, topicId);
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("哈希图片消费者任务失败 error:{} 数据：{}", e.getLocalizedMessage(), updateDto);
+            log.error("哈希图片消费者任务失败 error:{} data：{}", e.getLocalizedMessage(), updateDto);
         } finally {
             String messageBody = new String(message.getBody());
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
                 e.printStackTrace();
-                log.error("哈希图片ack失败 error:{} message:{} 数据：{}", e.getMessage(), messageBody,updateDto);
+                log.error("哈希图片ack失败 error:{} message:{} data：{}", e.getMessage(), messageBody, updateDto);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
                     e.printStackTrace();
-                    log.error("哈希图片reject失败 error:{} message:{} 数据：{}", e.getMessage(), messageBody,updateDto);
+                    log.error("哈希图片reject失败 error:{} message:{} data：{}", e.getMessage(), messageBody, updateDto);
                 }
             }
         }

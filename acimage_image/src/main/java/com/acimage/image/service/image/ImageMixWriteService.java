@@ -19,4 +19,6 @@ public interface ImageMixWriteService {
     String updateTopicIdAndReturnFirstImageUrl(String serviceToken, long topicId);
 
     void removeTopicImages(long topicId, List<String> imageUrls);
+
+    void removeTopicImages(long topicId);
 }

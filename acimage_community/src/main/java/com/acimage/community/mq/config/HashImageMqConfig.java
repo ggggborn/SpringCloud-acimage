@@ -32,13 +32,13 @@ public class HashImageMqConfig {
 
     //绑定  将队列和交换机绑定, 并设置用于匹配键
     @Bean
-    Binding binding2() {
+    Binding bindingImageHash() {
         return BindingBuilder.bind(imageHashQueue()).to(imageHashExchange()).with(HASH_IMAGE_ROUTE);
     }
 
-    //创建交换机和对列
+    //创建交换机和队列
     @Bean
-    public void createExchangeQueue2() {
+    public void createHashImageExchangeQueue() {
         rabbitAdmin.declareExchange(imageHashExchange());
         rabbitAdmin.declareQueue(imageHashQueue());
     }

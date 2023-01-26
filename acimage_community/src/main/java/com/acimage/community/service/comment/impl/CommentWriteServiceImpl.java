@@ -13,7 +13,7 @@ import com.acimage.community.service.comment.CommentQueryService;
 import com.acimage.community.service.comment.CommentWriteService;
 import com.acimage.community.service.comment.consts.KeyConsts;
 import com.acimage.common.utils.IdGenerator;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.CommentDao;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;

@@ -2,7 +2,7 @@ package com.acimage.common.redis.utils;
 
 import com.acimage.common.redis.annotation.KeyParam;
 import com.acimage.common.utils.common.AopUtils;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;

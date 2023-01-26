@@ -1,12 +1,9 @@
 package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.lang.Pair;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.common.PageUtils;
-import com.acimage.community.service.comment.CommentQueryService;
-import com.acimage.community.service.star.StarQueryService;
-import com.acimage.community.service.topic.TopicSpAttrQueryService;
 import com.acimage.community.service.topic.TopicRankQueryService;
 import com.acimage.community.service.topic.enums.TopicAttribute;
 import org.springframework.beans.factory.annotation.Autowired;

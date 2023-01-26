@@ -7,7 +7,7 @@ import com.acimage.common.model.domain.Star;
 import com.acimage.community.service.star.consts.KeyConsts;
 import com.acimage.community.service.topic.TopicQueryService;
 import com.acimage.community.service.star.StarWriteService;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.StarDao;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.service.userstatistic.UserCsWriteService;

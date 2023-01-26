@@ -73,6 +73,16 @@ public class ImageQueryServiceImpl implements ImageQueryService {
     }
 
     @Override
+    public List<Long> listImageIds(long topicId) {
+        LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
+        qw.eq(Image::getTopicId,topicId)
+                .select(Image::getId);
+        List<Image> images = imageDao.selectList(qw);
+
+        return ListUtils.extract(Image::getId,images);
+    }
+
+    @Override
     public List<Image> listImagesForHavingNullTopicId(List<String> imageUrls){
         if(CollectionUtil.isEmpty(imageUrls)){
             return new ArrayList<>();

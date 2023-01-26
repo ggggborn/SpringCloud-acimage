@@ -3,7 +3,7 @@ package com.acimage.community.service.userstatistic.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
 import com.acimage.common.model.domain.UserCommunityStatistic;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.PairUtils;
 import com.acimage.community.dao.UserCommunityStatisticDao;
 import com.acimage.community.service.userstatistic.UserCsWriteService;

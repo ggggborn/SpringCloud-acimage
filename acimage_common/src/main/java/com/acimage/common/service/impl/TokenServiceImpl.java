@@ -1,14 +1,12 @@
 package com.acimage.common.service.impl;
 
-import com.acimage.common.global.consts.HeaderKey;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.JwtUtils;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 @Service

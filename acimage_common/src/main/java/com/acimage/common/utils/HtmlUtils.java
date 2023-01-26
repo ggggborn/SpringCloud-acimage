@@ -1,5 +1,7 @@
 package com.acimage.common.utils;
 
+import com.acimage.common.utils.common.ListUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -18,7 +20,7 @@ public class HtmlUtils {
         return content;
     }
 
-    public static List<String> getInnerImageUrls(String html){
+    public static List<String> getInnerImageUrlsAndRemoveRepeat(String html){
         List<String> imageSrcList = new ArrayList<>();
 
         Matcher m = imageSrcPattern.matcher(html);
@@ -29,6 +31,6 @@ public class HtmlUtils {
             src = (quote == null || quote.trim().length() == 0) ? m.group(2).split("\\s+")[0] : m.group(2);
             imageSrcList.add(src);
         }
-        return imageSrcList;
+        return ListUtils.removeRepeat(imageSrcList);
     }
 }

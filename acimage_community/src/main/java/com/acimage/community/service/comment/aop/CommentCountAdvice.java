@@ -2,7 +2,7 @@ package com.acimage.community.service.comment.aop;
 
 
 import com.acimage.common.utils.common.AopUtils;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.global.annotation.CommentId;
 import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.service.comment.CommentQueryService;

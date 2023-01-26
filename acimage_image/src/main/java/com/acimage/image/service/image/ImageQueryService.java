@@ -16,5 +16,7 @@ public interface ImageQueryService {
 
     List<Long> listImageIds(long topicId, List<String> imageUrls);
 
+    List<Long> listImageIds(long topicId);
+
     List<Image> listImagesForHavingNullTopicId(List<String> imageUrls);
 }

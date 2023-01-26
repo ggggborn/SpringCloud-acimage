@@ -4,10 +4,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Pair;
 import org.springframework.data.redis.core.ZSetOperations;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -116,4 +113,10 @@ public class ListUtils {
         }
         return resultList;
     }
+
+    public static <T> List<T> removeRepeat(List<T> list){
+        Set<T> set=new HashSet<>(list);
+        return new ArrayList<>(set);
+    }
+
 }

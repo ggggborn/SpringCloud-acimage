@@ -183,7 +183,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //更新最新活跃时间
         topicSpAttrWriteService.changeActivityTime(topicId, now);
         //获取话题内的站内图片链接
-        List<String> newImageUrlList = HtmlUtils.getInnerImageUrls(topicAddReq.getHtml());
+        List<String> newImageUrlList = HtmlUtils.getInnerImageUrlsAndRemoveRepeat(topicAddReq.getHtml());
         HashImagesUpdateDto updateDto = HashImagesUpdateDto.builder()
                 .addImageUrls(newImageUrlList)
                 .topicId(topicId)

@@ -8,7 +8,7 @@ import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.Image;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
-import com.acimage.common.utils.RedisUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.common.PairUtils;
 import com.acimage.image.dao.ImageDao;
