@@ -67,15 +67,15 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             throw new BusinessException("话题不存在或已被删除");
         }
         TopicInfoVo topicInfoVo=new TopicInfoVo();
-        BeanUtil.copyProperties(topic,topicInfoVo,false);
+        //设置浏览量、收藏量、评论数
+        topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.COMMENT_COUNT, TopicAttribute.STAR_COUNT, TopicAttribute.PAGE_VIEW);
 
+        BeanUtil.copyProperties(topic,topicInfoVo,false);
         //查找首页评论
         int pageNo = 1;
         List<Comment> comments = commentInfoService.pageCommentsWithUser(topicId, pageNo);
         topicInfoVo.setComments(comments);
 
-        //设置浏览量、收藏量、评论数
-        topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.COMMENT_COUNT, TopicAttribute.STAR_COUNT, TopicAttribute.PAGE_VIEW);
         User user = userClient.queryUser(topic.getUserId()).getData();
         //设置用户主人相关信息
         if (user.getId() != null) {

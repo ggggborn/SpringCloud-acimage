@@ -1,9 +1,11 @@
 package com.acimage.common.utils.minio;
 
+import cn.hutool.http.HttpUtil;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,6 +17,8 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Component
 @ConditionalOnClass(MinioClient.class)
 public class MinioUtils {
@@ -68,6 +73,23 @@ public class MinioUtils {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    public void download(String url, String toPath) {
+//        String encodedUrl = null;
+//        try {
+//            encodedUrl = URLEncoder.encode(url, "utf-8").replace("+", "%20");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            log.error("url编码失败 error：{}", e.getLocalizedMessage());
+//        }
+        String publicUrl;
+        if(url.startsWith("/")){
+            publicUrl = minioProperties.getEndpoint()+"/"+ url;
+        }else{
+            publicUrl = minioProperties.getEndpoint()+ url;
+        }
+        HttpUtil.downloadFile(publicUrl, new File(toPath));//下载
     }
 
 

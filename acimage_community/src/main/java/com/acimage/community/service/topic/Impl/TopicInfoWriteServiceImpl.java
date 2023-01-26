@@ -3,6 +3,7 @@ package com.acimage.community.service.topic.Impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.HtmlUtils;
 import com.acimage.common.utils.SensitiveWordUtils;
@@ -68,7 +69,6 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     ApplicationContext applicationContext;
 
 
-
     @Override
     public long saveTopicAndImages(TopicAddReqBak2 topicAddReqBak2) {
         //生成id
@@ -101,7 +101,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //发送消息告诉image-service对图片哈希处理
         hashImageMqProducer.sendHashImagesMessage(topicId);
 
-        PublishTopicEvent publishTopicEvent=new PublishTopicEvent(this,UserContext.getUserId(),topicId);
+        PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
         applicationContext.publishEvent(publishTopicEvent);
         return topicId;
     }
@@ -147,35 +147,49 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //生成id
         long topicId = IdGenerator.getSnowflakeNextId();
         Date now = new Date();
-        String suffix=String.format("%s.%s",topicId, FileUtils.formatOf(coverImage));
-        String url=minioUtils.generateUrl(StorePrefixConst.COVER_IMAGE,now,suffix);
-        String coverImageUrl=minioUtils.upload(coverImage,url);
+        String suffix = String.format("%s.%s", topicId, FileUtils.formatOf(coverImage));
+        String url = minioUtils.generateUrl(StorePrefixConst.COVER_IMAGE, now, suffix);
+        String coverImageUrl = minioUtils.upload(coverImage, url);
         //过滤标题
-        String filterTile=SensitiveWordUtils.filter(topicAddReq.getTitle());
+        String filterTile = SensitiveWordUtils.filter(topicAddReq.getTitle());
         //过滤内容
-        String text= HtmlUtils.html2Text(topicAddReq.getHtml());
-        String content= SensitiveWordUtils.filter(text);
+        String text = HtmlUtils.html2Text(topicAddReq.getHtml());
+        String content = SensitiveWordUtils.filter(text);
         //提取前200个字作为文本内容
-        String subContent= StrUtil.subPre(content,Topic.CONTENT_MAX);
+        String subContent = StrUtil.subPre(content, Topic.CONTENT_MAX);
         //转化
-        Topic topic = new Topic();
-        topic.setId(topicId);
-        topic.setTitle(filterTile);
-        topic.setContent(subContent);
-        topic.setCreateTime(now);
-        topic.setUpdateTime(now);
-        topic.setActivityTime(now);
-        topic.setUserId(UserContext.getUserId());
-        topic.setCoverImageUrl(coverImageUrl);
+        Topic topic = Topic.builder()
+                .id(topicId)
+                .title(filterTile)
+                .content(subContent)
+                .coverImageUrl(coverImageUrl)
+                .createTime(now)
+                .updateTime(now)
+                .activityTime(now)
+                .userId(UserContext.getUserId())
+                .build();
+//        topic.setId(topicId);
+//        topic.setTitle(filterTile);
+//        topic.setContent(subContent);
+//        topic.setCreateTime(now);
+//        topic.setUpdateTime(now);
+//        topic.setActivityTime(now);
+//        topic.setUserId(UserContext.getUserId());
+//        topic.setCoverImageUrl(coverImageUrl);
         //保存topic
         topicWriteService.save(topic);
         //保存话题html
-        topicHtmlWriteService.save(topicId,topicAddReq.getHtml());
-
+        topicHtmlWriteService.save(topicId, topicAddReq.getHtml());
         //更新最新活跃时间
         topicSpAttrWriteService.changeActivityTime(topicId, now);
-//        //发送消息告诉image-service对图片哈希处理
-//        hashImageMqProducer.sendHashImagesMessage(topicId);
+        //获取话题内的站内图片链接
+        List<String> newImageUrlList = HtmlUtils.getInnerImageUrls(topicAddReq.getHtml());
+        HashImagesUpdateDto updateDto = HashImagesUpdateDto.builder()
+                .addImageUrls(newImageUrlList)
+                .topicId(topicId)
+                .build();
+        //发送到mq，用于以图识图
+        hashImageMqProducer.sendHashImagesMessage(updateDto);
         return topicId;
     }
 
@@ -205,7 +219,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //删除相关属性
         topicSpAttrWriteService.removeAttributes(topicId);
         //更新用户统计数据
-        userCsWriteService.updateTopicCountByIncrement(topic.getUserId(),-1);
+        userCsWriteService.updateTopicCountByIncrement(topic.getUserId(), -1);
     }
 
 

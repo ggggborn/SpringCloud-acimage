@@ -32,7 +32,8 @@ public class JwtInterceptorBak implements HandlerInterceptor {
         String ip = IpUtils.getIp(request);
         UserContext.setIp(ip);
         
-        if (handler instanceof HandlerMethod handlerMethod) {
+        if (handler instanceof HandlerMethod) {
+            HandlerMethod handlerMethod=(HandlerMethod) handler;
             //获取该方法权限类型，优先注解顺序：方法、类
             AuthenticationType authenticationType = AuthenticationUtils.getAuthenticationType(handlerMethod);
             //无登录权限要求则放行

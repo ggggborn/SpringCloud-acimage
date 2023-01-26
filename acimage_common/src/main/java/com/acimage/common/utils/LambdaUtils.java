@@ -22,7 +22,7 @@ public class LambdaUtils {
         // 从function取出序列化方法
         Method writeReplaceMethod = ReflectUtil.getMethodByName(getFunctionOrIsFunction.getClass(), "writeReplace");
         // 从序列化方法取出序列化的lambda信息
-        boolean isAccessible = writeReplaceMethod.trySetAccessible();
+        boolean isAccessible = writeReplaceMethod.isAccessible();
         writeReplaceMethod.setAccessible(true);
         SerializedLambda serializedLambda;
         try {

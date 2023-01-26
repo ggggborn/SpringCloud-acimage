@@ -13,4 +13,8 @@ public interface ImageQueryService {
     Image getImage(long imageId);
 
     List<Image> listImagesByImageIdsInOrder(List<Long> imageIds);
+
+    List<Long> listImageIds(long topicId, List<String> imageUrls);
+
+    List<Image> listImagesForHavingNullTopicId(List<String> imageUrls);
 }

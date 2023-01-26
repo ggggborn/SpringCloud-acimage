@@ -220,9 +220,11 @@ public class QiniuUtilsBak {
     private void putAndLog(Object inputStreamOrFile, String urlWithoutDomain, String token) {
         Response response = null;
         try {
-            if (inputStreamOrFile instanceof InputStream is) {
+            if (inputStreamOrFile instanceof InputStream ) {
+                InputStream is=(InputStream) inputStreamOrFile;
                 response = uploadManager.put(is, urlWithoutDomain, token, null, null);
-            } else if (inputStreamOrFile instanceof File file) {
+            } else if (inputStreamOrFile instanceof File) {
+                File file=(File) inputStreamOrFile;
                 response = uploadManager.put(file, urlWithoutDomain, token);
             } else {
                 throw new IllegalArgumentException(String.format("参数inputStreamOrFile类型错误:%s", inputStreamOrFile.getClass()));

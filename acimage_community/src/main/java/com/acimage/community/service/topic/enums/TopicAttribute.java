@@ -19,28 +19,28 @@ public enum TopicAttribute {
     public static final Map<TopicAttribute, SFunction<Topic,Object>> toTopicField;
 
     static {
-        toZSetKeyForRank = new HashMap<>() {{
+        toZSetKeyForRank = new HashMap<TopicAttribute, String>() {{
             put(STAR_COUNT, KeyConstants.ZSETK_TOPIC_STAR_COUNT);
             put(PAGE_VIEW, KeyConstants.ZSETK_TOPIC_PV);
             put(COMMENT_COUNT, KeyConstants.ZSETK_TOPIC_COMMENT_COUNT);
             put(ACTIVITY_TIME, KeyConstants.ZSETK_TOPIC_ACTIVITY_TIME);
         }};
 
-        toSetKey = new HashMap<>() {{
+        toSetKey = new HashMap<TopicAttribute, String>() {{
             put(STAR_COUNT, KeyConstants.SETK_RECORDING_STAR_COUNT_INCREMENT);
             put(PAGE_VIEW, KeyConstants.SETK_RECORDING_PV_INCREMENT);
             put(COMMENT_COUNT, KeyConstants.SETK_RECORDING_COMMENT_COUNT_INCREMENT);
             put(ACTIVITY_TIME, KeyConstants.SETK_RECORDING_ACTIVITY_TIME);
         }};
 
-        toKeyPrefix = new HashMap<>() {{
+        toKeyPrefix = new HashMap<TopicAttribute, String>() {{
             put(STAR_COUNT, KeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT);
             put(PAGE_VIEW, KeyConstants.LOGKP_TOPIC_PV);
             put(COMMENT_COUNT, KeyConstants.STRINGKP_TOPIC_COMMENT_COUNT_INCREMENT);
             put(ACTIVITY_TIME, KeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME);
         }};
 
-        toTopicField = new HashMap<>() {{
+        toTopicField = new HashMap<TopicAttribute, SFunction<Topic,Object>>() {{
             put(STAR_COUNT, Topic::getStarCount);
             put(PAGE_VIEW, Topic::getPageView);
             put(COMMENT_COUNT, Topic::getCommentCount);

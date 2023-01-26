@@ -51,8 +51,20 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     }
 
     @Override
-    public String saveImage(Image image) {
-        return null;
+    public Image saveImage(String url, int size, String fileName) {
+        long imageId = IdGenerator.getSnowflakeNextId();
+        Date now = new Date();
+        Image image = Image.builder()
+                .url(url)
+                .id(imageId)
+                .size(size)
+                .fileName(fileName)
+                .description(fileName)
+                .createTime(now)
+                .updateTime(now)
+                .build();
+        imageDao.insert(image);
+        return image;
     }
 
     @Override
@@ -65,6 +77,14 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     }
 
     @Override
+    public int removeImages(long topicId, List<String> imageUrls) {
+        LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
+        qw.in(Image::getUrl, imageUrls)
+                .eq(Image::getTopicId, topicId);
+        return imageDao.delete(qw);
+    }
+
+    @Override
     public void updateDescription(long imageId, String description) {
         log.info("user:{} 修改图片描述 imageId:{} description:{}", UserContext.getUsername(), imageId, description);
         LambdaUpdateWrapper<Image> uw = new LambdaUpdateWrapper<>();
@@ -72,9 +92,9 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
         imageDao.update(null, uw);
 
         //删除相应缓存
-        Image image=imageQueryService.getImage(imageId);
-        redisUtils.delete(KeyConsts.STRINGKP_IMAGE+imageId);
-        redisUtils.delete(KeyConsts.STRINGKP_TOPIC_IMAGES+image.getTopicId());
+        Image image = imageQueryService.getImage(imageId);
+        redisUtils.delete(KeyConsts.STRINGKP_IMAGE + imageId);
+        redisUtils.delete(KeyConsts.STRINGKP_TOPIC_IMAGES + image.getTopicId());
     }
 
     @Override
@@ -93,6 +113,18 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
         }
         LambdaUpdateWrapper<Image> uw = new LambdaUpdateWrapper<>();
         uw.in(Image::getId, imageIds)
+                .set(Image::getTopicId, topicId);
+        imageDao.update(null, uw);
+    }
+
+    @Override
+    public void updateTopicIdForHavingNullTopicId(List<Long> imageIds, long topicId) {
+        if (CollectionUtil.isEmpty(imageIds)) {
+            return;
+        }
+        LambdaUpdateWrapper<Image> uw = new LambdaUpdateWrapper<>();
+        uw.in(Image::getId, imageIds)
+                .isNull(Image::getTopicId)
                 .set(Image::getTopicId, topicId);
         imageDao.update(null, uw);
     }

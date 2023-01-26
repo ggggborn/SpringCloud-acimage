@@ -55,6 +55,14 @@
             <version>3.8.0</version>
         </dependency>
 
+        <!-- 解决编译时，报程序包javax.servlet不存在的错误 -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <!-- 只在编译和测试的时候用 -->
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -9,13 +9,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ListUtils {
     public static <T, V> List<V> extract(Function<T, V> attribute, List<T> list) {
         if (list == null) {
             return null;
         }
-        return list.stream().map(attribute).toList();
+        return list.stream().map(attribute).collect(Collectors.toList());
     }
 
     public static <T, V> List<T> extractKeyFrom(List<Pair<T, V>> pairList) {

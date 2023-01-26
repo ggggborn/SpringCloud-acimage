@@ -17,4 +17,6 @@ public interface ImageMixWriteService {
 
     @Transactional(rollbackFor = Exception.class)
     String updateTopicIdAndReturnFirstImageUrl(String serviceToken, long topicId);
+
+    void removeTopicImages(long topicId, List<String> imageUrls);
 }

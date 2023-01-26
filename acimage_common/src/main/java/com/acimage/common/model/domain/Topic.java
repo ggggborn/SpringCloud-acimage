@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class Topic {
     public static final int CONTENT_MIN = 4;

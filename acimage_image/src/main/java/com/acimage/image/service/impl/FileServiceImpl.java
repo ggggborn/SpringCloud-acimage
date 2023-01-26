@@ -9,7 +9,6 @@ import com.acimage.image.global.consts.MyFileConst;
 import com.acimage.image.global.context.DirectoryContext;
 import com.acimage.image.service.FileService;
 import com.acimage.image.service.imagehash.SearchImageService;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,7 +150,7 @@ public class FileServiceImpl implements FileService {
 
         //客户端下载文件
         try {
-            FileUtils.downloadFile(zipFile, response);
+            FileUtils.downloadFileForClient(zipFile, response);
         } catch (IOException e) {
             log.error("文件{} 下载时异常：{}", zipPath, e.getMessage());
             throw new BusinessException("压缩包下载异常，请刷新重试");

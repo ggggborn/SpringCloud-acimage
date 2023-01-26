@@ -1,10 +1,13 @@
 package com.acimage.common.utils.common;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+@Slf4j
 public class FileUtils {
     public static void packageFiles(File[] files, File zipFile) throws IOException {
         byte[] buffer = new byte[4096];
@@ -32,7 +36,7 @@ public class FileUtils {
 
     }
 
-    public static void downloadFile(File file, HttpServletResponse response) throws IOException{
+    public static void downloadFileForClient(File file, HttpServletResponse response) throws IOException{
         response.setCharacterEncoding("utf-8");
         // response.setContentType("application/octet-stream");
 
@@ -74,4 +78,6 @@ public class FileUtils {
             return formatList;
         }
     }
+
+
 }

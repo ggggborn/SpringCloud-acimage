@@ -13,13 +13,19 @@ public interface ImageWriteService extends IService<Image> {
 
     @Deprecated
     void saveImages(List<Image> images);
-    String saveImage(Image image);
+    Image saveImage(String url,int size,String fileName);
     void removeImages(long topicId);
+
+    int removeImages(long topicId, List<String> imageUrls);
+
     @Deprecated
     void updateDescription(long imageId, String description);
     @Transactional
     void updateDescriptions(List<Long> imageIds,List<String> descriptions);
     void updateTopicId(List<Long> imageIds,long topicId);
+
+    void updateTopicIdForHavingNullTopicId(List<Long> imageIds, long topicId);
+
     @Deprecated
     List<Image> createImages(MultipartFile[] imageFiles, String urlPrefix);
     Image createImage(MultipartFile imageFile,String urlPrefix);

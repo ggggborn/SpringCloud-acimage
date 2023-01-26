@@ -24,6 +24,10 @@ public class MinioProperties {
         return bucket;
     }
 
+    public String getEndpoint() {
+        return endpoint;
+    }
+
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
     }

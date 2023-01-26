@@ -77,4 +77,5 @@
 		font-size: 20px;
 		background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(99, 99, 99, 0));
 	}
+	
 </style>

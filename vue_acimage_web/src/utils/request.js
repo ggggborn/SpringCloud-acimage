@@ -61,7 +61,7 @@ service.interceptors.response.use(
 		//拦截到失败的数据
 		console.log('错误码', error)
 		// 出错了直接关闭loading
-		requestNum = 0
+		requestNum = 0;
 		loading.close();
 
 		MessageUtils.notice(error, 4)

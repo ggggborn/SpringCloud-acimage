@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 @Aspect
@@ -50,7 +51,7 @@ public class QueryRedisAdvice {
         List<KeyParam> annotatedParams = AopUtils.paramAnnotationsFrom(joinPoint, KeyParam.class);
         List<String> annotatedArgs = AopUtils.annotatedArgsFrom(joinPoint, KeyParam.class, String.class);
         //获取所有实参
-        List<String> args = Arrays.stream(joinPoint.getArgs()).map(Object::toString).toList();
+        List<String> args = Arrays.stream(joinPoint.getArgs()).map(Object::toString).collect(Collectors.toList());
         //合并出整体key
         String suffix = StringUtils.concatForNotNull(":", args);
         String overallKey = prefix + suffix;

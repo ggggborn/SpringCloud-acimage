@@ -13,8 +13,10 @@ import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.image.dao.ImageDao;
 import com.acimage.image.global.consts.StorePrefixConstants;
 import com.acimage.image.service.image.ImageMixWriteService;
+import com.acimage.image.service.image.ImageQueryService;
 import com.acimage.image.service.image.ImageWriteService;
 import com.acimage.image.service.image.consts.KeyConsts;
+import com.acimage.image.service.imagehash.ImageHashWriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     @Autowired
     ImageWriteService imageWriteService;
     @Autowired
+    ImageQueryService imageQueryService;
+
+    @Autowired
     QiniuUtils qiniuUtils;
     @Autowired
     RedisUtils redisUtils;
@@ -37,6 +42,8 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     ImageDao imageDao;
     @Autowired
     MinioUtils minioUtils;
+    @Autowired
+    ImageHashWriteService imageHashWriteService;
 
     @Override
     public String uploadImageFilesAndSaveImages(MultipartFile[] imageFiles) {
@@ -78,7 +85,12 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
         String suffix=String.format("%s.%s",imageId, FileUtils.formatOf(imageFile));
         String url=minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE,new Date(),suffix);
         //上传
-        return minioUtils.upload(imageFile, url);
+        String totalUrl=minioUtils.upload(imageFile, url);
+        int size=(int)imageFile.getSize();
+        //保存到数据库
+        String fileName=imageFile.getOriginalFilename();
+        imageWriteService.saveImage(totalUrl,size,fileName);
+        return totalUrl;
     }
 
     @Override
@@ -99,6 +111,17 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
         }
 
         return firstImage.getUrl();
+    }
 
+
+
+    @Override
+    public void removeTopicImages(long topicId, List<String> imageUrls) {
+        //找到要删除的图片id
+        List<Long> imageIds=imageQueryService.listImageIds(topicId,imageUrls);
+        //删除图片
+        imageWriteService.removeImages(topicId,imageUrls);
+        //删除图片哈希
+        imageHashWriteService.removeImageHashes(imageIds);
     }
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.model.domain.Image;
 import com.acimage.common.redis.annotation.QueryRedis;
 
+import com.acimage.common.utils.common.ListUtils;
 import com.acimage.image.dao.ImageDao;
 import com.acimage.image.service.image.ImageQueryService;
 import com.acimage.image.service.image.consts.KeyConsts;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class ImageQueryServiceImpl implements ImageQueryService {
@@ -56,4 +56,34 @@ public class ImageQueryServiceImpl implements ImageQueryService {
 
         return orderedImages;
     }
+
+    @Override
+    public List<Long> listImageIds(long topicId, List<String> imageUrls) {
+        if(CollectionUtil.isEmpty(imageUrls)){
+            return new ArrayList<>();
+        }
+
+        LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
+        qw.in(Image::getUrl, imageUrls)
+                .eq(Image::getTopicId,topicId)
+                .select(Image::getId);
+        List<Image> images = imageDao.selectList(qw);
+
+        return ListUtils.extract(Image::getId,images);
+    }
+
+    @Override
+    public List<Image> listImagesForHavingNullTopicId(List<String> imageUrls){
+        if(CollectionUtil.isEmpty(imageUrls)){
+            return new ArrayList<>();
+        }
+
+        LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
+        qw.in(Image::getUrl, imageUrls)
+                .isNull(Image::getTopicId);
+        List<Image> images = imageDao.selectList(qw);
+
+        return images;
+    }
+
 }
