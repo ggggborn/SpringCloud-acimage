@@ -95,10 +95,16 @@
             <artifactId>sensitive-word</artifactId>
             <optional>true</optional>
         </dependency>
-        <!--敏感词过滤-->
+        <!--敏感词过滤2-->
         <dependency>
             <groupId>io.github.toolgood</groupId>
             <artifactId>toolgood-words</artifactId>
+        </dependency>
+        <!--es-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!--validation依赖，用于数据校验-->

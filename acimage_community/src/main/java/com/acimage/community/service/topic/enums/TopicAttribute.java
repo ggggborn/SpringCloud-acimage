@@ -65,7 +65,7 @@ public enum TopicAttribute {
     }
 
     public String toFieldName() {
-        return LambdaUtils.getCamelColumnName(toTopicField.get(this));
+        return LambdaUtils.columnNameOf(toTopicField.get(this));
     }
 
     public SFunction<Topic,Object> toGetFunction(){

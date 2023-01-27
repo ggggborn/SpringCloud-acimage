@@ -67,6 +67,11 @@
             <groupId>com.github.houbb</groupId>
             <artifactId>sensitive-word</artifactId>
         </dependency>
+        <!--es-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>org.quartz-scheduler</groupId>-->

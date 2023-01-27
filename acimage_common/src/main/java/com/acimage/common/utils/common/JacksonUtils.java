@@ -6,7 +6,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -44,7 +43,7 @@ public class JacksonUtils {
         }
     }
 
-    public static <T> T convertBy(@Nullable String json, Class<T> targetType) {
+    public static <T> T convert(@Nullable String json, Class<T> targetType) {
         if (json == null) {
             return null;
         }

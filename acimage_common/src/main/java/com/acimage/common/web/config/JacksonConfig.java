@@ -1,6 +1,7 @@
 package com.acimage.common.web.config;
 
 
+import cn.hutool.core.date.DatePattern;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ public class JacksonConfig {
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return jacksonObjectMapperBuilder -> jacksonObjectMapperBuilder
                 .serializerByType(Long.class, ToStringSerializer.instance)
-                .serializerByType(Long.TYPE, ToStringSerializer.instance);
+                .serializerByType(Long.TYPE, ToStringSerializer.instance)
+                .simpleDateFormat(DatePattern.NORM_DATETIME_PATTERN);
     }
 }

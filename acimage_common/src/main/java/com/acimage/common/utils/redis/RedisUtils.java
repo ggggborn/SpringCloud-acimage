@@ -86,7 +86,7 @@ public class RedisUtils {
 
     public <T> T getObjectFromString(String key, Class<T> targetType) {
         String json = stringRedisTemplate.opsForValue().get(key);
-        return JacksonUtils.convertBy(json, targetType);
+        return JacksonUtils.convert(json, targetType);
     }
 
     /**
@@ -122,7 +122,7 @@ public class RedisUtils {
 
     public <T> T getAndDeleteForString(String key, Class<T> targetType) {
         String json = stringRedisTemplate.opsForValue().getAndDelete(key);
-        return JacksonUtils.convertBy(json, targetType);
+        return JacksonUtils.convert(json, targetType);
     }
 
     public void setIfPresent(String key, String value) {

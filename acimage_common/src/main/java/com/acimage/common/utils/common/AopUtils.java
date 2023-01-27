@@ -58,6 +58,45 @@ public class AopUtils {
     /**
      * 返回首个被annotation注解的实参或实参成员变量
      */
+//    public static <T extends Annotation, V> V annotatedArgOrArgFieldOf(@NotNull JoinPoint joinPoint, Class<T> annotation, Class<V> targetType) {
+//
+//        Parameter[] parameters = methodOf(joinPoint).getParameters();
+//        Object[] args = joinPoint.getArgs();
+//
+//        Integer firstIndex = indexOfFirstAnnotatedParameter(parameters, annotation);
+//        if (firstIndex != null) {
+//            return Convert.convert(targetType, args[firstIndex]);
+//        }
+//
+//        for (Parameter parameter : parameters) {
+//            Field field = firstAnnotatedField(parameter.getType(), annotation);
+//            if (field == null) {
+//                continue;
+//            }
+//
+//            String fieldName = field.getName();
+//
+//            String getMethodName = StringUtils.concatCapitalize("get", fieldName);
+//            Method method;
+//            try {
+//                method = parameter.getType().getMethod(getMethodName);
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//                log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
+//                throw new RuntimeException(e);
+//            }
+//
+//            try {
+//                Object result = method.invoke();
+//                return Convert.convert(targetType, result);
+//            } catch (IllegalAccessException | InvocationTargetException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        return null;
+//    }
+
     public static <T extends Annotation, V> V annotatedArgOrArgFieldOf(@NotNull JoinPoint joinPoint, Class<T> annotation, Class<V> targetType) {
 
         Parameter[] parameters = methodOf(joinPoint).getParameters();
@@ -68,8 +107,10 @@ public class AopUtils {
             return Convert.convert(targetType, args[firstIndex]);
         }
 
-        for (Parameter parameter : parameters) {
-            Field field = firstAnnotatedField(parameter.getType(), annotation);
+        for(int i=0;i<parameters.length;i++){
+
+            Parameter parameter=parameters[i];
+            Field field = ReflectUtils.firstAnnotatedField(parameter.getType(), annotation);
             if (field == null) {
                 continue;
             }
@@ -87,7 +128,7 @@ public class AopUtils {
             }
 
             try {
-                Object result = method.invoke(getMethodName);
+                Object result = method.invoke(args[i]);
                 return Convert.convert(targetType, result);
             } catch (IllegalAccessException | InvocationTargetException e) {
                 throw new RuntimeException(e);
@@ -124,16 +165,7 @@ public class AopUtils {
         return null;
     }
 
-    private static <T extends Annotation> Field firstAnnotatedField(Class<?> objectClass, Class<T> annotation) {
-        Field[] fields = objectClass.getDeclaredFields();
-        for (Field field : fields) {
-            boolean isAnnotated = field.isAnnotationPresent(annotation);
-            if (isAnnotated) {
-                return field;
-            }
-        }
-        return null;
-    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.acimage.common.model.domain;
 
 
+import cn.hutool.core.date.DatePattern;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -37,14 +38,15 @@ public class Topic {
     private Integer starCount;
     private Integer pageView;
     private Integer commentCount;
-
     private String coverImageUrl;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date activityTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
+
     @TableLogic(delval = "1")
     boolean deleted;
 

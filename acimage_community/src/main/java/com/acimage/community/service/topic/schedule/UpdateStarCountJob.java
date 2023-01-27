@@ -52,7 +52,7 @@ public class UpdateStarCountJob extends QuartzJobBean {
             index++;
             String scIncrementKey = KeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT + topicId;
             String hashKeyForTopic= KeyConstants.HASHKP_TOPIC+topicId;
-            String fieldName= LambdaUtils.getCamelColumnName(Topic::getStarCount);
+            String fieldName= LambdaUtils.columnNameOf(Topic::getStarCount);
             Long scIncrement = redisUtils.getAndCombineAndDelete(scIncrementKey, hashKeyForTopic, fieldName);
 
 

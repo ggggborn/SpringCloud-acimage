@@ -12,12 +12,12 @@ public class LambdaUtils {
 
     public static <T> String getUnderlineColumnName(SFunction<T, ?> getOrIs) {
 
-        return StringUtils.camelToUnderline(getCamelColumnName(getOrIs));
+        return StringUtils.camelToUnderline(columnNameOf(getOrIs));
         //field = Class.forName(serializedLambda.getImplClass().replace("/", ".")).getDeclaredField(capitalizeFieldName);
 
     }
 
-    public static <T> String getCamelColumnName(SFunction<T, ?> getFunctionOrIsFunction) {
+    public static <T> String columnNameOf(SFunction<T, ?> getFunctionOrIsFunction) {
 
         // 从function取出序列化方法
         Method writeReplaceMethod = ReflectUtil.getMethodByName(getFunctionOrIsFunction.getClass(), "writeReplace");

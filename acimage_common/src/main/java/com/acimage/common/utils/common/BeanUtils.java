@@ -33,7 +33,7 @@ public class BeanUtils {
             if (fieldName.contains(key)) {
                 String json = fieldJsonMap.get(key);
                 //json转对象
-                Object obj = JacksonUtils.convertBy(json, ReflectUtil.getField(clz, key).getType());
+                Object obj = JacksonUtils.convert(json, ReflectUtil.getField(clz, key).getType());
                 //获取方法
                 String setMethodName = StringUtils.concatCapitalize("set", key);
                 Method setMethod = ReflectUtil.getMethodByName(clz, setMethodName);
@@ -43,6 +43,12 @@ public class BeanUtils {
         }
 
         return instance;
+    }
+
+    public static <T> T copyPropertiesTo(Object source,Class<T> targetType){
+        T target=ReflectUtil.newInstance(targetType);
+        BeanUtil.copyProperties(source,target,false);
+        return target;
     }
 
 }

@@ -2,11 +2,13 @@ package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import com.acimage.common.model.Index.TopicIndex;
 import com.acimage.common.model.domain.Topic;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.HtmlUtils;
 import com.acimage.common.utils.SensitiveWordUtils;
+import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.community.global.consts.StorePrefixConst;
@@ -15,6 +17,7 @@ import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicAddReqBak2;
 import com.acimage.community.mq.producer.HashImageMqProducer;
 import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
+import com.acimage.community.mq.producer.SyncEsMqProducer;
 import com.acimage.community.service.comment.CommentWriteService;
 import com.acimage.community.service.star.StarWriteService;
 import com.acimage.community.service.topic.*;
@@ -23,7 +26,6 @@ import com.acimage.common.exception.BusinessException;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.community.service.userstatistic.UserCsWriteService;
 import com.acimage.feign.client.ImageClient;
-import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -54,6 +56,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     @Autowired
     HashImageMqProducer hashImageMqProducer;
     @Autowired
+    SyncEsMqProducer syncEsMqProducer;
+    @Autowired
     RemoveTopicImagesMqProducer removeTopicImagesMqProducer;
     @Autowired
     UserCsWriteService userCsWriteService;
@@ -61,10 +65,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     TopicHtmlWriteService topicHtmlWriteService;
     @Autowired
     MinioUtils minioUtils;
-    @Autowired
-    SensitiveWordBs sensitiveWordBs;
-    @Autowired
-    SensitiveWordUtils sensitiveWordUtils;
+
     @Resource
     ApplicationContext applicationContext;
 
@@ -100,6 +101,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
 
         //发送消息告诉image-service对图片哈希处理
         hashImageMqProducer.sendHashImagesMessage(topicId);
+        //同步数据到es
+
 
         PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
         applicationContext.publishEvent(publishTopicEvent);
@@ -168,14 +171,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .activityTime(now)
                 .userId(UserContext.getUserId())
                 .build();
-//        topic.setId(topicId);
-//        topic.setTitle(filterTile);
-//        topic.setContent(subContent);
-//        topic.setCreateTime(now);
-//        topic.setUpdateTime(now);
-//        topic.setActivityTime(now);
-//        topic.setUserId(UserContext.getUserId());
-//        topic.setCoverImageUrl(coverImageUrl);
+
         //保存topic
         topicWriteService.save(topic);
         //保存话题html
@@ -190,6 +186,14 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .build();
         //发送到mq，用于以图识图
         hashImageMqProducer.sendHashImagesMessage(updateDto);
+
+        TopicIndex topicIndex= BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
+        //设置完整的content
+        topicIndex.setContent(SensitiveWordUtils.filter(content));
+        syncEsMqProducer.sendAddMessage(topicIndex);
+
+        PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
+        applicationContext.publishEvent(publishTopicEvent);
         return topicId;
     }
 

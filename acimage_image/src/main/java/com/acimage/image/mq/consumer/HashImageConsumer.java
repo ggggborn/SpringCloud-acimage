@@ -192,7 +192,7 @@ public class HashImageConsumer {
                     List<String> removeImageUrlList = updateDto.getAddImageUrls();
                     imageMixWriteService.removeTopicImages(topicId, removeImageUrlList);
                     break;
-                    
+
                 case DELETE:
                     imageMixWriteService.removeTopicImages(topicId);
             }

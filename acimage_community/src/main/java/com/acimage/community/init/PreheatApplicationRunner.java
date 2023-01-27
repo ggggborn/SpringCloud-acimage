@@ -19,8 +19,7 @@ public class PreheatApplicationRunner implements ApplicationRunner {
     @Autowired
     TopicPreheatService topicPreheatService;
 
-    @Autowired
-    RemoveTopicImagesMqProducer removeTopicImagesMqProducer;
+
 
     @Override
     public void run(ApplicationArguments args) {
