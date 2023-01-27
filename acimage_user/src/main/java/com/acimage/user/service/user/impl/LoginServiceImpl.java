@@ -6,8 +6,8 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.exception.BusinessException;
 
 import com.acimage.common.global.consts.HeaderKey;
-import com.acimage.common.model.domain.User;
-import com.acimage.common.model.domain.UserBasic;
+import com.acimage.common.model.domain.user.User;
+import com.acimage.common.model.domain.community.UserBasic;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.user.dao.UserDao;

@@ -1,8 +1,7 @@
 package com.acimage.community.web.controller;
 
 
-import com.acimage.common.global.annotation.Authentication;
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.userstatistic.UserCsRankService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @RestController

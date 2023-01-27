@@ -1,6 +1,6 @@
 package com.acimage.community.service.userbasic.impl;
 
-import com.acimage.common.model.domain.UserBasic;
+import com.acimage.common.model.domain.community.UserBasic;
 import com.acimage.community.service.userbasic.UserBasicWriteService;
 import com.acimage.community.service.userbasic.UserMixWriteService;
 import com.acimage.community.service.userstatistic.UserCsWriteService;

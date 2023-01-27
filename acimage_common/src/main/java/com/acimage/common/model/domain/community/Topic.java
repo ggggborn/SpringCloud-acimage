@@ -1,7 +1,8 @@
-package com.acimage.common.model.domain;
+package com.acimage.common.model.domain.community;
 
 
-import cn.hutool.core.date.DatePattern;
+import com.acimage.common.model.domain.image.Image;
+import com.acimage.common.model.domain.user.User;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

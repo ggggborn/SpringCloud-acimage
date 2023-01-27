@@ -1,5 +1,6 @@
-package com.acimage.common.model.domain;
+package com.acimage.common.model.domain.community;
 
+import com.acimage.common.model.domain.community.Topic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

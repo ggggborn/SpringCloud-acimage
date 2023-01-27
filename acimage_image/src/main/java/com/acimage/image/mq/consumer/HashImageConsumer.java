@@ -2,7 +2,7 @@ package com.acimage.image.mq.consumer;
 
 
 import cn.hutool.core.util.IdUtil;
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.model.mq.dto.ImageIdWithUrl;
 import com.acimage.common.utils.QiniuUtils;

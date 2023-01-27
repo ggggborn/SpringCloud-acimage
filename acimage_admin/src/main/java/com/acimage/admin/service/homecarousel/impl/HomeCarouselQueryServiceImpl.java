@@ -2,7 +2,7 @@ package com.acimage.admin.service.homecarousel.impl;
 
 import com.acimage.admin.dao.image.HomeCarouselDao;
 import com.acimage.admin.service.homecarousel.HomeCarouselQueryService;
-import com.acimage.common.model.domain.HomeCarousel;
+import com.acimage.common.model.domain.image.HomeCarousel;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

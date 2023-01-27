@@ -1,9 +1,8 @@
 package com.acimage.user.service.user.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.model.domain.User;
-import com.acimage.common.model.domain.UserCommunityStatistic;
+import com.acimage.common.model.domain.user.User;
+import com.acimage.common.model.domain.community.UserCommunityStatistic;
 
 import com.acimage.common.redis.annotation.QueryRedis;
 

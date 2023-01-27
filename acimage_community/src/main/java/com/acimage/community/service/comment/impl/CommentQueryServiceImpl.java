@@ -2,7 +2,7 @@ package com.acimage.community.service.comment.impl;
 
 import com.acimage.common.redis.annotation.KeyParam;
 import com.acimage.common.redis.annotation.QueryRedis;
-import com.acimage.common.model.domain.Comment;
+import com.acimage.common.model.domain.community.Comment;
 import com.acimage.community.dao.CommentDao;
 import com.acimage.community.service.comment.CommentQueryService;
 import com.acimage.community.service.comment.consts.KeyConsts;

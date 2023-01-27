@@ -1,7 +1,6 @@
 package com.acimage.user.mq.produce;
 
-import com.acimage.common.model.domain.UserBasic;
-import com.acimage.common.model.mq.dto.ImageIdWithUrl;
+import com.acimage.common.model.domain.community.UserBasic;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 import com.acimage.user.mq.config.SyncUserMqConfig;

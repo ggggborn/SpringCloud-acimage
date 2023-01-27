@@ -1,11 +1,9 @@
 package com.acimage.user.service.user;
 
-import com.acimage.common.model.domain.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public interface UserWriteService {
     @Transactional

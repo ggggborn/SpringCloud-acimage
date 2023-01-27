@@ -1,11 +1,12 @@
 package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.date.DateUtil;
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.model.domain.*;
+import com.acimage.common.model.domain.community.Comment;
+import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.model.domain.user.User;
+import com.acimage.common.model.domain.community.UserCommunityStatistic;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.community.dao.TopicDao;
@@ -18,13 +19,11 @@ import com.acimage.community.service.userstatistic.UserCsQueryService;
 import com.acimage.feign.client.ImageClient;
 import com.acimage.feign.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j

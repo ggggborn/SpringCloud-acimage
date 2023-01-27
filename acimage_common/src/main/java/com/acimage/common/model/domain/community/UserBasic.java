@@ -1,4 +1,4 @@
-package com.acimage.common.model.domain;
+package com.acimage.common.model.domain.community;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.AllArgsConstructor;

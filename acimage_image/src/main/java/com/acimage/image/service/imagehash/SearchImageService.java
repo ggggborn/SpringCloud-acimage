@@ -1,6 +1,6 @@
 package com.acimage.image.service.imagehash;
 
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;

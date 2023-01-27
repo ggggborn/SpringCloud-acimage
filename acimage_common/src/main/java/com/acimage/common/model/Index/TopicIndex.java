@@ -3,6 +3,7 @@ package com.acimage.common.model.Index;
 
 import cn.hutool.core.date.DatePattern;
 import com.acimage.common.global.consts.EsConstants;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -45,10 +46,11 @@ public class TopicIndex {
     @Field(store = true, index = false, type = FieldType.Keyword)
     private String coverImageUrl;
 
-    @Field(type = FieldType.Date, format = DateFormat.date, pattern = DatePattern.NORM_DATE_PATTERN, store = true)
+    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis", store = true)
     private Date createTime;
 
-    @Field(type = FieldType.Date, format = DateFormat.date, pattern = DatePattern.NORM_DATE_PATTERN, store = true)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis", store = true)
     private Date updateTime;
 
 

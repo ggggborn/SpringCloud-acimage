@@ -1,13 +1,7 @@
 package com.acimage.community.model.vo;
 
-import com.acimage.common.model.domain.Comment;
-import com.acimage.common.model.domain.Image;
-import com.acimage.common.model.domain.User;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.acimage.common.model.domain.community.Comment;
+import com.acimage.common.model.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

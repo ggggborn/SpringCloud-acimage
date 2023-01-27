@@ -6,7 +6,7 @@ import com.acimage.common.utils.common.ListUtils;
 import com.acimage.community.global.consts.PageSizeConsts;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.model.domain.Comment;
+import com.acimage.common.model.domain.community.Comment;
 import com.acimage.community.model.request.CommentAddReq;
 import com.acimage.community.model.request.CommentModifyReq;
 import com.acimage.community.service.comment.CommentQueryService;

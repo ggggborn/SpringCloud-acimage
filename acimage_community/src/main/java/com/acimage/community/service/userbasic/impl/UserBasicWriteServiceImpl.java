@@ -1,7 +1,7 @@
 package com.acimage.community.service.userbasic.impl;
 
 import com.acimage.community.dao.UserBasicDao;
-import com.acimage.common.model.domain.UserBasic;
+import com.acimage.common.model.domain.community.UserBasic;
 import com.acimage.community.service.userbasic.UserBasicWriteService;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

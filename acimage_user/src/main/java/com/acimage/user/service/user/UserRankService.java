@@ -1,6 +1,6 @@
 package com.acimage.user.service.user;
 
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.acimage.community.model.request;
 
 
-import com.acimage.common.model.domain.Comment;
+import com.acimage.common.model.domain.community.Comment;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;

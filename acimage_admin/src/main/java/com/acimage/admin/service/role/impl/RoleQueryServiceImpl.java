@@ -2,7 +2,7 @@ package com.acimage.admin.service.role.impl;
 
 import com.acimage.admin.dao.sys.RoleDao;
 import com.acimage.admin.service.role.RoleQueryService;
-import com.acimage.common.model.domain.Role;
+import com.acimage.common.model.domain.sys.Role;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

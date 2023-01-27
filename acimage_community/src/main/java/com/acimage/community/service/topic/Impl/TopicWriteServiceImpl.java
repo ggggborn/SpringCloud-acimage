@@ -2,7 +2,7 @@ package com.acimage.community.service.topic.Impl;
 
 
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.TopicDao;
 import com.acimage.community.model.request.TopicModifyContentReq;

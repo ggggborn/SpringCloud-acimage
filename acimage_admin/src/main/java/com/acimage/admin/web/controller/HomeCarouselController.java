@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.acimage.admin.service.homecarousel.HomeCarouselWriteService;
 import com.acimage.admin.service.homecarousel.HomeCarouselQueryService;
 import com.acimage.common.global.consts.FileFormat;
-import com.acimage.common.model.domain.HomeCarousel;
+import com.acimage.common.model.domain.image.HomeCarousel;
 import com.acimage.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

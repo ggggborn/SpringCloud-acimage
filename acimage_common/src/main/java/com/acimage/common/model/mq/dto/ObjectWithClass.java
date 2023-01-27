@@ -1,4 +1,4 @@
-package com.acimage.common.model.dto;
+package com.acimage.common.model.mq.dto;
 
 import com.acimage.common.utils.common.JacksonUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,15 +18,13 @@ public class ObjectWithClass {
 
     public void from(Object obj){
         this.setJson(JacksonUtils.writeValueAsString(obj));
-        this.setType(type);
+        this.setType(obj.getClass());
     }
 
     /**
      * 千万别写成getObject,否则会导致序列化出错
-     * @return
      */
-    @JsonIgnore
-    public Object innerObject(){
+    public Object object(){
         return JacksonUtils.convert(json,type);
     }
 }

@@ -2,7 +2,7 @@ package com.acimage.community.web.provider;
 
 
 import com.acimage.common.global.annotation.Authentication;
-import com.acimage.common.model.domain.UserCommunityStatistic;
+import com.acimage.common.model.domain.community.UserCommunityStatistic;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.userstatistic.UserCsQueryService;
 import lombok.extern.slf4j.Slf4j;

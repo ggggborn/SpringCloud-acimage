@@ -1,7 +1,7 @@
 package com.acimage.image.dao;
 
 
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

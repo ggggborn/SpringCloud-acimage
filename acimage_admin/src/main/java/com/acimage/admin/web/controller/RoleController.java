@@ -5,7 +5,7 @@ import com.acimage.admin.model.request.RoleAddReq;
 import com.acimage.admin.model.request.RoleModifyReq;
 import com.acimage.admin.service.role.RoleQueryService;
 import com.acimage.admin.service.role.RoleWriteService;
-import com.acimage.common.model.domain.Role;
+import com.acimage.common.model.domain.sys.Role;
 import com.acimage.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

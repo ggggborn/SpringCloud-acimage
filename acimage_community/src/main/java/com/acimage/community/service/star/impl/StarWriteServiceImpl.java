@@ -1,9 +1,9 @@
 package com.acimage.community.service.star.impl;
 
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.model.domain.Star;
+import com.acimage.common.model.domain.community.Star;
 import com.acimage.community.service.star.consts.KeyConsts;
 import com.acimage.community.service.topic.TopicQueryService;
 import com.acimage.community.service.star.StarWriteService;

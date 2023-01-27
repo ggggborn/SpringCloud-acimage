@@ -5,7 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.utils.redis.RedisUtils;

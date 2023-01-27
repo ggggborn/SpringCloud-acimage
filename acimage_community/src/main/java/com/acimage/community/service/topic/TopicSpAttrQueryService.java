@@ -1,11 +1,9 @@
 package com.acimage.community.service.topic;
 
-import cn.hutool.core.lang.Pair;
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.community.service.topic.enums.TopicAttribute;
 
 import java.util.Date;
-import java.util.List;
 
 public interface TopicSpAttrQueryService {
     Integer getPageView(long topicId);

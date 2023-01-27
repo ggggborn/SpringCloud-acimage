@@ -2,7 +2,7 @@ package com.acimage.admin.service.authorize.impl;
 
 import com.acimage.admin.dao.sys.AuthorizeDao;
 import com.acimage.admin.service.authorize.AuthorizeQueryService;
-import com.acimage.common.model.domain.Authorize;
+import com.acimage.common.model.domain.sys.Authorize;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;

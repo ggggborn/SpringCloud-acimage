@@ -1,7 +1,7 @@
 package com.acimage.image.service.image;
 
 
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

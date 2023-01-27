@@ -1,6 +1,6 @@
 package com.acimage.image.service.homecarousel.impl;
 
-import com.acimage.common.model.domain.HomeCarousel;
+import com.acimage.common.model.domain.image.HomeCarousel;
 import com.acimage.common.redis.annotation.QueryRedis;
 
 import com.acimage.image.dao.HomeCarrouselDao;

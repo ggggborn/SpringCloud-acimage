@@ -3,7 +3,7 @@ package com.acimage.image.web.provider;
 
 import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.result.Result;
 import com.acimage.image.service.image.ImageMixWriteService;
 import com.acimage.image.service.image.ImageQueryService;

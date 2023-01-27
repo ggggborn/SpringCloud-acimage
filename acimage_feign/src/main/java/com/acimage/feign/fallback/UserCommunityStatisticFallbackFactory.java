@@ -1,7 +1,6 @@
 package com.acimage.feign.fallback;
 
-import com.acimage.common.model.domain.User;
-import com.acimage.common.model.domain.UserCommunityStatistic;
+import com.acimage.common.model.domain.community.UserCommunityStatistic;
 import com.acimage.common.result.Result;
 import com.acimage.feign.client.UserCommunityStatisticClient;
 import lombok.extern.slf4j.Slf4j;

@@ -26,7 +26,7 @@ public class SyncEsMqProducer {
 
     public void sendUpdateMessage(Object entity, List<String> columns) {
         EsUpdateDto esUpdateDto = new EsUpdateDto();
-        esUpdateDto.setObject(entity);
+        esUpdateDto.from(entity);
         esUpdateDto.setColumns(columns);
         rabbitTemplate.convertAndSend(ExchangeConstants.SYNC_ES_EXCHANGE, SyncEsMqConfig.SYNC_ES_ROUTE, esUpdateDto);
     }

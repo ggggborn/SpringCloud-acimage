@@ -1,6 +1,6 @@
 package com.acimage.community.test;
 
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.community.dao.ImageDao;
 import com.acimage.community.global.consts.StorePrefixConst;

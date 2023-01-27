@@ -1,6 +1,6 @@
 package com.acimage.admin.dao.sys;
 
-import com.acimage.common.model.domain.Permission;
+import com.acimage.common.model.domain.sys.Permission;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 

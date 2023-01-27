@@ -2,11 +2,10 @@ package com.acimage.community.service.userclient.impl;
 
 
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.userclient.UserClientService;
 import com.acimage.feign.client.UserClient;
-import feign.RetryableException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

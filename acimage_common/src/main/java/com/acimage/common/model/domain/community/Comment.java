@@ -1,5 +1,6 @@
-package com.acimage.common.model.domain;
+package com.acimage.common.model.domain.community;
 
+import com.acimage.common.model.domain.user.User;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;

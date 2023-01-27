@@ -1,6 +1,6 @@
 package com.acimage.admin.service.homecarousel;
 
-import com.acimage.common.model.domain.HomeCarousel;
+import com.acimage.common.model.domain.image.HomeCarousel;
 
 import java.util.List;
 

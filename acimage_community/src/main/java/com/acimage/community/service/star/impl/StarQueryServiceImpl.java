@@ -1,6 +1,6 @@
 package com.acimage.community.service.star.impl;
 
-import com.acimage.common.model.domain.Star;
+import com.acimage.common.model.domain.community.Star;
 import com.acimage.common.redis.annotation.KeyParam;
 import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.community.dao.StarDao;

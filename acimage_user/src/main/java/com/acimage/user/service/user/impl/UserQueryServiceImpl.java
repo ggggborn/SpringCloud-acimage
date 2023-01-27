@@ -2,7 +2,7 @@ package com.acimage.user.service.user.impl;
 
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.redis.annotation.KeyParam;
 import com.acimage.common.redis.annotation.QueryRedis;
 

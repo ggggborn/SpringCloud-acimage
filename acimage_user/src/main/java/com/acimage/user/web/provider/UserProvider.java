@@ -4,7 +4,7 @@ package com.acimage.user.web.provider;
 
 import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.result.Result;
 import com.acimage.user.service.user.UserQueryService;
 import com.acimage.user.service.user.UserWriteService;

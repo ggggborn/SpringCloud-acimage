@@ -2,7 +2,7 @@ package com.acimage.feign.client;
 
 
 
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.feign.fallback.ImageClientFallbackFactory;
 import com.acimage.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;

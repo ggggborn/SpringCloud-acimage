@@ -1,7 +1,7 @@
 package com.acimage.community.service.topic.enums;
 
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.community.service.topic.consts.KeyConstants;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;

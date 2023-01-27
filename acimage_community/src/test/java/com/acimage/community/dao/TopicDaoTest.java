@@ -1,7 +1,7 @@
 package com.acimage.community.dao;
 
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.community.service.topic.TopicInfoWriteService;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package com.acimage.image.service.image.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.utils.redis.RedisUtils;

@@ -1,6 +1,6 @@
 package com.acimage.community.service.topic.Impl;
 
-import com.acimage.common.model.domain.TopicHtml;
+import com.acimage.common.model.domain.community.TopicHtml;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.TopicHtmlDao;
 import com.acimage.community.service.topic.TopicHtmlWriteService;

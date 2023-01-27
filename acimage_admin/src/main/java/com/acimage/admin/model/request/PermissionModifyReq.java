@@ -1,6 +1,6 @@
 package com.acimage.admin.model.request;
 
-import com.acimage.common.model.domain.Permission;
+import com.acimage.common.model.domain.sys.Permission;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

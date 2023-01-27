@@ -1,7 +1,7 @@
 package com.acimage.community.dao;
 
 
-import com.acimage.common.model.domain.Star;
+import com.acimage.common.model.domain.community.Star;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;

@@ -1,7 +1,7 @@
 package com.acimage.image.service.image.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.redis.annotation.QueryRedis;
 
 import com.acimage.common.utils.common.ListUtils;

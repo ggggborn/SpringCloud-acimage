@@ -1,6 +1,6 @@
 package com.acimage.user.service.user.impl;
 
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.user.service.user.UserRankService;
 
 

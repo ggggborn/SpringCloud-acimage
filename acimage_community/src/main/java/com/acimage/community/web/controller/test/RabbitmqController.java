@@ -1,7 +1,7 @@
 package com.acimage.community.web.controller.test;
 
 
-import com.acimage.common.model.domain.Star;
+import com.acimage.common.model.domain.community.Star;
 import com.acimage.community.mq.config.HashImageMqConfig;
 import com.acimage.community.mq.consts.ExchangeConstants;
 import lombok.extern.slf4j.Slf4j;

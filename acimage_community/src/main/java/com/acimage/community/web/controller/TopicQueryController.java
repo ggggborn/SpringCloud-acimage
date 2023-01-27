@@ -1,7 +1,6 @@
 package com.acimage.community.web.controller;
 
 
-import com.acimage.common.model.domain.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;

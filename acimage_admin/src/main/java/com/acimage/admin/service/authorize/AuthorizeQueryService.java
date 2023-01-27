@@ -1,6 +1,6 @@
 package com.acimage.admin.service.authorize;
 
-import com.acimage.common.model.domain.Authorize;
+import com.acimage.common.model.domain.sys.Authorize;
 
 import java.util.List;
 

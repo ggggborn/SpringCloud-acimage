@@ -1,7 +1,7 @@
 package com.acimage.image.dao;
 
 import cn.hutool.core.lang.Pair;
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

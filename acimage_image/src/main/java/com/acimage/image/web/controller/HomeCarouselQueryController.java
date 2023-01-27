@@ -3,7 +3,7 @@ package com.acimage.image.web.controller;
 
 import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
-import com.acimage.common.model.domain.HomeCarousel;
+import com.acimage.common.model.domain.image.HomeCarousel;
 import com.acimage.common.result.Result;
 
 import com.acimage.image.service.homecarousel.HomeCarouselQueryService;

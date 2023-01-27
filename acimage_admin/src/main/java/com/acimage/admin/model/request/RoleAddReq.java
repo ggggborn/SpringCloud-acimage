@@ -1,7 +1,7 @@
 package com.acimage.admin.model.request;
 
 
-import com.acimage.common.model.domain.Role;
+import com.acimage.common.model.domain.sys.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

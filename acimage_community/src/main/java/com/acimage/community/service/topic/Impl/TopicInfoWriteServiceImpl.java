@@ -3,7 +3,7 @@ package com.acimage.community.service.topic.Impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.model.Index.TopicIndex;
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.HtmlUtils;
@@ -245,20 +245,21 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         }
 
         //过滤内容
-        String filterHtml = HtmlUtils.html2Text(modifyReq.getHtml());
-        String content = SensitiveWordUtils.filter(filterHtml);
+        String text = HtmlUtils.html2Text(modifyReq.getHtml());
+        String content = SensitiveWordUtils.filter(text);
         //提取前200个字作为文本内容
         String subContent = StrUtil.subPre(content, Topic.CONTENT_MAX);
 
         topicWriteService.updateContent(topicId, subContent);
-        topicHtmlWriteService.update(topicId, filterHtml);
+        topicHtmlWriteService.update(topicId, SensitiveWordUtils.filter(modifyReq.getHtml()));
 
-       TopicIndex topicIndex = TopicIndex.builder()
+        TopicIndex topicIndex = TopicIndex.builder()
+                .updateTime(new Date())
                 .content(content)
                 .id(topicId)
                 .build();
-        List<String> columns= LambdaUtils.columnsFrom(TopicIndex::getContent);
-        syncEsMqProducer.sendUpdateMessage(topicIndex,columns);
+        List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getContent,TopicIndex::getUpdateTime);
+        syncEsMqProducer.sendUpdateMessage(topicIndex, columns);
 
     }
 

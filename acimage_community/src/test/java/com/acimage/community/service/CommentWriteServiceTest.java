@@ -1,6 +1,6 @@
 package com.acimage.community.service;
 
-import com.acimage.common.model.domain.Comment;
+import com.acimage.common.model.domain.community.Comment;
 import com.acimage.community.service.comment.CommentInfoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.acimage.community.service.comment;
 
-import com.acimage.common.model.domain.Comment;
+import com.acimage.common.model.domain.community.Comment;
 import com.acimage.common.model.page.Page;
 
 import java.util.List;

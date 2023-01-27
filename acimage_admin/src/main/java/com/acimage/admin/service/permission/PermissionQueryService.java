@@ -1,6 +1,6 @@
 package com.acimage.admin.service.permission;
 
-import com.acimage.common.model.domain.Permission;
+import com.acimage.common.model.domain.sys.Permission;
 import com.acimage.common.model.page.Page;
 
 import java.util.List;

@@ -1,7 +1,5 @@
 package com.acimage.common.model.mq.dto;
 
-import com.acimage.common.model.dto.ObjectWithClass;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import lombok.*;
 
 import java.util.List;

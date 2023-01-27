@@ -4,7 +4,7 @@ import com.acimage.admin.dao.image.HomeCarouselDao;
 import com.acimage.admin.service.homecarousel.HomeCarouselWriteService;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.model.domain.HomeCarousel;
+import com.acimage.common.model.domain.image.HomeCarousel;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;

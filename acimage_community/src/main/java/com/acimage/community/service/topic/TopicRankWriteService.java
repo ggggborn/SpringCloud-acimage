@@ -1,6 +1,6 @@
 package com.acimage.community.service.topic;
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.community.service.topic.enums.TopicAttribute;
 
 import javax.validation.constraints.NotNull;

@@ -49,7 +49,7 @@ public class EsUtils {
     }
 
     public void update(EsUpdateDto updateDto) {
-        Object entity = updateDto.innerObject();
+        Object entity = updateDto.object();
         if (entity == null) {
             return;
         }
@@ -78,7 +78,7 @@ public class EsUtils {
     }
 
     public void save(EsAddDto esAddDto) {
-        Object obj = esAddDto.innerObject();
+        Object obj = esAddDto.object();
         esTemplate.save(obj);
     }
 

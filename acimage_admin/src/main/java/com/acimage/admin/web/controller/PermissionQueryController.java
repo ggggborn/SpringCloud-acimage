@@ -2,7 +2,7 @@ package com.acimage.admin.web.controller;
 
 
 import com.acimage.admin.service.permission.PermissionQueryService;
-import com.acimage.common.model.domain.Permission;
+import com.acimage.common.model.domain.sys.Permission;
 import com.acimage.common.model.page.Page;
 import com.acimage.common.result.Result;
 import lombok.extern.slf4j.Slf4j;

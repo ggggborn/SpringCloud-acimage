@@ -1,8 +1,7 @@
 package com.acimage.community.service.userstatistic;
 
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.redis.annotation.QueryRedis;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 import java.util.List;
 

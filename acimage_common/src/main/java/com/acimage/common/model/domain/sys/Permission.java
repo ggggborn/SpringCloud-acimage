@@ -1,4 +1,4 @@
-package com.acimage.common.model.domain;
+package com.acimage.common.model.domain.sys;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;

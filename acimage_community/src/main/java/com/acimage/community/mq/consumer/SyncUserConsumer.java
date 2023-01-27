@@ -1,13 +1,9 @@
 package com.acimage.community.mq.consumer;
 
 
-import cn.hutool.core.collection.CollectionUtil;
-import com.acimage.common.model.domain.Image;
-import com.acimage.common.model.domain.UserBasic;
+import com.acimage.common.model.domain.community.UserBasic;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
-import com.acimage.common.utils.QiniuUtils;
-import com.acimage.common.utils.common.ListUtils;
 
 import com.acimage.community.service.userbasic.UserBasicWriteService;
 import com.acimage.community.service.userbasic.UserMixWriteService;
@@ -20,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @Component

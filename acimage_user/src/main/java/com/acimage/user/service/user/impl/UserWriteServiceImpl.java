@@ -4,7 +4,7 @@ package com.acimage.user.service.user.impl;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.context.UserContext;
 
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 import com.acimage.common.utils.common.FileUtils;

@@ -5,7 +5,7 @@ import com.acimage.admin.dao.sys.PermissionDao;
 import com.acimage.admin.model.request.PermissionAddReq;
 import com.acimage.admin.model.request.PermissionModifyReq;
 import com.acimage.admin.service.permission.PermissionWriteSercice;
-import com.acimage.common.model.domain.Permission;
+import com.acimage.common.model.domain.sys.Permission;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

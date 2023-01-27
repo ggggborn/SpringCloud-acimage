@@ -1,7 +1,7 @@
 package com.acimage.feign.fallback;
 
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.feign.client.TopicClient;
 import lombok.extern.slf4j.Slf4j;

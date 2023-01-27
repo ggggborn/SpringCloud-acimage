@@ -1,7 +1,7 @@
 package com.acimage.community.service.topic.schedule;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;

@@ -1,7 +1,7 @@
 package com.acimage.image.web.bak;
 
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;

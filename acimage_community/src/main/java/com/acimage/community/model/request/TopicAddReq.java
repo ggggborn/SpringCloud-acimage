@@ -1,7 +1,7 @@
 package com.acimage.community.model.request;
 
-import com.acimage.common.model.domain.Topic;
-import com.acimage.common.model.domain.TopicHtml;
+import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.model.domain.community.TopicHtml;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

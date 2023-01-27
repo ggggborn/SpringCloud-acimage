@@ -1,6 +1,6 @@
 package com.acimage.image.service.image;
 
-import com.acimage.common.model.domain.Image;
+import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.image.service.image.consts.KeyConsts;
 

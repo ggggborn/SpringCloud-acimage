@@ -1,7 +1,7 @@
 package com.acimage.feign.client;
 
 
-import com.acimage.common.model.domain.Topic;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.feign.fallback.TopicClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

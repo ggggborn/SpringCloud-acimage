@@ -2,7 +2,7 @@ package com.acimage.admin.service.permission.impl;
 
 import com.acimage.admin.dao.sys.PermissionDao;
 import com.acimage.admin.service.permission.PermissionQueryService;
-import com.acimage.common.model.domain.Permission;
+import com.acimage.common.model.domain.sys.Permission;
 import com.acimage.common.model.page.Page;
 import com.acimage.common.utils.common.PageUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;

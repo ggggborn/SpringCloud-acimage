@@ -1,7 +1,6 @@
 package com.acimage.community.service.userbasic;
 
-import com.acimage.common.model.domain.UserBasic;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.acimage.common.model.domain.community.UserBasic;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface UserBasicWriteService {

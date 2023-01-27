@@ -1,10 +1,9 @@
 package com.acimage.community.dao;
 
 import cn.hutool.core.lang.Pair;
-import com.acimage.common.model.domain.UserCommunityStatistic;
+import com.acimage.common.model.domain.community.UserCommunityStatistic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;

@@ -1,9 +1,5 @@
 package com.acimage.community.service.topic;
 
-import com.acimage.common.model.domain.Topic;
-import com.acimage.community.service.topic.enums.TopicAttribute;
-
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 

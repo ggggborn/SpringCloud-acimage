@@ -1,10 +1,8 @@
 package com.acimage.user.dao;
 
 
-import com.acimage.common.model.domain.User;
+import com.acimage.common.model.domain.user.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
 
 public interface UserDao extends BaseMapper<User> {
 
