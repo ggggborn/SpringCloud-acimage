@@ -35,7 +35,7 @@ export let modifyTitle = function(id, title) {
 	return request.put('/api/community/topics/title/' + id + '/' + title);
 }
 
-export let modifyContent = function(data) {
+export let modifyHtml= function(data) {
 	// let urlParams = new URLSearchParams();
 	// for (let imageId of imageIds) {
 	// 	urlParams.append("imageIds", imageId);

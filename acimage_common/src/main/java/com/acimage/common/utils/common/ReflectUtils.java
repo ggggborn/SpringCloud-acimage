@@ -1,5 +1,6 @@
 package com.acimage.common.utils.common;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -49,22 +50,23 @@ public class ReflectUtils {
         }
 
         String fieldName = field.getName();
-
-        String getMethodName = StringUtils.concatCapitalize("get", fieldName);
-        Method method;
-        try {
-            method = obj.getClass().getMethod(getMethodName);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
-            throw new RuntimeException(e);
-        }
-
-        try {
-            return method.invoke(obj);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+        return BeanUtil.getFieldValue(obj,fieldName);
+//
+//        String getMethodName = StringUtils.concatCapitalize("get", fieldName);
+//        Method method;
+//        try {
+//            method = obj.getClass().getMethod(getMethodName);
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//            log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
+//            throw new RuntimeException(e);
+//        }
+//
+//        try {
+//            return method.invoke(obj);
+//        } catch (IllegalAccessException | InvocationTargetException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public static <T extends Annotation> Field firstAnnotatedField(Class<?> objectClass, Class<T> annotation) {

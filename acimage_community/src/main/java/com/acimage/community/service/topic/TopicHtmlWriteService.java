@@ -6,4 +6,6 @@ public interface TopicHtmlWriteService {
     TopicHtml save(long topicId, String html);
 
     void remove(long topicId);
+
+    void update(long topicId, String html);
 }

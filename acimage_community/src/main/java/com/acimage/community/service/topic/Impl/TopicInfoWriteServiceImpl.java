@@ -7,6 +7,7 @@ import com.acimage.common.model.domain.Topic;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.HtmlUtils;
+import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.FileUtils;
@@ -15,6 +16,7 @@ import com.acimage.community.global.consts.StorePrefixConst;
 import com.acimage.community.listener.event.PublishTopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicAddReqBak2;
+import com.acimage.community.model.request.TopicModifyContentReq;
 import com.acimage.community.mq.producer.HashImageMqProducer;
 import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
 import com.acimage.community.mq.producer.SyncEsMqProducer;
@@ -184,10 +186,11 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .addImageUrls(newImageUrlList)
                 .topicId(topicId)
                 .build();
+
         //发送到mq，用于以图识图
         hashImageMqProducer.sendHashImagesMessage(updateDto);
-
-        TopicIndex topicIndex= BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
+        //同步到es
+        TopicIndex topicIndex = BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
         //设置完整的content
         topicIndex.setContent(SensitiveWordUtils.filter(content));
         syncEsMqProducer.sendAddMessage(topicIndex);
@@ -217,34 +220,47 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //删除话题
         topicHtmlWriteService.remove(topicId);
         topicWriteService.remove(topicId);
-
-        //发送删除图片的消息
-        removeTopicImagesMqProducer.sendRemoveTopicMessage(topicId);
         //删除相关属性
         topicSpAttrWriteService.removeAttributes(topicId);
         //更新用户统计数据
         userCsWriteService.updateTopicCountByIncrement(topic.getUserId(), -1);
+        //发送删除图片的消息
+        removeTopicImagesMqProducer.sendRemoveTopicMessage(topicId);
+        //同步es数据
+        syncEsMqProducer.sendDeleteMessage(Long.toString(topicId), TopicIndex.class);
     }
 
+    @Override
+    public void updateContent(TopicModifyContentReq modifyReq) {
+        long topicId = modifyReq.getId();
+        Topic topic = topicQueryService.getTopic(topicId);
+        if (topic == null) {
+            log.error("话题不存在 话题:{} 用户:{}", topicId, UserContext.getUsername());
+            throw new BusinessException("话题不存在~~");
+        }
 
-//    public void updateTopicAndImageDescriptions(TopicModifyReq topicModifyReq) throws BusinessException {
-//        long topicId = topicModifyReq.getId();
-//
-//        String title = topicModifyReq.getTitle();
-//        String content = topicModifyReq.getContent();
-//        List<String> descriptions = topicModifyReq.getDescriptions();
-//        //找到相关图片
-//        List<Image> images = imageQueryService.listImagesOrderById(topicId);
-//
-//        if (images.size() == 0 || images.size() != topicModifyReq.getDescriptions().size()) {
-//            log.error("用户：{} 修改 话题{} 数据异常：图片数与描述数不同", UserContext.getUsername(), topicId);
-//            throw new BusinessException(Code.PARAM_INVALID, "数据异常：图片数与描述数不同");
-//        }
-//
-//        List<Long> imageIds = ListUtils.extract(Image::getId, images);
-//
-//        imageWriteService.updateDescriptions(imageIds, descriptions);
-//        topicWriteService.update(topicId, title, content);
-//    }
+        if (!UserContext.getUserId().equals(topic.getUserId())) {
+            log.error("异常删除：用户非话题主人 话题:{} 用户:{}", topicId, UserContext.getUsername());
+            throw new BusinessException("非法操作！话题不属于你");
+        }
+
+        //过滤内容
+        String filterHtml = HtmlUtils.html2Text(modifyReq.getHtml());
+        String content = SensitiveWordUtils.filter(filterHtml);
+        //提取前200个字作为文本内容
+        String subContent = StrUtil.subPre(content, Topic.CONTENT_MAX);
+
+        topicWriteService.updateContent(topicId, subContent);
+        topicHtmlWriteService.update(topicId, filterHtml);
+
+       TopicIndex topicIndex = TopicIndex.builder()
+                .content(content)
+                .id(topicId)
+                .build();
+        List<String> columns= LambdaUtils.columnsFrom(TopicIndex::getContent);
+        syncEsMqProducer.sendUpdateMessage(topicIndex,columns);
+
+    }
+
 
 }

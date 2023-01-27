@@ -11,4 +11,6 @@ public interface TopicWriteService {
     void updateTitle(long id, String title);
 
     void updateContent(TopicModifyContentReq topicModifyContentReq);
+
+    void updateContent(long id, String content);
 }

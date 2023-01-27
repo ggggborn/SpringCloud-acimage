@@ -1,6 +1,7 @@
 package com.acimage.common.utils.common;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -116,23 +117,24 @@ public class AopUtils {
             }
 
             String fieldName = field.getName();
-
-            String getMethodName = StringUtils.concatCapitalize("get", fieldName);
-            Method method;
-            try {
-                method = parameter.getType().getMethod(getMethodName);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-                log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
-                throw new RuntimeException(e);
-            }
-
-            try {
-                Object result = method.invoke(args[i]);
-                return Convert.convert(targetType, result);
-            } catch (IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
+            Object result= BeanUtil.getFieldValue(args[i],fieldName);
+            return Convert.convert(targetType, result);
+//            String getMethodName = StringUtils.concatCapitalize("get", fieldName);
+//            Method method;
+//            try {
+//                method = parameter.getType().getMethod(getMethodName);
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//                log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
+//                throw new RuntimeException(e);
+//            }
+//
+//            try {
+//                Object result = method.invoke(args[i]);
+//                return Convert.convert(targetType, result);
+//            } catch (IllegalAccessException | InvocationTargetException e) {
+//                throw new RuntimeException(e);
+//            }
         }
 
         return null;

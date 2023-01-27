@@ -9,7 +9,8 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class EsUpdateDto extends ObjectWithClass {
+    List<String> columns;
 
-    List<SFunction<Object, Object>> columns;
+//    List<SFunction<Object, Object>> columns;
 
 }

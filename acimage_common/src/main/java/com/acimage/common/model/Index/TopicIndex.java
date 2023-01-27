@@ -3,6 +3,8 @@ package com.acimage.common.model.Index;
 
 import cn.hutool.core.date.DatePattern;
 import com.acimage.common.global.consts.EsConstants;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -15,6 +17,8 @@ import java.util.Date;
 
 
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 @Document(indexName = "topic", replicas = 0, shards = 1)
 public class TopicIndex {

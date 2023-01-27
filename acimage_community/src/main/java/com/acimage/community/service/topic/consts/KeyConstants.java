@@ -3,6 +3,8 @@ package com.acimage.community.service.topic.consts;
 public class KeyConstants {
     public static final String HASHKP_TOPIC = "acimage:topics:id:";
 
+    public static final String HASHKP_TOPIC_HTML="acimage:community:topicHtml:topicId:";
+
 
     public static final String STRINGKP_TOPIC_STAR_COUNT_INCREMENT = "acimage:topics:starCountIncrement:id:";
     public static final String STRINGKP_TOPIC_COMMENT_COUNT_INCREMENT = "acimage:topics:commentCountIncrement:id:";

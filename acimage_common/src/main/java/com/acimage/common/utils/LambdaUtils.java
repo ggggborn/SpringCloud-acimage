@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LambdaUtils {
 
@@ -46,5 +48,14 @@ public class LambdaUtils {
         return StringUtils.firstToLowerCase(capitalizeFieldName);
 
         //field = Class.forName(serializedLambda.getImplClass().replace("/", ".")).getDeclaredField(capitalizeFieldName);
+    }
+
+    @SafeVarargs
+    public static <T> List<String> columnsFrom(SFunction<T, ?>... getFunctionOrIsFunctions) {
+        List<String> columns=new ArrayList<>();
+        for(SFunction<T,?> function:getFunctionOrIsFunctions){
+            columns.add(columnNameOf(function));
+        }
+        return columns;
     }
 }

@@ -1,11 +1,12 @@
 package com.acimage.common.utils;
 
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.model.mq.dto.EsAddDto;
+import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateDto;
 import com.acimage.common.utils.common.ReflectUtils;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,7 +33,7 @@ public class EsUtils {
         if (!indexOperations.exists()) {
             // 创建索引和映射
             indexOperations.create();
-            Document mapping=indexOperations.createMapping(entityType);
+            Document mapping = indexOperations.createMapping(entityType);
             indexOperations.putMapping(mapping);
             log.info("创建索引和映射关系成功 {}", entityType.getSimpleName());
         }
@@ -48,11 +49,11 @@ public class EsUtils {
     }
 
     public void update(EsUpdateDto updateDto) {
-        Object entity = updateDto.getObject();
+        Object entity = updateDto.innerObject();
         if (entity == null) {
             return;
         }
-        List<SFunction<Object, Object>> columns = updateDto.getColumns();
+        List<String> columns = updateDto.getColumns();
         if (CollectionUtil.isEmpty(columns)) {
             return;
         }
@@ -63,9 +64,9 @@ public class EsUtils {
         IndexCoordinates indexCoordinates = indexCoordinatesOf(indexClass);
         Document document = Document.create();
         //根据要更新的字段创建对应map
-        for (SFunction<Object, Object> column : columns) {
-            String key = LambdaUtils.columnNameOf(column);
-            Object value = column.apply(entity);
+        for (String column : columns) {
+            String key = column;
+            Object value = BeanUtil.getFieldValue(entity, column);
             document.put(key, value);
         }
 
@@ -77,13 +78,12 @@ public class EsUtils {
     }
 
     public void save(EsAddDto esAddDto) {
-
-        Object obj= esAddDto.getObject();
+        Object obj = esAddDto.innerObject();
         esTemplate.save(obj);
     }
 
-    public void remove(String id, Class<?> entityType) {
-        esTemplate.delete(id, entityType);
+    public void remove(EsDeleteDto esDeleteDto) {
+        esTemplate.delete(esDeleteDto.getId(), esDeleteDto.getType());
     }
 
     public IndexCoordinates indexCoordinatesOf(Class<?> clz) {

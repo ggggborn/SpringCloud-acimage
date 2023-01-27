@@ -1,6 +1,7 @@
 package com.acimage.common.model.dto;
 
 import com.acimage.common.utils.common.JacksonUtils;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,16 +13,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ObjectWithClass {
-    String json;
-    Class<?> type;
+    private String json;
+    private Class<?> type;
 
-    public void setObject(Object obj){
+    public void from(Object obj){
         this.setJson(JacksonUtils.writeValueAsString(obj));
-        this.setType(obj.getClass());
-
+        this.setType(type);
     }
 
-    public Object getObject(){
+    /**
+     * 千万别写成getObject,否则会导致序列化出错
+     * @return
+     */
+    @JsonIgnore
+    public Object innerObject(){
         return JacksonUtils.convert(json,type);
     }
 }

@@ -3,6 +3,7 @@ package com.acimage.community.service.topic;
 
 import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicAddReqBak2;
+import com.acimage.community.model.request.TopicModifyContentReq;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,5 +24,6 @@ public interface TopicInfoWriteService {
 
     @Transactional(rollbackFor = {Exception.class})
     void removeTopicAndImages(long topicId);
-
+    @Transactional
+    void updateContent(TopicModifyContentReq modifyReq);
 }

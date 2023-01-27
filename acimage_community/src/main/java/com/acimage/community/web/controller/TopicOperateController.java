@@ -35,15 +35,6 @@ public class TopicOperateController {
     @Autowired
     TopicWriteService topicWriteService;
 
-    @Deprecated
-    @PostMapping("/dadsad")
-    public Result<Long> addTopicBak(@Validated @RequestBody TopicAddReqBak2 topicAddReqBak2) {
-        //校验图片数量
-        log.info("user：{} 发表话题 参数:{}", UserContext.getUsername(), topicAddReqBak2);
-        long topicId = topicInfoWriteService.saveTopicAndImages(topicAddReqBak2);
-        return Result.ok(topicId);
-    }
-
 
     @PostMapping
     public Result<Long> addTopic(@Validated @ModelAttribute TopicAddReq topicAddReq,@RequestParam("coverImage") MultipartFile coverImage) {
@@ -66,10 +57,9 @@ public class TopicOperateController {
 
     @PutMapping("/content")
     public Result<?> modifyContent(@Validated @RequestBody TopicModifyContentReq topicModifyContentReq) {
-        topicWriteService.updateContent(topicModifyContentReq);
+        topicInfoWriteService.updateContent(topicModifyContentReq);
         return Result.ok();
     }
-
 
     @DeleteMapping("/{id}")
     public Result<?> deleteTopic(@Positive @PathVariable("id") Long id) {

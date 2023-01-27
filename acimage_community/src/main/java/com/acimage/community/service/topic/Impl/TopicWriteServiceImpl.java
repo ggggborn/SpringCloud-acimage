@@ -85,7 +85,7 @@ public class TopicWriteServiceImpl implements TopicWriteService {
     public void updateContent(TopicModifyContentReq topicModifyContentReq) {
 
         long id = topicModifyContentReq.getId();
-        String content = topicModifyContentReq.getContent();
+        String content = topicModifyContentReq.getHtml();
         log.info("user：{} 修改 话题标题{} content:{}", UserContext.getUsername(), id, content);
 
         LambdaUpdateWrapper<Topic> uw = new LambdaUpdateWrapper<>();
@@ -98,6 +98,22 @@ public class TopicWriteServiceImpl implements TopicWriteService {
         //更新话题活跃时间
         topicSpAttrWriteService.changeActivityTime(id, new Date());
 
+    }
+
+    @Override
+    public void updateContent(long id,String content) {
+
+        log.info("user：{} 修改 话题标题{} content:{}", UserContext.getUsername(), id, content);
+
+        LambdaUpdateWrapper<Topic> uw = new LambdaUpdateWrapper<>();
+        uw.eq(Topic::getId, id)
+                .set(Topic::getContent, content)
+                .set(Topic::getUpdateTime, new Date());
+        topicDao.update(null, uw);
+        //删除缓存
+        redisUtils.delete(KeyConstants.HASHKP_TOPIC + id);
+        //更新话题活跃时间
+        topicSpAttrWriteService.changeActivityTime(id, new Date());
     }
 
 

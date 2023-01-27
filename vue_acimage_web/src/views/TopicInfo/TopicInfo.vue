@@ -39,7 +39,7 @@
 					<div v-dompurify-html="topic.html"></div>
 				</div>
 				<!--话题图片-->
-<!-- 				<div class="images-container">
+				<!-- 				<div class="images-container">
 					<template v-for="(image,index)  in topic.images">
 						<div :key="image.id">
 							<el-image :lazy=" true" :src="$global.trueImageUrl(image.url)" class="image-of-images">
@@ -160,7 +160,7 @@
 			<div slot="footer" class="dialog-footer">
 				<!-- <el-button @click="contentModifyVisible = false">重置</el-button> -->
 				<el-button @click="contentModifyVisible = false">取 消</el-button>
-				<el-button type="primary" @click="onConfirmModifyContent">确 定</el-button>
+				<el-button type="primary" @click="onConfirmModifyHtml">确 定</el-button>
 			</div>
 		</el-dialog>
 
@@ -191,7 +191,7 @@
 		deleteTopic,
 		modifyTopicAndImageDescriptions,
 		queryTopicAndFirstCommentPage,
-		modifyContent,
+		modifyHtml,
 		modifyTitle
 	} from '@/api/topic.js'
 	import { queryCommentPage } from '@/api/comment.js'
@@ -202,7 +202,7 @@
 	import CommonUtils from '@/utils/CommonUtils'
 	import MessageUtils from '@/utils/MessageUtils'
 	export default {
-		name:'TopicInfo',
+		name: 'TopicInfo',
 		components: {
 			MyHeader,
 			UserComment,
@@ -323,9 +323,9 @@
 					}
 				})
 			},
-			onConfirmModifyContent() {
-				let data = { 'id': this.topic.id, 'content': this.$refs['editBoard'].Html };
-				modifyContent(data).then(result => {
+			onConfirmModifyHtml() {
+				let data = { id: this.topic.id, html: this.$refs['editBoard'].Html };
+				modifyHtml(data).then(result => {
 					if (result.code == Code.OK) {
 						MessageUtils.success("修改内容成功", 1);
 						CommonUtils.delayRefresh(0.5);
