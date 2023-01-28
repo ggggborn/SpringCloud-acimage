@@ -1,16 +1,24 @@
 <template>
 	<div>
 		<my-header></my-header>
+		
+		
 		<div class="forum-wrapper">
+			
 			<div class="forum-left-wrapper">
+				
 				<div class="topics-container">
 					
 					<div class="topics-header">
+						
 						<i class="el-icon-chat-round topics-header-icon" style=""></i>
 						<div class="topics-header-title">AC论坛</div>
 						<div style="margin-top:-20px;">
 							<el-divider direction="horizontal"></el-divider>
 						</div>
+					</div>
+					<div style="margin-bottom: 100px;">
+						<topic-card></topic-card>
 					</div>
 					
 					<template v-for="topic in topics">
@@ -68,6 +76,8 @@
 
 <script>
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
+	import TopicCard from '@/components/TopicCard/TopicCard.vue'
+	
 	import { Code } from '@/utils/result.js'
 	import CommonUtils from '@/utils/CommonUtils'
 	import MessageUtils from '@/utils/MessageUtils'
@@ -77,7 +87,8 @@
 	export default {
 		name: 'ForumA',
 		components: {
-			MyHeader
+			MyHeader,
+			TopicCard
 		},
 		data() {
 			return {

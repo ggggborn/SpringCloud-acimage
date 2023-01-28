@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div >
 		<my-header></my-header>
 
 		<div class="publish-main">
@@ -56,28 +56,12 @@
 			<div style="text-align: center;">
 				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
 				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">提交</el-button>
-				<!-- 				<el-row>
-					<el-input placeholder="标题" v-model="addForm.title" maxlength="20" prefix-icon="el-icon-edit-outline"
-						size="samll" style="width:250px;" clearable>
-					</el-input>
-				</el-row>
-				<div class="upload-container">
-					<el-upload action="#" ref="upload" list-type="picture-card"
-						:class="{'upload-plus-disabled':imageList.length>=1}" :on-preview="handlePictureCardPreview"
-						:on-remove="handleRemove" :limit="1" :auto-upload="false" accept="image/*"
-						:on-exceed="exceedLimit" :on-change="handleChange">
-						<i class="el-icon-plus"></i>
-					</el-upload>
-					<el-dialog :visible.sync="dialogVisible">
-						<img width="100%" :src="dialogImageUrl" alt="">
-					</el-dialog>
-				</div>
-				<div class="upload-hint">
-					上传封面，图片大小上限2MB
-				</div> -->
-
 			</div>
+			
+			<!-- <topic-card></topic-card> -->
 
+
+			
 		</div>
 
 	</div>
@@ -86,6 +70,7 @@
 <script>
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
 	import EditBoard from '@/components/EditBoard/EditBoard.vue'
+	
 
 	import { addTopic } from '@/api/topic.js'
 	import { uploadTopicImages } from '@/api/image.js'
