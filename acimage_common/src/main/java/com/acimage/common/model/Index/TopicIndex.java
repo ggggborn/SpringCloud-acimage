@@ -33,7 +33,7 @@ public class TopicIndex {
     @Field(type = FieldType.Keyword, store = true)
     private Long userId;
 
-    @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD, store = true, copyTo = "all")
+    @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD,store = true, copyTo = "all")
     private String content;
 
     @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD, store = true, copyTo = "all")
@@ -47,10 +47,10 @@ public class TopicIndex {
     private String coverImageUrl;
 
     //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis", store = true)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date createTime;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis", store = true)
+    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date updateTime;
 
 

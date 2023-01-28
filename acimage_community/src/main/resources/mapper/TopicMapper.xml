@@ -34,8 +34,6 @@
         <result property="coverImageUrl" column="cover_image_url"/>
         <association property="user" javaType="User" column="user_id"
                      select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
-        <collection property="images" ofType="Image" column="id"
-                    select="com.acimage.community.dao.ImageDao.selectListOrderById"/>
     </resultMap>
 
 

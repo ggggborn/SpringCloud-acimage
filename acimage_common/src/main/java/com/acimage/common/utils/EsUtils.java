@@ -3,6 +3,8 @@ package com.acimage.common.utils;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.acimage.common.model.mq.dto.EsAddDto;
 import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateDto;
@@ -18,6 +20,7 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -33,8 +36,11 @@ public class EsUtils {
         if (!indexOperations.exists()) {
             // 创建索引和映射
             indexOperations.create();
+            indexOperations.refresh();
             Document mapping = indexOperations.createMapping(entityType);
+            indexOperations.refresh();
             indexOperations.putMapping(mapping);
+            indexOperations.refresh();
             log.info("创建索引和映射关系成功 {}", entityType.getSimpleName());
         }
     }
@@ -67,7 +73,12 @@ public class EsUtils {
         for (String column : columns) {
             String key = column;
             Object value = BeanUtil.getFieldValue(entity, column);
-            document.put(key, value);
+            if (value instanceof Date) {
+                String formatDate = DateUtil.format((Date) value, DatePattern.NORM_DATETIME_PATTERN);
+                document.put(key, formatDate);
+            } else {
+                document.put(key, value);
+            }
         }
 
         UpdateQuery updateQuery = UpdateQuery.builder(id)

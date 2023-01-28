@@ -3,6 +3,7 @@
 		<my-header></my-header>
 
 		<div class="publish-main">
+
 			<div class="publish-header">
 				<i class="el-icon-s-promotion publish-header-icon" style=""></i>
 				<div class="publish-header-title">快来分享吧</div>
@@ -10,16 +11,60 @@
 					<el-divider direction="horizontal"></el-divider>
 				</div>
 			</div>
+			<el-form ref="form" label-width="80px" style="width: 600px;" :model="addForm">
+				<el-form-item label="标题">
+					<el-input v-model="addForm.title" prefix-icon="el-icon-edit-outline" maxlength="20"></el-input>
+				</el-form-item>
+				<el-form-item label="分类">
+					<el-select v-model="addForm.categoryId" placeholder="请选择分类">
+						<el-option v-for="item in categoryList" :label="item.label" :value="item.id" :key="item.id">
+						</el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="标签">
+
+					<el-tag v-for="item in chosenTagList" :key="item.id" type="warning" class="hover-pointer mr5"
+						@close="removeTag(item)" closable>
+						{{item.label}}
+					</el-tag>
+					<br />
+					<div>
+						<el-tag v-for="item in tagList" :key="item.id" type="warning" @click="clickTag(item)"
+							class="hover-pointer mr5">
+							{{item.label}}
+						</el-tag>
+					</div>
+				</el-form-item>
+				<el-form-item label="封面">
+					<div class="upload-container">
+						<el-upload action="#" ref="upload" list-type="picture-card"
+							:class="{'upload-plus-disabled':imageList.length>=1}" :on-preview="handlePictureCardPreview"
+							:on-remove="handleRemove" :limit="1" :auto-upload="false" accept="image/*"
+							:on-exceed="exceedLimit" :on-change="handleChange">
+							<i class="el-icon-plus"></i>
+						</el-upload>
+						<el-dialog :visible.sync="dialogVisible">
+							<img width="100%" :src="dialogImageUrl" alt="">
+						</el-dialog>
+					</div>
+					<div class="upload-hint">
+						图片大小上限2MB
+					</div>
+				</el-form-item>
+			</el-form>
+
 			<div style="text-align: center;">
-				<el-row>
-					<el-input placeholder="标题" v-model="title" maxlength="20" prefix-icon="el-icon-edit-outline"
+				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
+				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">提交</el-button>
+				<!-- 				<el-row>
+					<el-input placeholder="标题" v-model="addForm.title" maxlength="20" prefix-icon="el-icon-edit-outline"
 						size="samll" style="width:250px;" clearable>
 					</el-input>
 				</el-row>
 				<div class="upload-container">
 					<el-upload action="#" ref="upload" list-type="picture-card"
-						:class="{'upload-plus-disabled':imageList.length>=5}" :on-preview="handlePictureCardPreview"
-						:on-remove="handleRemove" :limit="5" :multiple="true" :auto-upload="false" accept="image/*"
+						:class="{'upload-plus-disabled':imageList.length>=1}" :on-preview="handlePictureCardPreview"
+						:on-remove="handleRemove" :limit="1" :auto-upload="false" accept="image/*"
 						:on-exceed="exceedLimit" :on-change="handleChange">
 						<i class="el-icon-plus"></i>
 					</el-upload>
@@ -28,10 +73,9 @@
 					</el-dialog>
 				</div>
 				<div class="upload-hint">
-					需上传1-5张图片，单张图片大小上限10MB
-				</div>
-				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
-				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">确认分享</el-button>
+					上传封面，图片大小上限2MB
+				</div> -->
+
 			</div>
 
 		</div>
@@ -50,6 +94,8 @@
 	import MessageUtils from '@/utils/MessageUtils'
 	import StringUtils from '@/utils/StringUtils'
 
+	import { queryAllCategories } from "@/api/category.js"
+
 	export default {
 		name: 'PublishTopic',
 		components: {
@@ -60,10 +106,36 @@
 			return {
 				dialogImageUrl: '',
 				dialogVisible: false,
-				title: '',
-				content: '',
+				addForm: {
+					title: '',
+					categoryId: 1,
+					coverImage: {},
+				},
 				imageList: [],
+				categoryList: [{
+					id: 1,
+					label: '无'
+				}],
+				tagList: [{
+						id: 1,
+						label: '冒险'
+					},
+					{
+						id: 2,
+						label: '娱乐'
+					},
+				],
+				chosenTagList: [],
+
 			};
+		},
+		created() {
+			let _this = this;
+			queryAllCategories().then(res => {
+				if (res.code == Code.OK) {
+					_this.categoryList = res.data;
+				}
+			})
 		},
 		methods: {
 			test() {
@@ -83,19 +155,41 @@
 			exceedLimit() {
 				MessageUtils.notice('最多上传5张图');
 			},
+			clickTag(tag) {
+
+				//判断重复
+				for (let item of this.chosenTagList) {
+					if (tag.id == item.id) {
+						return;
+					}
+				}
+				this.chosenTagList.push(tag);
+				console.log(tag);
+				console.log(this.chosenTagList)
+			},
+			removeTag(tag) {
+				for (let i = 0; i < this.chosenTagList.length; i++) {
+					let item = this.chosenTagList[i];
+					if (tag.id == item.id) {
+						this.chosenTagList.splice(i, 1);
+						return;
+					}
+				}
+
+			},
 			validateForm() {
 				if (this.imageList.length == 0) {
 					MessageUtils.notice("请选择至少一张图片");
 					return false;
 				}
 
-				// if (this.title.length < 4) {
-				// 	MessageUtils.notice("标题字数4以上");
-				// 	return false;
-				// } else if (this.title.length > 30) {
-				// 	MessageUtils.notice("标题字数30以内");
-				// 	return false;
-				// }
+				if (this.addForm.title.length < 4) {
+					MessageUtils.notice("标题字数4以上");
+					return false;
+				} else if (this.addForm.title.length > 30) {
+					MessageUtils.notice("标题字数30以内");
+					return false;
+				}
 
 				let text = this.$refs['editBoard'].Html.toString();
 				// text.replace(new RegExp("</?[^>]+>", "gm"), "");
@@ -118,15 +212,16 @@
 				}
 				let addTopicForm = new FormData();
 				//加图片加入到表单数据中
-				for (let image of this.imageList) {
-					addTopicForm.append("coverImage", image.raw);
-				}
-				addTopicForm.append("html", this.$refs['editBoard'].Html);
-				addTopicForm.append("title", this.title);
 
-				let addTopicReq = {};
-				addTopicReq["html"] = this.$refs['editBoard'].Html;
-				addTopicReq["title"] = this.title;
+				addTopicForm.append("coverImage", this.imageList[0].raw);
+				addTopicForm.append("html", this.$refs['editBoard'].Html);
+				addTopicForm.append("title", this.addFrom.title);
+				addTopicForm.append("categoryId", this.addFrom.categoryId);
+
+
+				// let addTopicReq = {};
+				// addTopicReq["html"] = this.$refs['editBoard'].Html;
+				// addTopicReq["title"] = this.title;
 
 				let _this = this;
 				addTopic(addTopicForm).then(res => {

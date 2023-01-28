@@ -1,6 +1,6 @@
-body{
-	margin:0px;
-	padding:0px;
+body {
+	margin: 0px;
+	padding: 0px;
 }
 
 /* 隐藏上传图片时的+号 */
@@ -8,15 +8,19 @@ body{
 	display: none;
 }
 
-.no-underline{
+.no-underline {
 	text-decoration: none;
 }
 
 /* 改变router-link颜色变化 */
-.router-link-item{
-	color:#666666;
+.router-link-item {
+	color: #666666;
 }
 
-.router-link-item:hover{
-	color:#0074A0;
+.router-link-item:hover {
+	color: #0074A0;
+}
+
+.hover-pointer:hover {
+	cursor: pointer
 }

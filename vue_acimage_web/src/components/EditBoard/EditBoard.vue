@@ -33,7 +33,7 @@
 			myStyle() {
 				return {
 					width: this.width,
-					marginLeft: this.margin
+					marginLeft: this.margin,
 				}
 			}
 		},
@@ -42,6 +42,7 @@
 				options: {
 					// plugins: 'lists link image table code help wordcount',
 					plugins: 'lists link code wordcount emoticons image table',
+					height:600,
 					language: 'zh-Hans',
 					emoticons_database_url: '../../../tinymce/plugins/emoticons/js/emojis.js',
 					toolbar: [

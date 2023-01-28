@@ -2,7 +2,8 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-select v-model="query.roleId" placeholder="角色" class="handle-select mr10" @change="getRoleAuthorizeList">
+				<el-select v-model="query.roleId" placeholder="角色" class="handle-select mr10"
+					@change="getRoleAuthorizeList">
 					<el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id">
 					</el-option>
 				</el-select>
@@ -65,7 +66,7 @@
 
 
 	//查询角色权限
-	let roleAuthorizeList = ref([]);
+	let roleAuthorizeList: any = ref([]);
 	let query = reactive({
 		roleId: -1,
 	})
@@ -97,9 +98,9 @@
 	}
 	const treeRef = ref < InstanceType < typeof ElTree >> ()
 	const handleCheck = (node: Permission) => {
-		if(node.isModule){
+		if (node.isModule) {
 			treeRef.value!.setCheckedKeys(checkedKeys.value, false);
-			MessageUtils.notice("不可操作模块",1);
+			MessageUtils.notice("不可操作模块", 1);
 			return false;
 		}
 		MessageUtils.confirm("是否改变该权限").then(() => {
