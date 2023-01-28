@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 public class EsAddDto extends ObjectWithClass {
     public EsAddDto(Object obj){
-        this.from(obj);
+        this.with(obj);
     }
 
 }

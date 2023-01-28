@@ -3,6 +3,10 @@ package com.acimage.common.model.Index;
 
 import cn.hutool.core.date.DatePattern;
 import com.acimage.common.global.consts.EsConstants;
+import com.acimage.common.model.domain.community.Tag;
+import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.utils.common.BeanUtils;
+import com.acimage.common.utils.common.ListUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +19,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -33,7 +38,7 @@ public class TopicIndex {
     @Field(type = FieldType.Keyword, store = true)
     private Long userId;
 
-    @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD,store = true, copyTo = "all")
+    @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD, store = true, copyTo = "all")
     private String content;
 
     @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD, store = true, copyTo = "all")
@@ -46,12 +51,22 @@ public class TopicIndex {
     @Field(store = true, index = false, type = FieldType.Keyword)
     private String coverImageUrl;
 
-    //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date createTime;
 
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date updateTime;
+
+    @Field(type = FieldType.Keyword, store = true)
+    List<Integer> tagIds;
+    @Field(type = FieldType.Keyword, store = true)
+    Integer categoryId;
+
+    public static TopicIndex from(Topic topic) {
+        TopicIndex topicIndex = BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
+        topicIndex.setTagIds(ListUtils.extract(Tag::getId, topic.getTags()));
+        return topicIndex;
+    }
 
 
 }

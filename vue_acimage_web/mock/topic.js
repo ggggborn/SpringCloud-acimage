@@ -35,6 +35,7 @@ Mock.mock('/api/community/topics/recommend', 'get', {
 	'data|2': [{
 			id: '@integer()',
 			'title|5': '@cname()',
+			commentCount:123,
 			starCount: 888,
 			pageView: 88888,
 			createTime: '@date()',
@@ -47,11 +48,12 @@ Mock.mock('/api/community/topics/recommend', 'get', {
 		{
 			id: '@integer()',
 			'title|15': '@cname()',
+			commentCount:123,
 			starCount: 888,
 			pageView: 88888,
 			createTime: '2022-2-22 22:22:22',
 			user: {
-				username: '@cname()',
+				username: '刚刚刚刚刚刚刚刚',
 				photoUrl: ''
 			},
 			coverImageUrl: 'topicImage/2022/12/02/1573240094587424768',

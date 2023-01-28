@@ -8,7 +8,7 @@ import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.community.model.request.TopicAddReq;
-import com.acimage.community.model.request.TopicModifyContentReq;
+import com.acimage.community.model.request.TopicModifyHtmlReq;
 import com.acimage.community.service.topic.TopicInfoWriteService;
 import com.acimage.community.service.topic.TopicWriteService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,34 +36,38 @@ public class TopicOperateController {
 
 
     @PostMapping
-    public Result<Long> addTopic(@Validated @ModelAttribute TopicAddReq topicAddReq,@RequestParam("coverImage") MultipartFile coverImage) {
-        log.info("用户：{} 请求新增话题{}", UserContext.getUsername(),topicAddReq);
+    public Result<Long> addTopic(@Validated @ModelAttribute TopicAddReq topicAddReq, @RequestParam("coverImage") MultipartFile coverImage) {
+        log.info("用户：{} 请求新增话题{}", UserContext.getUsername(), topicAddReq);
         String format = FileUtils.formatOf(coverImage);
         if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
-            return Result.fail("图片格式需为jpg，jpeg，png");
+            return Result.fail("图片格式需为" + FileFormat.ALLOWED_IMAGE_FORMAT);
         }
-        log.info("用户：{} 话题: 新增话题{}", UserContext.getUsername(),topicAddReq);
-        long topicId=topicInfoWriteService.saveTopicAndCoverImage(topicAddReq,coverImage);
+        Integer[] tagIds = topicAddReq.getTagIds();
+        if (tagIds.length > Topic.TAG_MAX || tagIds.length < Topic.TAG_MIN) {
+            return Result.fail(Topic.TAG_VALIDATION_MSG);
+        }
+        log.info("用户：{} 话题: 新增话题{}", UserContext.getUsername(), topicAddReq);
+        long topicId = topicInfoWriteService.saveTopicInfo(topicAddReq, coverImage);
         return Result.ok(topicId);
     }
 
     @PutMapping("/title/{id}/{title}")
     public Result<?> modifyTitle(@Positive @PathVariable Long id,
-                                 @PathVariable @Size(min = Topic.TITLE_MIN, max = Topic.TITLE_MAX, message = Topic.TITLE_VALIDATION_MSG)  String title) {
-        topicWriteService.updateTitle(id,title);
+                                 @PathVariable @Size(min = Topic.TITLE_MIN, max = Topic.TITLE_MAX, message = Topic.TITLE_VALIDATION_MSG) String title) {
+        topicWriteService.updateTitle(id, title);
         return Result.ok();
     }
 
     @PutMapping("/content")
-    public Result<?> modifyContent(@Validated @RequestBody TopicModifyContentReq topicModifyContentReq) {
-        topicInfoWriteService.updateContent(topicModifyContentReq);
+    public Result<?> modifyHtml(@Validated @RequestBody TopicModifyHtmlReq topicModifyHtmlReq) {
+        topicInfoWriteService.updateHtml(topicModifyHtmlReq);
         return Result.ok();
     }
 
     @DeleteMapping("/{id}")
     public Result<?> deleteTopic(@Positive @PathVariable("id") Long id) {
         log.info("删除了话题：{}", id);
-        topicInfoWriteService.removeTopicAndImages(id);
+        topicInfoWriteService.removeTopicInfo(id);
         return Result.ok();
     }
 

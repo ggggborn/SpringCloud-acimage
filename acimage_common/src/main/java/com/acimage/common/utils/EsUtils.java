@@ -71,13 +71,12 @@ public class EsUtils {
         Document document = Document.create();
         //根据要更新的字段创建对应map
         for (String column : columns) {
-            String key = column;
             Object value = BeanUtil.getFieldValue(entity, column);
             if (value instanceof Date) {
                 String formatDate = DateUtil.format((Date) value, DatePattern.NORM_DATETIME_PATTERN);
-                document.put(key, formatDate);
+                document.put(column, formatDate);
             } else {
-                document.put(key, value);
+                document.put(column, value);
             }
         }
 

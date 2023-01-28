@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
-public class TopicModifyContentReq {
+public class TopicModifyHtmlReq {
     @Positive
     Long id;
     @Size(min = TopicHtml.HTML_MIN, max = TopicHtml.HTML_MAX, message = TopicHtml.HTML_VALIDATION_MSG)

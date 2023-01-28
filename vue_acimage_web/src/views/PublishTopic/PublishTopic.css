@@ -35,10 +35,12 @@
 }
 
 .upload-container{
-	width: 148px;
+	width: 320px;
+	height: 148px;
 	border:2px solid skyblue;
 	border-radius: 5px;
 	margin-top: 20px;
+	text-align: center;
 }
 
 .upload-hint{

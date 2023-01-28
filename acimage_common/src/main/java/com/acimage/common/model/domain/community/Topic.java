@@ -31,6 +31,11 @@ public class Topic {
     public static int IMAGES_AMOUNT_MIN=1;
     public static final String IMAGE_VALIDATION_MSG= "图片数量在"+IMAGES_AMOUNT_MIN+"-"+IMAGES_AMOUNT_MAX+"之间";
 
+    public static int TAG_MAX=5;
+    public static int TAG_MIN=1;
+    public static final String TAG_VALIDATION_MSG= "标签数量在"+TAG_MIN+"-"+TAG_MAX+"之间";
+
+
     @TableId(type= IdType.INPUT)
     private Long id;
     private Long userId;
@@ -40,6 +45,7 @@ public class Topic {
     private Integer pageView;
     private Integer commentCount;
     private String coverImageUrl;
+    private Integer categoryId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     Date activityTime;
@@ -53,6 +59,10 @@ public class Topic {
 
     @TableField(exist = false)
     User user;
+    @TableField(exist = false)
+    Category category;
+    @TableField(exist = false)
+    List<Tag> tags;
     @TableField(exist = false)
     List<Image> images;
     @TableField(exist = false)

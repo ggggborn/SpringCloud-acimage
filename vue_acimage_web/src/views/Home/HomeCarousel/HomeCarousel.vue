@@ -1,10 +1,10 @@
 <template>
 	<div class="carousel-container">
 		<!-- 图片走马灯 -->
-		<el-carousel trigger="click" height="310px" style="border-radius: 5px;" @change="onCarouselChange">
+		<el-carousel trigger="click" height="350px" style="border-radius: 5px;" @change="onCarouselChange">
 			<el-carousel-item v-for="image in images" :key="image.id">
 				<el-image :src="$global.trueImageUrl(image.url)" fit="cover"
-					style="width:500px;height: 310px;border-radius:5px;">
+					style="width:500px;height: 350px;border-radius:5px;">
 				</el-image>
 			</el-carousel-item>
 		</el-carousel>

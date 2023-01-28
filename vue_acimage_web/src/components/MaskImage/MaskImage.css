@@ -1,52 +1,68 @@
-.mask-image-container{
-	width:250px;
-	height: 150px;
-	margin-left:10px;
-	margin-bottom:5px;
+.mask-image-container {
+	width: 250px;
+	height: 175px;
+	margin-left: 10px;
 	position: relative;
-	display:inline-block;
+	display: inline-block;
 	border-radius: 5px;
 	overflow: hidden;
 }
 
-.image-container{
-	width:250px;
+.image-container {
+	width: 250px;
 	height: 150px;
 	border-radius: 5px;
 	overflow: hidden;
 }
 
-.image-mask{
-	width:250px;
+.image-mask {
+	width: 250px;
 	height: 150px;
-
 	position: absolute;
-	top:0px;
-	left:0px;
+	top: 0px;
+	left: 0px;
 	border-radius: 5px;
 	overflow: hidden;
-	background-color: rgba(169,165,164,0.4);
+	background-color: rgba(169, 165, 164, 0.4);
 	z-index: 11;
 	color: white;
 	opacity: 0;
 }
 
-.image-info{
-	width:230px;
-	margin-left:10px;
-	margin-right:10px;
-	margin-top:10px;
-}
-.image-info-bottom{
-	
-	position:absolute;
-	bottom:10px;
-	
-	font-family:'Times New Roman', Times, serif; 
-	font-size:16px;
+.image-mask:hover {
+	opacity: 0.9;
+	transition: opacity 0.4s;
 }
 
-.image-mask:hover{
+/* .opacity-gradient{
+	opacity: 0;
+} */
+
+/* .opacity-gradient:hover {
 	opacity: 0.9;
-	transition: opacity 0.4s; 
+	transition: opacity 0.4s;
+} */
+
+.image-info {
+	width: 230px;
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+.image-info-bottom {
+
+	position: absolute;
+	bottom: 10px;
+
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 16px;
+}
+
+
+.bottom-title{
+	color: #555555;
+	font-size: 14px;
+	display:inline-block;
+	vertical-align: top;
 }

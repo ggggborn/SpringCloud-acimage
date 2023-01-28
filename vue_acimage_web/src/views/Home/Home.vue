@@ -7,13 +7,18 @@
 			</div>
 
 			<div class="mask-images-container">
+
 				<template v-for="topic in recommendTopics">
-					<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" :underline="false">
-						<mask-image :image-url="$global.trueImageUrl(topic.coverImageUrl)" :title="topic.title"
-							:star-count="topic.starCount" :page-view="topic.pageView" :username="topic.user.username">
-						</mask-image>
-					</router-link>
+					<div :key="topic.id" >
+						<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" :underline="false">
+							<mask-image :image-url="$global.trueImageUrl(topic.coverImageUrl)" :title="topic.title"
+								:star-count="topic.starCount" :page-view="topic.pageView" :commentCount="topic.commentCount"
+								:username="topic.user.username">
+							</mask-image>
+						</router-link>
+					</div>
 				</template>
+
 			</div>
 
 			<div class="hot-container">
@@ -69,18 +74,18 @@
 		data() {
 			return {
 				recentHotTopics: [
-				// 	{
-				// 	id: 0,
-				// 	title: '加载中...',
-				// 	starCount: 888,
-				// 	pageView: 88888,
-				// 	createTime: '2022-2-22 22:22:22',
-				// 	user: {
-				// 		username: '加载中...',
-				// 		photoUrl: ''
-				// 	},
-				// 	coverImageUrl: '',
-				// }, 
+					// 	{
+					// 	id: 0,
+					// 	title: '加载中...',
+					// 	starCount: 888,
+					// 	pageView: 88888,
+					// 	createTime: '2022-2-22 22:22:22',
+					// 	user: {
+					// 		username: '加载中...',
+					// 		photoUrl: ''
+					// 	},
+					// 	coverImageUrl: '',
+					// }, 
 				],
 				recommendTopics: [
 					// 	{

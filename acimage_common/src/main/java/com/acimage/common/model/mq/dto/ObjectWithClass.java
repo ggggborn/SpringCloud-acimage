@@ -1,7 +1,6 @@
 package com.acimage.common.model.mq.dto;
 
 import com.acimage.common.utils.common.JacksonUtils;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,7 @@ public class ObjectWithClass {
     private String json;
     private Class<?> type;
 
-    public void from(Object obj){
+    public void with(Object obj){
         this.setJson(JacksonUtils.writeValueAsString(obj));
         this.setType(obj.getClass());
     }

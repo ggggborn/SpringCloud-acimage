@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 import jwtDecode from "jwt-decode";
 import { queryAllCategories } from "@/api/category.js"
+import { queryAllTags } from "@/api/tag.js"
 import { Code } from '@/utils/result.js'
 
 export default new Vuex.Store({
@@ -17,6 +18,7 @@ export default new Vuex.Store({
 		photoUrl: '',
 		token: '',
 		categoryList: [],
+		tagList: [],
 	},
 	getters: {
 		truePhotoUrl(state) {
@@ -25,19 +27,7 @@ export default new Vuex.Store({
 			}
 			return Config.domainOfImages + 'userPhoto/default.jpeg';
 		},
-		getCategoryList(state) {
-			if (CommonUtils.isEmpty(state.categoryList)) {
-				queryAllCategories().then(res => {
-					if (res.code == Code.OK) {
-						state.categoryList = res.data;
-						
-					}
-				})
-				return state.categoryList;
-			} else {
-				return state.categoryList;
-			}
-		}
+
 	},
 	//里面定义方法，操作state方发
 	mutations: {
@@ -52,13 +42,14 @@ export default new Vuex.Store({
 				state.username = '';
 				state.photoUrl = '';
 			}
-		},
-		getCategoryList(state) {
-			if (CommonUtils.isEmpty(state.categoryList)) {
-				return state.categoryList;
-			} else {
-				return state.categoryList;
-			}
+			queryAllCategories().then(res => {
+				if (res.code == Code.OK) {
+					state.categoryList = res.data;
+				}
+			}),
+			queryAllTags().then(res => {
+				state.tagList = res.data;
+			});
 		},
 		setToken(state, token) {
 			localStorage.setItem("token", token);

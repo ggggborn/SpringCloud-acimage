@@ -3,6 +3,7 @@ package com.acimage.community.service.topic.Impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.model.Index.TopicIndex;
+import com.acimage.common.model.domain.community.Tag;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.result.Result;
@@ -11,17 +12,20 @@ import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.FileUtils;
+import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.community.global.consts.StorePrefixConst;
 import com.acimage.community.listener.event.PublishTopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicAddReqBak2;
-import com.acimage.community.model.request.TopicModifyContentReq;
+import com.acimage.community.model.request.TopicModifyHtmlReq;
 import com.acimage.community.mq.producer.HashImageMqProducer;
 import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
 import com.acimage.community.mq.producer.SyncEsMqProducer;
 import com.acimage.community.service.comment.CommentWriteService;
 import com.acimage.community.service.star.StarWriteService;
+import com.acimage.community.service.tag.TagQueryService;
+import com.acimage.community.service.tag.TagTopicWriteService;
 import com.acimage.community.service.topic.*;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.exception.BusinessException;
@@ -54,6 +58,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     @Autowired
     TopicWriteService topicWriteService;
     @Autowired
+    TagQueryService tagQueryService;
+    @Autowired
     ImageClient imageClient;
     @Autowired
     HashImageMqProducer hashImageMqProducer;
@@ -65,6 +71,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     UserCsWriteService userCsWriteService;
     @Autowired
     TopicHtmlWriteService topicHtmlWriteService;
+    @Autowired
+    TagTopicWriteService tagTopicWriteService;
     @Autowired
     MinioUtils minioUtils;
 
@@ -104,8 +112,6 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //发送消息告诉image-service对图片哈希处理
         hashImageMqProducer.sendHashImagesMessage(topicId);
         //同步数据到es
-
-
         PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
         applicationContext.publishEvent(publishTopicEvent);
         return topicId;
@@ -142,13 +148,11 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         topicSpAttrWriteService.changeActivityTime(topicId, now);
         //发送消息告诉image-service对图片哈希处理
         hashImageMqProducer.sendHashImagesMessage(topicId);
-
-
         return topicId;
     }
 
     @Override
-    public long saveTopicAndCoverImage(TopicAddReq topicAddReq, MultipartFile coverImage) {
+    public long saveTopicInfo(TopicAddReq topicAddReq, MultipartFile coverImage) {
         //生成id
         long topicId = IdGenerator.getSnowflakeNextId();
         Date now = new Date();
@@ -172,12 +176,21 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .updateTime(now)
                 .activityTime(now)
                 .userId(UserContext.getUserId())
+                .categoryId(topicAddReq.getCategoryId())
                 .build();
+
+        //检查标签是否存在
+        List<Integer> noRepeatTagIds = ListUtils.removeRepeat(Arrays.asList(topicAddReq.getTagIds()));
+        tagQueryService.checkAndListTags(noRepeatTagIds);
 
         //保存topic
         topicWriteService.save(topic);
         //保存话题html
         topicHtmlWriteService.save(topicId, topicAddReq.getHtml());
+        //保存标签
+
+        tagTopicWriteService.save(topicId, noRepeatTagIds);
+
         //更新最新活跃时间
         topicSpAttrWriteService.changeActivityTime(topicId, now);
         //获取话题内的站内图片链接
@@ -190,9 +203,10 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //发送到mq，用于以图识图
         hashImageMqProducer.sendHashImagesMessage(updateDto);
         //同步到es
-        TopicIndex topicIndex = BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
+        TopicIndex topicIndex = TopicIndex.from(topic);
+        topicIndex.setTagIds(noRepeatTagIds);
         //设置完整的content
-        topicIndex.setContent(SensitiveWordUtils.filter(content));
+        topicIndex.setContent(content);
         syncEsMqProducer.sendAddMessage(topicIndex);
 
         PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
@@ -201,7 +215,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     }
 
     @Override
-    public void removeTopicAndImages(long topicId) {
+    public void removeTopicInfo(long topicId) {
         Topic topic = topicQueryService.getTopic(topicId);
         if (topic == null) {
             log.error("话题不存在 话题:{} 用户:{}", topicId, UserContext.getUsername());
@@ -220,6 +234,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //删除话题
         topicHtmlWriteService.remove(topicId);
         topicWriteService.remove(topicId);
+        //删除标签
+        tagTopicWriteService.remove(topicId);
         //删除相关属性
         topicSpAttrWriteService.removeAttributes(topicId);
         //更新用户统计数据
@@ -231,7 +247,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     }
 
     @Override
-    public void updateContent(TopicModifyContentReq modifyReq) {
+    public void updateHtml(TopicModifyHtmlReq modifyReq) {
         long topicId = modifyReq.getId();
         Topic topic = topicQueryService.getTopic(topicId);
         if (topic == null) {
@@ -258,7 +274,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .content(content)
                 .id(topicId)
                 .build();
-        List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getContent,TopicIndex::getUpdateTime);
+        List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getContent, TopicIndex::getUpdateTime);
         syncEsMqProducer.sendUpdateMessage(topicIndex, columns);
 
     }

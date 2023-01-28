@@ -11,17 +11,17 @@
 					<el-divider direction="horizontal"></el-divider>
 				</div>
 			</div>
-			<el-form ref="form" label-width="80px" style="width: 600px;" :model="addForm">
+			<el-form ref="form" label-width="160px" style="width: 600px;" :model="addForm">
 				<el-form-item label="标题">
-					<el-input v-model="addForm.title" prefix-icon="el-icon-edit-outline" maxlength="20"></el-input>
+					<el-input v-model="addForm.title" prefix-icon="el-icon-edit-outline" maxlength="30"></el-input>
 				</el-form-item>
 				<el-form-item label="分类">
 					<el-select v-model="addForm.categoryId" placeholder="请选择分类">
-						<el-option v-for="item in categoryList" :label="item.label" :value="item.id" :key="item.id">
+						<el-option v-for="item in $store.state.categoryList" :label="item.label" :value="item.id" :key="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="标签">
+				<el-form-item label="标签(选1-5个)">
 
 					<el-tag v-for="item in chosenTagList" :key="item.id" type="warning" class="hover-pointer mr5"
 						@close="removeTag(item)" closable>
@@ -29,7 +29,7 @@
 					</el-tag>
 					<br />
 					<div>
-						<el-tag v-for="item in tagList" :key="item.id" type="warning" @click="clickTag(item)"
+						<el-tag v-for="item in $store.state.tagList" :key="item.id" type="warning" @click="clickTag(item)"
 							class="hover-pointer mr5">
 							{{item.label}}
 						</el-tag>
@@ -95,6 +95,7 @@
 	import StringUtils from '@/utils/StringUtils'
 
 	import { queryAllCategories } from "@/api/category.js"
+	import { queryAllTags } from "@/api/tag.js"
 
 	export default {
 		name: 'PublishTopic',
@@ -112,30 +113,33 @@
 					coverImage: {},
 				},
 				imageList: [],
-				categoryList: [{
-					id: 1,
-					label: '无'
-				}],
-				tagList: [{
-						id: 1,
-						label: '冒险'
-					},
-					{
-						id: 2,
-						label: '娱乐'
-					},
-				],
+				// categoryList: [{
+				// 	id: 1,
+				// 	label: '无'
+				// }],
+				// tagList: [{
+				// 		id: 1,
+				// 		label: '冒险'
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		label: '娱乐'
+				// 	},
+				// ],
 				chosenTagList: [],
 
 			};
 		},
 		created() {
-			let _this = this;
-			queryAllCategories().then(res => {
-				if (res.code == Code.OK) {
-					_this.categoryList = res.data;
-				}
-			})
+			// let _this = this;
+			// queryAllCategories().then(res => {
+			// 	if (res.code == Code.OK) {
+			// 		_this.categoryList = res.data;
+			// 	}
+			// })
+			// queryAllTags().then(res => {
+			// 	_this.tagList = res.data;
+			// });
 		},
 		methods: {
 			test() {
@@ -215,8 +219,11 @@
 
 				addTopicForm.append("coverImage", this.imageList[0].raw);
 				addTopicForm.append("html", this.$refs['editBoard'].Html);
-				addTopicForm.append("title", this.addFrom.title);
-				addTopicForm.append("categoryId", this.addFrom.categoryId);
+				addTopicForm.append("title", this.addForm.title);
+				addTopicForm.append("categoryId", this.addForm.categoryId);
+				for (let tag of this.chosenTagList) {
+					addTopicForm.append("tagIds", tag.id);
+				}
 
 
 				// let addTopicReq = {};
@@ -231,20 +238,6 @@
 						setTimeout(() => { _this.$router.push({ path: url }); }, 500);
 					}
 				})
-				// uploadTopicImages(reqUploadImageData).then(result => {
-				// 	if (result.code == Code.OK) {
-				// 		let serviceToken = result.data;
-				// 		addTopicReq["serviceToken"]=serviceToken;
-
-				// 		addTopic(addTopicReq).then(result => {
-				// 			if (result.code == Code.OK) {
-				// 				MessageUtils.success("发表成功", 1);
-				// 				let url = '/topic/' + result.data;
-				// 				setTimeout(() => { _this.$router.push({ path: url }); }, 500);
-				// 			}
-				// 		})
-				// 	}
-				// });
 
 			}
 

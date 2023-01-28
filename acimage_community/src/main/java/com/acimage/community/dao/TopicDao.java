@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface TopicDao extends BaseMapper<Topic> {
 
-    @Update("update tb_topic set title=#{title},content=#{content},update_time=now() where id=#{id}")
+    @Update("update tb_topic set title=#{title},content=#{content},update_time=now() where id=#{id} and deleted=0")
     Integer updateTopic(@Param("id") long id, @Param("title") String title, @Param("content") String content);
 
     Integer updatePvByIncrement(@Param("idAndIncrements") List<Pair<Long, Integer>> idAndIncrements);
@@ -31,7 +31,7 @@ public interface TopicDao extends BaseMapper<Topic> {
 
     List<Topic> selectTopicsWithUserImagesOrderByCreateTime(@Param("userId") long userId, @Param("startIndex") int startIndex, @Param("recordNumber") int recordNumber);
     List<Topic> selectTopicsWithUserBasicByIds(@Param("ids") List<Long> ids);
-    @Select("select count(*) from tb_topic where user_id=#{userId}")
+    @Select("select count(*) from tb_topic where user_id=#{userId} and deleted=0")
     Integer countTopics(@Param("userId") long userId);
 
 }

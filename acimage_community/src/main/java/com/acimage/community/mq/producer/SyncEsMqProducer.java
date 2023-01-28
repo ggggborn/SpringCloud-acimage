@@ -5,12 +5,10 @@ import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateDto;
 import com.acimage.community.mq.config.SyncEsMqConfig;
 import com.acimage.community.mq.consts.ExchangeConstants;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -26,7 +24,7 @@ public class SyncEsMqProducer {
 
     public void sendUpdateMessage(Object entity, List<String> columns) {
         EsUpdateDto esUpdateDto = new EsUpdateDto();
-        esUpdateDto.from(entity);
+        esUpdateDto.with(entity);
         esUpdateDto.setColumns(columns);
         rabbitTemplate.convertAndSend(ExchangeConstants.SYNC_ES_EXCHANGE, SyncEsMqConfig.SYNC_ES_ROUTE, esUpdateDto);
     }

@@ -16,7 +16,8 @@ public class HtmlUtils {
 
     public static String html2Text(String strHtml) {
         String content = strHtml.replaceAll("</?[^>]+>", ""); //剔出<html>的标签
-        content = content.replaceAll("(\\s|\t|\r|\n|&nbsp;)+", " ");;//去除字符串中的空格,回车,换行符,制表符
+        content = content.replaceAll("(\\s|\t|\r|\n)+", " ");//去除字符串中的空格,回车,换行符,制表符
+        content = content.replaceAll("(&[a-z]{2,6}+;)+", " ");//替换掉如&nbsp;之类的符号
         return content;
     }
 

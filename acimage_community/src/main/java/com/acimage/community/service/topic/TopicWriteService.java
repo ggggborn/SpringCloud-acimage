@@ -1,7 +1,7 @@
 package com.acimage.community.service.topic;
 
 import com.acimage.common.model.domain.community.Topic;
-import com.acimage.community.model.request.TopicModifyContentReq;
+import com.acimage.community.model.request.TopicModifyHtmlReq;
 
 public interface TopicWriteService {
     void save(Topic topic);
@@ -10,7 +10,7 @@ public interface TopicWriteService {
 
     void updateTitle(long id, String title);
 
-    void updateContent(TopicModifyContentReq topicModifyContentReq);
+    void updateContent(TopicModifyHtmlReq topicModifyHtmlReq);
 
     void updateContent(long id, String content);
 }
