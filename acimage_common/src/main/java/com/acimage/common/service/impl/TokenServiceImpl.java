@@ -29,7 +29,7 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public void record(String token,String ip){
-        long EXPIRE_DAYS=2L;
+        long EXPIRE_DAYS=10L;
         redisUtils.setAsString(STRINGKP_TOKEN +token,ip,EXPIRE_DAYS, TimeUnit.DAYS);
     }
 
