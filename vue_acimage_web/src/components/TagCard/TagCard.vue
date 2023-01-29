@@ -6,11 +6,8 @@
 				<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
 			</div>
 			<div class="tags-container">
-				<el-tag class="hover-pointer" type="warning" @click="clickTag(10086)">动画话</el-tag>
-				<el-tag class="hover-border-light hover-pointer" type="warning">动画话</el-tag>
-				<el-tag class="hover-border-light hover-pointer" type="warning">动画话</el-tag>
-				<el-tag class="hover-border-light hover-pointer" type="warning">动画话</el-tag>
-				<el-tag class="hover-border-light hover-pointer" type="warning">动画话</el-tag>
+				<el-tag v-for="item in $store.state.tagList" @click="clickTag(item.id)" class="hover-pointer"
+					:type="$global.buttonType(item.id)" :key="item.id">{{item.label}}</el-tag>
 			</div>
 		</el-card>
 	</div>
@@ -23,11 +20,6 @@
 		props: {
 			clickTag: {
 				type: Function
-			}
-		},
-		data() {
-			return {
-				types: ['success', 'primary', 'info', 'warning', 'danger']
 			}
 		},
 		methods: {

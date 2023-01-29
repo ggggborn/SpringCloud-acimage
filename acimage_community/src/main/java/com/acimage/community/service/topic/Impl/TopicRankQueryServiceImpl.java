@@ -17,10 +17,6 @@ public class TopicRankQueryServiceImpl implements TopicRankQueryService {
     @Autowired
     RedisUtils redisUtils;
 
-
-
-
-
     @Override
     public List<Long> pageTopicIdsInRank(TopicAttribute topicAttribute, int pageNo, int pageSize) {
         List<Pair<Long, Double>> topicIdAndScores = pageTopicIdWithScoresInRank(topicAttribute, pageNo, pageSize);

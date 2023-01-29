@@ -6,11 +6,8 @@
 				<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
 			</div>
 			<div class="categories-container">
-				<el-button size="small" type="success" plain @click="handleClick(5)">动画话xxx</el-button>
-				<el-button size="small">动画话阿法第三方</el-button>
-				<el-button size="small">动画话阿达</el-button>
-				<el-button size="small">动画话</el-button>
-				<el-button size="small">动画话</el-button>
+				<el-button v-for="item in $store.state.categoryList" size="small" :type="$global.buttonType(item.id)" plain
+					@click="handleClick(item.id)" :key="item.id">{{item.label}}</el-button>
 			</div>
 		</el-card>
 	</div>
@@ -24,12 +21,6 @@
 			clickCategory: {
 				type: Function
 			}
-		},
-		data() {
-			return {
-				types: ['success','primary','info','warning','danger']
-			}
-
 		},
 		methods: {
 			handleClick(categoryId) {

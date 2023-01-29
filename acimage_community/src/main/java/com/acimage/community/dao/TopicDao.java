@@ -29,6 +29,8 @@ public interface TopicDao extends BaseMapper<Topic> {
 
     Topic selectTopicWithUserBasic(@Param("id") long id);
 
+    Topic selectTopicWithUserBasicAndTagIds(@Param("id") long id);
+
     List<Topic> selectTopicsWithUserImagesOrderByCreateTime(@Param("userId") long userId, @Param("startIndex") int startIndex, @Param("recordNumber") int recordNumber);
     List<Topic> selectTopicsWithUserBasicByIds(@Param("ids") List<Long> ids);
     @Select("select count(*) from tb_topic where user_id=#{userId} and deleted=0")

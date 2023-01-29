@@ -44,8 +44,11 @@ public class TopicIndex {
     @Field(type = FieldType.Text, analyzer = EsConstants.IK_MAX_WORD, store = true, copyTo = "all")
     private String title;
 
+    @Field(type = FieldType.Integer, store = true)
     private Integer starCount;
+    @Field(type = FieldType.Integer, store = true)
     private Integer pageView;
+    @Field(type = FieldType.Integer, store = true)
     private Integer commentCount;
 
     @Field(store = true, index = false, type = FieldType.Keyword)
@@ -53,7 +56,6 @@ public class TopicIndex {
 
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date createTime;
-
     @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date updateTime;
 
@@ -64,7 +66,6 @@ public class TopicIndex {
 
     public static TopicIndex from(Topic topic) {
         TopicIndex topicIndex = BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
-        topicIndex.setTagIds(ListUtils.extract(Tag::getId, topic.getTags()));
         return topicIndex;
     }
 

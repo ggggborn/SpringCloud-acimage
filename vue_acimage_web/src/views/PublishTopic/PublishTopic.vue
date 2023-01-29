@@ -1,5 +1,5 @@
 <template>
-	<div >
+	<div>
 		<my-header></my-header>
 
 		<div class="publish-main">
@@ -17,20 +17,21 @@
 				</el-form-item>
 				<el-form-item label="分类">
 					<el-select v-model="addForm.categoryId" placeholder="请选择分类">
-						<el-option v-for="item in $store.state.categoryList" :label="item.label" :value="item.id" :key="item.id">
+						<el-option v-for="item in $store.state.categoryList" :label="item.label" :value="item.id"
+							:key="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="标签(选1-5个)">
+				<el-form-item label="标签(选1-3个)">
 
-					<el-tag v-for="item in chosenTagList" :key="item.id" type="warning" class="hover-pointer mr5"
-						@close="removeTag(item)" closable>
+					<el-tag v-for="item in chosenTagList" :key="item.id" class="hover-pointer mr5"
+						@close="removeTag(item)" :type="$global.buttonType(item.id)" closable>
 						{{item.label}}
 					</el-tag>
 					<br />
 					<div>
-						<el-tag v-for="item in $store.state.tagList" :key="item.id" type="warning" @click="clickTag(item)"
-							class="hover-pointer mr5">
+						<el-tag v-for="item in $store.state.tagList" :key="item.id" :type="$global.buttonType(item.id)"
+							@click="clickTag(item)" class="hover-pointer mr5">
 							{{item.label}}
 						</el-tag>
 					</div>
@@ -57,11 +58,6 @@
 				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
 				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">提交</el-button>
 			</div>
-			
-			<!-- <topic-card></topic-card> -->
-
-
-			
 		</div>
 
 	</div>
@@ -70,7 +66,7 @@
 <script>
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
 	import EditBoard from '@/components/EditBoard/EditBoard.vue'
-	
+
 
 	import { addTopic } from '@/api/topic.js'
 	import { uploadTopicImages } from '@/api/image.js'
@@ -112,6 +108,7 @@
 				// 	},
 				// ],
 				chosenTagList: [],
+
 
 			};
 		},

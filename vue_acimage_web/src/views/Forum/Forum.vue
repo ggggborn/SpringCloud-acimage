@@ -17,6 +17,9 @@
 								:username="topic.user.username" :starCount="topic.starCount"
 								:commentCount="topic.commentCount" :pageView="topic.pageView"
 								:photoUrl="$global.truePhotoUrl(topic.user.photoUrl)"
+								:to="$global.getTopicUrl(topic.id)"
+								:categoryId="topic.categoryId"
+								:tagIds="topic.tagIds"
 								:coverImageUrl="topic.coverImageUrl">
 							</topic-card>
 						</div>
@@ -78,9 +81,8 @@
 					pageView: 777,
 					commentCount: 888,
 					coverImageUrl: '',
-					images: [{
-						id: 0
-					}],
+					categoryId:1,
+					tagIds:[],
 					user: {
 						photoUrl: ''
 					}

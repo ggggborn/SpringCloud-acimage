@@ -13,6 +13,7 @@ import com.acimage.community.dao.TopicDao;
 import com.acimage.common.model.page.Page;
 import com.acimage.community.model.vo.TopicInfoVo;
 import com.acimage.community.service.comment.CommentInfoService;
+import com.acimage.community.service.tag.TagTopicQueryService;
 import com.acimage.community.service.topic.*;
 import com.acimage.community.service.topic.enums.TopicAttribute;
 import com.acimage.community.service.userstatistic.UserCsQueryService;
@@ -43,6 +44,8 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     @Autowired
     UserCsQueryService userCsQueryService;
     @Autowired
+    TagTopicQueryService tagTopicQueryService;
+    @Autowired
     ImageClient imageClient;
     @Autowired
     UserClient userClient;
@@ -51,8 +54,13 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
 
 
     @Override
-    public Topic getTopicWithUser(long topicId) {
+    public Topic getTopicWithUserTagIds(long topicId) {
         Topic topic = topicQueryService.getTopic(topicId);
+        if(topic==null){
+            return null;
+        }
+        List<Integer> tagIds=tagTopicQueryService.listTagIds(topicId);
+        topic.setTagIds(tagIds);
         return topic;
     }
 
@@ -117,7 +125,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             topicList = topicDao.selectTopicsWithUserOrderBy(column, pageSize);
         } else {
             for (Long topicId : rankList) {
-                Topic topic = getTopicWithUser(topicId);
+                Topic topic = getTopicWithUserTagIds(topicId);
                 if (topic != null) {
                     topicList.add(topic);
                 }
@@ -144,7 +152,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         List<Long> rankList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.STAR_COUNT, pageNo, pageSize);
         List<Topic> topicList = new ArrayList<>();
         for (Long topicId : rankList) {
-            Topic topic = getTopicWithUser(topicId);
+            Topic topic = getTopicWithUserTagIds(topicId);
             if (topic != null) {
                 //设置浏览量,评论数，收藏量
                 topicSpQueryService.setAttrIntoTopic(topic,
@@ -165,7 +173,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         List<Long> topicIdList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.ACTIVITY_TIME, pageNo, pageSize);
         List<Topic> topicList = new ArrayList<>();
         for (Long topicId : topicIdList) {
-            Topic topic = getTopicWithUser(topicId);
+            Topic topic = getTopicWithUserTagIds(topicId);
             if (topic != null) {
                 //设置浏览量,评论数，收藏量
                 topicSpQueryService.setAttrIntoTopic(topic,

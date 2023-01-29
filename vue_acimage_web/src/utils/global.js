@@ -72,6 +72,15 @@ global.getTopicUrl = function(topicId) {
 	return '/topic/' + topicId;
 }
 
+global.isEmpty=function(object) {
+	return CommonUtils.isEmpty(object);
+}
+
+global.buttonType=function(id){
+	let types=['success', 'primary', 'info', 'warning', 'danger'];
+	return types[id%5];
+}
+
 // //token及token内信息
 // global.TOKEN = function() {
 // 	let token = localStorage.getItem("token");

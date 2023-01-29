@@ -40,14 +40,18 @@
 				</div>
 			</div>
 			<div class="wrapper-right">
-				<div class="mt3">
-					<el-tag effect="plain" type="warning">动画杂谈</el-tag>
+				<div class="category-container">
+					<el-tag effect="plain" :type="$store.state.types[categoryId%5]" v-if="!$global.isEmpty(categoryId)">
+						{{$store.getters.categoryLabel(categoryId)}}
+					</el-tag>
 				</div>
 				<div class="tags-container">
-					<el-tag effect="plain" type="info">动画话</el-tag>
-					<el-tag effect="plain" type="info">动画花话</el-tag>
-					<el-tag effect="plain" type="info">动画</el-tag>
-					<el-tag effect="plain" type="info">动画</el-tag>
+					<template v-for="item in tagIds">
+						<el-tag v-if="!$global.isEmpty($store.getters.tagLabel(item))" effect="plain"
+							:type="$global.buttonType(item.id)" :key="item.id">
+							{{$store.getters.tagLabel(item)}}
+						</el-tag>
+					</template>
 				</div>
 			</div>
 		</div>
@@ -94,18 +98,15 @@
 			photoUrl: {
 				default: "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
 			},
-			coverImageUrl: {
-
-			},
+			coverImageUrl: {},
 			tagIds: {
 				type: Array
 			},
 			categoryId: {
 				type: Number
 			},
-			to: {
+			to: {},
 
-			}
 		},
 		methods: {
 			toTopic() {

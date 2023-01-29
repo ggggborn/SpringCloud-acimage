@@ -14,6 +14,7 @@ Mock.mock('/api/community/topics/recentHot', 'get', {
 				photoUrl: ''
 			},
 			coverImageUrl: 'test/test1.jpeg',
+			categoryId:1,
 		},
 		{
 			id: '@id()',
@@ -26,6 +27,7 @@ Mock.mock('/api/community/topics/recentHot', 'get', {
 				photoUrl: ''
 			},
 			coverImageUrl: 'topicImage/2022/12/02/1573240094587424768',
+			categoryId:1,
 		},
 	]
 })
@@ -57,6 +59,7 @@ Mock.mock('/api/community/topics/recommend', 'get', {
 				photoUrl: ''
 			},
 			coverImageUrl: 'topicImage/2022/12/02/1573240094587424768',
+			categoryId:1,
 		},
 	]
 })
@@ -74,6 +77,7 @@ Mock.mock('/api/community/topics/pageRecentTopics/1', 'get', {
 			pageView: 777,
 			commentCount: 888,
 			coverImageUrl: 'static/image/user-rank-header.jpg',
+			categoryId:1,
 			images: [{
 				id: 0
 			}],

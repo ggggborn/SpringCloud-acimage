@@ -10,11 +10,12 @@
         <result property="userId" column="user_id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
+        <result property="activityTime" column="activity_time"/>
         <result property="pageView" column="page_view"/>
         <result property="starCount" column="star_count"/>
         <result property="commentCount" column="comment_count"/>
-        <result property="activityTime" column="activity_time"/>
         <result property="coverImageUrl" column="cover_image_url"/>
+        <result property="categoryId" column="category_id"/>
         <association property="user" javaType="User" column="user_id"
                      select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
     </resultMap>
@@ -32,8 +33,28 @@
         <result property="commentCount" column="comment_count"/>
         <result property="activityTime" column="activity_time"/>
         <result property="coverImageUrl" column="cover_image_url"/>
+        <result property="categoryId" column="category_id"/>
         <association property="user" javaType="User" column="user_id"
                      select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+    </resultMap>
+
+    <resultMap id="topicWithUserTagIds" type="Topic">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="pageView" column="page_view"/>
+        <result property="starCount" column="star_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="activityTime" column="activity_time"/>
+        <result property="coverImageUrl" column="cover_image_url"/>
+        <result property="categoryId" column="category_id"/>
+        <association property="user" javaType="User" column="user_id"
+                     select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+        <collection property="tagIds" ofType="Integer" column="id"
+                    select="com.acimage.community.dao.tagTopicDao.selectTagIds"/>
     </resultMap>
 
 
@@ -60,7 +81,7 @@
         select * from tb_topic where id=#{id} and deleted=0
     </select>
 
-    <select id="selectTopicsWithUserImagesOrderByPageView" resultMap="topicWithUserImages">
+    <select id="selectTopicsWithUserImagesOrderByPageView" resultMap="topicWithUser">
         select * from tb_topic where create_time>#{startTime} order by page_view desc
         <if test="limit!=null">
             limit #{limit}
@@ -78,9 +99,15 @@
         </foreach>
     </select>
 
-    <select id="selectTopicsWithUserImagesOrderByCreateTime" resultMap="topicWithUserImages">
+    <select id="selectTopicsWithUserImagesOrderByCreateTime" resultMap="topicWithUser">
         select * from tb_topic where user_id=#{userId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
     </select>
+
+    <select id="selectTopicWithUserBasicAndTagIds" resultMap="topicWithUserTagIds">
+        select * from tb_topic where user_id=#{userId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
+    </select>
+
+
 
 
 

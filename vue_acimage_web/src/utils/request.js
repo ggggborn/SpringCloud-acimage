@@ -60,11 +60,16 @@ service.interceptors.response.use(
 	error => {
 		//拦截到失败的数据
 		console.log('错误码', error)
+		if (error.response.status == 401) {
+			MessageUtils.notice('未登录')
+		} else {
+			MessageUtils.notice(error, 4)
+		}
 		// 出错了直接关闭loading
 		requestNum = 0;
 		loading.close();
 
-		MessageUtils.notice(error, 4)
+
 		return Promise.reject(error);
 	}
 );

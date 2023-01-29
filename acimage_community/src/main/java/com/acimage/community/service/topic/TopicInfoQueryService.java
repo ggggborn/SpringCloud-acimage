@@ -7,7 +7,7 @@ import com.acimage.community.model.vo.TopicInfoVo;
 import java.util.List;
 
 public interface TopicInfoQueryService {
-    Topic getTopicWithUser(long topicId);
+    Topic getTopicWithUserTagIds(long topicId);
 
     TopicInfoVo getTopicInfoAndFirstCommentPage(long topicId);
 

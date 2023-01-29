@@ -62,7 +62,7 @@ public class Topic {
     @TableField(exist = false)
     Category category;
     @TableField(exist = false)
-    List<Tag> tags;
+    List<Integer> tagIds;
     @TableField(exist = false)
     List<Image> images;
     @TableField(exist = false)

@@ -19,6 +19,8 @@ export default new Vuex.Store({
 		token: '',
 		categoryList: [],
 		tagList: [],
+		//elementui五种按钮类型
+		types: ['success', 'primary', 'info', 'warning', 'danger']
 	},
 	getters: {
 		truePhotoUrl(state) {
