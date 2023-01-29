@@ -27,6 +27,26 @@ export default new Vuex.Store({
 			}
 			return Config.domainOfImages + 'userPhoto/default.jpeg';
 		},
+		categoryLabel(state) {
+			return (id) => {
+				for (let item of state.categoryList) {
+					if (item.id == id) {
+						return item.label;
+					}
+				}
+				return null;
+			}
+		},
+		tagLabel(state) {
+			return (id) => {
+				for (let item of state.tagList) {
+					if (item.id == id) {
+						return item.label;
+					}
+				}
+				return null;
+			}
+		}
 
 	},
 	//里面定义方法，操作state方发
@@ -43,13 +63,13 @@ export default new Vuex.Store({
 				state.photoUrl = '';
 			}
 			queryAllCategories().then(res => {
-				if (res.code == Code.OK) {
-					state.categoryList = res.data;
-				}
-			}),
-			queryAllTags().then(res => {
-				state.tagList = res.data;
-			});
+					if (res.code == Code.OK) {
+						state.categoryList = res.data;
+					}
+				}),
+				queryAllTags().then(res => {
+					state.tagList = res.data;
+				});
 		},
 		setToken(state, token) {
 			localStorage.setItem("token", token);

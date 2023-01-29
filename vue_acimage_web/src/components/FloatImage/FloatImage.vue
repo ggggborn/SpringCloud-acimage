@@ -16,9 +16,8 @@
 			<div style="margin-top:-5px;">
 				<div class="time">
 					<i class="el-icon-time time-icon-color"></i>
-					<span>{{timeFromNow}}</span>
+					<span>{{$global.timeView(createTime)}}</span>
 				</div>
-
 				<div class="info-star">
 					<div class="info-star-icon">
 						<i class="el-icon-star-on" style="font-size:16px;color:orange;"></i>

@@ -1,52 +1,119 @@
 <template>
-	<div class="wrapper hover-pointer">
-		<div class="wrapper-left">
-			<img src="static/image/user-rank-header.jpg" />
-			<div class="white-gradient">
-			</div>
-		</div>
-		<div class="wrapper-right">
-			
-			<div class="title" style="font-size: 18px;margin-top: 2px;">
-					这是title武安市废了空军爱丽舍咖啡
-			</div>
-			<div class="title" style="font-size: 14px;color:#999999;margin-top: 8px;">
-				内染上了肯德基爱丽丝的骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技 
-				内染上了肯德基爱丽丝的骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技
-				骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技
-			</div>
-			<div class="title" style="position: absolute;bottom: 5px;left: 10px;">
-				<div style="display: inline-block;">
-					<el-avatar :size="20" src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png">
-					</el-avatar>
+	<div>
+		<div class="wrapper hover-pointer" @click="toTopic">
+			<div class="wrapper-left">
+				<img :src="coverImageUrl" />
+				<div class="white-gradient">
 				</div>
-
-				<div style="display: inline-block;position: relative;bottom: 5px;margin-left: 5px;font-size: 14px;">
-					萧利刚发较好的
+			</div>
+			<div class="wrapper-medium">
+				<div class="title">
+					{{$global.omitStr(title,24)}}
 				</div>
-				<div style="display: inline-block;position: relative;bottom: 5px;margin-left: 5px;font-size: 12px;color: #999999;">
-					
-					更新于2022-2-22 · 
-					
-					<!-- <el-divider direction="vertical" style="margin-left: -100px;"></el-divider> -->
-					<i class="el-icon-star-off"></i>
-					100 ·
-					<i class="el-icon-chat-dot-square"></i>
-					999 ·
-					<i class="el-icon-view"></i>
-					888
-
+				<div class="content" v-dompurify-html="$global.omitStr(html,contentLimit)"> </div>
+				<div class="info">
+					<div style="display: inline-block;">
+						<el-avatar :size="20" :src="photoUrl">
+						</el-avatar>
+					</div>
+					<div class="username">
+						{{username}}
+					</div>
+					<div class="data">
+						更新于 {{$global.timeView(updateTime)}}
+						<template v-if="starCount != null">
+							·
+							<i class="el-icon-star-off"></i>
+							{{starCount}}
+						</template>
+						<template v-if="commentCount != null">
+							·
+							<i class="el-icon-chat-dot-square"></i>
+							{{commentCount}}
+						</template>
+						<template v-if="pageView != null">
+							·
+							<i class="el-icon-view"></i>
+							{{pageView}}
+						</template>
+					</div>
+				</div>
+			</div>
+			<div class="wrapper-right">
+				<div class="mt3">
+					<el-tag effect="plain" type="warning">动画杂谈</el-tag>
+				</div>
+				<div class="tags-container">
+					<el-tag effect="plain" type="info">动画话</el-tag>
+					<el-tag effect="plain" type="info">动画花话</el-tag>
+					<el-tag effect="plain" type="info">动画</el-tag>
+					<el-tag effect="plain" type="info">动画</el-tag>
 				</div>
 			</div>
 		</div>
 	</div>
+
 </template>
 
 <script>
 	export default {
 		name: "TopicCard",
+		props: {
+			title: {
+				type: String,
+				default: 'sadhasdj'
+			},
+			content: {
+				type: String,
+			},
+			html: {
+				type: String,
+				default: `<span style="color:red">内染上了</span>肯德基爱丽丝的骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技
+				内染上了肯德基爱丽丝的骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技
+				骄傲了圣诞节拉开就爱丽丝肯德基爱丽`
+			},
+			contentLimit: {
+				type: Number,
+				default: 80
+			},
+			username: {
+
+			},
+			updateTime: {
+
+			},
+			starCount: {
+				default: 888,
+			},
+			commentCount: {
+				default: 888,
+			},
+			pageView: {
+				default: 888,
+			},
+			photoUrl: {
+				default: "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
+			},
+			coverImageUrl: {
+
+			},
+			tagIds: {
+				type: Array
+			},
+			categoryId: {
+				type: Number
+			},
+			to: {
+
+			}
+		},
+		methods: {
+			toTopic() {
+				this.$router.push({ path: this.to });
+			}
+		}
 	}
 </script>
 
-<style scoped src="./TopicCard.css">
+<style src="./TopicCard.css" scoped>
 </style>

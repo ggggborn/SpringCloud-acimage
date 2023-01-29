@@ -1,0 +1,15 @@
+.tags-container>>>.el-tag:hover {
+	border: 1px solid skyblue;
+}
+
+.tags-container>>>.el-tag:active {
+	border: 1px solid blue;
+}
+
+
+.tags-container>>>.el-tag {
+	display: inline-block;
+	margin-top: 6px;
+	margin-right: 4px;
+	margin-left: auto;
+}

@@ -24,3 +24,11 @@ body {
 .hover-pointer:hover {
 	cursor: pointer
 }
+
+.hover-border-light:hover {
+	border:1px solid skyblue;
+}
+
+.hover-border-light:active {
+	
+}

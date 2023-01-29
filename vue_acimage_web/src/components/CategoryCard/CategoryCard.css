@@ -1,0 +1,10 @@
+.categories-container>>>.el-button {
+	display: inline-block;
+	margin-top: 6px;
+	margin-right: 4px;
+	margin-left: auto;
+}
+
+.categories-container {
+	padding-bottom: 10px;
+}

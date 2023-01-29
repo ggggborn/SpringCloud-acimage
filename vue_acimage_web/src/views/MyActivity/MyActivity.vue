@@ -182,5 +182,5 @@
 	// }
 </script>
 
-<style src="./MyActivity.css" scoped>
+<style scoped src="./MyActivity.css" >
 </style>

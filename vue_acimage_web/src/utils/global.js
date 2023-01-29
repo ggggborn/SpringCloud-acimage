@@ -117,15 +117,50 @@ global.getTopicUrl = function(topicId) {
 //限制显示长度
 global.omitStr = function(content, totalLength) {
 	if (content.length > totalLength) {
-		return content.slice(0, totalLength - 3) + '...'
+		return content.slice(0, totalLength - 2) + '...'
 	} else {
 		return content;
 	}
 }
 
-global.html2Text= function(contentHtml,limitLength) {
-	let content=StringUtils.html2Text(contentHtml);
-	if(limitLength==undefined){
+global.timeView = function(datetime) {
+	let d1 = new Date(datetime);
+	let d2 = new Date();
+	let days = d2.getTime() - d1.getTime();
+
+	let time = parseInt(days / (1000 * 60 * 60 * 24 * 30));
+	if (time >= 1) {
+		return time + '个月前';
+	}
+
+	time = parseInt(days / (1000 * 60 * 60 * 24));
+	if (time == 1) {
+		return '昨天';
+	} else if (time > 1) {
+		return time + '天前';
+	}
+
+	time = parseInt(days / (1000 * 60 * 60));
+	if (time >= 1) {
+		return time + '小时前'
+	}
+
+	time = parseInt(days / (1000 * 60));
+	if (time >= 1) {
+		return time + '分钟前'
+	}
+
+	time = parseInt(days / (1000));
+	if (time >= 1) {
+		return time + '秒前'
+	}
+
+	return '刚刚'
+}
+
+global.html2Text = function(contentHtml, limitLength) {
+	let content = StringUtils.html2Text(contentHtml);
+	if (limitLength == undefined) {
 		return content;
 	}
 	if (content.length > limitLength) {
@@ -136,4 +171,3 @@ global.html2Text= function(contentHtml,limitLength) {
 }
 
 export default global;
-

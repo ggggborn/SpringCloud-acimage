@@ -55,7 +55,4 @@
 </script>
 
 <style scoped>
-	.wrapper{
-		display: block;
-	}
 </style>

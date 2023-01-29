@@ -68,17 +68,18 @@ Mock.mock('/api/community/topics/pageRecentTopics/1', 'get', {
 			id: '@integer()',
 			userId: 999,
 			'title|10': "@cname()",
-			'content': `<p>不知道</p>@cparagraph()`,
+			'content': `不知道@cparagraph()`,
 			activityTime: '2022-2-22 2:22:22',
 			starCount: 666,
 			pageView: 777,
 			commentCount: 888,
-			coverImageUrl: 'test/test2.jpeg',
+			coverImageUrl: 'static/image/user-rank-header.jpg',
 			images: [{
 				id: 0
 			}],
 			user: {
-				photoUrl: ''
+				photoUrl: '',
+				'username|2': "@cname()"
 			}
 		}, ],
 		totalCount: 10,
