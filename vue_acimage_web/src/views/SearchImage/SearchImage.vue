@@ -22,7 +22,7 @@
 					</el-dialog>
 				</div>
 				<div class="upload-hint">
-					*选择你要识别的图片（10MB以内）
+					*选择你要识别的图片（2MB以内）
 				</div>
 				<el-button @click="submitImage" type="primary">提交</el-button>
 			</div>

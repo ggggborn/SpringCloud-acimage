@@ -6,7 +6,6 @@ import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.community.dao.TopicHtmlDao;
 import com.acimage.community.service.topic.TopicHtmlQueryService;
 import com.acimage.community.service.topic.consts.KeyConstants;
-import com.github.houbb.sensitive.word.bs.SensitiveWordBs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

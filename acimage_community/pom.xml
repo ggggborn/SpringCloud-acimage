@@ -63,9 +63,13 @@
             <artifactId>minio</artifactId>
         </dependency>
         <!--敏感词过滤-->
+<!--        <dependency>-->
+<!--            <groupId>com.github.houbb</groupId>-->
+<!--            <artifactId>sensitive-word</artifactId>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>sensitive-word</artifactId>
+            <groupId>io.github.toolgood</groupId>
+            <artifactId>toolgood-words</artifactId>
         </dependency>
         <!--es-->
         <dependency>

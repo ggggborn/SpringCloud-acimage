@@ -26,9 +26,13 @@ body {
 }
 
 .hover-border-light:hover {
-	border:1px solid skyblue;
+	border: 1px solid skyblue;
 }
 
-.hover-border-light:active {
-	
+
+.c6 {
+	color: #666666;
+}
+.c9 {
+	color: #999999;
 }

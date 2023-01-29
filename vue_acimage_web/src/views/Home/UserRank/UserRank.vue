@@ -1,34 +1,41 @@
 <template>
-	<div class="user-rank-wrapper">
-		<div class="user-rank-thumbnail">
-			<img src="static/image/user-rank-header.jpg" />
-			<div class="thumbnail-white-gradient">
-				<div class="header-title">排行</div>
+	<div>
+		<div class="wrapper">
+			<div class="user-rank-thumbnail">
+				<img src="static/image/user-rank-header.jpg" />
+				<div class="thumbnail-white-gradient">
+					<div class="header-title">排行</div>
+				</div>
 			</div>
-		</div>
-		<el-tabs type="card" style="margin-top:-5px;" v-model="sortMode" >
-			<el-tab-pane label="最多star" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
-			<el-tab-pane label="最多话题" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
-		</el-tabs>
-		<template v-for="user in users">
-			<div class="user-item-container" :key="user.id">
-				<div class="user-item-left">
-					<el-avatar :size="40" :src="$global.truePhotoUrl(user.photoUrl)">
-						<img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
-					</el-avatar>
-				</div>
-				<div class="user-item-right">
-					<div class="user-item-right-header">
-						{{user.username}}
+			<el-tabs type="card" style="margin-top:-5px;" v-model="sortMode">
+				<el-tab-pane label="最多star" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
+				<el-tab-pane label="最多话题" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
+			</el-tabs>
+			<template v-if="loading">
+				<el-skeleton :rows="6" animated />
+			</template>
+			<template v-else>
+				<template v-for="user in users">
+					<div class="user-item-container" :key="user.id">
+						<div class="user-item-left">
+							<el-avatar :size="40" :src="$global.truePhotoUrl(user.photoUrl)">
+								<img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+							</el-avatar>
+						</div>
+						<div class="user-item-right">
+							<div class="user-item-right-header">
+								{{user.username}}
+							</div>
+							<div class="user-item-right-bottom">
+								<div>{{user.starCount}}</div> <span>star</span>
+								<div>{{user.topicCount}}</div> <span>话题</span>
+							</div>
+						</div>
 					</div>
-					<div class="user-item-right-bottom">
-						<div>{{user.starCount}}</div> <span>star</span>
-						<div>{{user.topicCount}}</div> <span>话题</span>
-					</div>
-				</div>
+				</template>
 
-			</div>
-		</template>
+			</template>
+		</div>
 	</div>
 
 </template>
@@ -45,6 +52,7 @@
 		data() {
 			return {
 				sortMode: 'starCount',
+				loading: true,
 				users: [
 					// {
 					// 	id: 0,
@@ -77,6 +85,7 @@
 				pageUserRankByStarCount(pageNo).then(result => {
 					if (result.code == Code.OK) {
 						_this.users = result.data;
+						_this.loading = false;
 					}
 				});
 			},

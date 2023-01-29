@@ -20,6 +20,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @NoArgsConstructor
@@ -67,6 +68,17 @@ public class TopicIndex {
     public static TopicIndex from(Topic topic) {
         TopicIndex topicIndex = BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
         return topicIndex;
+    }
+
+    public static Topic toTopic(TopicIndex topicIndex){
+        Topic topic=BeanUtils.copyPropertiesTo(topicIndex, Topic.class);
+        return topic;
+    }
+
+    public static List<Topic> toTopicList(List<TopicIndex> topicIndexList){
+        return topicIndexList.stream()
+                .map(TopicIndex::toTopic)
+                .collect(Collectors.toList());
     }
 
 

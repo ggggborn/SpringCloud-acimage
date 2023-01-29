@@ -5,23 +5,36 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import com.acimage.common.model.Index.TopicIndex;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.mq.dto.EsAddDto;
 import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateDto;
+import com.acimage.common.model.page.Page;
 import com.acimage.common.utils.common.ReflectUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -45,14 +58,6 @@ public class EsUtils {
         }
     }
 
-    public void update(Class<?> indexClass, String id) {
-        IndexCoordinates indexCoordinates = indexCoordinatesOf(indexClass);
-        Document document = Document.create();
-        UpdateQuery updateQuery = UpdateQuery.builder(id)
-                .withDocument(document)
-                .build();
-        esTemplate.update(updateQuery, indexCoordinates);
-    }
 
     public void update(EsUpdateDto updateDto) {
         Object entity = updateDto.object();
@@ -100,6 +105,19 @@ public class EsUtils {
         String indexName = clz.getAnnotation(org.springframework.data.elasticsearch.annotations.Document.class)
                 .indexName();
         return IndexCoordinates.of(indexName);
+    }
+
+    public <T> Page<T> termQuery(String column, Object value, Class<T> clz, int pageNo, int pageSize) {
+        QueryBuilder queryBuilder = QueryBuilders.termQuery(column, value);
+        Pageable pageable = PageRequest.of(pageNo-1, pageSize);
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+                .withQuery(queryBuilder)
+                .withPageable(pageable)
+                .build();
+        SearchHits<T> search = esTemplate.search(nativeSearchQuery, clz);
+        int totalCount = (int) search.getTotalHits();
+        List<T> dateList = search.getSearchHits().stream().map(SearchHit::getContent).collect(Collectors.toList());
+        return new Page<>(totalCount,dateList);
     }
 
 }

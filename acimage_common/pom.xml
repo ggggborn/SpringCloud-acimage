@@ -99,6 +99,7 @@
         <dependency>
             <groupId>io.github.toolgood</groupId>
             <artifactId>toolgood-words</artifactId>
+            <optional>true</optional>
         </dependency>
         <!--es-->
         <dependency>

@@ -22,7 +22,7 @@
 						</el-option>
 					</el-select>
 				</el-form-item>
-				<el-form-item label="标签(选1-3个)">
+				<el-form-item label="标签(1-3个)">
 
 					<el-tag v-for="item in chosenTagList" :key="item.id" class="hover-pointer mr5"
 						@close="removeTag(item)" :type="$global.buttonType(item.id)" closable>
@@ -90,7 +90,7 @@
 				dialogVisible: false,
 				addForm: {
 					title: '',
-					categoryId: 1,
+					categoryId: null,
 					coverImage: {},
 				},
 				imageList: [],

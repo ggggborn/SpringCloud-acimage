@@ -31,7 +31,7 @@ public class Topic {
     public static int IMAGES_AMOUNT_MIN=1;
     public static final String IMAGE_VALIDATION_MSG= "图片数量在"+IMAGES_AMOUNT_MIN+"-"+IMAGES_AMOUNT_MAX+"之间";
 
-    public static int TAG_MAX=5;
+    public static int TAG_MAX=3;
     public static int TAG_MIN=1;
     public static final String TAG_VALIDATION_MSG= "标签数量在"+TAG_MIN+"-"+TAG_MAX+"之间";
 

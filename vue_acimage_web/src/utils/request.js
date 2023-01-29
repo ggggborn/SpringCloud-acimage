@@ -23,9 +23,10 @@ service.interceptors.request.use(
 		config.headers['authorization'] = store.state.token;
 		requestNum++;
 		if (loading == null) {
-			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~' });
+			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~', background: 'rgba(250, 250, 250, 0.5)' });
+			// setTimeout(() => { loading.close(); }, 1);
 		} else if (loading != null && requestNum > 0) {
-			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~' });
+			loading = Loading.service({ fullscreen: true, text: '正在努力加载中~',background: 'rgba(250, 250, 250, 0.5)'  });
 		}
 		return config;
 	},
@@ -61,7 +62,7 @@ service.interceptors.response.use(
 		//拦截到失败的数据
 		console.log('错误码', error)
 		if (error.response.status == 401) {
-			MessageUtils.notice('未登录')
+			MessageUtils.notice('请先登录再操作')
 		} else {
 			MessageUtils.notice(error, 4)
 		}

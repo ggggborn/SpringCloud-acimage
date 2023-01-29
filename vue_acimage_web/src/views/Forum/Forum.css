@@ -31,12 +31,12 @@
 }
 
 
-.topics-container {
+/* .topics-container {
 	position: relative;
 	padding-bottom: 20px;
-}
+} */
 
-.topics-header {
+.wrapper-header {
 	top: 5px;
 	position: relative;
 	background-color: white;
@@ -47,12 +47,12 @@
 	margin-bottom: 20px;
 }
 
-.topics-header-icon {
+.wrapper-header-icon {
 	font-size: 40px;
 	color: #E5E544;
 }
 
-.topics-header-title {
+.wrapper-header-title {
 	position: relative;
 	top: -6px;
 	display: inline-block;

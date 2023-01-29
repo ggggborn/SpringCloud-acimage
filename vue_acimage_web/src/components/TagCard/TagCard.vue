@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<el-card shadow="hover" style="border-width:2px;">
-			<div slot="header" class="clearfix">
-				<span>标签云</span>
+			<div slot="header">
+				<span class="c6">标签云</span>
 				<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
 			</div>
 			<div class="tags-container">
