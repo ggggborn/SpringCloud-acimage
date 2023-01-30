@@ -4,13 +4,13 @@ package com.acimage.community.service.star.impl;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.model.domain.community.Star;
+import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
 import com.acimage.community.service.star.consts.KeyConsts;
 import com.acimage.community.service.topic.TopicQueryService;
 import com.acimage.community.service.star.StarWriteService;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.StarDao;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
-import com.acimage.community.service.userstatistic.UserCsWriteService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class StarWriteServiceImpl implements StarWriteService {
     @Autowired
     TopicSpAttrWriteService topicSpAttrWriteService;
     @Autowired
-    UserCsWriteService userCsWriteService;
+    CmtyUserWriteService cmtyUserWriteService;
 
     @Override
     public void saveStar(long userId, long topicId) {
@@ -52,7 +52,7 @@ public class StarWriteServiceImpl implements StarWriteService {
         Topic topic = topicQueryService.getTopic(topicId);
         if (topic != null) {
             long ownerId = topic.getUserId();
-            userCsWriteService.updateStarCountByIncrement(ownerId, starIncrement);
+            cmtyUserWriteService.updateStarCountByIncrement(ownerId, starIncrement);
         }
 
         redisUtils.setObjectJson(KeyConsts.keyOfIsStar(userId, topicId), Boolean.TRUE, 3L, TimeUnit.MINUTES);
@@ -70,7 +70,7 @@ public class StarWriteServiceImpl implements StarWriteService {
         Topic topic = topicQueryService.getTopic(topicId);
         if (topic != null) {
             long ownerId = topic.getUserId();
-            userCsWriteService.updateStarCountByIncrement(ownerId, starIncrement);
+            cmtyUserWriteService.updateStarCountByIncrement(ownerId, starIncrement);
         }
     }
 
@@ -85,7 +85,7 @@ public class StarWriteServiceImpl implements StarWriteService {
         Topic topic = topicQueryService.getTopic(topicId);
         if (topic != null) {
             long ownerId = topic.getUserId();
-            userCsWriteService.updateStarCountByIncrement(ownerId, starIncrement);
+            cmtyUserWriteService.updateStarCountByIncrement(ownerId, starIncrement);
         }
     }
 

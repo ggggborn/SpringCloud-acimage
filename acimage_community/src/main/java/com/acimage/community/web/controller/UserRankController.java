@@ -1,9 +1,9 @@
 package com.acimage.community.web.controller;
 
 
-import com.acimage.common.model.domain.user.User;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.result.Result;
-import com.acimage.community.service.userstatistic.UserCsRankService;
+import com.acimage.community.service.cmtyuser.CmtyUserRankService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -22,17 +22,17 @@ import java.util.List;
 public class UserRankController {
 
     @Autowired
-    UserCsRankService userCsRankService;
+    CmtyUserRankService cmtyUserRankService;
 
     @GetMapping("/rank/topicCount/{pageNo}")
-    public Result<List<User>> pageUsersRankByTopicCount(@PathVariable @Max(10) Integer pageNo) {
+    public Result<List<CmtyUser>> pageUsersRankByTopicCount(@PathVariable @Max(10) Integer pageNo) {
         int pageSize=10;
-        return Result.ok(userCsRankService.pageUserRankByTopicCount(pageNo, pageSize));
+        return Result.ok(cmtyUserRankService.pageUserRankByTopicCount(pageNo, pageSize));
     }
 
     @GetMapping("/rank/starCount/{pageNo}")
-    public Result<List<User>> pageUsersRankByStarCount(@PathVariable @Max(10) Integer pageNo) {
+    public Result<List<CmtyUser>> pageUsersRankByStarCount(@PathVariable @Max(10) Integer pageNo) {
         int pageSize=10;
-        return Result.ok(userCsRankService.pageUserRankByStarCount(pageNo, pageSize));
+        return Result.ok(cmtyUserRankService.pageUserRankByStarCount(pageNo, pageSize));
     }
 }

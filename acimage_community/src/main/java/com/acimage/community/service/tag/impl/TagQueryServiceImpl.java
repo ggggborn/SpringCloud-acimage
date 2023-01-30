@@ -34,7 +34,7 @@ public class TagQueryServiceImpl implements TagQueryService {
         List<Integer> allTagIds = ListUtils.extract(Tag::getId, allTags);
         for (Integer tagId : tagIds) {
             if (!allTagIds.contains(tagId)) {
-                log.error("user:{} error:标签不存在 tagId:{}", UserContext.getUsername(), tagId);
+                log.error("cmtyUser:{} error:标签不存在 tagId:{}", UserContext.getUsername(), tagId);
                 throw new BusinessException("标签不存在");
             }
         }

@@ -27,7 +27,7 @@ public interface TopicDao extends BaseMapper<Topic> {
 
     List<Topic> selectTopicsWithUserOrderBy(@Param("column") String columnForOrder,@Param("limit") int limit);
 
-    Topic selectTopicWithUserBasic(@Param("id") long id);
+    Topic selectTopicWithUser(@Param("id") long id);
 
     Topic selectTopicWithUserBasicAndTagIds(@Param("id") long id);
 

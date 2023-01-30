@@ -1,12 +1,13 @@
 package com.acimage.user.service.user.impl;
 
 import com.acimage.common.global.context.UserContext;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.user.User;
-import com.acimage.common.model.domain.community.UserCommunityStatistic;
+import com.acimage.common.global.UserCommunityStatistic;
 
 import com.acimage.common.redis.annotation.QueryRedis;
 
-import com.acimage.feign.client.UserCommunityStatisticClient;
+import com.acimage.feign.client.CmtyUserClient;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.dao.UserPrivacyDao;
 import com.acimage.user.model.domain.UserPrivacy;
@@ -30,18 +31,18 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     UserPrivacyDao userPrivacyDao;
     @Autowired
-    UserCommunityStatisticClient userCsClient;
+    CmtyUserClient cmtyUserClient;
 //    @Autowired
 //    StarQueryService starQueryService;
 
     @QueryRedis(keyPrefix = "acimage:users:profile:userId:", expire = 2L, unit = TimeUnit.SECONDS)
     @Override
     public ProfileVo getProfile() {
-        UserCommunityStatistic userStatistic = userCsClient.queryUserCommunityStatistic(UserContext.getUserId()).getData();
+        CmtyUser cmtyUser = cmtyUserClient.queryUserCommunityStatistic(UserContext.getUserId()).getData();
 
         ProfileVo profileVo = new ProfileVo();
-        profileVo.setStarCount(userStatistic.getStarCount());
-        profileVo.setTopicCount(userStatistic.getTopicCount());
+        profileVo.setStarCount(cmtyUser.getStarCount());
+        profileVo.setTopicCount(cmtyUser.getTopicCount());
 
         LambdaQueryWrapper<UserPrivacy> qw = new LambdaQueryWrapper<>();
         qw.eq(UserPrivacy::getId, UserContext.getUserId());
@@ -57,7 +58,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public User getUserWithStarCount(long userId) {
-
         User user = userQueryService.getUser(userId);
         if (user != null) {
 //            user.setStarCount(starQueryService.getStarCountOwnedBy(userId));

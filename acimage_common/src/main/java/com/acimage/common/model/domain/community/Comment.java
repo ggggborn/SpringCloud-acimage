@@ -1,6 +1,5 @@
 package com.acimage.common.model.domain.community;
 
-import com.acimage.common.model.domain.user.User;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -28,5 +27,5 @@ public class Comment {
     @TableField(exist = false)
     Topic topic;
     @TableField(exist = false)
-    User user;
+    CmtyUser user;
 }

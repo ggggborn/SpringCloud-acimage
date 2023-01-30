@@ -16,8 +16,8 @@
         <result property="commentCount" column="comment_count"/>
         <result property="coverImageUrl" column="cover_image_url"/>
         <result property="categoryId" column="category_id"/>
-        <association property="user" javaType="User" column="user_id"
-                     select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+        <association property="user" javaType="CmtyUser" column="user_id"
+                     select="com.acimage.community.dao.CmtyUserDao.selectById"/>
     </resultMap>
 
 
@@ -34,8 +34,8 @@
         <result property="activityTime" column="activity_time"/>
         <result property="coverImageUrl" column="cover_image_url"/>
         <result property="categoryId" column="category_id"/>
-        <association property="user" javaType="User" column="user_id"
-                     select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+        <association property="user" javaType="CmtyUser" column="user_id"
+                     select="com.acimage.community.dao.CmtyUserDao.selectById"/>
     </resultMap>
 
     <resultMap id="topicWithUserTagIds" type="Topic">
@@ -51,8 +51,8 @@
         <result property="activityTime" column="activity_time"/>
         <result property="coverImageUrl" column="cover_image_url"/>
         <result property="categoryId" column="category_id"/>
-        <association property="user" javaType="User" column="user_id"
-                     select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+        <association property="user" javaType="CmtyUser" column="user_id"
+                     select="com.acimage.community.dao.CmtyUserDao.selectById"/>
         <collection property="tagIds" ofType="Integer" column="id"
                     select="com.acimage.community.dao.tagTopicDao.selectTagIds"/>
     </resultMap>
@@ -77,7 +77,7 @@
     </update>
 
 
-    <select id="selectTopicWithUserBasic" resultMap="topicWithUser">
+    <select id="selectTopicWithUser" resultMap="topicWithUser">
         select * from tb_topic where id=#{id} and deleted=0
     </select>
 

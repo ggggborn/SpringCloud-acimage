@@ -2,9 +2,9 @@ package com.acimage.community.web.provider;
 
 
 import com.acimage.common.global.annotation.Authentication;
-import com.acimage.common.model.domain.community.UserCommunityStatistic;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.result.Result;
-import com.acimage.community.service.userstatistic.UserCsQueryService;
+import com.acimage.community.service.cmtyuser.CmtyUserQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/community/userStatistics")
 @Validated
 @Authentication
-public class UserStatisticProvider {
+public class CmtyUserProvider {
     @Autowired
-    UserCsQueryService userCsQueryService;
+    CmtyUserQueryService cmtyUserQueryService;
 
     @GetMapping("/userId/{userId}")
-    public Result<UserCommunityStatistic> queryUserCommunityStatistic(@PathVariable Long userId) {
-        return Result.ok(userCsQueryService.getUserCommunityStatistic(userId));
+    public Result<CmtyUser> queryCmtyUser(@PathVariable Long userId) {
+        return Result.ok(cmtyUserQueryService.getUserCommunityStatistic(userId));
     }
 }

@@ -38,9 +38,9 @@
 					<template v-for="image in resultImages">
 						<router-link class="no-underline" :to="$global.getTopicUrl(image.topic.id)" :key="image.id">
 							<float-image :title="image.topic.title" :star="image.topic.starCount"
-								:page-view="image.topic.pageView" :username="image.topic.user.username"
+								:page-view="image.topic.pageView" :username="image.topic.cmtyUser.username"
 								:create-time="image.topic.createTime"
-								:photo-url="$global.truePhotoUrl(image.topic.user.photoUrl)"
+								:photo-url="$global.truePhotoUrl(image.topic.cmtyUser.photoUrl)"
 								:image-url="$global.trueImageUrl(image.url)">
 							</float-image>
 						</router-link>
@@ -86,7 +86,7 @@
 						createTime: '2022-2-22 22:22:22',
 						starCount: 888,
 						pageView: 888,
-						user: {
+						cmtyUser: {
 							username: '快来搜索吧',
 							photoUrl: ''
 						}

@@ -20,7 +20,7 @@
         <result property="userId" column="user_id"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
-        <association property="user" javaType="User" column="user_id" select="com.acimage.community.dao.UserBasicDao.selectUserById"/>
+        <association property="user" javaType="CmtyUser" column="user_id" select="com.acimage.community.dao.CmtyUserDao.selectById"/>
     </resultMap>
 
     <select id="selectCommentsWithUserByTopicId" resultMap="commentWithUser">

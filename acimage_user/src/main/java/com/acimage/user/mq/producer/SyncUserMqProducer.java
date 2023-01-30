@@ -1,6 +1,6 @@
-package com.acimage.user.mq.produce;
+package com.acimage.user.mq.producer;
 
-import com.acimage.common.model.domain.community.UserBasic;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 import com.acimage.user.mq.config.SyncUserMqConfig;
@@ -23,8 +23,8 @@ public class SyncUserMqProducer {
         rabbitTemplate.convertAndSend(ExchangeConstants.COMMUNITY_USER_EXCHANGE, SyncUserMqConfig.SYNC_USER_ROUTE,userIdWithPhotoUrl);
     }
 
-    public void sendAddUserMessage(UserBasic userBasic){
-        rabbitTemplate.convertAndSend(ExchangeConstants.COMMUNITY_USER_EXCHANGE, SyncUserMqConfig.SYNC_USER_ROUTE,userBasic);
+    public void sendAddUserMessage(CmtyUser cmtyUser){
+        rabbitTemplate.convertAndSend(ExchangeConstants.COMMUNITY_USER_EXCHANGE, SyncUserMqConfig.SYNC_USER_ROUTE, cmtyUser);
     }
 
 

@@ -62,7 +62,7 @@ public class CommentController {
     }
 
     @GetMapping("/mine/{pageNo}")
-    public Result queryCommentsOfCurrentUser(@Positive @NotNull @PathVariable("pageNo") Integer pageNo){
+    public Result queryMyComments(@Positive @NotNull @PathVariable("pageNo") Integer pageNo){
         return Result.ok(commentInfoService.pageCommentsWithTopicOrderByCreateTime(UserContext.getUserId(),pageNo));
     }
 }

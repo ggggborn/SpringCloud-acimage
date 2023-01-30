@@ -22,7 +22,7 @@ public class TopicQueryServiceImpl implements TopicQueryService {
     @QueryRedis(expire = 37L, keyPrefix = KeyConstants.HASHKP_TOPIC, dataType = DataType.HASH)
     @Override
     public Topic getTopic(long id) {
-        Topic topic = topicDao.selectTopicWithUserBasic(id);
+        Topic topic = topicDao.selectTopicWithUser(id);
         if (topic == null) {
             log.error("user:{} 查询 对象：话题{} error：话题不存在", UserContext.getUsername(), id);
             return null;

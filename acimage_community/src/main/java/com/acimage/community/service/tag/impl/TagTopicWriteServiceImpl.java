@@ -30,7 +30,7 @@ public class TagTopicWriteServiceImpl implements TagTopicWriteService {
 //        List<Integer> allTagIds = ListUtils.extract(Tag::getId, tagList);
 //        for (Integer tagId : tagIdList) {
 //            if (!allTagIds.contains(tagId)) {
-//                log.error("user:{} error:标签不存在 tagId:{}", UserContext.getUsername(), tagId);
+//                log.error("cmtyUser:{} error:标签不存在 tagId:{}", UserContext.getUsername(), tagId);
 //                throw new BusinessException("标签不存在");
 //            }
 //        }

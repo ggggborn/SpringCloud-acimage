@@ -22,6 +22,7 @@ import com.acimage.community.model.request.TopicModifyHtmlReq;
 import com.acimage.community.mq.producer.HashImageMqProducer;
 import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
 import com.acimage.community.mq.producer.SyncEsMqProducer;
+import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
 import com.acimage.community.service.comment.CommentWriteService;
 import com.acimage.community.service.star.StarWriteService;
 import com.acimage.community.service.tag.TagQueryService;
@@ -68,7 +69,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     @Autowired
     RemoveTopicImagesMqProducer removeTopicImagesMqProducer;
     @Autowired
-    UserCsWriteService userCsWriteService;
+    CmtyUserWriteService cmtyUserWriteService;
     @Autowired
     TopicHtmlWriteService topicHtmlWriteService;
     @Autowired
@@ -239,7 +240,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //删除相关属性
         topicSpAttrWriteService.removeAttributes(topicId);
         //更新用户统计数据
-        userCsWriteService.updateTopicCountByIncrement(topic.getUserId(), -1);
+        cmtyUserWriteService.updateTopicCountByIncrement(topic.getUserId(), -1);
         //发送删除图片的消息
         removeTopicImagesMqProducer.sendRemoveTopicMessage(topicId);
         //同步es数据

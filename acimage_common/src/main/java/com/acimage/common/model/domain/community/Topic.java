@@ -1,13 +1,11 @@
 package com.acimage.common.model.domain.community;
 
 
-import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.model.domain.user.User;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +33,6 @@ public class Topic {
     public static int TAG_MIN=1;
     public static final String TAG_VALIDATION_MSG= "标签数量在"+TAG_MIN+"-"+TAG_MAX+"之间";
 
-
     @TableId(type= IdType.INPUT)
     private Long id;
     private Long userId;
@@ -47,24 +44,21 @@ public class Topic {
     private String coverImageUrl;
     private Integer categoryId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    Date activityTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date activityTime;
     private Date createTime;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
     @TableLogic(delval = "1")
     boolean deleted;
 
     @TableField(exist = false)
-    User user;
+    CmtyUser user;
     @TableField(exist = false)
     Category category;
     @TableField(exist = false)
     List<Integer> tagIds;
-    @TableField(exist = false)
-    List<Image> images;
+//    @TableField(exist = false)
+//    List<Image> images;
     @TableField(exist = false)
     List<Comment> comments;
 }

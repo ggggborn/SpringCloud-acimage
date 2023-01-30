@@ -6,8 +6,8 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.exception.BusinessException;
 
 import com.acimage.common.global.consts.HeaderKey;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.user.User;
-import com.acimage.common.model.domain.community.UserBasic;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.user.dao.UserDao;
@@ -15,7 +15,7 @@ import com.acimage.user.dao.UserPrivacyDao;
 import com.acimage.user.model.domain.UserPrivacy;
 import com.acimage.user.model.request.UserLoginReq;
 import com.acimage.user.model.request.UserRegisterReq;
-import com.acimage.user.mq.produce.SyncUserMqProducer;
+import com.acimage.user.mq.producer.SyncUserMqProducer;
 import com.acimage.user.service.user.LoginService;
 import com.acimage.user.utils.RsaUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -37,7 +37,6 @@ public class LoginServiceImpl implements LoginService {
     UserPrivacyDao userPrivacyDao;
     @Autowired
     TokenService tokenService;
-
     @Autowired
     SyncUserMqProducer syncUserMqProducer;
 
@@ -69,11 +68,11 @@ public class LoginServiceImpl implements LoginService {
 
         //判断email是否存在
         String email = userRegister.getEmail();
-        LambdaQueryWrapper<User> qwForEmail = new LambdaQueryWrapper<>();
-        qwForEmail.eq(User::getUsername, username);
-        User userByEmail = userDao.selectOne(qwForEmail);
+        LambdaQueryWrapper<UserPrivacy> qwForEmail = new LambdaQueryWrapper<>();
+        qwForEmail.eq(UserPrivacy::getEmail, email);
+        UserPrivacy userByEmail = userPrivacyDao.selectOne(qwForEmail);
         if (userByEmail != null) {
-            log.warn("用户：无 注册 错误：邮箱{}已存在", email);
+            log.warn("用户注册 error：邮箱{}已存在", email);
             throw new BusinessException("email已存在");
         }
 
@@ -96,8 +95,13 @@ public class LoginServiceImpl implements LoginService {
 
         //返回token
         String defaultPhotoUrl = "";
-        //mq发送消息
-        syncUserMqProducer.sendAddUserMessage(new UserBasic(userId, username, defaultPhotoUrl));
+        //mq发送消息，同步数据
+        CmtyUser cmtyUser=new CmtyUser();
+        cmtyUser.setId(userId);
+        cmtyUser.setUsername(username);
+        cmtyUser.setPhotoUrl(defaultPhotoUrl);
+        syncUserMqProducer.sendAddUserMessage(cmtyUser);
+
         return tokenService.createAndRecordToken(userId, username, defaultPhotoUrl);
 
     }

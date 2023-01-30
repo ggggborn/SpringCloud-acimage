@@ -1,12 +1,12 @@
 package com.acimage.community.mq.consumer;
 
 
-import com.acimage.common.model.domain.community.UserBasic;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 
-import com.acimage.community.service.userbasic.UserBasicWriteService;
-import com.acimage.community.service.userbasic.UserMixWriteService;
+import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
+import com.acimage.community.service.cmtyuser.UserMixWriteService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -23,16 +23,13 @@ import java.io.IOException;
 public class SyncUserConsumer {
 
     @Autowired
-    UserBasicWriteService userBasicWriteService;
-    @Autowired
-    UserMixWriteService userMixWriteService;
-
+    CmtyUserWriteService cmtyUserWriteService;
 
     @RabbitHandler
     public void syncUsername(Channel channel, Message message, UserIdWithUsername userIdWithUsername) {
         log.info("同步用户名：{}", userIdWithUsername);
         try {
-            userBasicWriteService.updateUsername(userIdWithUsername.getUserId(), userIdWithUsername.getUsername());
+            cmtyUserWriteService.updateUsername(userIdWithUsername.getUserId(), userIdWithUsername.getUsername());
 
 
         } catch (Exception e) {
@@ -62,7 +59,7 @@ public class SyncUserConsumer {
     public void syncPhotoUrl(Channel channel, Message message, UserIdWithPhotoUrl userIdWithPhotoUrl) {
         log.info("同步头像地址：{}", userIdWithPhotoUrl);
         try {
-            userBasicWriteService.updatePhotoUrl(userIdWithPhotoUrl.getUserId(), userIdWithPhotoUrl.getPhotoUrl());
+            cmtyUserWriteService.updatePhotoUrl(userIdWithPhotoUrl.getUserId(), userIdWithPhotoUrl.getPhotoUrl());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,14 +83,13 @@ public class SyncUserConsumer {
     }
 
     @RabbitHandler
-    public void addUser(Channel channel, Message message, UserBasic userBasic) {
-        log.info("新增用户：{}", userBasic);
+    public void addUser(Channel channel, Message message, CmtyUser cmtyUser) {
+        log.info("新增用户：{}", cmtyUser);
         try {
-            userMixWriteService.addUserBasicAndUserCommunityStatistic(userBasic);
-
+            cmtyUserWriteService.save(cmtyUser);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("新增用户 error:{} 对象：{}", e.getMessage(), userBasic);
+            log.error("新增用户 error:{} 对象：{}", e.getMessage(), cmtyUser);
 
         } finally {
             String messageBody = new String(message.getBody());

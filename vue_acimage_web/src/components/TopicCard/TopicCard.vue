@@ -41,14 +41,14 @@
 			</div>
 			<div class="wrapper-right">
 				<div class="category-container">
-					<el-tag effect="plain" :type="$store.state.types[categoryId%5]" v-if="!$global.isEmpty(categoryId)">
+					<el-tag effect="plain" :type="$global.buttonType(categoryId)" v-if="!$global.isEmpty(categoryId)">
 						{{$store.getters.categoryLabel(categoryId)}}
 					</el-tag>
 				</div>
 				<div class="tags-container">
 					<template v-for="item in tagIds">
 						<el-tag v-if="!$global.isEmpty($store.getters.tagLabel(item))" effect="plain"
-							:type="$global.buttonType(item.id)" :key="item.id">
+							:type="$global.buttonType(item)" :key="item.id">
 							{{$store.getters.tagLabel(item)}}
 						</el-tag>
 					</template>

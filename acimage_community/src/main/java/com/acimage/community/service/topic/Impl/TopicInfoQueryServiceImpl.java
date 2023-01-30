@@ -3,21 +3,21 @@ package com.acimage.community.service.topic.Impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.global.context.UserContext;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.community.Comment;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.domain.user.User;
-import com.acimage.common.model.domain.community.UserCommunityStatistic;
 import com.acimage.common.utils.LambdaUtils;
+import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.community.dao.TopicDao;
 import com.acimage.common.model.page.Page;
 import com.acimage.community.model.vo.TopicInfoVo;
+import com.acimage.community.service.cmtyuser.CmtyUserQueryService;
 import com.acimage.community.service.comment.CommentInfoService;
 import com.acimage.community.service.tag.TagTopicQueryService;
 import com.acimage.community.service.topic.*;
 import com.acimage.community.service.topic.enums.TopicAttribute;
-import com.acimage.community.service.userstatistic.UserCsQueryService;
-import com.acimage.feign.client.ImageClient;
 import com.acimage.feign.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,6 @@ import java.util.List;
 public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     @Autowired
     TopicDao topicDao;
-
     @Autowired
     CommentInfoService commentInfoService;
     @Autowired
@@ -41,12 +40,11 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     TopicSpAttrQueryService topicSpQueryService;
     @Autowired
     TopicRankQueryService topicRankQueryService;
+
     @Autowired
-    UserCsQueryService userCsQueryService;
+    CmtyUserQueryService cmtyUserQueryService;
     @Autowired
     TagTopicQueryService tagTopicQueryService;
-    @Autowired
-    ImageClient imageClient;
     @Autowired
     UserClient userClient;
     @Autowired
@@ -83,13 +81,15 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         List<Comment> comments = commentInfoService.pageCommentsWithUser(topicId, pageNo);
         topicInfoVo.setComments(comments);
 
-        User user = userClient.queryUser(topic.getUserId()).getData();
-        //设置用户主人相关信息
-        if (user.getId() != null) {
-            UserCommunityStatistic userStatistic = userCsQueryService.getUserCommunityStatistic(topic.getUserId());
-            user.setStarCount(userStatistic.getStarCount());
-            user.setTopicCount(userStatistic.getTopicCount());
-        }
+        CmtyUser cmtyUser = cmtyUserQueryService.getUserCommunityStatistic(topic.getUserId());
+//                userClient.queryUser(topic.getUserId()).getData();
+//        //设置用户主人相关信息
+//        if (user.getId() != null) {
+//            UserCommunityStatistic userStatistic = userCsQueryService.getUserCommunityStatistic(topic.getUserId());
+//            user.setStarCount(userStatistic.getStarCount());
+//            user.setTopicCount(userStatistic.getTopicCount());
+//        }
+        User user= BeanUtils.copyPropertiesTo(cmtyUser,User.class);
         topicInfoVo.setUser(user);
         String html=topicHtmlQueryService.getTopicHtml(topicId).getHtml();
         topicInfoVo.setHtml(html);

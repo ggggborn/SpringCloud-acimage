@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserBasic {
+public class CmtyUser {
     @TableId
     Long id;
     String username;
     String photoUrl;
+    Integer topicCount;
+    Integer starCount;
 }

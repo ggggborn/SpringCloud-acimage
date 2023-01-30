@@ -119,6 +119,7 @@
 			},
 			handlePageNoChange() {
 				this.query.pageNo = this.curPage;
+				this.getRecentTopicPage();
 				console.log(this.query)
 			},
 			getRecentTopicPage() {

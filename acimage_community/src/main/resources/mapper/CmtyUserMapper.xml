@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.community.dao.CmtyUserDao">
+<!--    <resultMap id="withUserBasic" type="UserCommunityStatistic">-->
+<!--        <id property="userId" column="user_id"/>-->
+<!--        <result property="starCount" column="star_count"/>-->
+<!--        <result property="topicCount" column="topic_count"/>-->
+<!--        <association property="user" javaType="UserBasic" column="user_id"-->
+<!--                     select="com.acimage.community.dao.CmtyUserDao.selectById"/>-->
+<!--    </resultMap>-->
+
+    <update id="batchUpdateStarCount">
+        <foreach collection="userIdAndIncrements" item="userIdAndIncrement" index="index" separator=";">
+            update tb_cmty_user set star_count = #{userIdAndIncrement.value} where id=#{userIdAndIncrement.key}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateTopicCount">
+        <foreach collection="userIdAndIncrements" item="userIdAndIncrement" index="index" separator=";">
+            update tb_cmty_user set topic_count = #{userIdAndIncrement.value} where id=#{userIdAndIncrement.key}
+        </foreach>
+    </update>
+
+<!--    <select id="selectListOrderByColumn" resultMap="withUserBasic">-->
+<!--        select * from tb_user_community_statistic order by ${column} desc limit #{startIndex},#{recordNum}-->
+<!--    </select>-->
+
+</mapper>

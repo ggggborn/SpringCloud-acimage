@@ -14,7 +14,7 @@ import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.global.consts.StorePrefixConst;
-import com.acimage.user.mq.produce.SyncUserMqProducer;
+import com.acimage.user.mq.producer.SyncUserMqProducer;
 import com.acimage.user.service.user.UserWriteService;
 import com.acimage.user.service.user.consts.KeyConstants;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
