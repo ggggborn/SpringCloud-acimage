@@ -71,7 +71,7 @@
 			},
 			medalMode: {
 				type: Boolean,
-				default: true
+				default: false
 			},
 			label: {
 				type: String,
@@ -79,7 +79,7 @@
 			},
 			titleLimit: {
 				type: Number,
-				default: 18
+				default: 17
 			},
 			topics: {
 				type: Array,
@@ -143,7 +143,9 @@
 
 		},
 		methods: {
-
+			clickTopicLink(id){
+				this.$router.push({path:'/topic/'+id});
+			}
 		}
 	}
 </script>

@@ -40,13 +40,13 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     TopicSpAttrQueryService topicSpQueryService;
     @Autowired
     TopicRankQueryService topicRankQueryService;
-
+    @Autowired
+    TopicSearchService topicSearchService;
     @Autowired
     CmtyUserQueryService cmtyUserQueryService;
     @Autowired
     TagTopicQueryService tagTopicQueryService;
-    @Autowired
-    UserClient userClient;
+
     @Autowired
     TopicHtmlQueryService topicHtmlQueryService;
 
@@ -93,6 +93,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         topicInfoVo.setUser(user);
         String html=topicHtmlQueryService.getTopicHtml(topicId).getHtml();
         topicInfoVo.setHtml(html);
+        topicInfoVo.setSimilarTopics(topicSearchService.searchSimilar(topicId,10));
 
 //        List<Image> imageList = imageClient.queryTopicImages(topic.getId()).getData();
 //        topic.setImages(imageList);

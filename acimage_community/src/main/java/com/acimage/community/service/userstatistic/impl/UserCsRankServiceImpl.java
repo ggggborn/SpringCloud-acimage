@@ -1,7 +1,7 @@
 package com.acimage.community.service.userstatistic.impl;
 
 import com.acimage.common.model.domain.user.User;
-import com.acimage.common.global.UserCommunityStatistic;
+import com.acimage.common.deprecated.UserCommunityStatistic;
 import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.PageUtils;

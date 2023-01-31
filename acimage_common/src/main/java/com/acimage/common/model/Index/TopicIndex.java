@@ -13,10 +13,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import java.util.Date;
 import java.util.List;
@@ -27,7 +24,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @Data
-@Document(indexName = "topic", replicas = 0, shards = 1)
+@Document(indexName = "topic")
+@Setting(replicas = 0)
 public class TopicIndex {
 
     @Id
@@ -55,9 +53,9 @@ public class TopicIndex {
     @Field(store = true, index = false, type = FieldType.Keyword)
     private String coverImageUrl;
 
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
+    @Field(type = FieldType.Date, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date createTime;
-    @Field(type = FieldType.Date, format = DateFormat.custom, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
+    @Field(type = FieldType.Date, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date updateTime;
 
     @Field(type = FieldType.Keyword, store = true)

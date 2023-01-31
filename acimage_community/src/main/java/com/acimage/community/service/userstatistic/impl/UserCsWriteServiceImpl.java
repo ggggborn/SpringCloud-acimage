@@ -2,7 +2,7 @@ package com.acimage.community.service.userstatistic.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
-import com.acimage.common.global.UserCommunityStatistic;
+import com.acimage.common.deprecated.UserCommunityStatistic;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.PairUtils;
 import com.acimage.community.global.CmtyUserDaoBak;

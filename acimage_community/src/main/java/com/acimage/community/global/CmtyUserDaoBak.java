@@ -1,7 +1,7 @@
 package com.acimage.community.global;
 
 import cn.hutool.core.lang.Pair;
-import com.acimage.common.global.UserCommunityStatistic;
+import com.acimage.common.deprecated.UserCommunityStatistic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;

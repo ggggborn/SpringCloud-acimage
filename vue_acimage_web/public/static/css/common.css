@@ -25,6 +25,11 @@ body {
 	cursor: pointer
 }
 
+.hover-shadow-light:hover{
+	box-shadow: 0px 0px 15px #E7E6E3;
+	transition: 0.4s;
+}
+
 .hover-border-light:hover {
 	border: 1px solid skyblue;
 }

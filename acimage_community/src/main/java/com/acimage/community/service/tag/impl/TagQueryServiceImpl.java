@@ -45,6 +45,7 @@ public class TagQueryServiceImpl implements TagQueryService {
                 if (item.getId().equals(tagIds.get(i))) {
                     tags.add(item);
                     i++;
+                    break;
                 }
             }
         }

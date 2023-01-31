@@ -1,4 +1,4 @@
-package com.acimage.common.global;
+package com.acimage.common.deprecated;
 
 import com.acimage.common.model.domain.community.CmtyUser;
 import com.baomidou.mybatisplus.annotation.TableField;

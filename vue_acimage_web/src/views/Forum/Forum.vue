@@ -35,7 +35,7 @@
 					<tag-card :click-tag="clickTag"></tag-card>
 				</div>
 				<div class="mt10">
-					<topic-list></topic-list>
+					<topic-list :medalMode="true"></topic-list>
 				</div>
 			</div>
 
@@ -133,7 +133,6 @@
 						}
 					})
 			}
-
 		}
 	}
 </script>

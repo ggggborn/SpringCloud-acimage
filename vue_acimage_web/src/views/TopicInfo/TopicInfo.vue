@@ -119,13 +119,14 @@
 
 			<div class="wrapper-right">
 				<!-- 右侧话题主人信息 -->
-				<div style="text-align: center;padding-bottom: 20px;">
+				<div class="user-container hover-shadow-light">
 					<el-avatar :src="$global.truePhotoUrl(topic.user.photoUrl)" :size="90" style="margin-top:20px;">
 					</el-avatar>
 					<br />
 					<span style="color:#F67B7B;">{{topic.user.username}}</span>
 					<div style="font-size:14px;margin-top:5px;color:#999999;">
 						<i class="el-icon-star-on" style="color:orange;"></i>{{topic.user.starCount}}
+						<i class="el-icon-edit" style="color:skyblue;"></i>{{topic.user.topicCount}}
 						<br />
 						这是我的个性签名
 					</div>
@@ -137,9 +138,17 @@
 					</div>
 				</div>
 				<!--End 右侧话题主人信息-->
+
+				<div style="margin-top: 10px;">
+					<topic-list label="相关话题" :topics="topic.similarTopics"></topic-list>
+				</div>
+
 			</div>
 			<div style="height: 200px;"></div>
 		</div>
+
+
+
 
 		<!-- 修改标题对话框 -->
 		<el-dialog title="修改标题" :visible.sync="titleModifyVisible">
@@ -183,7 +192,8 @@
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
 	import UserComment from './UserComment/UserComment.vue'
 	import PublishComment from './PublishComment/PublishComment.vue'
-	import EditBoard from '../../components/EditBoard/EditBoard.vue'
+	import EditBoard from '@/components/EditBoard/EditBoard.vue'
+	import TopicList from '@/components/TopicList/TopicList.vue'
 
 
 	import {
@@ -207,10 +217,12 @@
 			MyHeader,
 			UserComment,
 			PublishComment,
-			EditBoard
+			EditBoard,
+			TopicList
 		},
 		data() {
 			return {
+				loading:true,
 				isLoadingStar: false,
 				titleModifyVisible: false,
 				titleModify: '',
@@ -252,35 +264,43 @@
 						},
 						updateTime: '2022-2-22 22:22:22',
 						content: 'testEnglish这个流派兵种太多了，手机玩太折磨了，还是超龙一字滑适合我：从前有座山，山上有座庙，庙里有个老人在讲故事,从前有座山，山上有座庙，庙里有个老人在讲故事：从前有座山，山上有座庙，庙里有个老人在讲故事：从前有座山，山上有座庙，庙里有个老人在讲故事'
-					}]
+					}],
+					similarTopics: []
 				}
 			};
+		},
+		watch: {
+			'$route'(to, from) {
+				if (to.params.id != from.params.id) {
+					this.init(to.params.id); //重新加载数据
+				}
+			}
 		},
 		mounted() {
 			//获取参数
 			let id = this.$route.params.id;
 			console.log(id);
-			if (CommonUtils.isEmpty(id)) {
-				return;
-			}
-
-			let _this = this;
-			queryTopicAndFirstCommentPage(id).then(result => {
-				if (result.code == Code.OK) {
-					_this.topic = result.data;
-					_this.initDataForModify();
-				}
-			})
-
-			queryIsStar(id).then(result => {
-				if (result.code == Code.OK) {
-					_this.isStar = result.data;
-				}
-			})
-
-
+			this.init(id);
 		},
 		methods: {
+			init(id){
+				if (CommonUtils.isEmpty(id)) {
+					return;
+				}
+				let _this = this;
+				queryTopicAndFirstCommentPage(id).then(result => {
+					if (result.code == Code.OK) {
+						_this.topic = result.data;
+						_this.initDataForModify();
+					}
+				})
+				
+				queryIsStar(id).then(result => {
+					if (result.code == Code.OK) {
+						_this.isStar = result.data;
+					}
+				})
+			},
 			onClickStar() {
 				let _this = this;
 				if (this.isStar) {

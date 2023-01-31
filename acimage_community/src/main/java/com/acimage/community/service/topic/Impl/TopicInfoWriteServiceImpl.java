@@ -208,6 +208,9 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         topicIndex.setTagIds(noRepeatTagIds);
         //设置完整的content
         topicIndex.setContent(content);
+        topicIndex.setStarCount(0);
+        topicIndex.setCommentCount(0);
+        topicIndex.setPageView(0);
         syncEsMqProducer.sendAddMessage(topicIndex);
 
         PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);

@@ -3,7 +3,6 @@ package com.acimage.user.service.user.impl;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.user.User;
-import com.acimage.common.global.UserCommunityStatistic;
 
 import com.acimage.common.redis.annotation.QueryRedis;
 

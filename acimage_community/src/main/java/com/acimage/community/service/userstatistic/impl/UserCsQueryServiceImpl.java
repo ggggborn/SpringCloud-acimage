@@ -1,6 +1,6 @@
 package com.acimage.community.service.userstatistic.impl;
 
-import com.acimage.common.global.UserCommunityStatistic;
+import com.acimage.common.deprecated.UserCommunityStatistic;
 import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.redis.enums.DataType;
 import com.acimage.community.global.CmtyUserDaoBak;

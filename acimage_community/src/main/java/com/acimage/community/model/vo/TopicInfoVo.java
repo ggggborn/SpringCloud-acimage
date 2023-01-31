@@ -1,6 +1,7 @@
 package com.acimage.community.model.vo;
 
 import com.acimage.common.model.domain.community.Comment;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,6 @@ public class TopicInfoVo {
     String html;
     User user;
     List<Comment> comments;
+    List<Topic> similarTopics;
+
 }

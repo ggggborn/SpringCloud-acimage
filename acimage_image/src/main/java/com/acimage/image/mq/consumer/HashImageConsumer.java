@@ -53,7 +53,6 @@ public class HashImageConsumer {
         if (directory.mkdir()) {
             log.info("创建临时目录：{}", tempDirectory);
         }
-
     }
 
     @Deprecated
