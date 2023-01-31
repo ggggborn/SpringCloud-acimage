@@ -6,7 +6,7 @@
 				<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
 			</div>
 			<div class="tags-container">
-				<el-tag v-for="item in $store.state.tagList" @click="clickTag(item.id)" class="hover-pointer"
+				<el-tag :id="'btn'+item.id" v-for="item in $store.state.tagList" @click="handlerClick(item.id)" class="hover-pointer"
 					:type="$global.buttonType(item.id)" :key="item.id">{{item.label}}</el-tag>
 			</div>
 		</el-card>
@@ -22,9 +22,22 @@
 				type: Function
 			}
 		},
+		data() {
+			return {
+				activeId: null
+			}
+		},
 		methods: {
 			handleClick(tagId) {
-				this.clickTag(tagId);
+				// this.clickTag(tagId);
+				if (this.activeId == tagId) {
+					this.activeId = null;
+					document.querySelector('#btn' + tagId).blur()
+					// document.querySelector('#btn'+categoryId).mouseleave()
+				} else {
+					this.activeId = tagId
+					
+				}
 			}
 		}
 	}

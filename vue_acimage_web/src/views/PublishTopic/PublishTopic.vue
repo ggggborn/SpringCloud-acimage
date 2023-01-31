@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<my-header></my-header>
-
 		<div class="publish-main">
 
 			<div class="publish-header">
@@ -16,14 +15,13 @@
 					<el-input v-model="addForm.title" prefix-icon="el-icon-edit-outline" maxlength="30"></el-input>
 				</el-form-item>
 				<el-form-item label="分类">
-					<el-select v-model="addForm.categoryId" placeholder="请选择分类">
+					<el-select v-model="addForm.categoryId" placeholder="请选择分类" clearable>
 						<el-option v-for="item in $store.state.categoryList" :label="item.label" :value="item.id"
 							:key="item.id">
 						</el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="标签(1-3个)">
-
 					<el-tag v-for="item in chosenTagList" :key="item.id" class="hover-pointer mr5"
 						@close="removeTag(item)" :type="$global.buttonType(item.id)" closable>
 						{{item.label}}
@@ -57,6 +55,9 @@
 			<div style="text-align: center;">
 				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
 				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">提交</el-button>
+			</div>
+			<div style="width:100px;height:100px;background-color: red;" class="active-blue hover-pointer">
+				
 			</div>
 		</div>
 

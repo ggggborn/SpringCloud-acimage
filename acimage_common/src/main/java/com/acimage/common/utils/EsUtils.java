@@ -11,6 +11,8 @@ import com.acimage.common.model.mq.dto.EsUpdateDto;
 import com.acimage.common.model.page.Page;
 import com.acimage.common.utils.common.ReflectUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -120,9 +121,24 @@ public class EsUtils {
         moreLikeThisQuery.setId(id);
         moreLikeThisQuery.addFields(fields.toArray(fields.toArray(new String[0])));
         moreLikeThisQuery.setPageable(PageRequest.of(pageNo - 1, pageSize));
-        moreLikeThisQuery.setMinTermFreq(2);
-        moreLikeThisQuery.setMinDocFreq(3);
+        moreLikeThisQuery.setMinTermFreq(1);
+        moreLikeThisQuery.setMinDocFreq(2);
+        System.out.println(esTemplate.search(moreLikeThisQuery, index).getSearchHits());
         return toList(esTemplate.search(moreLikeThisQuery, index).getSearchHits());
+    }
+
+    public <T> List<T> matchQuery(Class<T> index,String field,Object value, int pageNo, int pageSize,float score) {
+        MatchQueryBuilder matchQuery = QueryBuilders.matchQuery(field, value);
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+                .withQuery(matchQuery)
+                .withPageable(pageable)
+                .withMinScore(score)
+                .build();
+
+        SearchHits<T> search = esTemplate.search(nativeSearchQuery, index);
+        System.out.println(search.getSearchHits());
+        return toList(search.getSearchHits());
     }
 
     private <T> List<T> toList(List<SearchHit<T>> searchHits) {

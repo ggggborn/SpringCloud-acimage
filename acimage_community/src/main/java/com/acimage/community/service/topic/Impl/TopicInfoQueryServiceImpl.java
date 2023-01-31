@@ -93,8 +93,8 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         topicInfoVo.setUser(user);
         String html=topicHtmlQueryService.getTopicHtml(topicId).getHtml();
         topicInfoVo.setHtml(html);
-        topicInfoVo.setSimilarTopics(topicSearchService.searchSimilar(topicId,10));
-
+        topicInfoVo.setSimilarTopics(topicSearchService.searchSimilarByTitle(topicId,topicInfoVo.getTitle(), 10));
+//        topicSearchService.searchSimilar(topicId,10);
 //        List<Image> imageList = imageClient.queryTopicImages(topic.getId()).getData();
 //        topic.setImages(imageList);
 

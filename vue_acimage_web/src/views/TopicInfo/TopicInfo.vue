@@ -61,8 +61,8 @@
 
 				<div style="text-align: center;margin-top:20px;">
 					<el-button @click="onClickStar" :type=" isStar?'info':'danger' " :disabled="isLoadingStar"
-						style="border:none" :icon="isStar?'':'el-icon-collection-tag'">
-						{{isStar?'取消收藏':'收藏'}}
+						style="border:none" :icon="isStar?'':'el-icon-star-off'">
+						{{isStar?'取消星星':'赏他星星'}}
 					</el-button>
 					<el-button type="danger" style="border:none" icon="el-icon-download" @click="onClickDownloadImages">
 						下载
@@ -119,7 +119,7 @@
 
 			<div class="wrapper-right">
 				<!-- 右侧话题主人信息 -->
-				<div class="user-container hover-shadow-light">
+				<div class="user-container hover-shadow">
 					<el-avatar :src="$global.truePhotoUrl(topic.user.photoUrl)" :size="90" style="margin-top:20px;">
 					</el-avatar>
 					<br />

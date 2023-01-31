@@ -1,6 +1,3 @@
-.upload-plus-disabled .el-upload--picture-card {
-	display: none;
-}						
 
 .publish-main{
 	width:1040px;
@@ -52,4 +49,11 @@
 
 .mr5{
 	margin-right: 5px;
+}
+
+
+
+.active-blue:hover{
+	background-color:blue !important;
+	transition: 1s;
 }

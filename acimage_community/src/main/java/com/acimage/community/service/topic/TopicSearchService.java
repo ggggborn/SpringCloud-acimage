@@ -9,4 +9,6 @@ public interface TopicSearchService {
     Page<Topic> searchByTagId(Integer tagId, int pageNo, int pageSize);
 
     List<Topic> searchSimilar(long topicId, int size);
+
+    List<Topic> searchSimilarByTitle(long topicId,String title, int size);
 }

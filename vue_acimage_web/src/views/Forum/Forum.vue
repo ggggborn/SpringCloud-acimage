@@ -111,7 +111,7 @@
 		},
 		methods: {
 			clickCategory(categoryId) {
-				alert("父组件收到" + categoryId);
+				// alert("父组件收到" + categoryId);
 			},
 			clickTag(tagId) {
 				alert("父组件收到" + tagId);

@@ -6,6 +6,10 @@
 	border: 1px solid blue;
 }
 
+.tags-container>>>.el-tag:focus {
+	border: 1px solid blue !important;
+}
+
 .tags-container>>>.el-tag {
 	display: inline-block;
 	margin-top: 6px;

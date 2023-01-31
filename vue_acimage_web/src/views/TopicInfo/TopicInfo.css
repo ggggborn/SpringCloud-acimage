@@ -118,6 +118,7 @@ body {
 	padding-bottom: 20px;
 	border:2px solid #EEEEEE;
 	border-radius: 5px;
+	transition: 0.3s;
 	/* box-shadow: 0px 0px 5px #CCCCCC; */
 }
 

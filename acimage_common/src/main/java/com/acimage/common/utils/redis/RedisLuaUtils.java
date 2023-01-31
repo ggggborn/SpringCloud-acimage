@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -21,6 +22,7 @@ public class RedisLuaUtils {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private final static DefaultRedisScript<Long> incrementIfPresent = new DefaultRedisScript<>();
+    private final static DefaultRedisScript<List<Long>> a = new DefaultRedisScript<>();
     private final static DefaultRedisScript<Long> incrementIfPresentZSet = new DefaultRedisScript<>();
     private final static DefaultRedisScript<String> getAndCombineAndDelete = new DefaultRedisScript<>();
 
@@ -50,7 +52,6 @@ public class RedisLuaUtils {
     /**
      * 如果keyForBase存在，则将redis中keyForIncrement的值增加到keyForBase中
      * 否则获取并删除keyForIncrement
-     *
      * @return keyForIncrement对应的值
      */
     public Long getAndCombineAndDelete(String keyForIncrement, String hashKeyForBase, String fieldKey) {
