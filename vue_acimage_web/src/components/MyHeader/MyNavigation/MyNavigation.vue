@@ -11,13 +11,13 @@
 					</el-menu-item>
 
 					<el-menu-item index="2">
-						<router-link to="/MyActivity" class="no-underline">
-							<i class="el-icon-bell" style="color:red"></i>消息
-						</router-link>
+						<i class="el-icon-bell" style="color:red"></i>消息
 					</el-menu-item>
 
 					<el-submenu index="3">
-						<template slot="title"><i class="el-icon-user-solid" style="color:orange"></i>个人中心</template>
+						<template slot="title">
+							<i class="el-icon-user-solid" style="color:orange"></i>个人中心
+						</template>
 						<el-menu-item index="3-1">
 							<i class="el-icon-bell" style="color:red"></i>消息中心
 						</el-menu-item>

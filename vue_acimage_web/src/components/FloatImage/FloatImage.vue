@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-		<el-image :src="imageUrl" fit="cover" class="image">
+		<el-image :src="imageUrl" fit="cover" class="image" lazy>
 		</el-image>
 		<div class="title">
 			{{$global.omitStr(title,20)}}

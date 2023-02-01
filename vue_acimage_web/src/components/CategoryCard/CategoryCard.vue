@@ -3,7 +3,6 @@
 		<el-card shadow="hover">
 			<div slot="header">
 				<span class="c6">分类</span>
-				<el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
 			</div>
 			<div class="categories-container">
 				<el-button :id="'btn'+item.id" v-for="item in $store.state.categoryList" size="small"
@@ -22,21 +21,12 @@
 			clickCategory: {
 				type: Function
 			},
-			// width: {
-			// 	type: Number,
-			// 	default: 298,
-			// }
 		},
 		data() {
 			return {
 				activeId: null
 			}
 		},
-		// computed: {
-		// 	myStyle() {
-		// 		return { width: this.width + 'px' };
-		// 	}
-		// },
 		methods: {
 			handleClick(categoryId) {
 				if (this.activeId == categoryId) {

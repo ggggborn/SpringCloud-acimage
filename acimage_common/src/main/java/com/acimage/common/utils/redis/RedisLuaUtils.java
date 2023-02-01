@@ -46,7 +46,6 @@ public class RedisLuaUtils {
     public Long incrementIfPresent(String key, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
                 .execute(incrementIfPresent, Collections.singletonList(key), Long.toString(increment));
-
     }
 
     /**
@@ -67,6 +66,5 @@ public class RedisLuaUtils {
     public Long incrementIfPresentForZSet(String key, String value, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
                 .execute(incrementIfPresentZSet, Collections.singletonList(key), value, Long.toString(increment));
-
     }
 }

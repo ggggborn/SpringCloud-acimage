@@ -34,7 +34,6 @@ public class DhashUtils {
                 }
             }
         }
-
         return BitUtils.str64ToLong(str64.toString());
     }
 

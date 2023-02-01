@@ -1,5 +1,5 @@
 import MessageUtils from '@/utils/MessageUtils'
-import {Code} from "@/utils/result.js"
+import { Code } from "@/utils/result.js"
 export default {
 	isEmpty(object) {
 		if (object == undefined || object == '' || object == null || object == {} || object == []) {
@@ -20,7 +20,7 @@ export default {
 		});
 	},
 	popMsgIfOk(request, msg) {
-		this.popMsgAndRefreshIfOk(request,msg);
+		this.popMsgAndRefreshIfOk(request, msg);
 	},
 
 	delayRefresh(delaySeconds) {
@@ -42,4 +42,20 @@ export default {
 		}
 		return params;
 	},
+
+
+	getFormData(object) {
+		const formData = new FormData()
+		Object.keys(object).forEach(key => {
+			const value = object[key]
+			if (Array.isArray(value)) {
+				value.forEach((subValue, i) =>
+					formData.append(key + `[${i}]`, subValue)
+				)
+			} else {
+				formData.append(key, object[key])
+			}
+		})
+		return formData
+	}
 }

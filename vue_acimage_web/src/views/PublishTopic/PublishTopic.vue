@@ -1,11 +1,10 @@
 <template>
 	<div>
 		<my-header></my-header>
-		<div class="publish-main">
-
-			<div class="publish-header">
-				<i class="el-icon-s-promotion publish-header-icon" style=""></i>
-				<div class="publish-header-title">快来分享吧</div>
+		<div class="wrapper">
+			<div class="wrapper-header">
+				<i class="el-icon-s-promotion header-icon" style=""></i>
+				<div class="header-title">快来分享吧</div>
 				<div style="margin-top:-20px;">
 					<el-divider direction="horizontal"></el-divider>
 				</div>
@@ -55,9 +54,6 @@
 			<div style="text-align: center;">
 				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
 				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">提交</el-button>
-			</div>
-			<div style="width:100px;height:100px;background-color: red;" class="active-blue hover-pointer">
-				
 			</div>
 		</div>
 

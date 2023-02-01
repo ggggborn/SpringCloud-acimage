@@ -5,56 +5,20 @@
 				<span class="c6">{{label}}</span>
 			</div>
 			<div>
-				<template v-for="(item,index) in topics">
-					<div :key="item.id" style="font-size: 14px;position: relative;margin-bottom: 5px;">
-						<template v-if="medalMode&&index<3">
-							<i :class="medalClass(index)" :style="medalColor(index)"></i>
-						</template>
-						<el-link :href="'/#/topic/'+item.id">
-							<template v-if="!medalMode||index>=3">
-								<span class="ml7">
-									{{index+1}}
-								</span>
-							</template>
-							{{$global.omitStr(item.title,titleLimit)}}
-						</el-link>
-						<template v-if="showData">
-							<div style="margin-left: 20px;margin-bottom: -5px;font-size: 12px;">
-								<i class="el-icon-star-off"></i>{{item.starCount}}
-								·<i class="el-icon-chat-dot-square"></i>{{item.commentCount}}
-								· <i class="el-icon-view"></i>{{item.pageView}}
-							</div>
-						</template>
+				<div v-for="(item,index) in topics" :key="item.id" class="item-container">
+					<i v-if="medalMode&&index<3" :class="medalClass(index)" :style="medalColor(index)"></i>
+					<el-link :href="'/#/topic/'+item.id">
+						<span v-if="!medalMode||index>=3" class="ml7">
+							{{index+1}}
+						</span>
+						{{$global.omitStr(item.title,titleLimit)}}
+					</el-link>
+					<div v-if="showData" class="data-container">
+						<i class="el-icon-star-off"></i>{{item.starCount}}
+						·<i class="el-icon-chat-dot-square"></i>{{item.commentCount}}
+						· <i class="el-icon-view"></i>{{item.pageView}}
 					</div>
-				</template>
-
-
-				<!-- 				<div style="font-size: 14px;position: relative;margin-bottom: 5px;">
-
-					<i class="el-icon-medal-1" style="color: #99999;font-size: 20px;position: relative;top:4px;"></i>
-					<el-link href="/#/publish">
-						发家史客户端卡技术大家看爱打架深
-					</el-link>
-					<template v-if="true">
-						<div style="margin-left: 20px;margin-bottom: -5px;">
-							<i class="el-icon-chat-dot-square"></i>5
-							· <i class="el-icon-star-off"></i>6
-							· <i class="el-icon-view"></i>9
-						</div>
-					</template>
 				</div>
-
-				<div style="font-size: 14px;position: relative;">
-					<i class="el-icon-medal" style="color: #99999;font-size: 20px;position: relative;top:4px;"></i>
-					<el-link href="/#/publish">
-						发家史客户端卡技术大家看爱打架深
-					</el-link>
-					<template v-if="false">
-						· <i class="el-icon-chat-dot-square"></i>5
-						· <i class="el-icon-star-off"></i>6
-						· <i class="el-icon-view"></i>9
-					</template>
-				</div> -->
 			</div>
 		</el-card>
 	</div>
@@ -143,8 +107,8 @@
 
 		},
 		methods: {
-			clickTopicLink(id){
-				this.$router.push({path:'/topic/'+id});
+			clickTopicLink(id) {
+				this.$router.push({ path: '/topic/' + id });
 			}
 		}
 	}

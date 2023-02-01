@@ -19,6 +19,18 @@
 	top:4px;
 }
 
+.data-container{
+	margin-left: 20px;
+	margin-bottom: -5px;
+	font-size: 12px;
+}
+
+.item-container{
+	font-size: 14px;
+	position: relative;
+	margin-bottom: 5px;
+}
+
 .ml7{
 	margin-left: 7px;
 }

@@ -19,7 +19,7 @@
 					<i class="el-icon-s-promotion" style="color: red;"></i>分享
 				</router-link>
 				<el-divider direction="vertical"></el-divider>
-				<router-link to="/" class="no-underline tabs-item-link">
+				<router-link to="/SearchTopic" class="no-underline tabs-item-link">
 					<i class="el-icon-search" style="color: red;"></i>搜索
 				</router-link>
 				<el-divider direction="vertical"></el-divider>

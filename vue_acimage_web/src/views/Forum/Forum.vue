@@ -7,21 +7,16 @@
 				<div class="wrapper-header-title">AC论坛</div>
 			</div>
 			<div class="wrapper-left">
-				<template v-if="loading">
-					<el-skeleton :rows="6" animated />
-				</template>
+				<el-skeleton v-if="loading" :rows="6" animated />
 				<template v-else>
-					<template v-for="topic in topics">
-						<div style="margin-bottom:8px;" :key="topic.id">
-							<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.activityTime"
-								:username="topic.user.username" :starCount="topic.starCount"
-								:commentCount="topic.commentCount" :pageView="topic.pageView"
-								:photoUrl="$global.truePhotoUrl(topic.user.photoUrl)"
-								:to="$global.getTopicUrl(topic.id)" :categoryId="topic.categoryId"
-								:tagIds="topic.tagIds" :coverImageUrl="topic.coverImageUrl">
-							</topic-card>
-						</div>
-					</template>
+					<div v-for="topic in topics" style="margin-bottom:8px;" :key="topic.id">
+						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.activityTime"
+							:username="topic.user.username" :starCount="topic.starCount"
+							:commentCount="topic.commentCount" :pageView="topic.pageView"
+							:photoUrl="$global.truePhotoUrl(topic.user.photoUrl)" :to="$global.getTopicUrl(topic.id)"
+							:categoryId="topic.categoryId" :tagIds="topic.tagIds" :coverImageUrl="topic.coverImageUrl">
+						</topic-card>
+					</div>
 					<div style="text-align: center;">
 						<el-pagination background layout="prev, pager, next" :total="totalCount"
 							:current-page.sync="curPage" @current-change="handlePageNoChange" :page-size="10">
@@ -35,10 +30,9 @@
 					<tag-card :click-tag="clickTag"></tag-card>
 				</div>
 				<div class="mt10">
-					<topic-list :medalMode="true"></topic-list>
+					<topic-list medalMode></topic-list>
 				</div>
 			</div>
-
 		</div>
 	</div>
 </template>
@@ -98,10 +92,10 @@
 		watch: {
 			query: {
 				handler(newval, oldval) {
-					console.log('新+'+newval);
-					console.log('旧+'+oldval);
+					console.log('新+' + newval);
+					console.log('旧+' + oldval);
 				},
-				deep:true
+				deep: true
 			}
 		},
 		mounted() {
@@ -115,7 +109,7 @@
 			},
 			clickTag(tagId) {
 				alert("父组件收到" + tagId);
-				this.query.tagId=tagId;
+				this.query.tagId = tagId;
 			},
 			handlePageNoChange() {
 				this.query.pageNo = this.curPage;

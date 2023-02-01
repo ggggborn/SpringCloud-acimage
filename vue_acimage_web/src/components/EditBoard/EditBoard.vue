@@ -1,8 +1,11 @@
 <template>
-	<div class="wrapper" :style="myStyle">
-		<editor api-key="no-api-key" :init="options" v-model="Html" />
-		<!-- <div style="width: 200px;" v-dompurify-html="Html"></div> -->
+	<div>
+		<div class="wrapper" :style="myStyle">
+			<editor api-key="no-api-key" :init="options" v-model="Html" />
+			<!-- <div style="width: 200px;" v-dompurify-html="Html"></div> -->
+		</div>
 	</div>
+
 </template>
 
 <script>
@@ -42,7 +45,7 @@
 				options: {
 					// plugins: 'lists link image table code help wordcount',
 					plugins: 'lists link code wordcount emoticons image table',
-					height:600,
+					height: 600,
 					language: 'zh-Hans',
 					emoticons_database_url: '../../../tinymce/plugins/emoticons/js/emojis.js',
 					toolbar: [
@@ -56,8 +59,8 @@
 						| fullscreen | bdmap indent2em lineheight axupimgs`
 					],
 					images_file_types: 'jpeg,jpg,png,gif,bmp,webp',
-					relative_urls : true,//是否相对地址
-					convert_urls: false,//是否转换地址
+					relative_urls: true, //是否相对地址
+					convert_urls: false, //是否转换地址
 					// images_upload_url: "/manage/upload", //指定上传图片的后端处理程序的URL。
 					// images_upload_base_path: "/demo",
 					images_upload_handler: (blobInfo, success, failure) => new Promise((resolve, reject) => {

@@ -3,22 +3,18 @@
 		<my-header></my-header>
 		<div class="home-main">
 			<div style="display: inline-block;">
-				<home-carousel v-loading="false"></home-carousel>
+				<home-carousel></home-carousel>
 			</div>
 
 			<div class="mask-images-container">
-
-				<template v-for="topic in recommendTopics">
-					<div :key="topic.id" >
-						<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" :underline="false">
-							<mask-image :image-url="$global.trueImageUrl(topic.coverImageUrl)" :title="topic.title"
-								:star-count="topic.starCount" :page-view="topic.pageView" :commentCount="topic.commentCount"
-								:username="topic.user.username">
-							</mask-image>
-						</router-link>
-					</div>
-				</template>
-
+				<div v-for="topic in recommendTopics" :key="topic.id">
+					<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" :underline="false">
+						<mask-image :image-url="$global.trueImageUrl(topic.coverImageUrl)" :title="topic.title"
+							:star-count="topic.starCount" :page-view="topic.pageView" :commentCount="topic.commentCount"
+							:username="topic.user.username">
+						</mask-image>
+					</router-link>
+				</div>
 			</div>
 
 			<div class="hot-container">
@@ -118,14 +114,7 @@
 					_this.recommendTopics = result.data;
 				}
 			});
-
-
-
 		},
-		computed: {
-
-		}
-
 	}
 </script>
 

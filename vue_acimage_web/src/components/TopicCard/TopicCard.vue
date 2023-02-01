@@ -2,13 +2,15 @@
 	<div>
 		<div class="wrapper hover-pointer" @click="toTopic">
 			<div class="wrapper-left">
-				<img :src="coverImageUrl" />
+				<el-image :src="coverImageUrl" fit="cover" lazy></el-image>
 				<div class="white-gradient">
 				</div>
 			</div>
 			<div class="wrapper-medium">
 				<div class="title">
-					{{$global.omitStr(title,24)}}
+					<div v-if="titleHtml" v-dompurify-html="title"></div>
+					<span v-else>{{title}}</span>
+					<!-- {{$global.omitStr(title)}} -->
 				</div>
 				<div class="content" v-dompurify-html="$global.omitStr(html,contentLimit)"> </div>
 				<div class="info">
@@ -78,7 +80,7 @@
 			},
 			contentLimit: {
 				type: Number,
-				default: 80
+				default: 500
 			},
 			username: {
 
@@ -106,6 +108,14 @@
 				type: Number
 			},
 			to: {},
+			showImage:{
+				type:Boolean,
+				default:true
+			},
+			titleHtml:{
+				type:Boolean,
+				default:false
+			}
 
 		},
 		methods: {

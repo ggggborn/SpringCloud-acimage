@@ -11,33 +11,26 @@
 				<el-tab-pane label="最多star" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
 				<el-tab-pane label="最多话题" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
 			</el-tabs>
-			<template v-if="loading">
-				<el-skeleton :rows="6" animated />
-			</template>
-			<template v-else>
-				<template v-for="user in users">
-					<div class="user-item-container" :key="user.id">
-						<div class="user-item-left">
-							<el-avatar :size="40" :src="$global.truePhotoUrl(user.photoUrl)">
-								<img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
-							</el-avatar>
-						</div>
-						<div class="user-item-right">
-							<div class="user-item-right-header">
-								{{user.username}}
-							</div>
-							<div class="user-item-right-bottom">
-								<div>{{user.starCount}}</div> <span>star</span>
-								<div>{{user.topicCount}}</div> <span>话题</span>
-							</div>
-						</div>
-					</div>
-				</template>
 
-			</template>
+			<el-skeleton v-if="loading" :rows="6" animated style="width: 90%;margin-left:5%"/>
+			<div v-else v-for="user in users" class="user-item-container" :key="user.id">
+				<div class="user-item-left">
+					<el-avatar :size="40" :src="$global.truePhotoUrl(user.photoUrl)">
+						<img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
+					</el-avatar>
+				</div>
+				<div class="user-item-right">
+					<div class="user-item-right-header">
+						{{user.username}}
+					</div>
+					<div class="user-item-right-bottom">
+						<div>{{user.starCount}}</div> <span>star</span>
+						<div>{{user.topicCount}}</div> <span>话题</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
-
 </template>
 
 <script>
@@ -103,7 +96,6 @@
 			onClickSortByTopicCount() {
 				this.sortMode = Mode.topicCount;
 			},
-
 		}
 	}
 </script>

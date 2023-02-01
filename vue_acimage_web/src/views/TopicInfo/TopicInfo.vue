@@ -5,13 +5,7 @@
 			<div class="wrapper-left">
 				<!-- 当前话题的相关信息 -->
 				<div class="title">
-					<!-- <template v-if="!isModifyTopic"> -->
 					{{topic.title}}
-					<!-- 					</template>
-					<template v-else>
-						<el-input v-model="titleModify" maxlength="30" size="samll" style="width:300px;" clearable>
-						</el-input>
-					</template> -->
 				</div>
 				<div class="topic-info">
 					<i class="el-icon-user"></i>
@@ -22,13 +16,11 @@
 					{{topic.pageView}}浏览<el-divider direction="vertical"></el-divider>
 					{{topic.starCount}}收藏<el-divider direction="vertical"></el-divider>
 					{{topic.commentCount}}评论<el-divider direction="vertical"></el-divider>
-					<!-- 编辑标题 -->
-					<template v-if="$store.state.userId == topic.userId">
-						<div class="title-edit-button">
-							<el-button @click="titleModifyVisible=true" class="gray-color" type="text" size="mini">编辑标题
-							</el-button>
-						</div>
-					</template>
+					<!-- 编辑标题按钮 -->
+					<div v-if="$store.state.userId == topic.userId" class="title-edit-button">
+						<el-button @click="titleModifyVisible=true" class="gray-color" type="text" size="mini">编辑标题
+						</el-button>
+					</div>
 				</div>
 				<!--End 当前话题的相关信息 -->
 				<div style="margin-top:-10px;width:90%;margin-left:5%">
@@ -38,38 +30,16 @@
 				<div class="topic-html-container">
 					<div v-dompurify-html="topic.html"></div>
 				</div>
-				<!--话题图片-->
-				<!-- 				<div class="images-container">
-					<template v-for="(image,index)  in topic.images">
-						<div :key="image.id">
-							<el-image :lazy=" true" :src="$global.trueImageUrl(image.url)" class="image-of-images">
-							</el-image>
-							<div class="image-description">
-								{{image.description}}
-								<template v-if="topic.id==$store.state.userId">
-									<div class="image-description-edit-button">
-										<el-button @click="handleEditImageDescription(index)" class="gray-color"
-											type="text" size="mini">编辑描述
-										</el-button>
-									</div>
-								</template>
-							</div>
-						</div>
-					</template>
-				</div> -->
-
 
 				<div style="text-align: center;margin-top:20px;">
 					<el-button @click="onClickStar" :type=" isStar?'info':'danger' " :disabled="isLoadingStar"
 						style="border:none" :icon="isStar?'':'el-icon-star-off'">
-						{{isStar?'取消星星':'赏他星星'}}
+						{{isStar?'取消星星':'给TA星星'}}
 					</el-button>
 					<el-button type="danger" style="border:none" icon="el-icon-download" @click="onClickDownloadImages">
 						下载
 					</el-button>
 				</div>
-				<!--End 话题的具体图片和内容 -->
-
 
 				<div class="time-hint">
 					编辑于：{{topic.updateTime}}
@@ -97,22 +67,17 @@
 					<div class="comments-count">
 						共 {{topic.commentCount}} 条评论
 					</div>
-
-					<template v-for="comment in topic.comments">
-						<user-comment :key="comment.id" :photo-src="$global.truePhotoUrl(comment.user.photoUrl)"
-							:username="comment.user.username" :content="comment.content"
-							:update-time="comment.updateTime" :comment-id="comment.id"
-							:editable="$store.state.userId==comment.user.id">
-						</user-comment>
-					</template>
+					<user-comment v-for="comment in topic.comments" :key="comment.id"
+						:photo-src="$global.truePhotoUrl(comment.user.photoUrl)" :username="comment.user.username"
+						:content="comment.content" :update-time="comment.updateTime" :comment-id="comment.id"
+						:editable="$store.state.userId==comment.user.id">
+					</user-comment>
 					<!-- 分页 -->
-					<template v-if="topic.comments.length!=0">
-						<div style="text-align: center;">
-							<el-pagination background layout="prev, pager, next" :total="topic.commentCount"
-								:current-page.sync="pageNo" @current-change="onPageNoChange" :page-size="5">
-							</el-pagination>
-						</div>
-					</template>
+					<div v-if="topic.comments.length!=0" style="text-align: center;">
+						<el-pagination background layout="prev, pager, next" :total="topic.commentCount"
+							:current-page.sync="pageNo" @current-change="onPageNoChange" :page-size="5">
+						</el-pagination>
+					</div>
 				</div>
 				<!-- End 当前话题的评论 -->
 			</div>
@@ -138,17 +103,11 @@
 					</div>
 				</div>
 				<!--End 右侧话题主人信息-->
-
 				<div style="margin-top: 10px;">
 					<topic-list label="相关话题" :topics="topic.similarTopics"></topic-list>
 				</div>
-
 			</div>
-			<div style="height: 200px;"></div>
 		</div>
-
-
-
 
 		<!-- 修改标题对话框 -->
 		<el-dialog title="修改标题" :visible.sync="titleModifyVisible">
@@ -174,7 +133,7 @@
 		</el-dialog>
 
 		<!-- 修改图片描述对话框 -->
-		<el-dialog title="修改内容" :visible.sync="imageDescriptionModifyVisible">
+<!-- 		<el-dialog title="修改内容" :visible.sync="imageDescriptionModifyVisible">
 			<el-form>
 				<el-form-item label="新的描述(2-30字)">
 					<el-input v-model="imageDescriptionModify" maxlength="30" clearable=""></el-input>
@@ -184,7 +143,7 @@
 				<el-button @click="imageDescriptionModifyVisible = false">取 消</el-button>
 				<el-button type="primary" @click="onConfirmModifyImageDescription">确 定</el-button>
 			</div>
-		</el-dialog>
+		</el-dialog> -->
 	</div>
 </template>
 
@@ -222,7 +181,7 @@
 		},
 		data() {
 			return {
-				loading:true,
+				loading: true,
 				isLoadingStar: false,
 				titleModifyVisible: false,
 				titleModify: '',
@@ -283,7 +242,7 @@
 			this.init(id);
 		},
 		methods: {
-			init(id){
+			init(id) {
 				if (CommonUtils.isEmpty(id)) {
 					return;
 				}
@@ -294,7 +253,7 @@
 						_this.initDataForModify();
 					}
 				})
-				
+
 				queryIsStar(id).then(result => {
 					if (result.code == Code.OK) {
 						_this.isStar = result.data;
