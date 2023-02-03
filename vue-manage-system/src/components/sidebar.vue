@@ -90,6 +90,29 @@ const items = [
             },
         ],
     },
+	{
+	    icon: 'Calendar',
+	    index: '2',
+	    title: '社区管理',
+	    permiss: '2',
+	    subs: [
+			{
+			    index: '/topic',
+			    title: '话题',
+			    permiss: '2',
+			},
+	        {
+	            index: '/import',
+	            title: '导入Excel',
+	            permiss: '2',
+	        },
+	        {
+	            index: '/export',
+	            title: '导出Excel',
+	            permiss: '2',
+	        },
+	    ],
+	},
     {
         icon: 'DocumentCopy',
         index: '/tabs',

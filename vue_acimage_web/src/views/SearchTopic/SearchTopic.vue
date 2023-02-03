@@ -142,7 +142,7 @@
 				// let searchForm = CommonUtils.getFormData(this.query);
 				searchTopicsAsPage(_this.query).then(res => {
 					if (res.code == Code.OK) {
-						MessageUtils.notice("搜索成功", 1);
+						MessageUtils.success("搜索成功", 1);
 						_this.topics = res.data.dataList;
 						_this.totalCount = res.data.totalCount;
 					}

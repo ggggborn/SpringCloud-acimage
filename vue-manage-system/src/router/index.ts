@@ -68,6 +68,15 @@ const routes: RouteRecordRaw[] = [
 			    },
 			    component: () =>import(/* webpackChunkName: "authorize" */ '../views/authorize/authorize.vue'),
 			},
+			{
+			    path: '/topic',
+			    name: 'topic',
+			    meta: {
+			        title: '话题',
+			        permiss: '1',
+			    },
+			    component: () =>import(/* webpackChunkName: "topic" */ '../views/topic/topic.vue'),
+			},
             {
                 path: '/charts',
                 name: 'basecharts',

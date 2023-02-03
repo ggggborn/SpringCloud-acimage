@@ -1,9 +1,8 @@
 
 .container{
 	position:relative;
-	width:150px;
+	width:100%;
 	height:250px;
-	margin-right:15px;
 	margin-bottom: 15px;
 	display: inline-block;
 	background-color:white;
@@ -19,7 +18,7 @@
 }
 
 .title{
-	width:150px;
+	width:100%;
 	word-wrap: break-word;
 	font-size: 14px;
 	position:absolute;
@@ -39,7 +38,7 @@
 } */
 
 .image{
-	width:150px;
+	width:100%;
 	height:200px;
 	border-radius:5px 5px 0px 0px;
 	

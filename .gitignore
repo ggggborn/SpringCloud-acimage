@@ -3,6 +3,5 @@ target
 
 /temp
 
-application-dev1.yml
-application-dev2.yml
+application-dev?.yml
 application-qiniu.yml

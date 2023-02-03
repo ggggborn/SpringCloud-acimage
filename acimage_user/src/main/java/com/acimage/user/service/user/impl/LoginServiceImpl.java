@@ -2,6 +2,7 @@ package com.acimage.user.service.user.impl;
 
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.exception.BusinessException;
 
@@ -10,12 +11,14 @@ import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.IdGenerator;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.dao.UserPrivacyDao;
 import com.acimage.user.model.domain.UserPrivacy;
 import com.acimage.user.model.request.UserLoginReq;
 import com.acimage.user.model.request.UserRegisterReq;
 import com.acimage.user.mq.producer.SyncUserMqProducer;
+import com.acimage.user.service.mail.MainService;
 import com.acimage.user.service.user.LoginService;
 import com.acimage.user.utils.RsaUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -24,13 +27,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.regex.Pattern;
 
 @Slf4j
 @Service
 public class LoginServiceImpl implements LoginService {
-    public static final String PASSWORD_PATTERN = "^(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$";
+    public static final String PASSWORD_PATTERN = "^(?![a-zA-Z]+$)[0-9A-Za-z\\W]{6,16}$";
+
     @Autowired
     UserDao userDao;
     @Autowired
@@ -39,6 +42,8 @@ public class LoginServiceImpl implements LoginService {
     TokenService tokenService;
     @Autowired
     SyncUserMqProducer syncUserMqProducer;
+    @Autowired
+    RedisUtils redisUtils;
 
     @Override
     public String getPublicKey() {
@@ -46,14 +51,14 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String registerUser(UserRegisterReq userRegister, HttpServletResponse resp) {
+    public String registerUser(UserRegisterReq userRegister) {
         //获取私钥
         String privateKey = RsaUtils.getPrivateKey();
         //解密并校验密码
         String passwordDecrypt = RsaUtils.decrypt(privateKey, userRegister.getPassword());
         log.info(" 解密为：{}", passwordDecrypt);
         if (!Pattern.matches(PASSWORD_PATTERN, passwordDecrypt)) {
-            throw new BusinessException("密码长度为6至16位，且只含数字或字母");
+            throw new BusinessException("密码长度为6至16位，且只含数字、字母和特殊字符");
         }
 
         //判断username是否存在
@@ -107,21 +112,20 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public String login(UserLoginReq userLogin, HttpServletResponse resp) {
-        String username = userLogin.getUsername();
+    public String login(UserLoginReq userLogin) {
+        String email = userLogin.getEmail();
         String password = userLogin.getPassword();
 
         //根据用户名找到用户
-        LambdaQueryWrapper<User> qw = new LambdaQueryWrapper<>();
-        qw.eq(User::getUsername, username);
-        User user = userDao.selectOne(qw);
-        if (user == null) {
-            throw new BusinessException("用户名不存在");
+        LambdaQueryWrapper<UserPrivacy> qw = new LambdaQueryWrapper<>();
+        qw.eq(UserPrivacy::getEmail, email);
+        UserPrivacy userPrivacy = userPrivacyDao.selectOne(qw);
+        if (userPrivacy == null) {
+            throw new BusinessException("邮箱不存在");
         }
 
         //找到密码
-        long userId = user.getId();
-        UserPrivacy userPrivacy = userPrivacyDao.selectById(userId);
+        long userId=userPrivacy.getUserId();
         String salt = userPrivacy.getSalt();
         String passwordDigest = userPrivacy.getPwd();
 
@@ -129,17 +133,20 @@ public class LoginServiceImpl implements LoginService {
         String privateKey = RsaUtils.getPrivateKey();
         //解密密码
         String passwordDecrypt = RsaUtils.decrypt(privateKey, password);
-        log.info(" 解密为：{}", passwordDecrypt);
+//        log.info(" 解密为：{}", passwordDecrypt);
         //判断密码正确性
         if (!DigestUtil.md5Hex(salt + passwordDecrypt).equals(passwordDigest)) {
-            log.error("用户：无 登录 错误：用户名{} 或密码错误", username);
+            log.warn("用户：无 登录 错误：用户名{} 或密码错误", email);
             throw new BusinessException("用户名或密码错误");
         }
 
         //返回token
-        return tokenService.createAndRecordToken(userId, username, user.getPhotoUrl());
+        User user=userDao.selectById(userId);
+        return tokenService.createAndRecordToken(userId, email, user.getPhotoUrl());
 
     }
+
+
 
     @Override
     public void logout(HttpServletRequest request) {

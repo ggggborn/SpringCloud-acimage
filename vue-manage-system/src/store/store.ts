@@ -1,27 +1,43 @@
 import { defineStore } from 'pinia';
 import Config from '@/config'
+import { queryAllCategories } from '@/api/category'
+import { Code } from '@/utils/result'
 
-interface ListItem {
-	name: string;
-	path: string;
-	title: string;
+interface Category {
+	id: number;
+	label: string;
+	createTime: string;
+	updateTime: string;
 }
 
-export const useTagsStore = defineStore('tags', {
+export const useStore = defineStore('store', {
 	state: () => {
 		return {
-			list: <ListItem[]>[]
+			categoryList: <Category[]>[]
 		};
 	},
 	getters: {
-		show: state => {
-			return state.list.length > 0;
+		categoryLabel(state) {
+			return (id) => {
+				for (let item of state.categoryList) {
+					if (item.id == id) {
+						return item.label;
+					}
+				}
+				return null;
+			}
 		},
-		nameList: state => {
-			return state.list.map(item => item.name);
-		}
 	},
 	actions: {
-
+		init() {
+			let _this = this;
+			if (this.categoryList.length == 0) {
+				queryAllCategories().then((res: any) => {
+					if (res.code == Code.OK) {
+						_this.categoryList = res.data;
+					}
+				});
+			}
+		}
 	}
 });

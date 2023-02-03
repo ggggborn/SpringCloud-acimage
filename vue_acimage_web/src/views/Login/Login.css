@@ -50,4 +50,22 @@ body{
 	font-size:10px;
 	font-family:'Times New Roman', Times, serif; 
 }
+
+.content{
+	margin-top: -10px;
+}
+
+.content>>>.el-row{
+	margin-top:10px;
+}
+
+.verify-code{
+	width: 100px;
+	margin-left:20px;
+	height:40px;
+	display:inline-block;
+	vertical-align: top;
+}
+
+
   

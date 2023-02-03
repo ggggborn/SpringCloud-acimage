@@ -46,9 +46,24 @@
 						</el-dialog>
 					</div>
 					<div class="upload-hint">
-						图片大小上限2MB
+						图片大小上限1MB (支持格式：jpg,png,jpeg,webp)
 					</div>
+
 				</el-form-item>
+				<el-dialog :visible.sync="cropperVisible">
+					<div class="cropper" style="text-align:center;width: 300px;height: 300px;margin-left: 100px;">
+						<vueCropper ref="cropper" :img="imageUrl" :outputSize="option.size"
+							:outputType="option.outputType" :info="true" :full="option.full" :canMove="option.canMove"
+							:canMoveBox="option.canMoveBox" :original="option.original" :autoCrop="option.autoCrop"
+							:fixed="option.fixed" :fixedNumber="option.fixedNumber" :centerBox="option.centerBox"
+							:infoTrue="option.infoTrue" :fixedBox="option.fixedBox">
+						</vueCropper>
+					</div>
+					<div slot="footer" class="dialog-footer">
+						<el-button size="mini" @click="handleCancelCropper">取 消</el-button>
+						<el-button size="mini" type="primary" @click="confirmCoverImage">确认</el-button>
+					</div>
+				</el-dialog>
 			</el-form>
 
 			<div style="text-align: center;">
@@ -63,6 +78,7 @@
 <script>
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
 	import EditBoard from '@/components/EditBoard/EditBoard.vue'
+	import { VueCropper } from 'vue-cropper'
 
 
 	import { addTopic } from '@/api/topic.js'
@@ -80,66 +96,84 @@
 		components: {
 			MyHeader,
 			EditBoard,
+			VueCropper
 		},
 		data() {
 			return {
 				dialogImageUrl: '',
 				dialogVisible: false,
+				cropperVisible: false,
 				addForm: {
 					title: '',
 					categoryId: null,
 					coverImage: {},
 				},
+				imageUrl: '',
+				imageBlob: null,
 				imageList: [],
-				// categoryList: [{
-				// 	id: 1,
-				// 	label: '无'
-				// }],
-				// tagList: [{
-				// 		id: 1,
-				// 		label: '冒险'
-				// 	},
-				// 	{
-				// 		id: 2,
-				// 		label: '娱乐'
-				// 	},
-				// ],
+				tempFile: null,
+				imageType: null,
 				chosenTagList: [],
 
 
+				option: {
+					img: '', // 裁剪图片地址，这里可以本地图片或者链接，链接不用require
+					outputSize: 1, // 裁剪生成图片质量
+					outputType: 'png', // 裁剪生成图片格式
+					canScale: true, // 图片是否允许滚轮播放
+					autoCrop: true, // 是否默认生成截图框 false
+					info: false, // 是否展示截图框信息
+					canMoveBox: true, // 截图框是否可以拖动
+					fixedNumber: [135, 130],
+					fixedBox: false, // 固定截图框的大小
+					fixed: true,
+					canMove: false, // 上传图片是否可拖动
+					centerBox: true, // 截图框限制在图片里面
+				},
+
 			};
-		},
-		created() {
-			// let _this = this;
-			// queryAllCategories().then(res => {
-			// 	if (res.code == Code.OK) {
-			// 		_this.categoryList = res.data;
-			// 	}
-			// })
-			// queryAllTags().then(res => {
-			// 	_this.tagList = res.data;
-			// });
 		},
 		methods: {
 			test() {
 				alert(this.$refs['editBoard'].Html);
 			},
 			handleRemove(file, fileList) {
+				this.imageUrl = '';
 				console.log(file, fileList);
 			},
+			handleCancelCropper() {
+				this.cropperVisible = false;
+				this.imageUrl = '';
+			},
+			confirmCoverImage() {
+				this.$refs['cropper'].getCropBlob((blob) => {
+					this.imageBlob = blob;
+				})
+				setTimeout(() => {
+					this.tempFile.url = window.URL.createObjectURL(this.imageBlob);
+					this.imageList.push(this.tempFile);
+				}, 100)
+				this.cropperVisible = false;
+
+			},
 			handleChange(file, fileList) {
+				this.cropperVisible = true;
 				this.imageList = fileList;
-				console.log(this.imageList);
+				let raw = file.raw;
+				this.imageUrl = window.URL.createObjectURL(raw);
+				this.imageType = raw.type;
+				this.tempFile = file;
+				console.log(file)
+				fileList.splice(0, 1);
 			},
 			handlePictureCardPreview(file) {
 				this.dialogImageUrl = file.url;
 				this.dialogVisible = true;
 			},
 			exceedLimit() {
-				MessageUtils.notice('最多上传5张图');
+				MessageUtils.notice('最多上传1张图');
 			},
 			clickTag(tag) {
-
 				//判断重复
 				for (let item of this.chosenTagList) {
 					if (tag.id == item.id) {
@@ -147,8 +181,6 @@
 					}
 				}
 				this.chosenTagList.push(tag);
-				console.log(tag);
-				console.log(this.chosenTagList)
 			},
 			removeTag(tag) {
 				for (let i = 0; i < this.chosenTagList.length; i++) {
@@ -158,7 +190,6 @@
 						return;
 					}
 				}
-
 			},
 			validateForm() {
 				if (this.imageList.length == 0) {
@@ -180,7 +211,7 @@
 				// text.replace(new RegExp("<a>\\s*|\t|\r|\n</a>", "gm"), "");
 				let pureText = StringUtils.html2Text(text);
 				console.log(pureText)
-				if (pureText.trim().length <= 4) {
+				if (pureText.trim().length < 4) {
 					MessageUtils.notice("内容至少要四个字符");
 					return false;
 				} else if (text.length > 5000) {
@@ -196,20 +227,19 @@
 				let addTopicForm = new FormData();
 				//加图片加入到表单数据中
 
-				addTopicForm.append("coverImage", this.imageList[0].raw);
+				// addTopicForm.append("coverImage", this.imageList[0].raw);
 				addTopicForm.append("html", this.$refs['editBoard'].Html);
 				addTopicForm.append("title", this.addForm.title);
 				addTopicForm.append("categoryId", this.addForm.categoryId);
 				for (let tag of this.chosenTagList) {
 					addTopicForm.append("tagIds", tag.id);
 				}
-
-
-				// let addTopicReq = {};
-				// addTopicReq["html"] = this.$refs['editBoard'].Html;
-				// addTopicReq["title"] = this.title;
-
 				let _this = this;
+				//新的文件名
+				let filename = this.tempFile.name;
+				let index = filename.indexOf(".");
+				filename = filename.substring(0, index) + ".png";
+				addTopicForm.append("coverImage", new File([this.imageBlob], filename, { type: "image/png" }));
 				addTopic(addTopicForm).then(res => {
 					if (res.code == Code.OK) {
 						MessageUtils.success("发表成功", 1);
@@ -218,8 +248,8 @@
 					}
 				})
 
-			}
 
+			},
 		}
 	}
 </script>

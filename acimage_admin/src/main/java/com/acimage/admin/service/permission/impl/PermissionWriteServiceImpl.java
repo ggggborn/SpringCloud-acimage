@@ -2,8 +2,10 @@ package com.acimage.admin.service.permission.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.acimage.admin.dao.sys.PermissionDao;
+import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.model.request.PermissionAddReq;
 import com.acimage.admin.model.request.PermissionModifyReq;
+import com.acimage.admin.service.authorize.AuthorizeWriteService;
 import com.acimage.admin.service.permission.PermissionWriteSercice;
 import com.acimage.common.model.domain.sys.Permission;
 import com.baomidou.dynamic.datasource.annotation.DS;
@@ -13,11 +15,13 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-@DS("sys")
+@DS(ModuleConstants.SYS)
 public class PermissionWriteServiceImpl implements PermissionWriteSercice {
 
     @Autowired
     PermissionDao permissionDao;
+    @Autowired
+    AuthorizeWriteService authorizeWriteService;
 
     @Override
     public void save(PermissionAddReq permissionAddReq){
@@ -28,6 +32,7 @@ public class PermissionWriteServiceImpl implements PermissionWriteSercice {
 
     @Override
     public void remove(int id){
+        authorizeWriteService.remove(id);
         permissionDao.deleteById(id);
     }
 

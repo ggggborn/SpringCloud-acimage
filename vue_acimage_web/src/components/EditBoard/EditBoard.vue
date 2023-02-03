@@ -58,7 +58,7 @@
 						| table image media charmap emoticons hr pagebreak insertdatetime print preview 
 						| fullscreen | bdmap indent2em lineheight axupimgs`
 					],
-					images_file_types: 'jpeg,jpg,png,gif,bmp,webp',
+					images_file_types: 'jpeg,jpg,png',
 					relative_urls: true, //是否相对地址
 					convert_urls: false, //是否转换地址
 					// images_upload_url: "/manage/upload", //指定上传图片的后端处理程序的URL。
@@ -81,13 +81,13 @@
 					content_style: `
 					  body {font-size: 14pt;}
 					  html, body                { height:100%; }
-					  img                       { max-width:100%; display:block;height:auto; }
 					  a                         { text-decoration: none; }
 					  p                         { line-height:1.6; margin: 0px; }
 					  table                     { word-wrap:break-word; word-break:break-all;max-width:100%; border:none; border-color:#999; }
 					  .mce-object-iframe        { width:100%; box-sizing:border-box; margin:0; padding:0; }
 					  ul,ol                     { list-style-position:inside; }
 					  `,
+					// img                       { max-width:100%; display:block;height:auto; }
 					fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
 
 				},

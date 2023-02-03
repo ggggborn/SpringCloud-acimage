@@ -68,10 +68,10 @@
 	//查询角色权限
 	let roleAuthorizeList: any = ref([]);
 	let query = reactive({
-		roleId: -1,
+		roleId: null,
 	})
 	const getRoleAuthorizeList = () => {
-		if (query.roleId != -1) {
+		if (query.roleId != null) {
 			queryRoleAuthorize(query.roleId).then((res: any) => {
 				if (res.code == Code.OK) {
 					roleAuthorizeList.value = res.data;

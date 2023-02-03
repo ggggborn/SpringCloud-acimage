@@ -52,6 +52,7 @@
         <toolgood-words.version>3.0.3.1</toolgood-words.version>
         <elasticsearch.version>7.7.0</elasticsearch.version>
         <data-elasticsearch.version>4.2.12</data-elasticsearch.version>
+        <thumbnailator.version>0.4.8</thumbnailator.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->
 <!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
@@ -200,6 +201,14 @@
                 <artifactId>spring-data-elasticsearch</artifactId>
                 <version>${data-elasticsearch.version}</version>
             </dependency>
+            <!--图片处理-->
+            <dependency>
+                <groupId>net.coobird</groupId>
+                <artifactId>thumbnailator</artifactId>
+                <version>${thumbnailator.version}</version>
+            </dependency>
+
+
 
 <!--            <dependency>-->
 <!--                <groupId>org.springframework.boot</groupId>-->

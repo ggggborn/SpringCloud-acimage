@@ -57,6 +57,8 @@ public class TopicIndex {
     private Date createTime;
     @Field(type = FieldType.Date, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
     private Date updateTime;
+    @Field(type = FieldType.Date, pattern = DatePattern.NORM_DATETIME_PATTERN, store = true)
+    private Date activityTime;
 
     @Field(type = FieldType.Keyword, store = true)
     List<Integer> tagIds;

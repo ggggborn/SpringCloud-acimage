@@ -20,20 +20,27 @@ public class AuthorizeWriteServiceImpl implements AuthorizeWriteService {
     PermissionQueryService permissionQueryService;
 
     @Override
-    public void save(int roleId, int permissionId){
-        Permission permission=permissionQueryService.getPermission(permissionId);
-        if(permission.isModule()){
+    public void save(int roleId, int permissionId) {
+        Permission permission = permissionQueryService.getPermission(permissionId);
+        if (permission.isModule()) {
             throw new BusinessException("该结点为模块，不可授权");
         }
-        Authorize authorize=new Authorize(roleId,permissionId);
+        Authorize authorize = new Authorize(roleId, permissionId);
         authorizeDao.insert(authorize);
     }
 
     @Override
-    public void remove(int roleId, int permissionId){
-        LambdaQueryWrapper<Authorize> uw=new LambdaQueryWrapper<>();
-        uw.eq(Authorize::getRoleId,roleId)
-                .eq(Authorize::getPermissionId,permissionId);
+    public void remove(int roleId, int permissionId) {
+        LambdaQueryWrapper<Authorize> uw = new LambdaQueryWrapper<>();
+        uw.eq(Authorize::getRoleId, roleId)
+                .eq(Authorize::getPermissionId, permissionId);
+        authorizeDao.delete(uw);
+    }
+
+    @Override
+    public void remove(int permissionId) {
+        LambdaQueryWrapper<Authorize> uw = new LambdaQueryWrapper<>();
+        uw.eq(Authorize::getPermissionId, permissionId);
         authorizeDao.delete(uw);
     }
 

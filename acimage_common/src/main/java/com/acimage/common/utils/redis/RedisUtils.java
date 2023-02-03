@@ -120,9 +120,17 @@ public class RedisUtils {
         return stringRedisTemplate.opsForValue().increment(key, increment);
     }
 
-    public <T> T getAndDeleteForString(String key, Class<T> targetType) {
-        String json = stringRedisTemplate.opsForValue().getAndDelete(key);
-        return JacksonUtils.convert(json, targetType);
+    /**
+     * redis6.2版本之后才支持
+     * @param key
+     * @return
+     */
+    public String getAndDeleteForString(String key) {
+        return stringRedisTemplate.opsForValue().getAndDelete(key);
+    }
+
+    public String getAndExpire(String key,long timeout,TimeUnit timeUnit) {
+        return stringRedisTemplate.opsForValue().getAndExpire(key,timeout,timeUnit);
     }
 
     public void setIfPresent(String key, String value) {

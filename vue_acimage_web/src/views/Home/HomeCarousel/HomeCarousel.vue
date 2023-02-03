@@ -1,10 +1,10 @@
 <template>
 	<div class="carousel-container">
 		<!-- 图片走马灯 -->
-		<el-carousel trigger="click" height="350px" style="border-radius: 5px;" @change="onCarouselChange">
-			<el-carousel-item v-for="image in images" :key="image.id">
+		<el-carousel trigger="click" height="350px" style="border-radius: 5px;width: 100%;" @change="onCarouselChange">
+			<el-carousel-item v-for="image in images" :key="image.id" class="hover-pointer">
 				<el-image :src="$global.trueImageUrl(image.url)" fit="cover"
-					style="width:500px;height: 350px;border-radius:5px;">
+					style="width:100%;height: 350px;border-radius:5px;">
 				</el-image>
 			</el-carousel-item>
 		</el-carousel>
@@ -33,19 +33,18 @@
 				]
 			}
 		},
-		computed:{
-			currentDescription(){
-				if(this.images.length==0){
+		computed: {
+			currentDescription() {
+				if (this.images.length == 0) {
 					return '';
 				}
-				return this.$global.omitStr(this.images[this.index].description,20);
+				return this.$global.omitStr(this.images[this.index].description, 20);
 			}
 		},
 		mounted() {
 			let _this = this;
 			queryHomeCarousel().then(result => {
 				if (result.code == Code.OK) {
-					console.log(result)
 					_this.images = result.data;
 					_this.index = 0;
 				}
@@ -61,7 +60,7 @@
 
 <style scoped>
 	.carousel-container {
-		width: 500px;
+		width: 100%;
 		position: relative;
 	}
 
@@ -77,5 +76,4 @@
 		font-size: 20px;
 		background-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(99, 99, 99, 0));
 	}
-	
 </style>

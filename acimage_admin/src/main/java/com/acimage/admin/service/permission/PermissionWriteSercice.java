@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PermissionWriteSercice {
     void save(PermissionAddReq permissionAddReq);
 
+    @Transactional
     void remove(int id);
 
     @Transactional

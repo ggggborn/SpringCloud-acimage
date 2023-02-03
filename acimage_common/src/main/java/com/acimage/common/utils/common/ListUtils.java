@@ -68,6 +68,42 @@ public class ListUtils {
         return differenceList;
     }
 
+    public static List<String> differenceSetOfV2(List<String> list1, List<String> list2) {
+        if (list2 == null || list2.size() == 0) {
+            return list1;
+        } else if (list1 == null || list1.size() == 0) {
+            return list1;
+        }
+
+        List<String> list1Copy = new ArrayList<>(list1);
+        List<String> list2Copy = new ArrayList<>(list2);
+
+        Comparator<String> stringComparator = Comparator.naturalOrder();
+
+        list1Copy.sort(stringComparator);
+        list2Copy.sort(stringComparator);
+        int ptr1 = 0, ptr2 = 0;
+        List<String> differenceList = new ArrayList<>();
+        while (ptr1 < list1Copy.size() && ptr2 < list2Copy.size()) {
+            if (list1Copy.get(ptr1).compareTo(list2Copy.get(ptr2))<0 ) {
+                differenceList.add(list1Copy.get(ptr1));
+                ptr1++;
+            } else if (list1Copy.get(ptr1).compareTo(list2Copy.get(ptr2))>0 ) {
+                ptr2++;
+            } else if (list1Copy.get(ptr1).equals(list2Copy.get(ptr2))) {
+                ptr1++;
+                ptr2++;
+            }
+        }
+        if (ptr2 == list2Copy.size()) {
+            while (ptr1 < list1Copy.size()) {
+                differenceList.add(list1Copy.get(ptr1));
+                ptr1++;
+            }
+        }
+        return differenceList;
+    }
+
     public static <T> boolean isEmpty(List<T> list) {
         return list == null || list.size() == 0;
     }

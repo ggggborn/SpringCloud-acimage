@@ -21,8 +21,14 @@ public class TopicClientFallbackFactory implements FallbackFactory<TopicClient> 
             @Override
             public Result<List<Topic>> queryTopics(List<Long> topicIds) {
                 cause.printStackTrace();
-                log.error("查询多个话题失败 topicIds:{}", topicIds);
+                log.error("查询多个话题失败 topicIds:{} error:{}", topicIds,cause.getMessage());
                 return Result.ok(new ArrayList<>());
+            }
+
+            @Override
+            public Result<?> delete(Long topicId) {
+                log.error("删除话题失败 id:{} error:{}",topicId,cause.getMessage());
+                return Result.fail("删除话题失败");
             }
         };
     }

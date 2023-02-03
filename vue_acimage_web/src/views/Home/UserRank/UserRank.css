@@ -5,10 +5,12 @@
 	box-shadow: 0px 0px 5px #CCCCCC;
 	padding-bottom: 40px;
 	position: relative;
+	transition: 0.4s;
 }
 
 .wrapper:hover{
-	box-shadow: 0px 0px 7px #AAAAAA;
+	box-shadow: 0px 0px 10px #AAAAAA;
+	transition: 0.5s;
 }
 
 .user-rank-thumbnail>img {

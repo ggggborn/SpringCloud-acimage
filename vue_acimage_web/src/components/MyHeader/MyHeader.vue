@@ -2,7 +2,7 @@
 	<div>
 		<my-navigation></my-navigation>
 		<!-- header背景图 -->
-		<div style="height:100px;background-image: url(static/image/header-bg.png);background-position: center;">
+		<div style="height:100px;background-image: url(static/image/header-bg.webp);background-position: center;">
 		</div>
 		<div class="tabs-wrapper">
 			<img src="static/image/happy.jpeg" />

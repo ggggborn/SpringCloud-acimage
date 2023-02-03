@@ -3,11 +3,15 @@ package com.acimage.image.service.image.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.image.Image;
+import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
+import com.acimage.common.utils.common.ListUtils;
+import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.common.PairUtils;
@@ -15,16 +19,23 @@ import com.acimage.image.dao.ImageDao;
 import com.acimage.image.service.image.ImageQueryService;
 import com.acimage.image.service.image.ImageWriteService;
 import com.acimage.image.service.image.consts.KeyConsts;
+import com.acimage.image.service.imagehash.SearchImageService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.util.annotation.Nullable;
 
+import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +43,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implements ImageWriteService {
+
 
     @Autowired
     ImageDao imageDao;
@@ -41,6 +53,12 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     QiniuUtils qiniuUtils;
     @Autowired
     RedisUtils redisUtils;
+    @Autowired
+    MinioUtils minioUtils;
+    @Autowired
+    SearchImageService searchImageService;
+
+
 
     @Override
     public void saveImages(@Nullable List<Image> images) {
@@ -155,4 +173,7 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     public Image createImage(MultipartFile imageFile, String urlPrefix) {
         return null;
     }
+
+
+
 }

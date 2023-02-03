@@ -1,5 +1,6 @@
 package com.acimage.image.service.imagehash.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.image.dao.ImageHashDao;
 import com.acimage.image.model.domain.ImageHash;
 import com.acimage.image.service.imagehash.ImageHashWriteService;
@@ -22,7 +23,10 @@ public class ImageHashWriteServiceImpl implements ImageHashWriteService {
 
     @Override
     public void removeImageHashes(List<Long> imageIds) {
-            imageHashDao.deleteBatchIds(imageIds);
+        if (CollectionUtil.isEmpty(imageIds)) {
+            return;
+        }
+        imageHashDao.deleteBatchIds(imageIds);
     }
 
     @Override

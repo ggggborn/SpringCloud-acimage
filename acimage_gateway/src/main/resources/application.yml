@@ -42,6 +42,7 @@ ignore:
     - /api/community/users/rank/**
     - /api/image/spImages/homeCarousel
     - /api/user/logins/**
-    - /api/user/isExist/**
+    - /api/user/users/isExist/**
+    - /api/user/verifies/**
 
 

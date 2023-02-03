@@ -2,7 +2,7 @@
 	<div class="home-wrapper">
 		<my-header></my-header>
 		<div class="home-main">
-			<div style="display: inline-block;">
+			<div style="display: inline-block;width:500px;">
 				<home-carousel></home-carousel>
 			</div>
 
@@ -28,15 +28,15 @@
 
 				<template v-for="topic in recentHotTopics">
 					<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" class="no-underline">
-						<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
-							:username="topic.user.username" :create-time="topic.createTime"
-							:photo-url="$global.truePhotoUrl(topic.user.photoUrl)"
-							:image-url="$global.trueImageUrl(topic.coverImageUrl)">
-						</float-image>
+						<div style="display: inline-block;margin-right: 10px;width: 150px;">
+							<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
+								:username="topic.user.username" :create-time="topic.createTime"
+								:photo-url="$global.truePhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
+							</float-image>
+						</div>
 					</router-link>
 				</template>
 			</div>
-
 			<div class="user-rank-container">
 				<user-rank></user-rank>
 			</div>
@@ -54,6 +54,7 @@
 
 
 	import { queryRecentHotTopics, queryRecommendTopics } from '@/api/topic.js'
+	import { pageRencentTopic } from '@/api/topic.js'
 	import axios from 'axios'
 
 	import { Code } from '@/utils/result.js'
@@ -102,10 +103,9 @@
 		},
 		mounted() {
 			let _this = this;
-			console.log(process.env.VUE_APP_MOCK);
-			queryRecentHotTopics().then(result => {
+			pageRencentTopic(1).then(result => {
 				if (result.code == Code.OK) {
-					_this.recentHotTopics = result.data;
+					_this.recentHotTopics = result.data.dataList;
 				}
 				console.log(result)
 			});

@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserPrivacy {
 
-    private Long id;
+    private Long userId;
     private String pwd;
     private String salt;
     private String email;
@@ -19,8 +19,8 @@ public class UserPrivacy {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date registerTime;
 
-    public UserPrivacy(Long id, String pwd, String salt, String email) {
-        this.id = id;
+    public UserPrivacy(Long userId, String pwd, String salt, String email) {
+        this.userId = userId;
         this.pwd = pwd;
         this.salt = salt;
         this.email = email;

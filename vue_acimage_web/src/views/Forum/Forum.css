@@ -39,12 +39,22 @@
 .wrapper-header {
 	top: 5px;
 	position: relative;
-	background-color: white;
 	border-radius: 5px;
-	box-shadow: 0px 0px 5px #CCCCCC;
-	height: 44px;
-	text-align: center;
+	/* height: 44px; */
+	height: 350px;
+	/* text-align: center; */
 	margin-bottom: 20px;
+}
+
+.mask-images-container{
+	width:520px;
+	margin-left:10px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.mask-images-container>div{
+	display: inline-block;
 }
 
 .wrapper-header-icon {

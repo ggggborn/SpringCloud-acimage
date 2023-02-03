@@ -58,15 +58,45 @@ public class MinioUtils {
                 }
             }
         }
-        return String.format("/%s/%s",minioProperties.getBucket(),url);
+        return String.format("/%s/%s", minioProperties.getBucket(), url);
+    }
+
+    public String upload(InputStream is, String url, String contentType) {
+
+        try {
+            minioClient.putObject(PutObjectArgs.builder()
+                    .bucket(minioProperties.getBucket())
+                    .object(url)
+                    .contentType(contentType)
+                    .stream(is, is.available(), -1)
+                    .build()
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return String.format("/%s/%s", minioProperties.getBucket(), url);
     }
 
     public void downloadTo(String url, String destSrc) {
         try {
+            String slashBucket=String.format("/%s",minioProperties.getBucket());
+            boolean isInnerUrl=url.startsWith(slashBucket);
+            if(!isInnerUrl){
+                return;
+            }
+            String innerUrl=url.substring(slashBucket.length());
             minioClient.downloadObject(
                     DownloadObjectArgs.builder()
                             .bucket(minioProperties.getBucket())
-                            .object(url)
+                            .object(innerUrl)
                             .filename(destSrc)
                             .build());
         } catch (Exception e) {
@@ -84,10 +114,10 @@ public class MinioUtils {
 //            log.error("url编码失败 error：{}", e.getLocalizedMessage());
 //        }
         String publicUrl;
-        if(url.startsWith("/")){
-            publicUrl = minioProperties.getEndpoint()+"/"+ url;
-        }else{
-            publicUrl = minioProperties.getEndpoint()+ url;
+        if (url.startsWith("/")) {
+            publicUrl = minioProperties.getEndpoint() + "/" + url;
+        } else {
+            publicUrl = minioProperties.getEndpoint() + url;
         }
         HttpUtil.downloadFile(publicUrl, new File(toPath));//下载
     }
@@ -122,7 +152,7 @@ public class MinioUtils {
         }
     }
 
-    public String generateUrl(@Nullable String prefix, Date uploadTime,String suffix) {
+    public String generateUrl(@Nullable String prefix, Date uploadTime, String suffix) {
         String formatPattern = "yyyy/MM/dd";
         String newPrefix = prefix == null ? "" : prefix + "/";
         SimpleDateFormat formatter = new SimpleDateFormat(formatPattern);

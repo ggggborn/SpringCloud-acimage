@@ -13,8 +13,9 @@ export let modifyUsername = function(newUsername) {
 
 export let queryIsUsernameExist = function(username) {
 	return axios.get('/api/user/users/isExist/' + username).then(resp => {
-		if (resp.data.code == Code.ok) {
-			return resp.data;
+		let res = resp.data;
+		if (res.code == Code.OK) {
+			return res;
 		}
 	});
 }

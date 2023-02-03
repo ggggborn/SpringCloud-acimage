@@ -44,7 +44,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         profileVo.setTopicCount(cmtyUser.getTopicCount());
 
         LambdaQueryWrapper<UserPrivacy> qw = new LambdaQueryWrapper<>();
-        qw.eq(UserPrivacy::getId, UserContext.getUserId());
+        qw.eq(UserPrivacy::getUserId, UserContext.getUserId());
         UserPrivacy userPrivacy = userPrivacyDao.selectOne(qw);
 
         profileVo.setEmail(userPrivacy.getEmail());

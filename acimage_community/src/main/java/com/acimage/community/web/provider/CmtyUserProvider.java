@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/community/userStatistics")
+@RequestMapping("/community/cmtyUsers")
 @Validated
 @Authentication
 public class CmtyUserProvider {

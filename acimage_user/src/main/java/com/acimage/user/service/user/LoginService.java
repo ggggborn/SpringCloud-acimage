@@ -15,10 +15,11 @@ public interface LoginService {
     String getPublicKey();
 
     @Transactional
-    String registerUser(UserRegisterReq userRegister, HttpServletResponse resp);
+    String registerUser(UserRegisterReq userRegister);
 
     @Transactional
-    String login(UserLoginReq userLogin, HttpServletResponse resp);
+    String login(UserLoginReq userLogin);
+
 
     void logout(HttpServletRequest request);
 
