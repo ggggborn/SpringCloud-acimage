@@ -3,7 +3,6 @@ package com.acimage.community.dao;
 
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.LambdaUtils;
-import com.acimage.community.service.topic.TopicInfoWriteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,13 +14,10 @@ public class TopicDaoTest {
     @Autowired
     TopicDao topicDao;
 
-    @Autowired
-    TopicInfoWriteService topicInfoWriteService;
 
     @Test
     public void selectTopicWithUserImagesComments() {
         long id = 1572508721685839872L;
-
     }
 
     @Test

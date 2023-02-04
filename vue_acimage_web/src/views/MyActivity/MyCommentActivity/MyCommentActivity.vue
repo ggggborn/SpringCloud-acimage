@@ -37,7 +37,7 @@
 </template>
 
 <script>
-	import { pageMyComment } from '@/api/comment.js'
+	import { pageMyComments } from '@/api/comment.js'
 
 	import { Code } from '@/utils/result.js'
 	import CommonUtils from '@/utils/CommonUtils'
@@ -68,7 +68,7 @@
 		methods: {
 			getCommentPage(pageNo) {
 				let _this = this;
-				pageMyComment(pageNo).then(result => {
+				pageMyComments(pageNo).then(result => {
 					if (result.code == Code.OK) {
 						_this.comments = result.data.dataList;
 						_this.totalCount=result.data.totalCount;

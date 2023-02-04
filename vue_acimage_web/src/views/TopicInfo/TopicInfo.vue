@@ -69,7 +69,7 @@
 					</div>
 					<user-comment v-for="comment in topic.comments" :key="comment.id"
 						:photo-src="$global.truePhotoUrl(comment.user.photoUrl)" :username="comment.user.username"
-						:content="comment.content" :update-time="comment.updateTime" :comment-id="comment.id"
+						:content="comment.content" :createTime="comment.createTime" :comment-id="comment.id"
 						:editable="$store.state.userId==comment.user.id">
 					</user-comment>
 					<!-- 分页 -->

@@ -11,7 +11,7 @@
 				{{content}}
 			</div>
 			<div class="comment-bottom">
-				{{updateTime}}
+				{{createTime}}
 				<div class="edit-button" v-if="editable">
 					<el-button type="text" class="gray-color" size="mini" @click="onClickEdit">编辑</el-button>
 					<el-button type="text" class="gray-color" size="mini" @click="onClickDelete">删除</el-button>
@@ -56,7 +56,7 @@
 			commentId: {},
 			username: { default: '名字加载中' },
 			content: { default: '内容加载中' },
-			updateTime: { default: '2022-2-22 22:22:22' },
+			createTime: { default: '2022-2-22 22:22:22' },
 			editable: { default: false, type: Boolean }
 		},
 		watch: {

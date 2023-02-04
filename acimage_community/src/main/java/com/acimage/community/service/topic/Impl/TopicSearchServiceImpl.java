@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.model.Index.TopicIndex;
 import com.acimage.common.model.domain.community.Topic;
-import com.acimage.common.model.page.Page;
+import com.acimage.common.model.page.MyPage;
 import com.acimage.common.utils.EsUtils;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.community.model.request.SearchTopicReq;
@@ -36,11 +36,11 @@ public class TopicSearchServiceImpl implements TopicSearchService {
 
 
     @Override
-    public Page<Topic> searchByTagId(Integer tagId, int pageNo, int pageSize) {
+    public MyPage<Topic> searchByTagId(Integer tagId, int pageNo, int pageSize) {
         String column = LambdaUtils.columnNameOf(Topic::getTagIds);
-        Page<TopicIndex> topicIndexPage = esUtils.termQuery(column, tagId, TopicIndex.class, pageNo, pageSize);
+        MyPage<TopicIndex> topicIndexPage = esUtils.termQuery(column, tagId, TopicIndex.class, pageNo, pageSize);
         List<Topic> topicList = TopicIndex.toTopicList(topicIndexPage.getDataList());
-        return new Page<>(topicIndexPage.getTotalCount(), topicList);
+        return new MyPage<>(topicIndexPage.getTotalCount(), topicList);
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TopicSearchServiceImpl implements TopicSearchService {
 
 
     @Override
-    public Page<Topic> search(SearchTopicReq searchTopicReq) {
+    public MyPage<Topic> search(SearchTopicReq searchTopicReq) {
         String search = searchTopicReq.getSearch();
         Integer categoryId = searchTopicReq.getCategoryId();
         Integer tagId = searchTopicReq.getTagId();
@@ -147,6 +147,6 @@ public class TopicSearchServiceImpl implements TopicSearchService {
             topicIndexList.add(topicIndex);
         }
 
-        return new Page<>(total, TopicIndex.toTopicList(topicIndexList));
+        return new MyPage<>(total, TopicIndex.toTopicList(topicIndexList));
     }
 }

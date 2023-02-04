@@ -26,6 +26,8 @@ public class RedisLuaUtils {
     private final static DefaultRedisScript<Long> incrementIfPresentZSet = new DefaultRedisScript<>();
     private final static DefaultRedisScript<String> getAndCombineAndDelete = new DefaultRedisScript<>();
 
+    private final static DefaultRedisScript<Long> ifpForHashKey = new DefaultRedisScript<>();
+
 
     static {
         //设置忽略空字段
@@ -41,6 +43,9 @@ public class RedisLuaUtils {
 
         incrementIfPresentZSet.setLocation(new ClassPathResource("lua/incrementIfPresentZSet.lua"));
         incrementIfPresentZSet.setResultType(Long.class);
+
+        ifpForHashKey.setLocation(new ClassPathResource("lua/incrementIfPresentForHashKey.lua"));
+        ifpForHashKey.setResultType(Long.class);
     }
 
     public Long incrementIfPresent(String key, long increment) {
@@ -66,5 +71,10 @@ public class RedisLuaUtils {
     public Long incrementIfPresentForZSet(String key, String value, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
                 .execute(incrementIfPresentZSet, Collections.singletonList(key), value, Long.toString(increment));
+    }
+
+    public Long incrementIfPresentForHashKey(String key, String hashKey, long increment) {
+        return stringRedisTemplate.opsForValue().getOperations()
+                .execute(ifpForHashKey, Collections.singletonList(key), hashKey, Long.toString(increment));
     }
 }

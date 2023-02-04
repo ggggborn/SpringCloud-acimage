@@ -5,7 +5,6 @@ import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.topic.TopicInfoWriteService;
 import com.acimage.community.service.topic.TopicQueryService;
-import com.acimage.community.service.topic.TopicWriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +17,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/community/topics")
 @Validated
-@Authentication
 public class TopicProvider {
 
     @Autowired
@@ -32,8 +30,8 @@ public class TopicProvider {
     }
 
     @DeleteMapping("/{topicId}")
-    public Result queryTopics(@PathVariable @Positive Long topicId) {
-        topicInfoWriteService.removeTopicInfo(topicId);
+    public Result<?> delete(@PathVariable @Positive Long topicId) {
+        topicInfoWriteService.removeTopicInfoWithoutVerification(topicId);
         return Result.ok();
     }
 

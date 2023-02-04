@@ -2,7 +2,7 @@ package com.acimage.gateway.globalfilter;
 
 
 import com.acimage.common.exception.NullTokenException;
-import com.acimage.common.global.consts.HeaderKey;
+import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.service.impl.TokenServiceImpl;
 import com.acimage.common.utils.IpUtils;
 import com.acimage.common.utils.JwtUtils;
@@ -34,13 +34,13 @@ public class AuthenticationFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
 
-        ServerHttpRequest request =  exchange.getRequest();
-        String url=request.getURI().getPath();
-        if(IgnoreUrlConfig.isIgnoreUrl(url)){
+        ServerHttpRequest request = exchange.getRequest();
+        String url = request.getURI().getPath();
+        if (IgnoreUrlConfig.isIgnoreUrl(url)) {
             return chain.filter(exchange);
         }
 
-        String token = request.getHeaders().getFirst(HeaderKey.AUTHORIZATION);
+        String token = request.getHeaders().getFirst(HeaderKeyConstants.AUTHORIZATION);
         String ip = IpUtils.getUserIp(request);
 
         //验证token
@@ -59,7 +59,7 @@ public class AuthenticationFilter implements GlobalFilter {
             return exchange.getResponse().setComplete();
 
         } catch (JWTVerificationException e1) {
-            log.error("access 非法token 访问:{} ip:{}", url,ip);
+            log.error("access 非法token 访问:{} ip:{}", url, ip);
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
@@ -71,17 +71,18 @@ public class AuthenticationFilter implements GlobalFilter {
             return exchange.getResponse().setComplete();
         }
 
-        log.info("access 用户:{} 访问:{} ip:{}",
-                JwtUtils.getUsername(token), url, ip);
+        String method = request.getMethodValue();
+        log.info("access 用户:{} 访问:{} {} ip:{}",
+                JwtUtils.getUsername(token), url, method, ip);
 
         return chain.filter(exchange);
 
     }
 
-    private boolean isMatch(String token,String ip){
-        if(ip==null){
+    private boolean isMatch(String token, String ip) {
+        if (ip == null) {
             return false;
         }
-        return ip.equals(stringRedisTemplate.opsForValue().get(TokenServiceImpl.STRINGKP_TOKEN +token));
+        return ip.equals(stringRedisTemplate.opsForValue().get(TokenServiceImpl.STRINGKP_TOKEN + token));
     }
 }

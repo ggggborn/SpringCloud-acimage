@@ -8,10 +8,9 @@ import cn.hutool.core.date.DateUtil;
 import com.acimage.common.model.mq.dto.EsAddDto;
 import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateDto;
-import com.acimage.common.model.page.Page;
+import com.acimage.common.model.page.MyPage;
 import com.acimage.common.utils.common.ReflectUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -103,7 +102,7 @@ public class EsUtils {
     }
 
 
-    public <T> Page<T> termQuery(String column, Object value, Class<T> clz, int pageNo, int pageSize) {
+    public <T> MyPage<T> termQuery(String column, Object value, Class<T> clz, int pageNo, int pageSize) {
         QueryBuilder queryBuilder = QueryBuilders.termQuery(column, value);
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
@@ -113,7 +112,7 @@ public class EsUtils {
         SearchHits<T> search = esTemplate.search(nativeSearchQuery, clz);
         int totalCount = (int) search.getTotalHits();
         List<T> dateList = toList(search.getSearchHits());
-        return new Page<>(totalCount, dateList);
+        return new MyPage<>(totalCount, dateList);
     }
 
     public <T> List<T> similarQuery(String id, Class<T> index,List<String> fields , int pageNo, int pageSize) {

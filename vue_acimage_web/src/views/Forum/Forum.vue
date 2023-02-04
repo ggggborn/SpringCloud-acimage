@@ -44,7 +44,7 @@
 
 				<el-skeleton v-if="loading" :rows="6" animated />
 				<template v-else>
-					<div v-for="topic in topics" style="margin-bottom:8px;" :key="topic.id">
+					<div v-for="topic in topics" style="margin-bottom:12px;" :key="topic.id">
 						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.activityTime"
 							:username="topic.user.username" :starCount="topic.starCount"
 							:commentCount="topic.commentCount" :pageView="topic.pageView"

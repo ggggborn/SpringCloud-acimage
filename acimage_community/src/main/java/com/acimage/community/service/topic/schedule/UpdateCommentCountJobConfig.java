@@ -4,7 +4,7 @@ import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Deprecated
 public class UpdateCommentCountJobConfig {
 
     private String cron ="0 */3 * * * ?";

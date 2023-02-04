@@ -1,5 +1,7 @@
 package com.acimage.common.utils.minio;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HttpUtil;
 import io.minio.*;
 import io.minio.errors.*;
@@ -154,6 +156,7 @@ public class MinioUtils {
 
     public String generateUrl(@Nullable String prefix, Date uploadTime, String suffix) {
         String formatPattern = "yyyy/MM/dd";
+
         String newPrefix = prefix == null ? "" : prefix + "/";
         SimpleDateFormat formatter = new SimpleDateFormat(formatPattern);
         return newPrefix + formatter.format(uploadTime) + "/" + suffix;

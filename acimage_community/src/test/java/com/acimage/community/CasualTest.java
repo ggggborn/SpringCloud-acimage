@@ -7,10 +7,8 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.community.mq.producer.HashImageMqProducer;
-import com.acimage.community.test.UploadService;
 import com.acimage.community.service.topic.enums.TopicAttribute;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
@@ -18,10 +16,8 @@ import java.util.regex.Pattern;
 
 @SpringBootTest
 public class CasualTest {
-    @Autowired
-    UploadService uploadService;
-    @Autowired
-    HashImageMqProducer hashImageMqProducer;
+
+
     @Test
     public void testGetSnowflakeId(){
         long id=IdUtil.getSnowflake().nextId();
@@ -79,11 +75,6 @@ public class CasualTest {
         System.out.println(ListUtils.extract(Image::getId,images));
     }
 
-    @Test
-    public  void uploadLocalImages(){
-
-        uploadService.uploadLocalImagesToQiniu();
-    }
 
 
 }

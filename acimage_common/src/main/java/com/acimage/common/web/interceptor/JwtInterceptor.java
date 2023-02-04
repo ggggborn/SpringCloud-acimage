@@ -1,6 +1,6 @@
 package com.acimage.common.web.interceptor;
 
-import com.acimage.common.global.consts.HeaderKey;
+import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.utils.IpUtils;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.acimage.common.global.context.UserContext;
@@ -29,7 +29,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         String ip = IpUtils.getIp(request);
         UserContext.setIp(ip);
-        String token = request.getHeader(HeaderKey.AUTHORIZATION);;
+        String token = request.getHeader(HeaderKeyConstants.AUTHORIZATION);;
 
         try {
             JwtUtils.verifyToken(token);

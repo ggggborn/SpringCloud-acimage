@@ -2,6 +2,8 @@ package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
+import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.PairUtils;
 import com.acimage.community.dao.TopicDao;
@@ -10,6 +12,7 @@ import com.acimage.community.service.topic.TopicSpAttrQueryService;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.service.topic.consts.KeyConstants;
 import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,25 +47,31 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
 
     @Override
     public void updateStarCountByIncrement(List<Long> topicIds, List<Integer> increments) {
-        updateAttrByIncrement(TopicAttribute.STAR_COUNT, topicIds, increments);
+        batchUpdateByIncrements(TopicAttribute.STAR_COUNT, topicIds, increments);
     }
 
     @Override
     public void updateCommentCountByIncrement(List<Long> topicIds, List<Integer> increments) {
-        updateAttrByIncrement(TopicAttribute.COMMENT_COUNT, topicIds, increments);
+        batchUpdateByIncrements(TopicAttribute.COMMENT_COUNT, topicIds, increments);
     }
 
     @Override
     public void updatePageViewByIncrement(List<Long> topicIds, List<Integer> increments) {
-        updateAttrByIncrement(TopicAttribute.PAGE_VIEW, topicIds, increments);
+        batchUpdateByIncrements(TopicAttribute.PAGE_VIEW, topicIds, increments);
     }
 
-    private void updateAttrByIncrement(TopicAttribute attr, List<Long> topicIds, List<Integer> increments) {
+    private void batchUpdateByIncrements(TopicAttribute attr, List<Long> topicIds, List<Integer> increments) {
         String underlineColumnName = attr.toUnderlineColumnName();
         List<Pair<Long, Integer>> pairList = PairUtils.combine(topicIds, increments);
         if (!CollectionUtil.isEmpty(pairList)) {
             topicDao.batchUpdateColumnByIncrement(underlineColumnName, pairList);
         }
+    }
+
+    private void updateByIncrement(SFunction<Topic, ?> column, long topicId, int increment) {
+        String underlineName = LambdaUtils.getUnderlineColumnName(column);
+        topicDao.updateColumnByIncrement(underlineName, topicId, increment);
+
     }
 
     @Override
@@ -100,15 +109,16 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
 
     @Override
     public void increaseCommentCount(long topicId, int increment) {
-        String key = KeyConstants.STRINGKP_TOPIC_COMMENT_COUNT_INCREMENT + topicId;
         if (increment != 0) {
-            //记录增量
-            redisUtils.increment(key, increment);
-            //记录id
-            redisUtils.addForSet(KeyConstants.SETK_RECORDING_COMMENT_COUNT_INCREMENT, topicId);
-            //更新排行榜
-            int latestCommentCount = topicSpAttrQueryService.getCommentCount(topicId);
-            topicRankWriteService.updateRank(TopicAttribute.COMMENT_COUNT, topicId, latestCommentCount);
+            //改数据库
+            this.updateByIncrement(Topic::getCommentCount, topicId, increment);
+            String column = LambdaUtils.columnNameOf(Topic::getCommentCount);
+            //同步到redis
+            String key=KeyConstants.HASHKP_TOPIC+topicId;
+            Long commentCount=redisUtils.incrementIfPresentForHashKey(key, column, increment);
+            if(commentCount!=null){
+                topicRankWriteService.updateRank(TopicAttribute.COMMENT_COUNT, topicId, commentCount.intValue());
+            }
         }
     }
 

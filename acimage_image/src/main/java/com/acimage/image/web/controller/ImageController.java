@@ -2,7 +2,7 @@ package com.acimage.image.web.controller;
 
 
 import com.acimage.common.global.annotation.Authentication;
-import com.acimage.common.global.consts.FileFormat;
+import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.model.domain.community.Topic;
@@ -47,7 +47,7 @@ public class ImageController {
                 return Result.fail("图片文件名长度小于2");
             }
             String format = FileUtils.formatOf(originName);
-            if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
+            if (!FileFormatConstants.ALLOWED_IMAGE_FORMAT.contains(format)) {
                 return Result.fail("图片格式需为jpg，jpeg，png");
             }
         }
@@ -66,7 +66,7 @@ public class ImageController {
             return Result.fail(Image.FILE_NAME_VALIDATION_MSG);
         }
         String format = FileUtils.formatOf(originName);
-        if (!FileFormat.ALLOWED_IMAGE_FORMAT.contains(format)) {
+        if (!FileFormatConstants.ALLOWED_IMAGE_FORMAT.contains(format)) {
             return Result.fail("图片格式需为jpg，jpeg，png");
         }
         log.info("用户：{} 话题: 上传话题图片", UserContext.getUsername());

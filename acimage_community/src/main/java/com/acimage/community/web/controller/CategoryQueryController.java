@@ -15,7 +15,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
-@RequestMapping("/api/community/categories")
+@RequestMapping("/api/community/categories/query")
 public class CategoryQueryController {
     @Autowired
     CategoryQueryService categoryQueryService;

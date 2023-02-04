@@ -1,8 +1,8 @@
 package com.acimage.feign.config;
 
 
+import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.global.consts.RequestHeaderKey;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class FeignRequestInterceptorConfig implements RequestInterceptor {
             }
         }
         //往header设置用户原始ip
-        requestTemplate.header(RequestHeaderKey.X_USER_IP, UserContext.getIp());
+        requestTemplate.header(HeaderKeyConstants.FEIGN_X_USER_IP, UserContext.getIp());
 
 
     }

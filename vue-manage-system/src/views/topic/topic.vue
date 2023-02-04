@@ -2,16 +2,15 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-select v-model="query.column" placeholder="排序字段" class="handle-select mr10">
+				<el-select v-model="query.column" placeholder="排序字段" class="handle-select mr10" style="width:160px;">
 					<el-option key="1" label="createTime" value="createTime"></el-option>
 					<el-option key="2" label="updateTime" value="updateTime"></el-option>
 					<el-option key="3" label="starCount" value="starCount"></el-option>
 					<el-option key="4" label="commentCount" value="commentCount"></el-option>
 					<el-option key="5" label="pageView" value="pageView"></el-option>
-					<el-option key="6" label="pageView" value="pageView"></el-option>
 				</el-select>
-				<el-input  placeholder="用户id" class="handle-input mr10"></el-input>
-				<el-button type="primary"  @click="getData">搜索</el-button>
+				<el-input placeholder="用户id" class="handle-input mr10"></el-input>
+				<el-button type="primary" @click="getData">搜索</el-button>
 			</div>
 			<el-table :data="topics" border class="table" ref="multipleTable" header-cell-class-name="table-header">
 				<el-table-column label="序号" width="55" align="center">
@@ -103,29 +102,6 @@
 				</span>
 			</template>
 		</el-dialog>
-		<!-- 新增图片对话框 -->
-		<el-dialog title="新增图片" v-model="addImageVisible">
-			<el-form :model="addImageForm">
-				<el-form-item>
-					<el-upload action="#" ref="upload" :class="{'hide':addImageList.length>=1}" list-type="picture-card"
-						:limit="1" :auto-upload="false" accept="image/*" v-model:file-list="addImageList">
-						<el-icon>
-							<Plus />
-						</el-icon>
-					</el-upload>
-				</el-form-item>
-				<el-form-item label="描述" prop="description">
-					<el-input v-model="addImageForm.description"></el-input>
-				</el-form-item>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="addImageVisible = false">取 消</el-button>
-					<el-button type="primary" @click="addImage">确 定</el-button>
-				</span>
-			</template>
-		</el-dialog>
-
 	</div>
 </template>
 
@@ -135,13 +111,16 @@
 	import { Plus } from '@element-plus/icons-vue';
 	import { useStore } from '@/store/store';
 
-	import { queryTopicsOrderBy,deleteTopic } from '@/api/topic'
+	import { queryTopicsOrderBy, deleteTopic } from '@/api/topic'
 	import { Code } from '@/utils/result';
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 	import global from '@/utils/global'
 
 
+	const store = useStore();
+	store.init();
+	
 	interface Topic {
 		id: number;
 		title: string;
@@ -156,7 +135,7 @@
 		updateTime: string;
 		createTime: string;
 	}
-	//查询首页图片
+	//查询话题
 	let topics = ref < Topic[] > ([{
 		id: 1008610086,
 		title: "表他说看得见哈肯德基刷卡单",
@@ -172,9 +151,9 @@
 		updateTime: '2016-05-02 22:22:22',
 		createTime: '2016-05-02 22:22:22',
 	}]);
+	
 	let totalCount = ref(1);
-	const store = useStore();
-	store.init();
+
 	let query = reactive({
 		column: 'createTime',
 		pageNo: 1,
@@ -192,7 +171,8 @@
 	const handlePageChange = () => {
 		getData();
 	};
-	
+
+	//删除
 	const handleDelete = (index: number) => {
 		MessageUtils.confirm("确定删除吗？操作不可逆！").then(() => {
 			const deleteId = topics.value[index].id;
@@ -205,7 +185,7 @@
 				})
 		}).catch(e => e);
 	}
-	
+
 
 	//编辑
 	let editForm = reactive({
@@ -259,114 +239,6 @@
 		})
 		coverVisible.value = false;
 	}
-
-	//新增
-	let addImageVisible = ref(false);
-	let addImageForm = reactive({
-		description: '',
-	});
-	let addImageList = ref < UploadFile[] > ([]);
-
-	let addImage = () => {
-		if (addImageList.value.length == 0) {
-			MessageUtils.notice("至少选择一张图", 2);
-			return;
-		}
-		if (addImageForm.description.length < 2 || addImageForm.description.length > 30) {
-			MessageUtils.notice("描述需要在2-30之间", 2);
-			return;
-		}
-
-		let reqData: any = new FormData();
-		reqData.append("description", addImageForm.description);
-		reqData.append("image", addImageList.value[0].raw);
-
-		add(reqData).then((res: any) => {
-			if (res.code == Code.OK) {
-				MessageUtils.success("新增成功", 1);
-				CommonUtils.delayRefresh(0.5);
-			}
-		});
-		addImageVisible.value = false;
-	};
-
-	//删除
-
-
-
-
-
-	// let currentModifyId: number = 0;
-	// let newDescription = '';
-
-	// interface TableItem {
-	// 	id: number;
-	// 	name: string;
-	// 	money: string;
-	// 	state: string;
-	// 	date: string;
-	// 	address: string;
-	// }
-
-	// const query = reactive({
-	// 	address: '',
-	// 	name: '',
-	// 	pageIndex: 1,
-	// 	pageSize: 10
-	// });
-	// const tableData = ref < TableItem[] > ([]);
-	// const pageTotal = ref(0);
-	// // 获取表格数据
-	// // const getData = () => {
-	// // 	fetchData().then((res: any) => {
-	// // 		tableData.value = res.data.list;
-	// // 		pageTotal.value = res.data.pageTotal || 50;
-	// // 	});
-	// // };
-	// // getData();
-
-	// // 查询操作
-	// const handleSearch = () => {
-	// 	query.pageIndex = 1;
-	// 	// getData();
-	// };
-	// // 分页导航
-	// const handlePageChange = (val: number) => {
-	// 	query.pageIndex = val;
-	// 	// getData();
-	// };
-
-	// 删除操作
-	// const handleDelete = (index: number) => {
-	// 	// 二次确认删除
-	// 	ElMessageBox.confirm('确定要删除吗？', '提示', {
-	// 			type: 'warning'
-	// 		})
-	// 		.then(() => {
-	// 			ElMessage.success('删除成功');
-	// 			tableData.value.splice(index, 1);
-	// 		})
-	// 		.catch(() => {});
-	// };
-
-	// 表格编辑时弹窗和保存
-	// let form = reactive({
-	// 	name: '',
-	// 	address: ''
-	// });
-	// let idx: number = -1;
-	// const handleEdit = (index: number, row: any) => {
-	// 	idx = index;
-	// 	form.name = row.name;
-	// 	form.address = row.address;
-	// 	editVisible.value = true;
-	// };
-	// const saveEdit = () => {
-	// 	editVisible.value = false;
-	// 	ElMessage.success(`修改第 ${idx + 1} 行成功`);
-	// 	tableData.value[idx].name = form.name;
-	// 	tableData.value[idx].address = form.address;
-	// };
 </script>
 
 <style scoped>

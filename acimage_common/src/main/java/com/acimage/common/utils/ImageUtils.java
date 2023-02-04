@@ -1,7 +1,7 @@
 package com.acimage.common.utils;
 
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.global.consts.FileFormat;
+import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.utils.common.FileUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
@@ -23,9 +23,9 @@ public class ImageUtils {
             float qualify = 0.8f;
             BufferedImage bufferedImage = Thumbnails.fromInputStreams(Collections.singletonList(multipartFile.getInputStream()))
                     .outputQuality(qualify).size(width, height)
-                    .outputFormat(FileFormat.WEBP)
+                    .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
-            InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormat.WEBP);
+            InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP);
             if (is != null && is.available() > limitSize) {
                 log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
                 throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
@@ -45,9 +45,9 @@ public class ImageUtils {
             int height = image.getHeight();
             BufferedImage bufferedImage = Thumbnails.fromInputStreams(Collections.singletonList(multipartFile.getInputStream()))
                     .outputQuality(qualify).size(width, height)
-                    .outputFormat(FileFormat.WEBP)
+                    .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
-            InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormat.WEBP);
+            InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP);
             if (is != null && is.available() > limitSize) {
                 log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
                 throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");

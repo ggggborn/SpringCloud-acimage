@@ -24,11 +24,11 @@
     </resultMap>
 
     <select id="selectCommentsWithUserByTopicId" resultMap="commentWithUser">
-        select * from tb_comment where topic_id = #{topicId} order by create_time asc
+        select * from tb_comment where topic_id = #{topicId} order by create_time desc
     </select>
 
     <select id="selectCommentsWithUser" resultMap="commentWithUser">
-        select * from tb_comment where topic_id=#{topicId} order by create_time asc limit #{startIndex},#{recordNumber}
+        select * from tb_comment where topic_id=#{topicId} order by create_time desc limit #{startIndex},#{recordNumber}
     </select>
 
     <select id="selectCommentsWithTopicOrderByCreateTime" resultMap="commentWithTopic">

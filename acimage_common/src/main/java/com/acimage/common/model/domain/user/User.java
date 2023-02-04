@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,6 +23,8 @@ public class User {
     private Integer starCount;
     @TableField(exist = false)
     private Integer topicCount;
+    @TableField(exist = false)
+    List<Integer> roleIds;
 
     public User(Long id, String username) {
         this.id = id;

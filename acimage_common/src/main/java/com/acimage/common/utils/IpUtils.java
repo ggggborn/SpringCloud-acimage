@@ -1,7 +1,7 @@
 package com.acimage.common.utils;
 
 import cn.hutool.core.util.StrUtil;
-import com.acimage.common.global.consts.RequestHeaderKey;
+import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.alibaba.csp.sentinel.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -104,7 +104,7 @@ public class IpUtils {
 
 
     public static String getIp(HttpServletRequest request) {
-        String originUserIp = request.getHeader(RequestHeaderKey.X_USER_IP);
+        String originUserIp = request.getHeader(HeaderKeyConstants.FEIGN_X_USER_IP);
         if (!StrUtil.isEmpty(originUserIp)) {
             return originUserIp;
         } else {

@@ -12,7 +12,10 @@
 					<span v-else>{{title}}</span>
 					<!-- {{$global.omitStr(title)}} -->
 				</div>
-				<div class="content" v-dompurify-html="$global.omitStr(html,contentLimit)"> </div>
+				<div class="content" v-if="contentHtml" v-dompurify-html="$global.omitStr(html,contentLimit)"> </div>
+				<div class="content" v-else>
+					{{$global.omitStr(html,contentLimit)}}
+				</div>
 				<div class="info">
 					<div style="display: inline-block;">
 						<el-avatar :size="20" :src="photoUrl">
@@ -108,13 +111,17 @@
 				type: Number
 			},
 			to: {},
-			showImage:{
-				type:Boolean,
-				default:true
+			showImage: {
+				type: Boolean,
+				default: true
 			},
-			titleHtml:{
-				type:Boolean,
-				default:false
+			titleHtml: {
+				type: Boolean,
+				default: false
+			},
+			contentHtml: {
+				type: Boolean,
+				default: false
 			}
 
 		},

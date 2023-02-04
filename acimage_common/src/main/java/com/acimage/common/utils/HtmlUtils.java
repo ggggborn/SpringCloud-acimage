@@ -10,8 +10,10 @@ import java.util.regex.Pattern;
 public class HtmlUtils {
 
     private static final Pattern imageSrcPattern;
+
     static {
-        imageSrcPattern = Pattern.compile("<img\\b[^>]*\\bsrc\\b\\s*=\\s*('|\")?(/[^'\"\n\r\f>]+(\\.jpg|\\.gif|\\.png|\\.svg|\\.jpe|\\.jpeg|\\.pic|\\.webp))\\b[^>]*>", Pattern.CASE_INSENSITIVE);
+        String regex = "<img\\b[^>]*\\bsrc\\b\\s*=\\s*('|\")?(/[^'\"\n\r\f>]+(\\.jpg|\\.png\\.jpe|\\.jpeg|\\.webp))\\b[^>]*>";
+        imageSrcPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
     }
 
     public static String html2Text(String strHtml) {
@@ -21,14 +23,16 @@ public class HtmlUtils {
         return content;
     }
 
-    public static List<String> getInnerImageUrlsAndRemoveRepeat(String html){
+    /**
+     * 获取html中相对路径开头的图片，并对结果去重
+     */
+    public static List<String> getInnerImageUrls(String html) {
         List<String> imageSrcList = new ArrayList<>();
 
         Matcher m = imageSrcPattern.matcher(html);
-        String src = null;
+        String src;
         while (m.find()) {
             String quote = m.group(1);
-            // src=https://sms.reyo.cn:443/temp/screenshot/zY9Ur-KcyY6-2fVB1-1FSH4.png
             src = (quote == null || quote.trim().length() == 0) ? m.group(2).split("\\s+")[0] : m.group(2);
             imageSrcList.add(src);
         }

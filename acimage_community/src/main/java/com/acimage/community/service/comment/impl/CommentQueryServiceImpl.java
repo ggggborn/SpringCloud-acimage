@@ -5,7 +5,7 @@ import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.model.domain.community.Comment;
 import com.acimage.community.dao.CommentDao;
 import com.acimage.community.service.comment.CommentQueryService;
-import com.acimage.community.service.comment.consts.KeyConsts;
+import com.acimage.community.service.comment.consts.CommentKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ public class CommentQueryServiceImpl implements CommentQueryService {
         return commentDao.selectById(commentId);
     }
 
-    @QueryRedis(keyPrefix = KeyConsts.STRINGKP_COMMENT_COUNT,expire = 129L)
+    @QueryRedis(keyPrefix = CommentKeyConstants.STRINGKP_COMMENT_COUNT,expire = 129L)
     @Override
     public Integer getCommentCount(@KeyParam long topicId) {
         LambdaQueryWrapper<Comment> qw=new LambdaQueryWrapper<>();

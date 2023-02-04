@@ -24,6 +24,6 @@ public class CmtyUserProvider {
 
     @GetMapping("/userId/{userId}")
     public Result<CmtyUser> queryCmtyUser(@PathVariable Long userId) {
-        return Result.ok(cmtyUserQueryService.getUserCommunityStatistic(userId));
+        return Result.ok(cmtyUserQueryService.getCmtyUser(userId));
     }
 }

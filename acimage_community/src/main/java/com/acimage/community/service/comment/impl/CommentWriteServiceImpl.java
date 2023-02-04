@@ -2,8 +2,9 @@ package com.acimage.community.service.comment.impl;
 
 
 import cn.hutool.core.bean.BeanUtil;
+import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.common.utils.common.ListUtils;
-import com.acimage.community.global.consts.PageSizeConsts;
+import com.acimage.community.global.consts.PageSizeConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.model.domain.community.Comment;
@@ -11,7 +12,7 @@ import com.acimage.community.model.request.CommentAddReq;
 import com.acimage.community.model.request.CommentModifyReq;
 import com.acimage.community.service.comment.CommentQueryService;
 import com.acimage.community.service.comment.CommentWriteService;
-import com.acimage.community.service.comment.consts.KeyConsts;
+import com.acimage.community.service.comment.consts.CommentKeyConstants;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.CommentDao;
@@ -45,15 +46,14 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         long id = IdGenerator.getSnowflakeNextId();
         comment.setId(id);
         comment.setUserId(UserContext.getUserId());
+        //敏感词过滤
+        comment.setContent(SensitiveWordUtils.filter(commentAddReq.getContent()));
         int col = commentDao.insert(comment);
 
         long topicId = commentAddReq.getTopicId();
         //如果首页评论数未满，说明新增评论应在首页，所以删除redis相应数据
-        String firstPageKey = KeyConsts.keyOfTopicComments(topicId, 1);
-        List<Comment> comments = redisUtils.getListFromString(firstPageKey, Comment.class);
-        if (comments != null && comments.size() < PageSizeConsts.TOPIC_COMMENTS) {
-            redisUtils.delete(firstPageKey);
-        }
+        String firstPageKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
+        redisUtils.delete(firstPageKey);
 
         //更新评论数
         topicSpAttrWriteService.increaseCommentCount(topicId, 1);
@@ -68,18 +68,18 @@ public class CommentWriteServiceImpl implements CommentWriteService {
     public Integer removeComment(long commentId) {
         Comment comment = commentQueryService.getComment(commentId);
         if (comment == null) {
-            log.error("用户{} 删除评论{} 错误：评论不存在", UserContext.getUsername(), commentId);
+            log.error("user:{} 删除评论{} 错误：评论不存在", UserContext.getUsername(), commentId);
             throw new BusinessException("评论不存在");
         }
         if (!comment.getUserId().equals(UserContext.getUserId())) {
-            log.error("用户{} 删除 评论{} 错误：非评论持有者", UserContext.getUsername(), commentId);
+            log.error("user:{} 删除 评论{} 错误：非评论持有者", UserContext.getUsername(), commentId);
             throw new BusinessException("非法操作");
         }
         int col = commentDao.deleteById(commentId);
 
         //如果影响redis话题首页评论，则删除
         long topicId = comment.getTopicId();
-        String firstPageKey = KeyConsts.keyOfTopicComments(topicId, 1);
+        String firstPageKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
         List<Comment> comments = redisUtils.getListFromString(firstPageKey, Comment.class);
         if (comments != null && ListUtils.extract(Comment::getId, comments).contains(commentId)) {
             redisUtils.delete(firstPageKey);
@@ -98,7 +98,7 @@ public class CommentWriteServiceImpl implements CommentWriteService {
     public Integer removeComments(long topicId) {
         int col = commentDao.deleteByTopicId(topicId);
         //删除redis数据
-        redisUtils.delete(KeyConsts.STRINGKP_TOPIC_COMMENTS + topicId);
+        redisUtils.delete(CommentKeyConstants.STRINGKP_TOPIC_COMMENTS + topicId);
         return col;
     }
 
@@ -128,7 +128,7 @@ public class CommentWriteServiceImpl implements CommentWriteService {
 
         //如果影响redis话题首页评论，则删除redis数据
         long topicId = originComment.getTopicId();
-        String firstPageCommentsKey = KeyConsts.keyOfTopicComments(topicId, 1);
+        String firstPageCommentsKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
         List<Comment> comments = redisUtils.getListFromString(firstPageCommentsKey, Comment.class);
         if (comments != null && ListUtils.extract(Comment::getId, comments).contains(commentId)) {
             redisUtils.delete(firstPageCommentsKey);

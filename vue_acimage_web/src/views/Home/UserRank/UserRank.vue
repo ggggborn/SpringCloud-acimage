@@ -1,18 +1,19 @@
 <template>
 	<div>
 		<div class="wrapper">
-			<div class="user-rank-thumbnail">
+			<div class="wrapper-header">
 				<img src="static/image/user-rank-header.jpg" />
-				<div class="thumbnail-white-gradient">
-					<div class="header-title">排行</div>
+				<div class="white-gradient">
+					<div class="header-title">用户排行</div>
 				</div>
 			</div>
 			<el-tabs type="card" style="margin-top:-5px;" v-model="sortMode">
-				<el-tab-pane label="最多star" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
-				<el-tab-pane label="最多话题" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
+				<el-tab-pane label="星星收割者" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
+				<el-tab-pane label="话题达人" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
+				<el-tab-pane label="评论区水怪" @click="onClickSortByTopicCount"></el-tab-pane>
 			</el-tabs>
 
-			<el-skeleton v-if="loading" :rows="6" animated style="width: 90%;margin-left:5%"/>
+			<el-skeleton v-if="loading" :rows="6" animated style="width: 90%;margin-left:5%" />
 			<div v-else v-for="user in users" class="user-item-container" :key="user.id">
 				<div class="user-item-left">
 					<el-avatar :size="40" :src="$global.truePhotoUrl(user.photoUrl)">

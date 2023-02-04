@@ -102,8 +102,8 @@ const items = [
 			    permiss: '2',
 			},
 	        {
-	            index: '/import',
-	            title: '导入Excel',
+	            index: '/user',
+	            title: '用户',
 	            permiss: '2',
 	        },
 	        {

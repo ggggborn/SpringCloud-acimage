@@ -39,6 +39,11 @@ spring:
           username: root
           password: mysql
           driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
+        user:
+          url: jdbc:mysql://localhost:3306/acimage_user?useSSl=false&allowMultiQueries=true&serverTimezone=UTC
+          username: root
+          password: mysql
+          driver-class-name: com.mysql.cj.jdbc.Driver # 3.2.0开始支持SPI可省略此配置
   redis:
     host: 127.0.0.1
     port: 6379

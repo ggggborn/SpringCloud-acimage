@@ -13,25 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
 @Slf4j
-@RequestMapping("/api/community/users")
+@RequestMapping("/api/community/users/rank")
 @Validated
 public class UserRankController {
 
     @Autowired
     CmtyUserRankService cmtyUserRankService;
 
-    @GetMapping("/rank/topicCount/{pageNo}")
-    public Result<List<CmtyUser>> pageUsersRankByTopicCount(@PathVariable @Max(10) Integer pageNo) {
+    @GetMapping("/topicCount/{pageNo}")
+    public Result<List<CmtyUser>> rankByTopicCount(@PathVariable @Min(1) @Max(10) Integer pageNo) {
         int pageSize=10;
         return Result.ok(cmtyUserRankService.pageUserRankByTopicCount(pageNo, pageSize));
     }
 
-    @GetMapping("/rank/starCount/{pageNo}")
-    public Result<List<CmtyUser>> pageUsersRankByStarCount(@PathVariable @Max(10) Integer pageNo) {
+    @GetMapping("/starCount/{pageNo}")
+    public Result<List<CmtyUser>> pageUsersRankByStarCount(@PathVariable @Min(1) @Max(10) Integer pageNo) {
         int pageSize=10;
         return Result.ok(cmtyUserRankService.pageUserRankByStarCount(pageNo, pageSize));
     }

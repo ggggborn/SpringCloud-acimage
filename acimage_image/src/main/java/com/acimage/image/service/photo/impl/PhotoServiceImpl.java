@@ -1,12 +1,11 @@
 package com.acimage.image.service.photo.impl;
 
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.global.consts.FileFormat;
+import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.ImageUtils;
 import com.acimage.common.utils.QiniuUtils;
-import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.feign.client.UserClient;
 import com.acimage.image.global.consts.StorePrefixConstants;
@@ -31,7 +30,7 @@ public class PhotoServiceImpl implements PhotoService {
     public String uploadPhotoAndUpdatePhotoUrl(MultipartFile photoFile){
         //上传头像到七牛云
         Date now = new Date();
-        String suffix = String.format("%s.%s", IdGenerator.getSnowflakeNextId(), FileFormat.WEBP);
+        String suffix = String.format("%s.%s", IdGenerator.getSnowflakeNextId(), FileFormatConstants.WEBP);
         //压缩
         int limitSize=50*1000;
         int width=200;
@@ -39,7 +38,7 @@ public class PhotoServiceImpl implements PhotoService {
         InputStream inputStream= ImageUtils.compressAsFixedWebpImage(photoFile,width,height,limitSize);
         //上传
         String photoUrl = minioUtils.generateUrl(StorePrefixConstants.USER_PHOTO, now, suffix);
-        minioUtils.upload(inputStream, photoUrl,FileFormat.WEBP_CONTENT_TYPE);
+        minioUtils.upload(inputStream, photoUrl, FileFormatConstants.WEBP_CONTENT_TYPE);
 
         Result<String> result=userClient.modifyPhotoUrl(photoUrl);
         if(result.isOk()){

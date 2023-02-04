@@ -260,6 +260,10 @@ public class RedisUtils {
         return stringRedisTemplate.opsForZSet().reverseRange(key, start, end);
     }
 
+    public Long incrementIfPresentForHashKey(String key, String hashKey, long increment) {
+        return redisLuaUtils.incrementIfPresentForHashKey(key,hashKey,increment);
+    }
+
 
     public List<Pair<String, Double>> reverseRangeWithScoreForZSet(String key, int start, int end) {
         Set<ZSetOperations.TypedTuple<String>> valueAnsScoreSet = stringRedisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);

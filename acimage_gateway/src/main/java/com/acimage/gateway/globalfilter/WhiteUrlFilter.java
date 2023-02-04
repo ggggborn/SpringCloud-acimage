@@ -25,7 +25,8 @@ public class WhiteUrlFilter implements GlobalFilter {
         String ip= IpUtils.getUserIp(request);
 
         if(IgnoreUrlConfig.isIgnoreUrl(url)){
-            log.info("access pass url:{} ip:{}", url,ip);
+            String method=request.getMethodValue();
+            log.info("access pass url:{} {} ip:{} ", url,method,ip);
             return chain.filter(exchange);
         }
         return chain.filter(exchange);

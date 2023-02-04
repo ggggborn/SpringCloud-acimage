@@ -4,12 +4,12 @@
 	display: inline-block;
 	position: relative;
 	border-radius: 3px;
-	box-shadow: 0px 0px 6px #CCCCCC;
+	box-shadow: 1px 1px 6px #CCCCCC;
 	background-color: white;
 }
 
 .wrapper:hover {
-	box-shadow: 0px 0px 6px #AAAAAA;
+	box-shadow: 1px 1px 6px #AAAAAA;
 	transform: translate(0, -2px);
 	transition: transform 0.2s;
 }

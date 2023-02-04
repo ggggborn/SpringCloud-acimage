@@ -115,7 +115,6 @@
 				imageType: null,
 				chosenTagList: [],
 
-
 				option: {
 					img: '', // 裁剪图片地址，这里可以本地图片或者链接，链接不用require
 					outputSize: 1, // 裁剪生成图片质量
@@ -206,9 +205,6 @@
 				}
 
 				let text = this.$refs['editBoard'].Html.toString();
-				// text.replace(new RegExp("</?[^>]+>", "gm"), "");
-				// // eslint-disable-next-line
-				// text.replace(new RegExp("<a>\\s*|\t|\r|\n</a>", "gm"), "");
 				let pureText = StringUtils.html2Text(text);
 				console.log(pureText)
 				if (pureText.trim().length < 4) {
@@ -247,8 +243,6 @@
 						setTimeout(() => { _this.$router.push({ path: url }); }, 500);
 					}
 				})
-
-
 			},
 		}
 	}

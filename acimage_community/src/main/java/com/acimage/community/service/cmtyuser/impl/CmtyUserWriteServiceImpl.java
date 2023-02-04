@@ -7,7 +7,7 @@ import com.acimage.common.utils.common.PairUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.CmtyUserDao;
 import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
-import com.acimage.community.service.userstatistic.consts.KeyConstants;
+import com.acimage.community.depreted.userstatistic.consts.KeyConstants;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,13 +63,13 @@ public class CmtyUserWriteServiceImpl implements CmtyUserWriteService {
 
     @Override
     public Integer updateTopicCountByIncrement( long userId, int increment){
-        redisUtils.delete(KeyConstants.STRINGKP_USER_STATISTIC+userId);
+        redisUtils.delete(KeyConstants.STRINGKP_CMTY_USER +userId);
         return cmtyUserDao.updateTopicCountByIncrement(userId,increment);
     }
 
     @Override
     public Integer updateStarCountByIncrement(long userId, int increment) {
-        redisUtils.delete(KeyConstants.STRINGKP_USER_STATISTIC+userId);
+        redisUtils.delete(KeyConstants.STRINGKP_CMTY_USER +userId);
         return cmtyUserDao.updateStarCountByIncrement(userId,increment);
     }
 }

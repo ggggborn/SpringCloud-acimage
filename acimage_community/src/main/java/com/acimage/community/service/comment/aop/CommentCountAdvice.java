@@ -8,7 +8,7 @@ import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.service.comment.CommentQueryService;
 import com.acimage.community.service.comment.annotation.Operation;
 import com.acimage.community.service.comment.annotation.UpdateCcByReturn;
-import com.acimage.community.service.comment.consts.KeyConsts;
+import com.acimage.community.service.comment.consts.CommentKeyConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -56,7 +56,7 @@ public class CommentCountAdvice {
             topicId = commentQueryService.getComment(commentId).getTopicId();
         }
 
-        String commentCountKey = KeyConsts.STRINGKP_COMMENT_COUNT + topicId;
+        String commentCountKey = CommentKeyConstants.STRINGKP_COMMENT_COUNT + topicId;
 
         //获取评论数变化量
         int variance = 0;

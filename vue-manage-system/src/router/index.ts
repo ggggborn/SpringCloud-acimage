@@ -77,6 +77,15 @@ const routes: RouteRecordRaw[] = [
 			    },
 			    component: () =>import(/* webpackChunkName: "topic" */ '../views/topic/topic.vue'),
 			},
+			{
+			    path: '/user',
+			    name: 'user',
+			    meta: {
+			        title: '用户',
+			        permiss: '1',
+			    },
+			    component: () =>import(/* webpackChunkName: "user" */ '../views/user/user.vue'),
+			},
             {
                 path: '/charts',
                 name: 'basecharts',
@@ -140,14 +149,14 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import(/* webpackChunkName: "icon" */ '../views/icon.vue'),
             },
-            {
-                path: '/user',
-                name: 'user',
-                meta: {
-                    title: '个人中心',
-                },
-                component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
-            },
+            // {
+            //     path: '/user',
+            //     name: 'user',
+            //     meta: {
+            //         title: '个人中心',
+            //     },
+            //     component: () => import(/* webpackChunkName: "user" */ '../views/user.vue'),
+            // },
             {
                 path: '/editor',
                 name: 'editor',

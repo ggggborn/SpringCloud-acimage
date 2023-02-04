@@ -3,7 +3,7 @@ package com.acimage.image.service.image.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import com.acimage.common.exception.BusinessException;
-import com.acimage.common.global.consts.FileFormat;
+import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.utils.IdGenerator;
@@ -99,13 +99,13 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     @Override
     public String uploadAndSaveImage(MultipartFile imageFile) {
         long imageId = IdGenerator.getSnowflakeNextId();
-        String suffix = String.format("%s.%s", imageId, FileFormat.WEBP);
+        String suffix = String.format("%s.%s", imageId, FileFormatConstants.WEBP);
         String url = minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE, new Date(), suffix);
         //压缩为webp,压缩后不超过200kb
         int limitSize=200*1000;
         InputStream inputStream= ImageUtils.compressAsWebpImage(imageFile,limitSize);
         //上传
-        String totalUrl = minioUtils.upload(inputStream, url,FileFormat.WEBP_CONTENT_TYPE);
+        String totalUrl = minioUtils.upload(inputStream, url, FileFormatConstants.WEBP_CONTENT_TYPE);
         int size = (int) imageFile.getSize();
         //保存到数据库
         String fileName = imageFile.getOriginalFilename();

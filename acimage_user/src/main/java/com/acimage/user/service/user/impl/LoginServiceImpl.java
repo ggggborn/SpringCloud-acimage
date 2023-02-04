@@ -2,11 +2,10 @@ package com.acimage.user.service.user.impl;
 
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.RandomUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.exception.BusinessException;
 
-import com.acimage.common.global.consts.HeaderKey;
+import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.service.TokenService;
@@ -18,7 +17,6 @@ import com.acimage.user.model.domain.UserPrivacy;
 import com.acimage.user.model.request.UserLoginReq;
 import com.acimage.user.model.request.UserRegisterReq;
 import com.acimage.user.mq.producer.SyncUserMqProducer;
-import com.acimage.user.service.mail.MainService;
 import com.acimage.user.service.user.LoginService;
 import com.acimage.user.utils.RsaUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -116,7 +114,6 @@ public class LoginServiceImpl implements LoginService {
         String email = userLogin.getEmail();
         String password = userLogin.getPassword();
 
-        //根据用户名找到用户
         LambdaQueryWrapper<UserPrivacy> qw = new LambdaQueryWrapper<>();
         qw.eq(UserPrivacy::getEmail, email);
         UserPrivacy userPrivacy = userPrivacyDao.selectOne(qw);
@@ -142,7 +139,7 @@ public class LoginServiceImpl implements LoginService {
 
         //返回token
         User user=userDao.selectById(userId);
-        return tokenService.createAndRecordToken(userId, email, user.getPhotoUrl());
+        return tokenService.createAndRecordToken(userId, user.getUsername(), user.getPhotoUrl());
 
     }
 
@@ -151,7 +148,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void logout(HttpServletRequest request) {
         //获取cookie中的token
-        String token = request.getHeader(HeaderKey.AUTHORIZATION);
+        String token = request.getHeader(HeaderKeyConstants.AUTHORIZATION);
         tokenService.invalidate(token);
     }
 

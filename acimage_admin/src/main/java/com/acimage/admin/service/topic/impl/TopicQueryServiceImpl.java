@@ -5,7 +5,7 @@ import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.model.request.TopicQueryReq;
 import com.acimage.admin.service.topic.TopicQueryService;
 import com.acimage.common.model.domain.community.Topic;
-import com.acimage.common.model.page.Page;
+import com.acimage.common.model.page.MyPage;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
@@ -28,7 +28,7 @@ public class TopicQueryServiceImpl implements TopicQueryService {
     RedisUtils redisUtils;
 
     @Override
-    public Page<Topic> listOrderByColumn(TopicQueryReq topicQueryReq) {
+    public MyPage<Topic> listOrderByColumn(TopicQueryReq topicQueryReq) {
         int pageNo = topicQueryReq.getPageNo();
         int pageSize = topicQueryReq.getPageSize();
         String column = StringUtils.camelToUnderline(topicQueryReq.getColumn()) ;
@@ -39,7 +39,7 @@ public class TopicQueryServiceImpl implements TopicQueryService {
         List<Topic> topicList = topicDao.selectList(qw);
         int count = this.getTopicCount();
 
-        return new Page<>(count, topicList);
+        return new MyPage<>(count, topicList);
     }
 
     @Override

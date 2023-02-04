@@ -2,15 +2,9 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<!-- 				<el-select v-model="query.address" placeholder="地址" class="handle-select mr10">
-					<el-option key="1" label="广东省" value="广东省"></el-option>
-					<el-option key="2" label="湖南省" value="湖南省"></el-option>
-				</el-select>
-				<el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
-				<el-button type="primary" :icon="Search" @click="handleSearch">搜索</el-button> -->
 				<el-button type="primary" :icon="Plus" @click="addVisible=true">新增</el-button>
 			</div>
-			<el-table :data="roleList" border class="table" ref="multipleTable" header-cell-class-name="table-header">
+			<el-table :data="store.roleList" border class="table" ref="multipleTable" header-cell-class-name="table-header">
 				<el-table-column label="序号" width="55" align="center">
 					<template #default="scope">
 						{{scope.$index+1}}
@@ -25,10 +19,10 @@
 
 				<el-table-column label="操作" width="220" align="center">
 					<template #default="scope">
-						<el-button size="small" @click="handleEdit(scope.row)" >
+						<el-button size="small" @click="handleEdit(scope.row)">
 							编辑
 						</el-button>
-						<el-button type="danger" size="small" @click="handleDelete(scope.$index)" >
+						<el-button type="danger" size="small" @click="handleDelete(scope.$index)">
 							删除
 						</el-button>
 					</template>
@@ -84,6 +78,7 @@
 	import { ref, reactive } from 'vue';
 	import { Plus } from '@element-plus/icons-vue';
 	import { queryAllRoles, addRole, deleteRole, modifyRole } from '@/api/role';
+	import { useStore } from '@/store/store';
 
 	import { Code } from '@/utils/result';
 	import CommonUtils from '@/utils/CommonUtils';
@@ -95,24 +90,26 @@
 		note: string;
 		createTime: string;
 		updateTime: string;
-
 	}
+
+	const store = useStore();
+	store.init();
 	//查询首页图片
-	let roleList = ref < Role[] > ([{
-		id: 1,
-		roleName: 'user',
-		createTime: '2022-2-22',
-		updateTime: '2022-2-22',
-		note: '用户',
-	}]);
-	const getRoleList = () => {
-		queryAllRoles().then((res: any) => {
-			if (res.code == Code.OK) {
-				roleList.value = res.data;
-			}
-		})
-	};
-	getRoleList();
+	// let roleList = ref < Role[] > ([{
+	// 	id: 1,
+	// 	roleName: 'user',
+	// 	createTime: '2022-2-22',
+	// 	updateTime: '2022-2-22',
+	// 	note: '用户',
+	// }]);
+	// const getRoleList = () => {
+	// 	queryAllRoles().then((res: any) => {
+	// 		if (res.code == Code.OK) {
+	// 			roleList.value = res.data;
+	// 		}
+	// 	})
+	// };
+	// getRoleList();
 
 	//新增角色
 	let addVisible = ref(false);
@@ -137,22 +134,22 @@
 		roleName: '',
 		note: '',
 	});
-	const handleEdit=(row : any)=>{
-		editForm.id=row.id;
-		editForm.roleName=row.roleName;
-		editForm.note=row.note;
-		editVisible.value=true;
+	const handleEdit = (row: any) => {
+		editForm.id = row.id;
+		editForm.roleName = row.roleName;
+		editForm.note = row.note;
+		editVisible.value = true;
 	};
 	const saveEdit = () => {
 		modifyRole(editForm).then((res: any) => {
-			if(res.code=Code.OK){
+			if (res.code = Code.OK) {
 				MessageUtils.success("修改成功", 1);
 				CommonUtils.delayRefresh(1);
-				editVisible.value=false;
+				editVisible.value = false;
 			}
 		});
 	};
-	
+
 	//删除
 	const handleDelete = (index: number) => {
 		MessageUtils.confirm("确定删除吗？操作不可逆！").then(() => {
@@ -165,9 +162,8 @@
 					}
 				})
 		}).catch(e => e);
-	
-	}
 
+	}
 </script>
 
 <style scoped>

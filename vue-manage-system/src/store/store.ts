@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import Config from '@/config'
 import { queryAllCategories } from '@/api/category'
+import { queryAllRoles } from '@/api/role';
 import { Code } from '@/utils/result'
 
 interface Category {
@@ -10,10 +11,13 @@ interface Category {
 	updateTime: string;
 }
 
+import { Role } from '@/views/role/role.vue'
+
 export const useStore = defineStore('store', {
 	state: () => {
 		return {
-			categoryList: <Category[]>[]
+			categoryList: <Category[]>[],
+			roleList: <Role[]>[]
 		};
 	},
 	getters: {
@@ -27,6 +31,16 @@ export const useStore = defineStore('store', {
 				return null;
 			}
 		},
+		roleName(state) {
+			return (id) => {
+				for (let item of state.roleList) {
+					if (item.id == id) {
+						return item.roleName;
+					}
+				}
+				return null;
+			}
+		}
 	},
 	actions: {
 		init() {
@@ -37,6 +51,13 @@ export const useStore = defineStore('store', {
 						_this.categoryList = res.data;
 					}
 				});
+			}
+			if (this.roleList.length == 0) {
+				queryAllRoles().then((res: any) => {
+					if (res.code == Code.OK) {
+						this.roleList = res.data;
+					}
+				})
 			}
 		}
 	}

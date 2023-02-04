@@ -1,9 +1,8 @@
 package com.acimage.community.web.controller;
 
-import com.acimage.common.model.domain.community.Category;
+
 import com.acimage.common.model.domain.community.Tag;
 import com.acimage.common.result.Result;
-import com.acimage.community.service.categoty.CategoryQueryService;
 import com.acimage.community.service.tag.TagQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
-@RequestMapping("/api/community/tags")
+@RequestMapping("/api/community/tags/query")
 public class TagQueryController {
     @Autowired
     TagQueryService tagQueryService;

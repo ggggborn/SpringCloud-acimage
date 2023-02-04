@@ -12,19 +12,14 @@ import java.io.IOException;
 
 public interface TopicInfoWriteService {
 
-    @Deprecated
-    @Transactional(rollbackFor = {IOException.class})
-    long saveTopicAndImages(TopicAddReqBak2 topicAddReqBak2);
-    @Deprecated
-    @Transactional(rollbackFor = {IOException.class})
-    long saveTopicAndImagesBak(TopicAddReqBak2 topicAddReqBak2);
-
-
     @Transactional(rollbackFor = {Exception.class})
     long saveTopicInfo(TopicAddReq topicAddReq, MultipartFile coverImage);
 
     @Transactional(rollbackFor = {Exception.class})
     void removeTopicInfo(long topicId);
+
+    @Transactional(rollbackFor = {Exception.class})
+    void removeTopicInfoWithoutVerification(long topicId);
 
     @Transactional
     void updateHtml(TopicModifyHtmlReq modifyReq);

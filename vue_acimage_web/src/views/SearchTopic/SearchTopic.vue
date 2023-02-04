@@ -116,7 +116,7 @@
 			},
 			handlePageChange() {
 				this.query.pageNo = this.curPage;
-				this.getRecentTopicPage();
+				this.submitSearch();
 			},
 			validateForm() {
 				let text = this.$refs['editBoard'].Html.toString();

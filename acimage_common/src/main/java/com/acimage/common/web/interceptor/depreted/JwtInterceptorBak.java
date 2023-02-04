@@ -2,7 +2,7 @@ package com.acimage.common.web.interceptor.depreted;
 
 import com.acimage.common.exception.NullTokenException;
 import com.acimage.common.global.annotation.utils.AuthenticationUtils;
-import com.acimage.common.global.consts.HeaderKey;
+import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.common.global.enums.TokenStatus;
@@ -44,7 +44,7 @@ public class JwtInterceptorBak implements HandlerInterceptor {
         }
 
         //获取token
-        String token = request.getHeader(HeaderKey.AUTHORIZATION);
+        String token = request.getHeader(HeaderKeyConstants.AUTHORIZATION);
 
         //验证token，验证不通过抛出异常
         try {

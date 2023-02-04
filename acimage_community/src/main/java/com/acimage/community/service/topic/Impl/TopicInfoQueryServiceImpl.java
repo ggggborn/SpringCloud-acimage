@@ -11,14 +11,13 @@ import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.community.dao.TopicDao;
-import com.acimage.common.model.page.Page;
+import com.acimage.common.model.page.MyPage;
 import com.acimage.community.model.vo.TopicInfoVo;
 import com.acimage.community.service.cmtyuser.CmtyUserQueryService;
 import com.acimage.community.service.comment.CommentInfoService;
 import com.acimage.community.service.tag.TagTopicQueryService;
 import com.acimage.community.service.topic.*;
 import com.acimage.community.service.topic.enums.TopicAttribute;
-import com.acimage.feign.client.UserClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,7 +80,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         List<Comment> comments = commentInfoService.pageCommentsWithUser(topicId, pageNo);
         topicInfoVo.setComments(comments);
 
-        CmtyUser cmtyUser = cmtyUserQueryService.getUserCommunityStatistic(topic.getUserId());
+        CmtyUser cmtyUser = cmtyUserQueryService.getCmtyUser(topic.getUserId());
 //                userClient.queryUser(topic.getUserId()).getData();
 //        //设置用户主人相关信息
 //        if (user.getId() != null) {
@@ -102,10 +101,10 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     }
 
     @Override
-    public Page<Topic> pageTopicsInfoOrderByCreateTime(long userId, int pageNo, int pageSize) {
+    public MyPage<Topic> pageTopicsInfoOrderByCreateTime(long userId, int pageNo, int pageSize) {
         int starIndex = PageUtils.startIndexOf(pageNo, pageSize);
         List<Topic> topics = topicDao.selectTopicsWithUserImagesOrderByCreateTime(userId, starIndex, pageSize);
-        return new Page<>(topicDao.countTopics(userId), topics);
+        return new MyPage<>(topicDao.countTopics(userId), topics);
     }
 
     @Override
@@ -170,7 +169,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     }
 
     @Override
-    public Page<Topic> pageTopicsInfoRankByActivityTime(int pageNo, int pageSize) {
+    public MyPage<Topic> pageTopicsInfoRankByActivityTime(int pageNo, int pageSize) {
         List<Long> topicIdList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.ACTIVITY_TIME, pageNo, pageSize);
         List<Topic> topicList = new ArrayList<>();
         for (Long topicId : topicIdList) {
@@ -187,6 +186,6 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         }
 
         topicList.sort(Comparator.comparing(Topic::getActivityTime).reversed());
-        return new Page<>(topicRankQueryService.countTopicIdsInRank(TopicAttribute.ACTIVITY_TIME), topicList);
+        return new MyPage<>(topicRankQueryService.countTopicIdsInRank(TopicAttribute.ACTIVITY_TIME), topicList);
     }
 }

@@ -1,5 +1,5 @@
 --取出KEYS[1]并加到KEYS[2]的ARGV[1]上（如果KEYS[2]的AVG[1]存在），删除KEYS[1]
---返回KEYS[1]
+--返回KEYS[1]对应的值
 --KEYS[1] string
 --KEYS[2] hash
 --ARGV[1] fieldKey
