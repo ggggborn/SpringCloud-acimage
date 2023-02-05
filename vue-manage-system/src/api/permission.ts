@@ -13,6 +13,10 @@ export function queryModules() {
 	return request.get("/api/admin/permissions/modules");
 }
 
+export function queryNonModules() {
+	return request.get("/api/admin/permissions/nonModules");
+}
+
 //写
 export function addPermission(data) {
 	return request.post("/api/admin/permissions",data);

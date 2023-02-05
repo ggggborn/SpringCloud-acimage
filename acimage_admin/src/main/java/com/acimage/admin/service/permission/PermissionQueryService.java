@@ -12,5 +12,6 @@ public interface PermissionQueryService {
 
     MyPage<Permission> pagePermissionsWithParent(int pageNo, int pageSize);
 
-    List<Permission> listModules();
+
+    List<Permission> listByModule(boolean isModule);
 }

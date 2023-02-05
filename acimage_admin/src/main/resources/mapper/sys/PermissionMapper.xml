@@ -43,7 +43,7 @@
     </select>
 
     <select id="selectPermissionsWithParent" resultMap="permissionWithParent">
-        select * from tb_permission limit #{startIndex},#{recordNumber}
+        select * from tb_permission order by code desc limit #{startIndex},#{recordNumber}
     </select>
 
 </mapper>

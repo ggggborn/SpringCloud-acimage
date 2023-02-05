@@ -38,6 +38,11 @@ public class PermissionQueryController {
 
     @GetMapping("/modules")
     public Result<List<Permission>> queryModules(){
-        return Result.ok(permissionQueryService.listModules());
+        return Result.ok(permissionQueryService.listByModule(true));
+    }
+
+    @GetMapping("/nonModules")
+    public Result<List<Permission>> queryNonModules(){
+        return Result.ok(permissionQueryService.listByModule(false));
     }
 }

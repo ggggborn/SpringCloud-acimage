@@ -43,15 +43,6 @@
 
 				<el-table-column label="操作" width="250" align="center">
 					<template #default="scope">
-						<el-button size="small" @click="handleEdit(scope.$index, scope.row)">
-							编辑
-						</el-button>
-						<el-button size="small" @click="handleEditHtml(scope.$index, scope.row)">
-							编辑html
-						</el-button>
-						<el-button type="primary" size="small" @click="handleCover(scope.row)">
-							覆盖
-						</el-button>
 						<el-button type="danger" size="small" @click="handleDelete(scope.$index)" v-permiss="16">
 							删除
 						</el-button>
@@ -187,58 +178,7 @@
 	}
 
 
-	//编辑
-	let editForm = reactive({
-		id: 0,
-		content: '',
-		title: '',
-		categoryId: null,
-	});
-	let editVisible = ref(false);
-	const handleEdit = (index: number, row: Topic) => {
-		editForm.id = topics.value[index].id;
-		editVisible.value = true;
-	};
-	const saveEdit = () => {
-		let params = {
-			description: editForm.description,
-			id: editForm.id
-		};
-		modifyDescription(params).then((res: any) => {
-			if (res.code == Code.OK) {
-				MessageUtils.success("修改成功", 1);
-				CommonUtils.delayRefresh(1);
-			}
-		})
-	};
 
-	//覆盖
-	let coverVisible = ref(false);
-
-	let coverId = -1;
-	let coverImageList = ref < UploadFile[] > ([]);
-
-	const handleCover = (row: Image) => {
-		coverVisible.value = true;
-		coverId = row.id;
-
-	};
-	const saveCover = () => {
-		if (coverImageList.value.length == 0) {
-			MessageUtils.notice("至少选择一张图", 2);
-			return;
-		}
-		let reqData: any = new FormData();
-		reqData.append("id", coverId);
-		reqData.append("image", coverImageList.value[0].raw);
-		coverImage(reqData).then((res: any) => {
-			if (res.code == Code.OK) {
-				MessageUtils.success("成功", 1);
-				CommonUtils.delayRefresh(1);
-			}
-		})
-		coverVisible.value = false;
-	}
 </script>
 
 <style scoped>

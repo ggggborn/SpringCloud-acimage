@@ -300,7 +300,10 @@ public class RedisUtils {
             Pair<T, V> pair = new Pair<>(value, score);
             valueAndScoreList.add(pair);
         }
-
         return valueAndScoreList;
+    }
+
+    public List<Long> requestLimitScript(List<String> keys, List<Long> limitTimes, List<Long> expireSeconds, List<Long> penaltyTimes) {
+        return redisLuaUtils.requestLimitScript(keys,limitTimes,expireSeconds,penaltyTimes);
     }
 }

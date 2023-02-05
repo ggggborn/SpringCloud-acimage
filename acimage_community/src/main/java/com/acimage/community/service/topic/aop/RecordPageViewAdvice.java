@@ -13,11 +13,13 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 @Slf4j
+@Order(10)
 public class RecordPageViewAdvice {
     private static final String POINT_CUT= "@annotation(com.acimage.community.service.topic.annotation.RecordPageView)";
     @Autowired

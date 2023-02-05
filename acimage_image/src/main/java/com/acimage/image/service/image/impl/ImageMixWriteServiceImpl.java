@@ -36,6 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class ImageMixWriteServiceImpl implements ImageMixWriteService {
 
     public String tempDirectory;
+
     @PostConstruct
     public void init() {
         tempDirectory = System.getProperty("user.dir") + "//temp";
@@ -45,6 +46,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
             log.info("创建临时目录：{}", tempDirectory);
         }
     }
+
     @Autowired
     ImageWriteService imageWriteService;
     @Autowired
@@ -102,8 +104,8 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
         String suffix = String.format("%s.%s", imageId, FileFormatConstants.WEBP);
         String url = minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE, new Date(), suffix);
         //压缩为webp,压缩后不超过200kb
-        int limitSize=200*1000;
-        InputStream inputStream= ImageUtils.compressAsWebpImage(imageFile,limitSize);
+        int limitSize = 200 * 1000;
+        InputStream inputStream = ImageUtils.compressAsWebpImage(imageFile, limitSize);
         //上传
         String totalUrl = minioUtils.upload(inputStream, url, FileFormatConstants.WEBP_CONTENT_TYPE);
         int size = (int) imageFile.getSize();
@@ -162,7 +164,8 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     public void updateImageAndHash(HashImagesUpdateDto updateDto) {
         long topicId = updateDto.getTopicId();
         switch (updateDto.getServiceType()) {
-            case ADD, UPDATE:
+            case ADD:
+            case UPDATE:
                 log.info("开始哈希图片 {}", updateDto);
                 List<String> addImageUrlList = updateDto.getAddImageUrls();
                 //获取实际存在的图片
@@ -190,7 +193,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
                             try {
                                 is.close();
                             } catch (IOException e) {
-                                log.error("inputStream 关闭失败 {}",e.getMessage());
+                                log.error("inputStream 关闭失败 {}", e.getMessage());
                                 throw new RuntimeException(e);
                             }
                         }

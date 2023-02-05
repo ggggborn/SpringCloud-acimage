@@ -18,6 +18,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
+@Deprecated
 //@Configuration
 //@MapperScan(basePackages = "com.acimage.admin.dao.community", sqlSessionFactoryRef = "communitySqlSessionFactory")
 public class CommunityDataSourceConfig {

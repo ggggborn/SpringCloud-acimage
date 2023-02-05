@@ -12,6 +12,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
+@Order(100)
 @Slf4j
 public class QueryRedisAdvice {
     private static final String POINT_CUT_PATTERN = "@annotation(com.acimage.common.redis.annotation.QueryRedis)";

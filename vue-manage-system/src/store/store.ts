@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import Config from '@/config'
 import { queryAllCategories } from '@/api/category'
 import { queryAllRoles } from '@/api/role';
 import { Code } from '@/utils/result'

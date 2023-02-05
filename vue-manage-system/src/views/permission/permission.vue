@@ -2,7 +2,11 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-button type="primary" :icon="Plus" @click="addVisible=true">新增</el-button>
+				<div class="handle-box">
+					<el-input placeholder="关键字" class="handle-input mr10" v-model="query.keyword"></el-input>
+					<el-button type="primary" @click="getData">搜索</el-button>
+					<el-button type="primary" :icon="Plus" @click="addVisible=true">新增</el-button>
+				</div>
 			</div>
 			<el-table :data="permissionList" border class="table" ref="multipleTable"
 				header-cell-class-name="table-header">
@@ -14,8 +18,8 @@
 				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
 				<el-table-column prop="label" label="名称"></el-table-column>
 				<el-table-column prop="code" label="权限码" width="120"></el-table-column>
-				<el-table-column prop="isModule" label="是否是模块"></el-table-column>
-				<el-table-column label="父模块" width="60" align="center">
+				<el-table-column prop="isModule" label="是否是模块" width="60"></el-table-column>
+				<el-table-column label="父模块"  align="center">
 					<template #default="scope">
 						{{CommonUtils.isEmpty(scope.row.parent)?'无':scope.row.parent.label}}
 					</template>
@@ -89,7 +93,7 @@
 					</el-select>
 				</el-form-item>
 				<el-form-item label="权限码(慎重修改)">
-					<el-input v-model="editForm.code" maxlength="20"></el-input>
+					<el-input v-model="editForm.code" maxlength="50"></el-input>
 				</el-form-item>
 				<el-form-item label="名称">
 					<el-input v-model="editForm.label" maxlength="20"></el-input>
@@ -111,7 +115,7 @@
 
 <script setup lang="ts" name="authorize">
 	import { ref, reactive } from 'vue';
-	import { useRoute,useRouter } from "vue-router"
+	import { useRoute, useRouter } from "vue-router"
 	import { Plus } from '@element-plus/icons-vue';
 	import {
 		queryModules,
@@ -126,7 +130,7 @@
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 
-	
+
 	export interface Permission {
 		id: number;
 		parentId: number;
@@ -183,15 +187,15 @@
 	getPermissionTree();
 
 	//查询权限列表
-	const route=useRoute();
+	const route = useRoute();
 	// const router=useRouter();
 	let permissionList = ref < Permission[] > ([]);
-	let query= ref({
+	let query = ref({
 		pageNo: parseInt(route.params.pageNo[0]),
 		pageSize: 10
 	});
-	const handlePageNoChange=()=>{
-		window.location.href="/#/permission/"+query.value.pageNo;
+	const handlePageNoChange = () => {
+		window.location.href = "/#/permission/" + query.value.pageNo;
 		// router.replace({name:"permission",params:{pageNo:queryPage.value.pageNo.toString()}})
 		// route.path.replace('pageNo', queryPage.value.pageNo.toString())
 		// route.params.pageNo=queryPage.value.pageNo.toString();

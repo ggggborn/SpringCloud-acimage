@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.admin.dao.sys.ApiDao">
+
+
+
+<!--    <resultMap id="apiWithPermission" type="Api">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="path" column="path"/>-->
+<!--        <result property="matchRule" column="match_rule"/>-->
+<!--        <result property="method" column="method"/>-->
+<!--        <result property="note" column="note"/>-->
+<!--        <result property="permissionId" column="permission_id"/>-->
+<!--        <result property="createTime" column="create_time"/>-->
+<!--        <result property="updateTime" column="update_time"/>-->
+<!--        <association property="permission" javaType="Permission" column="permission_id"-->
+<!--                     select="com.acimage.admin.dao.sys.ApiDao"/>-->
+<!--    </resultMap>-->
+
+
+<!--    <select id="selectApisWithPermission" resultMap="permissionWithParent">-->
+<!--        select * from tb_permission order by code limit #{startIndex},#{recordNumber}-->
+<!--    </select>-->
+
+</mapper>

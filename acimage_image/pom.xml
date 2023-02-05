@@ -13,11 +13,11 @@
     <name>acimage_image</name>
     <url>http://maven.apache.org</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>18</maven.compiler.source>
-        <maven.compiler.target>18</maven.compiler.target>
-    </properties>
+<!--    <properties>-->
+<!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+<!--        <maven.compiler.source>18</maven.compiler.source>-->
+<!--        <maven.compiler.target>18</maven.compiler.target>-->
+<!--    </properties>-->
 
     <dependencies>
         <dependency>

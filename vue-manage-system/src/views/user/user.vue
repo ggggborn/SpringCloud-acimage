@@ -2,9 +2,9 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-				<el-select placeholder="排序字段" class="handle-select mr10" style="width:160px;">
+<!-- 				<el-select placeholder="排序字段" class="handle-select mr10" style="width:160px;">
 					<el-option key="1" label="createTime" value="createTime"></el-option>
-				</el-select>
+				</el-select> -->
 				<el-input placeholder="关键字" class="handle-input mr10" v-model="query.keyword"></el-input>
 				<el-button type="primary" @click="getData">搜索</el-button>
 			</div>
@@ -63,7 +63,6 @@
 						{{role.roleName }}
 					</el-tag>
 				</el-form-item>
-
 			</el-form>
 			<template #footer>
 				<span class="dialog-footer">

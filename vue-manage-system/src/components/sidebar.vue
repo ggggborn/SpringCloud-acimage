@@ -145,6 +145,11 @@ const items = [
 			    title: '授权',
 			    permiss: '1',
 			},
+			{
+			    index: '/api',
+			    title: '接口',
+			    permiss: '1',
+			},
             {
                 index: '/upload',
                 title: '文件上传',

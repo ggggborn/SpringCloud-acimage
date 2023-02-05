@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,6 +17,7 @@ import java.lang.reflect.Parameter;
 @Aspect
 @Component
 @Slf4j
+@Order(200)
 public class LogAdvice {
 
     private static final int MAX_RETURN_VALUE_LENGTH = 100;
@@ -39,7 +41,7 @@ public class LogAdvice {
         Object[] args = joinPoint.getArgs();
         Parameter[] parameters = method.getParameters();
 
-        long startTime=System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
         //记录入参
         StringBuilder argsString = new StringBuilder();
@@ -70,7 +72,8 @@ public class LogAdvice {
             log.info(method.getName() + " 返回值-->" + returnValue);
         }
 
-        log.info("{}耗时 {}ms",method.getName(),System.currentTimeMillis()-startTime);
+        String classMethod = method.getName() + " " + method.getDeclaringClass().getSimpleName();
+        log.info("{}耗时 {}ms", classMethod, System.currentTimeMillis() - startTime);
 
         return obj;
     }

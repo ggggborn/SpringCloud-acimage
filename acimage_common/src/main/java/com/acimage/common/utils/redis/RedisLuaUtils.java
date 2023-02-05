@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +29,13 @@ public class RedisLuaUtils {
 
     private final static DefaultRedisScript<Long> ifpForHashKey = new DefaultRedisScript<>();
 
+    private final static DefaultRedisScript<List> requestLimit = new DefaultRedisScript<>();
+
+
+    @PostConstruct
+    public void init() {
+
+    }
 
     static {
         //设置忽略空字段
@@ -46,6 +54,9 @@ public class RedisLuaUtils {
 
         ifpForHashKey.setLocation(new ClassPathResource("lua/incrementIfPresentForHashKey.lua"));
         ifpForHashKey.setResultType(Long.class);
+
+        requestLimit.setLocation(new ClassPathResource("lua/requestLimit.lua"));
+        requestLimit.setResultType(List.class);
     }
 
     public Long incrementIfPresent(String key, long increment) {
@@ -56,6 +67,7 @@ public class RedisLuaUtils {
     /**
      * 如果keyForBase存在，则将redis中keyForIncrement的值增加到keyForBase中
      * 否则获取并删除keyForIncrement
+     *
      * @return keyForIncrement对应的值
      */
     public Long getAndCombineAndDelete(String keyForIncrement, String hashKeyForBase, String fieldKey) {
@@ -76,5 +88,26 @@ public class RedisLuaUtils {
     public Long incrementIfPresentForHashKey(String key, String hashKey, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
                 .execute(ifpForHashKey, Collections.singletonList(key), hashKey, Long.toString(increment));
+    }
+
+    public List<Long> requestLimitScript(List<String> keys, List<Long> limitTimes, List<Long> expireSeconds, List<Long> penaltyTimes) {
+        int len = 3 * keys.size();
+        Object[] args = new Object[len];
+
+        int i = 0;
+        for (Long limitTime : limitTimes) {
+            args[i] = limitTime.toString();
+            i++;
+        }
+        for (Long expireSecond : expireSeconds) {
+            args[i] = expireSecond.toString();
+            i++;
+        }
+        for (Long penaltyTime : penaltyTimes) {
+            args[i] = penaltyTime.toString();
+            i++;
+        }
+
+        return stringRedisTemplate.execute(requestLimit, keys, args);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 
 import org.springframework.core.annotation.Order;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -26,6 +27,7 @@ public class WhiteUrlFilter implements GlobalFilter {
 
         if(IgnoreUrlConfig.isIgnoreUrl(url)){
             String method=request.getMethodValue();
+
             log.info("access pass url:{} {} ip:{} ", url,method,ip);
             return chain.filter(exchange);
         }

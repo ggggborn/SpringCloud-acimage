@@ -3,6 +3,12 @@ spring:
     active: dev2
   application:
     name: gateway-server
+  mybatis-plus:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.acimage.common.model.domain
+    global-config:
+      db-config:
+        table-prefix: tb_
   cloud:
     gateway:
       routes:
@@ -28,8 +34,8 @@ spring:
       filters:
         - name: RequestRateLimiter
           args:
-            redis-rate-limiter.replenishRate: 10 #补充速率
-            redis-rate-limiter.burstCapacity: 50 #桶容量
+            redis-rate-limiter.replenishRate: 20 #补充速率
+            redis-rate-limiter.burstCapacity: 30 #桶容量
             key-resolver: "#{@ipKeyResolver}" #这个必须要配置，否则返回403
 
 

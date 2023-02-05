@@ -3,6 +3,8 @@ package com.acimage.community.web.controller;
 
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.page.MyPage;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
@@ -32,8 +34,8 @@ public class TopicQueryController {
     @Autowired
     TopicInfoQueryService topicInfoQueryService;
 
+    @RequestLimit(limitTimes = {5},durations = {10},penaltyTimes = {100},targets = {LimitTarget.ALL})
     @RecordPageView
-    @Authentication(type = AuthenticationType.NONE)
     @GetMapping("/info/{id}")
     public Result<TopicInfoVo> queryTopicAndFirstCommentPage(@TopicId @Positive @PathVariable("id") Long id) {
         TopicInfoVo topicInfoVo = topicInfoQueryService.getTopicInfoAndFirstCommentPage(id);

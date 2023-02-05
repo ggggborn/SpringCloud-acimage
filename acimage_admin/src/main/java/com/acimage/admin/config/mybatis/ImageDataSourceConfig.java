@@ -21,6 +21,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 
+@Deprecated
 //@Configuration
 //@MapperScan(basePackages = "com.acimage.admin.dao.image", sqlSessionFactoryRef = "imageSqlSessionFactory",sqlSessionTemplateRef ="imageSqlSessionTemplate")
 public class ImageDataSourceConfig {

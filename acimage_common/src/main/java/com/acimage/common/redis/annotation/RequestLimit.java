@@ -13,8 +13,9 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestLimit {
 
-    int[] limitTimes();
-    int[] durations();
+    long[] limitTimes();
+    long[] durations();
+    long[] penaltyTimes();
     LimitTarget[] targets();
-    TimeUnit[] units();
+    TimeUnit unit() default TimeUnit.SECONDS;
 }

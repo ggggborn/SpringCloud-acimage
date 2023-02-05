@@ -25,6 +25,14 @@ public class UserQueryController {
 
     @GetMapping("/search")
     public Result<MyPage<User>> queryUsersBy(@Validated @ModelAttribute UserQueryReq userQueryReq){
+        String keyword=userQueryReq.getKeyword();
+        if(keyword!=null){
+            if(keyword.trim().length()==0){
+                userQueryReq.setKeyword(null);
+            }else{
+                userQueryReq.setKeyword(keyword.trim());
+            }
+        }
         return Result.ok(userQueryService.listBy(userQueryReq));
     }
 }
