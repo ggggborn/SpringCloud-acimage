@@ -1,9 +1,11 @@
 package com.acimage.gateway.apitree;
 
+import com.acimage.common.global.enums.MyHttpMethod;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
@@ -13,11 +15,11 @@ public class ApiTree {
     /**
      * 路径id
      */
-    Integer id;
+    private List<Integer> ids=new ArrayList<>();
     /**
      * 权限id
      */
-    Integer permissionId;
-    List<HttpMethod> methods;
-    ConcurrentMap<String, ApiTree> children;
+    private List<Integer> permissionIds=new ArrayList<>();
+    private List<MyHttpMethod> methods=new ArrayList<>();
+    private ConcurrentMap<String, ApiTree> children;
 }

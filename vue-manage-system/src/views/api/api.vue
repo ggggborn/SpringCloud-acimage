@@ -77,6 +77,7 @@
 						<el-radio label="PUT">PUT</el-radio>
 						<el-radio label="POST">POST</el-radio>
 						<el-radio label="DELETE">DELTE</el-radio>
+						<el-radio label="ALL">ALL</el-radio>
 					</el-radio-group>
 				</el-form-item>
 			</el-form>
@@ -122,7 +123,8 @@
 						<el-radio label="GET">GET</el-radio>
 						<el-radio label="PUT">PUT</el-radio>
 						<el-radio label="POST">POST</el-radio>
-						<el-radio label="DELETE">DELTE</el-radio>
+						<el-radio label="DELETE">DELETE</el-radio>
+						<el-radio label="ALL">ALL</el-radio>
 					</el-radio-group>
 				</el-form-item>
 			</el-form>
@@ -183,13 +185,6 @@
 			}
 		}
 		return null;
-	}
-
-	const toMatchRule = (value: string) => {
-		let map = new Map();
-		map.set("EXACT", "精确匹配");
-		map.set("PREFIX", "前缀匹配");
-		return map.get(value)
 	}
 
 	let totalCount = ref(1);

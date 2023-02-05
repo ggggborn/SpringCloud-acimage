@@ -26,7 +26,7 @@ public class PermissionOperateController {
         if(permissionAddReq.getCode()==null|| StrUtil.isBlank(permissionAddReq.getCode())){
             permissionAddReq.setCode(null);
         }
-        if(!permissionAddReq.getIsModule() &&permissionAddReq.getCode()==null){
+        if(!permissionAddReq.getModule() &&permissionAddReq.getCode()==null){
             return Result.fail("非模块的权限码不能为空");
         }
         permissionWriteSercice.save(permissionAddReq);

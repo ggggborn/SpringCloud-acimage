@@ -1,6 +1,7 @@
 package com.acimage.admin.model.request;
 
 import com.acimage.common.global.enums.MatchRule;
+import com.acimage.common.global.enums.MyHttpMethod;
 import com.acimage.common.model.domain.sys.Api;
 import com.acimage.common.model.domain.sys.Permission;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -11,10 +12,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 
 import javax.annotation.Nullable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
@@ -26,12 +24,13 @@ public class ApiAddReq {
 
 
     @NotBlank
+    @Pattern(regexp = Api.PATH_PATTERN)
     @Size(min= Api.PATH_MIN,max=Api.PATH_MAX)
     String path;
     @NotNull
     MatchRule matchRule;
     @NotNull
-    HttpMethod method;
+    MyHttpMethod method;
     @Positive
     @NotNull
     Integer permissionId;

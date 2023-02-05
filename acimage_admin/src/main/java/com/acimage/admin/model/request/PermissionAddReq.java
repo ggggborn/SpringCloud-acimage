@@ -20,5 +20,5 @@ public class PermissionAddReq {
     @Size(max = Permission.LABEL_MAX,message =Permission.LABEL_VALIDATION_MSG)
     String label;
     @NotNull
-    Boolean isModule;
+    Boolean module;
 }

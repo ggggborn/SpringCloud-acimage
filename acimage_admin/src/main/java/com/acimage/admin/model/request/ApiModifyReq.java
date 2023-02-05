@@ -1,6 +1,7 @@
 package com.acimage.admin.model.request;
 
 import com.acimage.common.global.enums.MatchRule;
+import com.acimage.common.global.enums.MyHttpMethod;
 import com.acimage.common.model.domain.sys.Api;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpMethod;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
@@ -21,11 +23,12 @@ public class ApiModifyReq {
     @Positive
     Integer id;
     @Size(min = Api.PATH_MIN, max = Api.PATH_MAX)
+    @Pattern(regexp = Api.PATH_PATTERN)
     String path;
     @NotNull
     MatchRule matchRule;
     @NotNull
-    HttpMethod method;
+    MyHttpMethod method;
     @Positive
     @NotNull
     Integer permissionId;

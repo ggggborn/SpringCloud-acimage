@@ -1,6 +1,7 @@
 package com.acimage.common.model.domain.sys;
 
 import com.acimage.common.global.enums.MatchRule;
+import com.acimage.common.global.enums.MyHttpMethod;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,12 +22,13 @@ public class Api {
     public static final int PATH_MIN = 2;
     public static final int PATH_MAX = 200;
     public static final int NOTE_MAX = 100;
+    public static final String PATH_PATTERN="(/([a-zA-Z0-9]+|\\*))+";
 
     @TableId(type = IdType.AUTO)
     Integer id;
     String path;
     MatchRule matchRule;
-    HttpMethod method;
+    MyHttpMethod method;
 
     Integer permissionId;
     String note;

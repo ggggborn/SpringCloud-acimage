@@ -18,7 +18,7 @@
 				<el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
 				<el-table-column prop="label" label="名称"></el-table-column>
 				<el-table-column prop="code" label="权限码" width="120"></el-table-column>
-				<el-table-column prop="isModule" label="是否是模块" width="60"></el-table-column>
+				<el-table-column prop="module" label="是否是模块" width="60"></el-table-column>
 				<el-table-column label="父模块"  align="center">
 					<template #default="scope">
 						{{CommonUtils.isEmpty(scope.row.parent)?'无':scope.row.parent.label}}
@@ -67,7 +67,7 @@
 					<el-input v-model="addForm.label"></el-input>
 				</el-form-item>
 				<el-form-item label="是否是模块">
-					<el-select v-model="addForm.isModule" class="handle-select mr10" clearable>
+					<el-select v-model="addForm.module" class="handle-select mr10" clearable>
 						<el-option key="1" label="是" :value="true"></el-option>
 						<el-option key="1" label="否" :value="false"></el-option>
 					</el-select>
@@ -137,7 +137,7 @@
 		parent ? : null | Permission;
 		code: null | string;
 		note: string;
-		isModule: boolean;
+		module: boolean;
 		label: string;
 		createTime: string;
 		updateTime: string;
@@ -162,7 +162,7 @@
 		label: '用户更新信息',
 		parentId: -1,
 		parent: null,
-		isModule: false,
+		module: false,
 		note: '用户',
 		createTime: '2022-2-22',
 		updateTime: '2022-2-22',
@@ -215,7 +215,7 @@
 	//新增权限
 	let addVisible = ref(false);
 	let addForm = reactive({
-		isModule: false,
+		module: false,
 		code: '',
 		label: '',
 		parentId: null,
