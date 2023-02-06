@@ -1,4 +1,4 @@
-package com.acimage.admin.dao.user;
+package com.acimage.gateway.dao;
 
 
 import com.acimage.common.model.domain.sys.UserRole;

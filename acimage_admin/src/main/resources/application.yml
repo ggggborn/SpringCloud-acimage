@@ -2,7 +2,7 @@
 spring:
   profiles:
     include: common,qiniu
-    active: dev
+    active: dev2
   application:
     name: admin-service #服务名称
   servlet:
@@ -25,7 +25,7 @@ spring:
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*.xml
   type-aliases-package: com.acimage.common.model.domain
-  type-handlers-package: com.acimage.admin.config.mybatis.typehandler
+  type-handlers-package: com.acimage.common.config.typehandler
   global-config:
     db-config:
       table-prefix: tb_

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @EnableDiscoveryClient
 @SpringBootApplication
 @MapperScan("com.acimage.gateway.dao")
+@ComponentScan(value = {"com.acimage.gateway","com.acimage.common.utils"})
 public class GatewayApplication {
 
     public static void main(String[] args) {

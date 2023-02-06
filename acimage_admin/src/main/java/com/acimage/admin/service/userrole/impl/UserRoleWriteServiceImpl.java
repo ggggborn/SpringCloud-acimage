@@ -1,6 +1,6 @@
 package com.acimage.admin.service.userrole.impl;
 
-import com.acimage.admin.dao.user.UserRoleDao;
+import com.acimage.admin.dao.sys.UserRoleDao;
 import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.service.user.UserQueryService;
 import com.acimage.admin.service.userrole.UserRoleQueryService;

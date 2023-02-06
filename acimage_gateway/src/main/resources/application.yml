@@ -3,12 +3,9 @@ spring:
     active: dev2
   application:
     name: gateway-server
-  mybatis-plus:
-    mapper-locations: classpath:mapper/*.xml
-    type-aliases-package: com.acimage.common.model.domain
-    global-config:
-      db-config:
-        table-prefix: tb_
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     gateway:
       routes:
@@ -38,7 +35,13 @@ spring:
             redis-rate-limiter.burstCapacity: 30 #桶容量
             key-resolver: "#{@ipKeyResolver}" #这个必须要配置，否则返回403
 
-
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.acimage.common.model.domain
+  type-handlers-package: com.acimage.common.config.typehandler
+  global-config:
+    db-config:
+      table-prefix: tb_
 
 ignore:
   urls:
@@ -50,5 +53,9 @@ ignore:
     - /api/user/logins/**
     - /api/user/users/isExist/**
     - /api/user/verifies/**
+
+role:
+  visitorId: 2
+  userId: 1
 
 

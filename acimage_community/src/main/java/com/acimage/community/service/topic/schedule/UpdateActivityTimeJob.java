@@ -29,7 +29,6 @@ public class UpdateActivityTimeJob extends QuartzJobBean {
     /**
      * 从redis中获取话题的新增浏览量并写入到数据库中
      */
-
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         //批量更新到数据库的大小

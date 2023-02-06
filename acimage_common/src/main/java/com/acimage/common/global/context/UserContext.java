@@ -30,6 +30,12 @@ public class UserContext {
     public static void setTokenStatus(TokenStatus tokenStatus) {
         UserContext.tokenStatus.set(tokenStatus);
     }
+    public static void setUserId(Long userId){
+        UserContext.userId.set(userId);
+    }
+    public static void setUsername(String username){
+        UserContext.username.set(username);
+    }
 
     public static void setIp(String ip) {
         UserContext.ip.set(ip);

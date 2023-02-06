@@ -75,6 +75,7 @@
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

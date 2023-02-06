@@ -37,11 +37,20 @@
 	import MessageUtils from '@/utils/MessageUtils';
 
 	//查询权限树
+	const combineAsLabel = (node: Permission) => {
+		node.label = CommonUtils.isEmpty(node.code) ? node.label : node.code + '|' + node.label;
+		for (let item of node.children!) {
+			combineAsLabel(item);
+		}
+	}
 	let permissionTree = ref < Permission[] > ([]);
 	const getPermissionTree = () => {
 		queryPermissionTree().then((res: any) => {
 			if (res.code == Code.OK) {
 				permissionTree.value = res.data;
+				for (let item of permissionTree.value!) {
+					combineAsLabel(item);
+				}
 			}
 		})
 	};

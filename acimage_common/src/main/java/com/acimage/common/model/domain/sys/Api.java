@@ -22,7 +22,7 @@ public class Api {
     public static final int PATH_MIN = 2;
     public static final int PATH_MAX = 200;
     public static final int NOTE_MAX = 100;
-    public static final String PATH_PATTERN="(/([a-zA-Z0-9]+|\\*))+";
+    public static final String PATH_PATTERN="(/([a-zA-Z0-9]+|(\\*){1,2}))+";
 
     @TableId(type = IdType.AUTO)
     Integer id;

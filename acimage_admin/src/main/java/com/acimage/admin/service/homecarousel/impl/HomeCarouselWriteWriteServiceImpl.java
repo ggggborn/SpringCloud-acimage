@@ -2,12 +2,14 @@ package com.acimage.admin.service.homecarousel.impl;
 
 import com.acimage.admin.dao.image.HomeCarouselDao;
 import com.acimage.admin.service.homecarousel.HomeCarouselWriteService;
+import com.acimage.common.global.consts.StorePrefixConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.exception.BusinessException;
 import com.acimage.common.model.domain.image.HomeCarousel;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.QiniuUtils;
+import com.acimage.common.utils.minio.MinioUtils;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +26,7 @@ public class HomeCarouselWriteWriteServiceImpl implements HomeCarouselWriteServi
     @Autowired
     HomeCarouselDao homeCarouselDao;
     @Autowired
-    QiniuUtils qiniuUtils;
+    MinioUtils minioUtils;
 
     private final String URL_PREFIX = "homeCarousel";
 
@@ -34,12 +36,11 @@ public class HomeCarouselWriteWriteServiceImpl implements HomeCarouselWriteServi
         int size = (int) multipartFile.getSize();
         int location = homeCarouselDao.getMaxLocation() + 1;
         Date now = new Date();
-
-        String url = qiniuUtils.generateUrl(Long.toString(id), now, URL_PREFIX);
-        HomeCarousel homeCarousel = new HomeCarousel(id, description, url,  location, size, now, now);
+        String fileName=String.format("%s.%s",id,FileUtils.formatOf(multipartFile));
+        String url=minioUtils.generateUrl(StorePrefixConstants.HOME_CAROUSEL,now,fileName);
+        String newUrl=minioUtils.upload(multipartFile, url);
+        HomeCarousel homeCarousel = new HomeCarousel(id, description, newUrl,  location, size, now, now);
         homeCarouselDao.insert(homeCarousel);
-
-        qiniuUtils.upload(multipartFile, url);
     }
 
     @Override
@@ -53,11 +54,8 @@ public class HomeCarouselWriteWriteServiceImpl implements HomeCarouselWriteServi
         LambdaUpdateWrapper<HomeCarousel> qw = new LambdaUpdateWrapper<>();
         qw.eq(HomeCarousel::getId, id);
         int col = homeCarouselDao.delete(qw);
+        minioUtils.deleteFile(homeCarousel.getUrl());
 
-        if (col > 0) {
-            //异步删除图片
-            new Thread( () -> qiniuUtils.deleteFile(homeCarousel.getUrl()) ).start();
-        }
     }
 
     @Override
@@ -86,9 +84,9 @@ public class HomeCarouselWriteWriteServiceImpl implements HomeCarouselWriteServi
         int size = (int) multipartFile.getSize();
         Date now = new Date();
         String oldUrl = homeCarousel.getUrl();
-        String suffix=String.format("%s.%s",IdGenerator.getSnowflakeNextId(), FileUtils.formatOf(multipartFile.getOriginalFilename()));
-        String newUrl = qiniuUtils.generateUrl(suffix, now, URL_PREFIX);
-
+        String suffix=String.format("%s.%s",IdGenerator.getSnowflakeNextId(), FileUtils.formatOf(multipartFile));
+        String newUrl = minioUtils.generateUrl(suffix, now, URL_PREFIX);
+        newUrl=minioUtils.upload(multipartFile,newUrl);
         LambdaUpdateWrapper<HomeCarousel> uw = new LambdaUpdateWrapper<>();
         uw.set(HomeCarousel::getSize, size)
                 .set(HomeCarousel::getUpdateTime, now)
@@ -96,9 +94,8 @@ public class HomeCarouselWriteWriteServiceImpl implements HomeCarouselWriteServi
                 .eq(HomeCarousel::getId, id);
         homeCarouselDao.update(null, uw);
 
-        qiniuUtils.upload(multipartFile, newUrl);
         //异步删除文件
-        new Thread(() -> qiniuUtils.deleteFile(oldUrl)).start();
+        new Thread(() -> minioUtils.deleteFile(oldUrl)).start();
 
     }
 

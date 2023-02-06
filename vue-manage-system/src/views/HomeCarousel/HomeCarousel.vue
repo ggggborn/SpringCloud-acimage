@@ -21,8 +21,8 @@
 
 				<el-table-column label="图片" align="center">
 					<template #default="scope">
-						<el-image class="table-td-thumb" :src="global.trueImageUrl(scope.row.url)" :z-index="10"
-							:preview-src-list="[global.trueImageUrl(scope.row.url)]" preview-teleported>
+						<el-image class="table-td-thumb" :src="scope.row.url" :z-index="10"
+							:preview-src-list="[scope.row.url]" preview-teleported>
 						</el-image>
 					</template>
 				</el-table-column>

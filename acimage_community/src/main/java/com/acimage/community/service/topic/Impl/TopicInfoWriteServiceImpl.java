@@ -12,7 +12,7 @@ import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.community.global.consts.CoverImageConstants;
-import com.acimage.community.global.consts.StorePrefixConstants;
+import com.acimage.common.global.consts.StorePrefixConstants;
 import com.acimage.community.listener.event.PublishTopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicModifyHtmlReq;

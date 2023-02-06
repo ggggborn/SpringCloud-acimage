@@ -19,6 +19,7 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +39,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@ConditionalOnClass(Auth.class)
 @ConfigurationProperties(prefix = "qiniu")
 public class QiniuUtilsBak {
 

@@ -1,4 +1,4 @@
-package com.acimage.admin.config.mybatis.typehandler;
+package com.acimage.common.config.typehandler;
 
 
 import com.acimage.common.global.enums.MatchRule;

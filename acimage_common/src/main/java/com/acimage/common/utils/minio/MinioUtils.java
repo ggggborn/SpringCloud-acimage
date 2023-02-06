@@ -125,11 +125,17 @@ public class MinioUtils {
     }
 
 
-    public void deleteFile(String url) {
+    public void deleteFile(String totalUrl) {
+        String slashBucket=String.format("/%s",minioProperties.getBucket());
+        boolean isInnerUrl=totalUrl.startsWith(slashBucket);
+        if(!isInnerUrl){
+            return;
+        }
+        String innerUrl=totalUrl.substring(slashBucket.length());
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(minioProperties.getBucket())
-                    .object(url)
+                    .object(innerUrl)
                     .build()
             );
         } catch (Exception e) {
