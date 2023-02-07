@@ -80,7 +80,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //生成id
         long topicId = IdGenerator.getSnowflakeNextId();
         Date now = new Date();
-        String suffix = String.format("%s.%s", topicId, FileUtils.formatOf(coverImage));
+        String suffix = String.format("%s.%s", topicId, FileFormatConstants.WEBP);
         String url = minioUtils.generateUrl(StorePrefixConstants.COVER_IMAGE, now, suffix);
         //图片压缩
         InputStream inputStream = ImageUtils.compressAsFixedWebpImage(coverImage,

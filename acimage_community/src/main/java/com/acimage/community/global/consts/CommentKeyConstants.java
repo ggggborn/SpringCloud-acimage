@@ -1,4 +1,4 @@
-package com.acimage.community.service.comment.consts;
+package com.acimage.community.global.consts;
 
 public class CommentKeyConstants {
     public static final String STRINGKP_COMMENT_COUNT = "acimage:comments:commentCount:topicId:";

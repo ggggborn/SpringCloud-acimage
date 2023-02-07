@@ -15,7 +15,9 @@ for i=1,len do
     end
     if res==tonumber(ARGV[i])+1 then
         --超过限制则惩罚过期时间
-        redis.call('expire',KEYS[i],ARGV[2*len+i])
+        if tonumber(ARGV[2*len+i])>=0 then
+            redis.call('expire',KEYS[i],ARGV[2*len+i])
+        end
     end
     result[i]=res
 end

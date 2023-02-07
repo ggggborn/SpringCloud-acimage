@@ -99,16 +99,23 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     }
 
     @Override
-    public String uploadAndSaveImage(MultipartFile imageFile) {
+    public String saveImage(MultipartFile imageFile) {
         long imageId = IdGenerator.getSnowflakeNextId();
         String suffix = String.format("%s.%s", imageId, FileFormatConstants.WEBP);
         String url = minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE, new Date(), suffix);
         //压缩为webp,压缩后不超过200kb
         int limitSize = 200 * 1000;
-        InputStream inputStream = ImageUtils.compressAsWebpImage(imageFile, limitSize);
-        //上传
-        String totalUrl = minioUtils.upload(inputStream, url, FileFormatConstants.WEBP_CONTENT_TYPE);
-        int size = (int) imageFile.getSize();
+        int size;
+        String totalUrl;
+        try (InputStream inputStream = ImageUtils.compressAsWebpImage(imageFile, limitSize)) {
+            size = inputStream.available();
+            //上传
+            totalUrl = minioUtils.upload(inputStream, url, FileFormatConstants.WEBP_CONTENT_TYPE);
+        }catch (IOException e) {
+            log.error(e.getMessage());
+            throw new BusinessException("文件上传失败");
+        }
+
         //保存到数据库
         String fileName = imageFile.getOriginalFilename();
         imageWriteService.saveImage(totalUrl, size, fileName);

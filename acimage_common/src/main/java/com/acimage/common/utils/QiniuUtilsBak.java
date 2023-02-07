@@ -41,6 +41,7 @@ import java.util.List;
 @Component
 @ConditionalOnClass(Auth.class)
 @ConfigurationProperties(prefix = "qiniu")
+@Deprecated
 public class QiniuUtilsBak {
 
     private String accessKey;

@@ -6,8 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.utils.common.ListUtils;
-import com.acimage.community.mq.producer.HashImageMqProducer;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.enums.TopicAttribute;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

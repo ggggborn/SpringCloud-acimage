@@ -3,7 +3,7 @@ package com.acimage.community.service.topic.schedule;
 import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -35,7 +35,7 @@ public class UpdateActivityTimeJob extends QuartzJobBean {
         final int BATCH_SIZE = 10;
         log.info("start 系统定时任务：保存活跃时间");
         //获取哪些话题评论数有变化
-        List<Long> topicIdList = redisUtils.membersForSet(KeyConstants.SETK_RECORDING_ACTIVITY_TIME, Long.class);
+        List<Long> topicIdList = redisUtils.membersForSet(TopicKeyConstants.SETK_RECORDING_ACTIVITY_TIME, Long.class);
         if (CollectionUtil.isEmpty(topicIdList)) {
             return;
         }
@@ -52,7 +52,7 @@ public class UpdateActivityTimeJob extends QuartzJobBean {
         for (Long topicId : topicIdList) {
 
             index++;
-            String activityTimeKey = KeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topicId;
+            String activityTimeKey = TopicKeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topicId;
 
             //获取活跃时间
             Date activityTime = redisUtils.getObjectFromString(activityTimeKey, Date.class);
@@ -75,7 +75,7 @@ public class UpdateActivityTimeJob extends QuartzJobBean {
                 }
 
                 //批量移除对应值或删除对应键值，这两者顺序不可交换！
-                redisUtils.removeForSet(KeyConstants.SETK_RECORDING_ACTIVITY_TIME, batchTopicIds);
+                redisUtils.removeForSet(TopicKeyConstants.SETK_RECORDING_ACTIVITY_TIME, batchTopicIds);
                 redisUtils.delete(activityTimeKeys);
 
                 log.info(logString.toString());

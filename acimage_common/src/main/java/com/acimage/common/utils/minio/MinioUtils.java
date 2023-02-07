@@ -74,7 +74,7 @@ public class MinioUtils {
                     .build()
             );
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         } finally {
             if (is != null) {
                 try {
@@ -102,7 +102,7 @@ public class MinioUtils {
                             .filename(destSrc)
                             .build());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

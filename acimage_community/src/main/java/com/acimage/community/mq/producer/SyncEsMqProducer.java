@@ -4,7 +4,7 @@ import com.acimage.common.model.mq.dto.EsAddDto;
 import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateDto;
 import com.acimage.community.mq.config.SyncEsMqConfig;
-import com.acimage.community.mq.consts.ExchangeConstants;
+import com.acimage.community.global.consts.ExchangeConstants;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

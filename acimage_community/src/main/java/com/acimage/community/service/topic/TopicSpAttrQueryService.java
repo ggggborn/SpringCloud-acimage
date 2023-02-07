@@ -1,7 +1,7 @@
 package com.acimage.community.service.topic;
 
 import com.acimage.common.model.domain.community.Topic;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.enums.TopicAttribute;
 
 import java.util.Date;
 

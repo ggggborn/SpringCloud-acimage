@@ -17,7 +17,7 @@ import com.acimage.community.service.cmtyuser.CmtyUserQueryService;
 import com.acimage.community.service.comment.CommentInfoService;
 import com.acimage.community.service.tag.TagTopicQueryService;
 import com.acimage.community.service.topic.*;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.enums.TopicAttribute;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -261,7 +261,7 @@ public class RedisUtils {
     }
 
     public Long incrementIfPresentForHashKey(String key, String hashKey, long increment) {
-        return redisLuaUtils.incrementIfPresentForHashKey(key,hashKey,increment);
+        return redisLuaUtils.incrementIfPresentForFieldKey(key,hashKey,increment);
     }
 
 

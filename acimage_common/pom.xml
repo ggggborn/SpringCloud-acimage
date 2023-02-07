@@ -23,6 +23,29 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+        <!--Hutool-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+        </dependency>
+
+        <!--redis依赖及其连接池依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
         <!--nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -47,30 +70,6 @@
             <artifactId>java-jwt</artifactId>
         </dependency>
 
-        <!--mybatis-plus-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-
-        <!--Hutool-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.6</version>
-        </dependency>
-
-        <!--redis依赖及其连接池依赖-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
-
         <!--七牛云存储-->
         <dependency>
             <groupId>com.qiniu</groupId>
@@ -84,6 +83,7 @@
             <version>3.14.2</version>
             <scope>compile</scope>
         </dependency>
+
         <!--minio-->
         <dependency>
             <groupId>io.minio</groupId>
@@ -120,13 +120,6 @@
             <artifactId>thumbnailator</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.nintha</groupId>
-            <artifactId>webp-imageio-core</artifactId>
-            <version>0.1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/webp-imageio-core-0.1.0.jar</systemPath>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -142,6 +135,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <includeSystemScope>true</includeSystemScope>
                     <classifier>exec</classifier>
                     <skip>true</skip><!--不需要main类打包-->
                 </configuration>
@@ -155,7 +149,46 @@
                     <skipTests>true</skipTests><!--跳过测试包-->
                 </configuration>
             </plugin>
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <compilerArguments>-->
+<!--                        <extdirs>${pom.basedir}/lib</extdirs>-->
+<!--                    </compilerArguments>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-dependency-plugin</artifactId>-->
+<!--                <version>3.1.1</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-dependencies</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>${pom.basedir}/lib</outputDirectory>-->
+<!--                        </configuration>-->
+
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
+
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>libs</directory>-->
+<!--                <targetPath>/WEB-INF/lib/</targetPath>-->
+<!--                <includes>-->
+<!--                    <include>**/*.jar</include>-->
+<!--                </includes>-->
+<!--            </resource>-->
+<!--        </resources>-->
     </build>
 
 </project>

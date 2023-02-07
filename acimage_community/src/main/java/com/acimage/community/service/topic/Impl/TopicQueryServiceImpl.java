@@ -6,7 +6,7 @@ import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.redis.enums.DataType;
 import com.acimage.community.dao.TopicDao;
 import com.acimage.community.service.topic.TopicQueryService;
-import com.acimage.community.service.topic.consts.KeyConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class TopicQueryServiceImpl implements TopicQueryService {
     @Autowired
     TopicDao topicDao;
 
-    @QueryRedis(expire = 37L, keyPrefix = KeyConstants.HASHKP_TOPIC, dataType = DataType.HASH)
+    @QueryRedis(expire = 37L, keyPrefix = TopicKeyConstants.HASHKP_TOPIC, dataType = DataType.HASH)
     @Override
     public Topic getTopic(long id) {
         Topic topic = topicDao.selectTopicWithUser(id);

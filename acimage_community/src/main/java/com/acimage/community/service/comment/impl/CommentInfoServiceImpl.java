@@ -7,7 +7,7 @@ import com.acimage.community.dao.CommentDao;
 import com.acimage.community.global.consts.PageSizeConstants;
 import com.acimage.common.model.page.MyPage;
 import com.acimage.community.service.comment.CommentInfoService;
-import com.acimage.community.service.comment.consts.CommentKeyConstants;
+import com.acimage.community.global.consts.CommentKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class CommentInfoServiceImpl implements CommentInfoService {
     public List<Comment> pageCommentsWithUser(@KeyParam long topicId,
                                               @KeyParam(specials = {"1"}, expires = {37L}) int pageNo) {
 //        final long expireMinutes = 37L;
-//        String keyComments = KeyConstants.STRINGKP_TOPIC_COMMENTS + topicId;
+//        String keyComments = TopicKeyConstants.STRINGKP_TOPIC_COMMENTS + topicId;
 //
 //        List<Comment> comments;
 //        if (pageNo == 1) {

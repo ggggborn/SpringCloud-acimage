@@ -1,4 +1,4 @@
-package com.acimage.community.init;
+package com.acimage.community.runner;
 
 import com.acimage.common.model.Index.TopicIndex;
 import com.acimage.common.utils.EsUtils;
@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component

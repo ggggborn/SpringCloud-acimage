@@ -3,7 +3,7 @@ package com.acimage.community.service.topic.schedule;
 import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -34,7 +34,7 @@ public class UpdatePageViewJob extends QuartzJobBean {
         log.info("start 系统定时任务：保存浏览量变化");
 
         //获取哪些话题被记录了浏览量
-        List<Long> topicIdList = redisUtils.membersForSet(KeyConstants.SETK_RECORDING_PV_INCREMENT, Long.class);
+        List<Long> topicIdList = redisUtils.membersForSet(TopicKeyConstants.SETK_RECORDING_PV_INCREMENT, Long.class);
         if (CollectionUtil.isEmpty(topicIdList)) {
             return;
         }
@@ -47,7 +47,7 @@ public class UpdatePageViewJob extends QuartzJobBean {
 
         for (Long topicId : topicIdList) {
             index++;
-            String pvLogKey = KeyConstants.LOGKP_TOPIC_PV + topicId;
+            String pvLogKey = TopicKeyConstants.LOGKP_TOPIC_PV + topicId;
             Long pvIncrement = redisUtils.sizeForHyperLogLog(pvLogKey);
 
             //记录话题id，浏览量增量，相应redis的key、value
@@ -55,7 +55,7 @@ public class UpdatePageViewJob extends QuartzJobBean {
                 batchTopicIds.add(topicId);
                 batchPvIncrements.add(pvIncrement.intValue());
             } else {
-                redisUtils.removeForSet(KeyConstants.SETK_RECORDING_PV_INCREMENT,Long.toString(topicId) );
+                redisUtils.removeForSet(TopicKeyConstants.SETK_RECORDING_PV_INCREMENT,Long.toString(topicId) );
             }
             batchPvLogKeys.add(pvLogKey);
 
@@ -71,7 +71,7 @@ public class UpdatePageViewJob extends QuartzJobBean {
                 }
 
                 //批量移除对应值或删除对应键值，这两者顺序不可交换！
-                redisUtils.removeForSet(KeyConstants.SETK_RECORDING_PV_INCREMENT, batchTopicIds);
+                redisUtils.removeForSet(TopicKeyConstants.SETK_RECORDING_PV_INCREMENT, batchTopicIds);
                 redisUtils.delete(batchPvLogKeys);
 
                 //清空

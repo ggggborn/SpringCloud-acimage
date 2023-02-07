@@ -4,7 +4,6 @@ package com.acimage.community.service.topic.Impl;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.Index.TopicIndex;
 import com.acimage.common.model.domain.community.Topic;
-import com.acimage.common.utils.EsUtils;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.common.utils.redis.RedisUtils;
@@ -13,7 +12,7 @@ import com.acimage.community.model.request.TopicModifyHtmlReq;
 import com.acimage.community.mq.producer.SyncEsMqProducer;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.service.topic.TopicWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ public class TopicWriteServiceImpl implements TopicWriteService {
     public void remove(long id) {
         topicDao.deleteById(id);
         //删除redis数据
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC + id);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC + id);
         log.info("用户：{} 删除 话题{}", UserContext.getUsername(), id);
     }
 
@@ -67,7 +66,7 @@ public class TopicWriteServiceImpl implements TopicWriteService {
 //        topicDao.updateTopic(id, title, content);
         //删除redis数据
 
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC + id);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC + id);
         log.info("用户：{} 修改 话题{}", UserContext.getUsername(), id);
     }
 
@@ -83,7 +82,7 @@ public class TopicWriteServiceImpl implements TopicWriteService {
         topicDao.update(null, uw);
 
         //删除缓存
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC + id);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC + id);
         //更新话题活跃时间
         topicSpAttrWriteService.changeActivityTime(id, new Date());
         //同步到es
@@ -110,7 +109,7 @@ public class TopicWriteServiceImpl implements TopicWriteService {
                 .set(Topic::getUpdateTime, new Date());
         topicDao.update(null, uw);
         //删除缓存
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC + id);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC + id);
         //更新话题活跃时间
         topicSpAttrWriteService.changeActivityTime(id, new Date());
 
@@ -127,7 +126,7 @@ public class TopicWriteServiceImpl implements TopicWriteService {
                 .set(Topic::getUpdateTime, new Date());
         topicDao.update(null, uw);
         //删除缓存
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC + id);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC + id);
         //更新话题活跃时间
         topicSpAttrWriteService.changeActivityTime(id, new Date());
     }

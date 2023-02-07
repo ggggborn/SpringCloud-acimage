@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @FeignClient(value="community-service/community/topics",fallbackFactory = TopicClientFallbackFactory.class)
@@ -20,5 +19,5 @@ public interface TopicClient {
     Result<List<Topic>> queryTopics(@RequestParam("topicIds") List<Long> topicIds);
 
     @DeleteMapping("/{topicId}")
-    public Result<?> delete(@PathVariable("topicId") @Positive Long topicId) ;
+    public Result<?> delete(@PathVariable("topicId") Long topicId) ;
 }

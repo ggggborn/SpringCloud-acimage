@@ -1,13 +1,11 @@
-package com.acimage.community.init;
+package com.acimage.community.runner;
 
-import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
 import com.acimage.community.service.topic.TopicPreheatService;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.enums.TopicAttribute;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -23,6 +21,7 @@ public class PreheatApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        log.debug("akshdkjashdkad i");
 
         log.info("start 预热热点topic");
         int initialRankSize = 10;

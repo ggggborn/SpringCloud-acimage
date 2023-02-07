@@ -10,8 +10,8 @@ import com.acimage.community.dao.TopicDao;
 import com.acimage.community.service.topic.TopicRankWriteService;
 import com.acimage.community.service.topic.TopicSpAttrQueryService;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.consts.TopicKeyConstants;
+import com.acimage.community.global.enums.TopicAttribute;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,23 +84,23 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
 
     @Override
     public void changeActivityTime(long topicId, Date date) {
-        String key = KeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topicId;
+        String key = TopicKeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topicId;
         //保存最新值
         redisUtils.setObjectJson(key, date);
         //记录id
-        redisUtils.addForSet(KeyConstants.SETK_RECORDING_ACTIVITY_TIME, topicId);
+        redisUtils.addForSet(TopicKeyConstants.SETK_RECORDING_ACTIVITY_TIME, topicId);
         //更新排行榜
         topicRankWriteService.updateRank(TopicAttribute.ACTIVITY_TIME, topicId, date.getTime());
     }
 
     @Override
     public void increaseStarCount(long topicId, int increment) {
-        String key = KeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT + topicId;
+        String key = TopicKeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT + topicId;
         if (increment != 0) {
             //记录增量
             redisUtils.increment(key, increment);
             //记录id
-            redisUtils.addForSet(KeyConstants.SETK_RECORDING_STAR_COUNT_INCREMENT, topicId);
+            redisUtils.addForSet(TopicKeyConstants.SETK_RECORDING_STAR_COUNT_INCREMENT, topicId);
             //更新排行榜
             int latestStarCount = topicSpAttrQueryService.getStarCount(topicId);
             topicRankWriteService.updateRank(TopicAttribute.STAR_COUNT, topicId, latestStarCount);
@@ -114,7 +114,7 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
             this.updateByIncrement(Topic::getCommentCount, topicId, increment);
             String column = LambdaUtils.columnNameOf(Topic::getCommentCount);
             //同步到redis
-            String key=KeyConstants.HASHKP_TOPIC+topicId;
+            String key= TopicKeyConstants.HASHKP_TOPIC+topicId;
             Long commentCount=redisUtils.incrementIfPresentForHashKey(key, column, increment);
             if(commentCount!=null){
                 topicRankWriteService.updateRank(TopicAttribute.COMMENT_COUNT, topicId, commentCount.intValue());

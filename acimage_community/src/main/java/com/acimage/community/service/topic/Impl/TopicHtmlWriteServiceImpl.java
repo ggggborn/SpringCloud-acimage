@@ -4,7 +4,7 @@ import com.acimage.common.model.domain.community.TopicHtml;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.TopicHtmlDao;
 import com.acimage.community.service.topic.TopicHtmlWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class TopicHtmlWriteServiceImpl implements TopicHtmlWriteService {
     @Override
     public void remove(long topicId) {
         topicHtmlDao.deleteById(topicId);
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC_HTML+topicId);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC_HTML+topicId);
     }
 
 
@@ -38,6 +38,6 @@ public class TopicHtmlWriteServiceImpl implements TopicHtmlWriteService {
         uw.eq(TopicHtml::getTopicId,topicId)
                 .set(TopicHtml::getHtml,html);
         topicHtmlDao.update(null,uw);
-        redisUtils.delete(KeyConstants.HASHKP_TOPIC_HTML+topicId);
+        redisUtils.delete(TopicKeyConstants.HASHKP_TOPIC_HTML+topicId);
      }
 }

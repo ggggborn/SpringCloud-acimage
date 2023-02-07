@@ -1,6 +1,6 @@
 package com.acimage.community.mq.config;
 
-import com.acimage.community.mq.consts.ExchangeConstants;
+import com.acimage.community.global.consts.ExchangeConstants;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

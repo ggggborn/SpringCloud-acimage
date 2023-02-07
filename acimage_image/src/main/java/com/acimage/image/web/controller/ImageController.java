@@ -70,7 +70,7 @@ public class ImageController {
             return Result.fail("图片格式需为jpg，jpeg，png");
         }
         log.info("用户：{} 话题: 上传话题图片", UserContext.getUsername());
-        return Result.ok(imageMixWriteService.uploadAndSaveImage(imageFile));
+        return Result.ok(imageMixWriteService.saveImage(imageFile));
     }
 
     @PutMapping("/description/{id}/{description}")

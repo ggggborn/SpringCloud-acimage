@@ -3,8 +3,8 @@ package com.acimage.community.service.topic.Impl;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicRankWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.consts.TopicKeyConstants;
+import com.acimage.community.global.enums.TopicAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class TopicRankWriteServiceImpl implements TopicRankWriteService {
         }
 
         if (attr == TopicAttribute.ACTIVITY_TIME) {
-            Date activityTime = redisUtils.getObjectFromString(KeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topic.getId(), Date.class);
+            Date activityTime = redisUtils.getObjectFromString(TopicKeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topic.getId(), Date.class);
             if (activityTime == null) {
                 activityTime = topic.getActivityTime();
             }
@@ -43,7 +43,7 @@ public class TopicRankWriteServiceImpl implements TopicRankWriteService {
             redisUtils.addForZSet(attr.zSetKey(), topic.getId().toString(), activityTime.getTime());
 
         } else if (attr == TopicAttribute.PAGE_VIEW) {
-            String logKey = KeyConstants.LOGKP_TOPIC_PV + topic.getId();
+            String logKey = TopicKeyConstants.LOGKP_TOPIC_PV + topic.getId();
             int increment = redisUtils.sizeForHyperLogLog(logKey).intValue();
             int latestPv = topic.getPageView() + increment;
             //更新对应排行榜

@@ -25,12 +25,13 @@ public class ImageUtils {
                     .outputQuality(qualify).size(width, height)
                     .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
-            InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP);
-            if (is != null && is.available() > limitSize) {
-                log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
-                throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
+            try (InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP)) {
+                if (is != null && is.available() > limitSize) {
+                    log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
+                    throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
+                }
+                return is;
             }
-            return is;
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new BusinessException("图片数据错误");
@@ -47,12 +48,13 @@ public class ImageUtils {
                     .outputQuality(qualify).size(width, height)
                     .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
-            InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP);
-            if (is != null && is.available() > limitSize) {
-                log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
-                throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
+            try (InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP)) {
+                if (is != null && is.available() > limitSize) {
+                    log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
+                    throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
+                }
+                return is;
             }
-            return is;
         } catch (IOException e) {
             log.error(e.getMessage());
             throw new BusinessException("图片数据错误");

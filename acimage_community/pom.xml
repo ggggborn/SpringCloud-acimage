@@ -34,6 +34,12 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!--mybatis-plus-->
+<!--        <dependency>-->
+<!--            <groupId>com.baomidou</groupId>-->
+<!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
         <!--druid依赖-->
         <dependency>
             <groupId>com.alibaba</groupId>
@@ -77,6 +83,14 @@
             <artifactId>spring-data-elasticsearch</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.nintha</groupId>
+            <artifactId>webp-imageio-core</artifactId>
+            <version>0.1.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/webp-imageio-core-0.1.0.jar</systemPath>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>org.quartz-scheduler</groupId>-->
 <!--            <artifactId>quartz</artifactId>-->
@@ -87,6 +101,23 @@
 
 
     <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests><!--跳过测试包-->
+                </configuration>
+            </plugin>
+        </plugins>
 
     </build>
 </project>

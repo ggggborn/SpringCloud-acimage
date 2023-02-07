@@ -5,7 +5,7 @@ import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.community.service.topic.TopicRankQueryService;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.enums.TopicAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

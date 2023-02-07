@@ -1,6 +1,6 @@
 package com.acimage.community.service.topic;
 
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.enums.TopicAttribute;
 
 import java.util.concurrent.TimeUnit;
 

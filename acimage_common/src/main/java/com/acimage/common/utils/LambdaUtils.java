@@ -12,7 +12,7 @@ import java.util.List;
 
 public class LambdaUtils {
     public static final String TOKEN_GET="get";
-    public static final String TOKEN_IS="get";
+    public static final String TOKEN_IS="is";
     public static final String WRITE_REPLACE="writeReplace";
 
     public static <T> String getUnderlineColumnName(SFunction<T, ?> getOrIs) {

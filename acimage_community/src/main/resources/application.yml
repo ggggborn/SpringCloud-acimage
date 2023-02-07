@@ -33,3 +33,6 @@ feign:
     max-connections-per-route: 5 # 每个路径的最大连接数
 
 
+
+
+

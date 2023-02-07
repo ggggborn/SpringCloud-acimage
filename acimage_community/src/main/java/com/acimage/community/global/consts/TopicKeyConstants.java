@@ -1,6 +1,6 @@
-package com.acimage.community.service.topic.consts;
+package com.acimage.community.global.consts;
 
-public class KeyConstants {
+public class TopicKeyConstants {
     public static final String HASHKP_TOPIC = "acimage:topics:id:";
 
     public static final String HASHKP_TOPIC_HTML="acimage:community:topicHtml:topicId:";

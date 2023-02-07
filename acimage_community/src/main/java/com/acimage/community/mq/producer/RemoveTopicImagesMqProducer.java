@@ -1,10 +1,9 @@
 package com.acimage.community.mq.producer;
 
 import com.acimage.community.mq.config.RemoveTopicImagesMqConfig;
-import com.acimage.community.mq.consts.ExchangeConstants;
+import com.acimage.community.global.consts.ExchangeConstants;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 //@ConditionalOnProperty(prefix = "my-config",name="enable-mq",havingValue = "true")

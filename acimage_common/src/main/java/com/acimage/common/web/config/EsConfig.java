@@ -1,6 +1,5 @@
 package com.acimage.common.web.config;
 
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,11 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnClass(RestHighLevelClient.class)
 public class EsConfig {
 
-
-//    @Bean
-//    public RestHighLevelClient restHighLevelClient(@Autowired RestClientBuilder restClientBuilder) {
-//        return new RestHighLevelClient(restClientBuilder.setHttpClientConfigCallback(requestConfig ->
-//                requestConfig.setKeepAliveStrategy((response, context) -> TimeUnit.MINUTES.toMillis(3))));
-//    }
+    @Bean
+    public RestHighLevelClient restHighLevelClient(@Autowired RestClientBuilder restClientBuilder) {
+        return new RestHighLevelClient(restClientBuilder.setHttpClientConfigCallback(requestConfig ->
+                requestConfig.setKeepAliveStrategy((response, context) -> TimeUnit.MINUTES.toMillis(3))));
+    }
 
 
 }

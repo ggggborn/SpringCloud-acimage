@@ -5,8 +5,8 @@ import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.TopicDao;
 import com.acimage.community.service.topic.TopicPreheatService;
 import com.acimage.community.service.topic.TopicRankWriteService;
-import com.acimage.community.service.topic.consts.KeyConstants;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.consts.TopicKeyConstants;
+import com.acimage.community.global.enums.TopicAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class TopicPreheatServiceImpl implements TopicPreheatService {
             topicRankWriteService.updateRank(attr, topic);
 
             if (i < numberOfCacheTopics) {
-                String key = KeyConstants.HASHKP_TOPIC + topic.getId();
+                String key = TopicKeyConstants.HASHKP_TOPIC + topic.getId();
                 redisUtils.setObjectForHash(key, topic, timeout, timeUnit);
             }
         }

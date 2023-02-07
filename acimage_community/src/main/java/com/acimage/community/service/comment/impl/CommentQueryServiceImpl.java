@@ -5,7 +5,7 @@ import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.model.domain.community.Comment;
 import com.acimage.community.dao.CommentDao;
 import com.acimage.community.service.comment.CommentQueryService;
-import com.acimage.community.service.comment.consts.CommentKeyConstants;
+import com.acimage.community.global.consts.CommentKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
-package com.acimage.community.service.topic.enums;
+package com.acimage.community.global.enums;
 
 
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.LambdaUtils;
-import com.acimage.community.service.topic.consts.KeyConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 import java.util.*;
@@ -20,24 +20,24 @@ public enum TopicAttribute {
 
     static {
         toZSetKeyForRank = new HashMap<TopicAttribute, String>() {{
-            put(STAR_COUNT, KeyConstants.ZSETK_TOPIC_STAR_COUNT);
-            put(PAGE_VIEW, KeyConstants.ZSETK_TOPIC_PV);
-            put(COMMENT_COUNT, KeyConstants.ZSETK_TOPIC_COMMENT_COUNT);
-            put(ACTIVITY_TIME, KeyConstants.ZSETK_TOPIC_ACTIVITY_TIME);
+            put(STAR_COUNT, TopicKeyConstants.ZSETK_TOPIC_STAR_COUNT);
+            put(PAGE_VIEW, TopicKeyConstants.ZSETK_TOPIC_PV);
+            put(COMMENT_COUNT, TopicKeyConstants.ZSETK_TOPIC_COMMENT_COUNT);
+            put(ACTIVITY_TIME, TopicKeyConstants.ZSETK_TOPIC_ACTIVITY_TIME);
         }};
 
         toSetKey = new HashMap<TopicAttribute, String>() {{
-            put(STAR_COUNT, KeyConstants.SETK_RECORDING_STAR_COUNT_INCREMENT);
-            put(PAGE_VIEW, KeyConstants.SETK_RECORDING_PV_INCREMENT);
-            put(COMMENT_COUNT, KeyConstants.SETK_RECORDING_COMMENT_COUNT_INCREMENT);
-            put(ACTIVITY_TIME, KeyConstants.SETK_RECORDING_ACTIVITY_TIME);
+            put(STAR_COUNT, TopicKeyConstants.SETK_RECORDING_STAR_COUNT_INCREMENT);
+            put(PAGE_VIEW, TopicKeyConstants.SETK_RECORDING_PV_INCREMENT);
+            put(COMMENT_COUNT, TopicKeyConstants.SETK_RECORDING_COMMENT_COUNT_INCREMENT);
+            put(ACTIVITY_TIME, TopicKeyConstants.SETK_RECORDING_ACTIVITY_TIME);
         }};
 
         toKeyPrefix = new HashMap<TopicAttribute, String>() {{
-            put(STAR_COUNT, KeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT);
-            put(PAGE_VIEW, KeyConstants.LOGKP_TOPIC_PV);
-            put(COMMENT_COUNT, KeyConstants.STRINGKP_TOPIC_COMMENT_COUNT_INCREMENT);
-            put(ACTIVITY_TIME, KeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME);
+            put(STAR_COUNT, TopicKeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT);
+            put(PAGE_VIEW, TopicKeyConstants.LOGKP_TOPIC_PV);
+            put(COMMENT_COUNT, TopicKeyConstants.STRINGKP_TOPIC_COMMENT_COUNT_INCREMENT);
+            put(ACTIVITY_TIME, TopicKeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME);
         }};
 
         toTopicField = new HashMap<TopicAttribute, SFunction<Topic,Object>>() {{

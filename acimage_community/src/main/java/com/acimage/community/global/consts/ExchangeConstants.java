@@ -1,4 +1,4 @@
-package com.acimage.community.mq.consts;
+package com.acimage.community.global.consts;
 
 public class ExchangeConstants {
     public static final String TOPIC_IMAGES_EXCHANGE = "topic-images-exchange";

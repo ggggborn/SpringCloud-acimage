@@ -23,21 +23,16 @@ public class RedisLuaUtils {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private final static DefaultRedisScript<Long> incrementIfPresent = new DefaultRedisScript<>();
-    private final static DefaultRedisScript<List<Long>> a = new DefaultRedisScript<>();
     private final static DefaultRedisScript<Long> incrementIfPresentZSet = new DefaultRedisScript<>();
     private final static DefaultRedisScript<String> getAndCombineAndDelete = new DefaultRedisScript<>();
 
-    private final static DefaultRedisScript<Long> ifpForHashKey = new DefaultRedisScript<>();
+    private final static DefaultRedisScript<Long> ifpForFieldKey = new DefaultRedisScript<>();
 
     private final static DefaultRedisScript<List> requestLimit = new DefaultRedisScript<>();
 
 
     @PostConstruct
     public void init() {
-
-    }
-
-    static {
         //设置忽略空字段
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
@@ -49,15 +44,16 @@ public class RedisLuaUtils {
         getAndCombineAndDelete.setLocation(new ClassPathResource("lua/getAndCombineAndDelete.lua"));
         getAndCombineAndDelete.setResultType(String.class);
 
-        incrementIfPresentZSet.setLocation(new ClassPathResource("lua/incrementIfPresentZSet.lua"));
+        incrementIfPresentZSet.setLocation(new ClassPathResource("lua/incrementIfPresentForZSet.lua"));
         incrementIfPresentZSet.setResultType(Long.class);
 
-        ifpForHashKey.setLocation(new ClassPathResource("lua/incrementIfPresentForHashKey.lua"));
-        ifpForHashKey.setResultType(Long.class);
+        ifpForFieldKey.setLocation(new ClassPathResource("lua/incrementIfPresentForFieldKey.lua"));
+        ifpForFieldKey.setResultType(Long.class);
 
         requestLimit.setLocation(new ClassPathResource("lua/requestLimit.lua"));
         requestLimit.setResultType(List.class);
     }
+
 
     public Long incrementIfPresent(String key, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
@@ -67,12 +63,11 @@ public class RedisLuaUtils {
     /**
      * 如果keyForBase存在，则将redis中keyForIncrement的值增加到keyForBase中
      * 否则获取并删除keyForIncrement
-     *
      * @return keyForIncrement对应的值
      */
-    public Long getAndCombineAndDelete(String keyForIncrement, String hashKeyForBase, String fieldKey) {
+    public Long getAndCombineAndDelete(String keyForIncrement, String fieldKeyForBase, String fieldKey) {
         String result = stringRedisTemplate.opsForValue().getOperations()
-                .execute(getAndCombineAndDelete, Arrays.asList(keyForIncrement, hashKeyForBase), fieldKey);
+                .execute(getAndCombineAndDelete, Arrays.asList(keyForIncrement, fieldKeyForBase), fieldKey);
         if (result == null) {
             return null;
         }
@@ -85,9 +80,9 @@ public class RedisLuaUtils {
                 .execute(incrementIfPresentZSet, Collections.singletonList(key), value, Long.toString(increment));
     }
 
-    public Long incrementIfPresentForHashKey(String key, String hashKey, long increment) {
+    public Long incrementIfPresentForFieldKey(String key, String filedKey, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
-                .execute(ifpForHashKey, Collections.singletonList(key), hashKey, Long.toString(increment));
+                .execute(ifpForFieldKey, Collections.singletonList(key), filedKey, Long.toString(increment));
     }
 
     public List<Long> requestLimitScript(List<String> keys, List<Long> limitTimes, List<Long> expireSeconds, List<Long> penaltyTimes) {

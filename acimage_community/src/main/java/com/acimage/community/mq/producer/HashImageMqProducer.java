@@ -3,14 +3,11 @@ package com.acimage.community.mq.producer;
 import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
 import com.acimage.common.model.mq.dto.ImageIdWithUrl;
-import com.acimage.community.mq.consts.ExchangeConstants;
+import com.acimage.community.global.consts.ExchangeConstants;
 import com.acimage.community.mq.config.HashImageMqConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class HashImageMqProducer {

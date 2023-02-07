@@ -1,14 +1,15 @@
 package com.acimage.community.global.annotation;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 注解在参数或javabean对象的成员变量上
+ * 带有该注解的接口，被调用时会记录到对应话题的浏览量中
  */
-@Target({ElementType.FIELD,ElementType.PARAMETER})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CommentId {
+public @interface RecordPageView {
 }

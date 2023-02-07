@@ -12,7 +12,7 @@ import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.global.consts.PageSizeConstants;
 import com.acimage.community.model.vo.TopicInfoVo;
 import com.acimage.community.service.topic.TopicInfoQueryService;
-import com.acimage.community.service.topic.annotation.RecordPageView;
+import com.acimage.community.global.annotation.RecordPageView;
 import com.acimage.common.global.context.UserContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

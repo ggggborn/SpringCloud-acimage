@@ -4,4 +4,8 @@ target
 /temp
 
 application-dev?.yml
+application-prod.yml
+application-prod?.yml
+application-server.yml
+application-server?.yml
 application-qiniu.yml

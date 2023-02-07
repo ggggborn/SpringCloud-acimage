@@ -4,8 +4,8 @@ import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.service.topic.TopicQueryService;
 import com.acimage.community.service.topic.TopicSpAttrQueryService;
-import com.acimage.community.service.topic.consts.KeyConstants;
-import com.acimage.community.service.topic.enums.TopicAttribute;
+import com.acimage.community.global.consts.TopicKeyConstants;
+import com.acimage.community.global.enums.TopicAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class TopicSpAttrQueryServiceImpl implements TopicSpAttrQueryService {
         int pageView = topic.getPageView();
 
         //从redis中获取新增浏览量
-        String topicPvLogKey = KeyConstants.LOGKP_TOPIC_PV + topicId;
+        String topicPvLogKey = TopicKeyConstants.LOGKP_TOPIC_PV + topicId;
         Long pvIncrement = redisUtils.sizeForHyperLogLog(topicPvLogKey);
         int increment = pvIncrement == null ? 0 : pvIncrement.intValue();
 
@@ -40,7 +40,7 @@ public class TopicSpAttrQueryServiceImpl implements TopicSpAttrQueryService {
     @Override
     public Date getActivityTime(long topicId) {
         //先从redis获取
-        Date activityTime = redisUtils.getObjectFromString(KeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topicId, Date.class);
+        Date activityTime = redisUtils.getObjectFromString(TopicKeyConstants.STRINGKP_TOPIC_ACTIVITY_TIME + topicId, Date.class);
         if (activityTime != null) {
             return activityTime;
         }
