@@ -1,4 +1,4 @@
-package com.acimage.user.model.domain;
+package com.acimage.common.model.domain.user;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;

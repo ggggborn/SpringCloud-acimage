@@ -1,4 +1,4 @@
-package com.acimage.user.utils;
+package com.acimage.common.utils;
 
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;

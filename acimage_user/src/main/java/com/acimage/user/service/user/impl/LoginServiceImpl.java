@@ -13,12 +13,12 @@ import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.dao.UserPrivacyDao;
-import com.acimage.user.model.domain.UserPrivacy;
+import com.acimage.common.model.domain.user.UserPrivacy;
 import com.acimage.user.model.request.UserLoginReq;
 import com.acimage.user.model.request.UserRegisterReq;
 import com.acimage.user.mq.producer.SyncUserMqProducer;
 import com.acimage.user.service.user.LoginService;
-import com.acimage.user.utils.RsaUtils;
+import com.acimage.common.utils.RsaUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,7 @@ public class LoginServiceImpl implements LoginService {
         String privateKey = RsaUtils.getPrivateKey();
         //解密并校验密码
         String passwordDecrypt = RsaUtils.decrypt(privateKey, userRegister.getPassword());
-        log.info(" 解密为：{}", passwordDecrypt);
+//        log.info(" 解密为：{}", passwordDecrypt);
         if (!Pattern.matches(PASSWORD_PATTERN, passwordDecrypt)) {
             throw new BusinessException("密码长度为6至16位，且只含数字、字母和特殊字符");
         }
@@ -133,7 +133,7 @@ public class LoginServiceImpl implements LoginService {
 //        log.info(" 解密为：{}", passwordDecrypt);
         //判断密码正确性
         if (!DigestUtil.md5Hex(salt + passwordDecrypt).equals(passwordDigest)) {
-            log.warn("用户：无 登录 错误：用户名{} 或密码错误", email);
+            log.warn("登录 错误：邮箱{} 或密码错误", email);
             throw new BusinessException("用户名或密码错误");
         }
 

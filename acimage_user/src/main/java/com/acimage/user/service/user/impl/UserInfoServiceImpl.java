@@ -9,7 +9,7 @@ import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.feign.client.CmtyUserClient;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.dao.UserPrivacyDao;
-import com.acimage.user.model.domain.UserPrivacy;
+import com.acimage.common.model.domain.user.UserPrivacy;
 import com.acimage.user.model.vo.ProfileVo;
 import com.acimage.user.service.user.UserInfoService;
 import com.acimage.user.service.user.UserQueryService;

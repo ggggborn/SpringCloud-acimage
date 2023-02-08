@@ -47,6 +47,7 @@
 import { onMounted } from 'vue';
 import { useSidebarStore } from '../store/sidebar';
 import { useRouter } from 'vue-router';
+import {useStore} from '@/store/store'
 import imgurl from '../assets/img/img.jpg';
 
 const username: string | null = localStorage.getItem('ms_username');
@@ -57,6 +58,8 @@ const sidebar = useSidebarStore();
 const collapseChage = () => {
 	sidebar.handleCollapse();
 };
+
+const store=useStore();
 
 onMounted(() => {
 	if (document.body.clientWidth < 1500) {
@@ -69,6 +72,7 @@ const router = useRouter();
 const handleCommand = (command: string) => {
 	if (command == 'loginout') {
 		localStorage.removeItem('ms_username');
+		store.removeToken();
 		router.push('/login');
 	} else if (command == 'user') {
 		router.push('/user');

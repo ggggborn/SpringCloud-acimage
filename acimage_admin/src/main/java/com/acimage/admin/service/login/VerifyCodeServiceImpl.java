@@ -1,11 +1,8 @@
-package com.acimage.user.service.verify.impl;
+package com.acimage.admin.service.login;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
-import cn.hutool.core.util.RandomUtil;
 import com.acimage.common.utils.redis.RedisUtils;
-import com.acimage.user.service.mail.MainService;
-import com.acimage.user.service.verify.VerifyCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
-public class VerifyCodeServiceImpl implements VerifyCodeService {
-    public static final String STRINGKP_VERIFY_CODE="acimage:user:verifyCode:sessionId:";
-    public static final String STRINGKP_EMAIL_VERIFY="acimage:user:logins:emailVerify:email";
+public class VerifyCodeServiceImpl implements VerifyCodeService{
     @Autowired
     RedisUtils redisUtils;
-    @Autowired
-    MainService mainService;
+    public static final String STRINGKP_VERIFY_CODE="acimage:admin:verifyCode:sessionId:";
+
     @Override
     public void writeCodeImageToResponseAndRecord(HttpServletRequest request, HttpServletResponse response){
         int width=100;
@@ -50,31 +45,6 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     public boolean verifyAndRemoveIfSuccess(HttpServletRequest request, String code){
         String key=STRINGKP_VERIFY_CODE+request.getSession().getId();
 
-        String trueCode=redisUtils.getForString(key);
-        if(trueCode==null){
-            return false;
-        }
-
-        if(trueCode.equals(code)){
-            redisUtils.delete(key);
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    @Override
-    public void sendVerifyCodeToEmail(String email,int length){
-        String code= RandomUtil.randomString(length);
-        int timeoutMinute=3;
-        mainService.sendVerifyCodeMailMessage(email,code,timeoutMinute);
-        String key=STRINGKP_EMAIL_VERIFY+email;
-        redisUtils.setAsString(key,code);
-    }
-
-    @Override
-    public boolean verifyEmailByVerifyCode(String email,String code){
-        String key=STRINGKP_EMAIL_VERIFY+email;
         String trueCode=redisUtils.getForString(key);
         if(trueCode==null){
             return false;

@@ -2,12 +2,9 @@ package com.acimage.user.dao;
 
 
 
-import com.acimage.user.model.domain.UserPrivacy;
+
+import com.acimage.common.model.domain.user.UserPrivacy;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 public interface UserPrivacyDao extends BaseMapper<UserPrivacy> {
 

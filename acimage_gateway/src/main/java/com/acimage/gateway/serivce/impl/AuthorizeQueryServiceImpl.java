@@ -41,7 +41,7 @@ public class AuthorizeQueryServiceImpl implements AuthorizeQueryService {
         return authorizeDao.selectList(null);
     }
 
-    @Scheduled(fixedRate = 10L, timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate = 10L, timeUnit = TimeUnit.MINUTES)
     private Map<Integer, List<Integer>> refreshRoleIdToPermissionIdsMap() {
         //为了方便直接保存在内存
         Map<Integer, List<Integer>> map = new HashMap<>();

@@ -65,7 +65,7 @@ const items = [
     {
         icon: 'Calendar',
         index: '1',
-        title: '表格相关',
+        title: '首页管理',
         permiss: '2',
         subs: [
             {
@@ -78,16 +78,6 @@ const items = [
 			    title: '走马灯',
 			    permiss: '2',
 			},
-            {
-                index: '/import',
-                title: '导入Excel',
-                permiss: '2',
-            },
-            {
-                index: '/export',
-                title: '导出Excel',
-                permiss: '2',
-            },
         ],
     },
 	{
@@ -106,11 +96,6 @@ const items = [
 	            title: '用户',
 	            permiss: '2',
 	        },
-	        {
-	            index: '/export',
-	            title: '导出Excel',
-	            permiss: '2',
-	        },
 	    ],
 	},
     {
@@ -125,11 +110,6 @@ const items = [
         title: '权限管理',
         permiss: '4',
         subs: [
-            {
-                index: '/form',
-                title: '基本表单',
-                permiss: '5',
-            },
 			{
 			    index: '/role',
 			    title: '角色',
@@ -173,12 +153,6 @@ const items = [
                 ],
             },
         ],
-    },
-    {
-        icon: 'Setting',
-        index: '/icon',
-        title: '自定义图标',
-        permiss: '10',
     },
     {
         icon: 'PieChart',

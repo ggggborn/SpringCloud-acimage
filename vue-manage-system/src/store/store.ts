@@ -16,7 +16,8 @@ export const useStore = defineStore('store', {
 	state: () => {
 		return {
 			categoryList: <Category[]>[],
-			roleList: <Role[]>[]
+			roleList: <Role[]>[],
+			token:''
 		};
 	},
 	getters: {
@@ -39,7 +40,8 @@ export const useStore = defineStore('store', {
 				}
 				return null;
 			}
-		}
+		},
+
 	},
 	actions: {
 		init() {
@@ -58,6 +60,12 @@ export const useStore = defineStore('store', {
 					}
 				})
 			}
+		},
+		setToken(token){
+			localStorage.setItem('token', token);
+		},
+		removeToken(){
+			localStorage.removeItem('token')
 		}
 	}
 });
