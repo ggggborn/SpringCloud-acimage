@@ -40,8 +40,9 @@
 					<div v-for="topic in topics" :key="topic.id" style="margin-bottom: 5px;">
 						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.createTime"
 							:starCount="topic.starCount" :commentCount="topic.commentCount" :pageView="topic.pageView"
-							:to="$global.getTopicUrl(topic.id)" :categoryId="topic.categoryId" :tagIds="topic.tagIds"
-							:coverImageUrl="topic.coverImageUrl" titleHtml>
+							:username="topic.user.username" :photoUrl="topic.user.photoUrl" :to="$global.getTopicUrl(topic.id)"
+							:categoryId="topic.categoryId" :tagIds="topic.tagIds" :coverImageUrl="topic.coverImageUrl"
+							titleHtml contentHtml>
 						</topic-card>
 					</div>
 

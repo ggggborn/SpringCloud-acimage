@@ -1,6 +1,6 @@
 package com.acimage.common.utils;
 
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.utils.common.FileUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class ImageUtils {
                     .asBufferedImage();
             try (InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP)) {
                 if (is != null && is.available() > limitSize) {
-                    log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
+                    log.warn("the image size after compressing exceed {} size:{}", limitSize, is.available());
                     throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
                 }
                 return is;

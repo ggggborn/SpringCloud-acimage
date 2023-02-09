@@ -2,14 +2,9 @@ package com.acimage.community.web.controller;
 
 
 import com.acimage.common.result.Result;
-import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.Comment;
-import com.acimage.community.model.request.CommentAddReq;
-import com.acimage.community.model.request.CommentModifyReq;
 import com.acimage.community.service.comment.CommentInfoService;
-import com.acimage.community.service.comment.CommentWriteService;
-import com.acimage.community.service.topic.TopicInfoWriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

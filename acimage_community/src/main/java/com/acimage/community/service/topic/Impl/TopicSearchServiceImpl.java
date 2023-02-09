@@ -20,6 +20,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -53,11 +54,16 @@ public class TopicSearchServiceImpl implements TopicSearchService {
     @Override
     public List<Topic> searchSimilarByTitle(long topicId, String title, int size) {
         String column = LambdaUtils.columnNameOf(TopicIndex::getTitle);
-        float score = 2;
+        float score = 0.5f;
         List<TopicIndex> topicIndices = esUtils.matchQuery(TopicIndex.class, column, title, 1, size + 1, score);
-        return TopicIndex.toTopicList(topicIndices).stream()
+        List<Topic> topicList= TopicIndex.toTopicList(topicIndices).stream()
                 .filter(o -> !o.getId().equals(topicId))
                 .collect(Collectors.toList());
+        if(topicList.size()==size+1){
+            return topicList.subList(0,size);
+        }else{
+            return topicList;
+        }
     }
 
 
@@ -102,7 +108,6 @@ public class TopicSearchServiceImpl implements TopicSearchService {
         NativeSearchQueryBuilder nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolQuery)
                 .withPageable(PageRequest.of(pageNo - 1, 10));
-
         if (highlightBuilder != null) {
             nativeSearchQuery.withHighlightBuilder(highlightBuilder);
         }

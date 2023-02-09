@@ -5,7 +5,7 @@ import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.service.user.UserQueryService;
 import com.acimage.admin.service.userrole.UserRoleQueryService;
 import com.acimage.admin.service.userrole.UserRoleWriteService;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.sys.UserRole;
 import com.acimage.common.utils.IdGenerator;
 import com.baomidou.dynamic.datasource.annotation.DS;

@@ -2,7 +2,7 @@ package com.acimage.admin.service.topic.impl;
 
 import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.service.topic.TopicWriteService;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.result.Result;
 import com.acimage.feign.client.TopicClient;
 import com.baomidou.dynamic.datasource.annotation.DS;

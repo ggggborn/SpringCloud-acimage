@@ -3,8 +3,8 @@ package com.acimage.common.web.exceptionhandler;
 
 import com.acimage.common.result.Code;
 import com.acimage.common.result.Result;
-import com.acimage.common.exception.BusinessException;
-import com.acimage.common.exception.NoLoginException;
+import com.acimage.common.global.exception.BusinessException;
+import com.acimage.common.global.exception.NoLoginException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

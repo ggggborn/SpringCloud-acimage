@@ -1,7 +1,7 @@
 package com.acimage.user.mq.config;
 
 
-import com.acimage.user.mq.consts.ExchangeConstants;
+import com.acimage.common.global.consts.MqConstants;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SyncUserMqConfig {
-    public static final String SYNC_USER_QUEUE = "sync-user-queue";
-    public static final String SYNC_USER_ROUTE = "sync-user-route";
 
     @Autowired
     AmqpAdmin rabbitAdmin;
@@ -22,19 +20,19 @@ public class SyncUserMqConfig {
         //   return new Queue("TestDirectQueue",true,true,false);
 
         //一般设置一下队列的持久化就好,其余两个就是默认false
-        return new Queue(SYNC_USER_QUEUE, true);
+        return new Queue(MqConstants.SYNC_USER_QUEUE, true);
     }
 
 
     @Bean
     DirectExchange syncUserExchange() {
-        return new DirectExchange(ExchangeConstants.COMMUNITY_USER_EXCHANGE, true, false);
+        return new DirectExchange(MqConstants.COMMUNITY_USER_EXCHANGE, true, false);
     }
 
     //绑定  将队列和交换机绑定, 并设置用于匹配键
     @Bean
     Binding syncUserBinding() {
-        return BindingBuilder.bind(syncUserQueue()).to(syncUserExchange()).with(SYNC_USER_ROUTE);
+        return BindingBuilder.bind(syncUserQueue()).to(syncUserExchange()).with(MqConstants.SYNC_USER_ROUTE);
     }
 
     //创建交换机和对列

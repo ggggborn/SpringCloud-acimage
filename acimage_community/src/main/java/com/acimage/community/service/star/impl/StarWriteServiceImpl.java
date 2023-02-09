@@ -3,10 +3,10 @@ package com.acimage.community.service.star.impl;
 
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.Topic;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.community.Star;
 import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
-import com.acimage.community.global.consts.StarKeyConsts;
+import com.acimage.community.global.consts.StarKeyConstants;
 import com.acimage.community.service.topic.TopicQueryService;
 import com.acimage.community.service.star.StarWriteService;
 import com.acimage.common.utils.redis.RedisUtils;
@@ -46,7 +46,7 @@ public class StarWriteServiceImpl implements StarWriteService {
             throw new BusinessException("已经收藏过了，请刷新重试");
         }
 
-        redisUtils.setObjectJson(StarKeyConsts.keyOfIsStar(userId, topicId), Boolean.TRUE, 30, TimeUnit.SECONDS);
+        redisUtils.setObjectJson(StarKeyConstants.keyOfIsStar(userId, topicId), Boolean.TRUE, 30, TimeUnit.SECONDS);
 
         int increment=1;
         topicSpAttrWriteService.increaseStarCount(topicId, increment);
@@ -60,7 +60,7 @@ public class StarWriteServiceImpl implements StarWriteService {
     public void removeStar(long userId, long topicId) {
         int col = starDao.deleteByUserIdAndTopicId(userId, topicId);
         //删除缓存
-        redisUtils.delete(StarKeyConsts.keyOfIsStar(userId, topicId));
+        redisUtils.delete(StarKeyConstants.keyOfIsStar(userId, topicId));
 
         //更新话题、话题主人收藏量
         int starIncrement = -col;

@@ -2,7 +2,7 @@ package com.acimage.common.utils;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.http.HttpUtil;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qiniu.cdn.CdnManager;

@@ -3,14 +3,14 @@ package com.acimage.image.service.imagehash.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.feign.client.TopicClient;
 import com.acimage.image.dao.ImageHashDao;
 import com.acimage.image.global.context.DirectoryContext;
-import com.acimage.image.model.domain.ImageHash;
+import com.acimage.common.model.domain.image.ImageHash;
 import com.acimage.image.service.image.ImageQueryService;
 import com.acimage.image.service.imagehash.SearchImageService;
 import com.acimage.image.utils.BitUtils;
@@ -60,8 +60,8 @@ public class SearchImageServiceImpl implements SearchImageService {
         }
 
         //获取数据库中已经被处理过的图片
-        List<com.acimage.image.model.domain.ImageHash> imageHashList = imageDhashDao.selectList(null);
-        List<Long> imageIdsInDb = ListUtils.extract(com.acimage.image.model.domain.ImageHash::getImageId, imageHashList);
+        List<ImageHash> imageHashList = imageDhashDao.selectList(null);
+        List<Long> imageIdsInDb = ListUtils.extract(ImageHash::getImageId, imageHashList);
         List<Long> imageIdsInDirectory = new ArrayList<>();
         for (File file : files) {
             String stringId = StrUtil.subBefore(file.getName(), '.', true);
@@ -101,7 +101,7 @@ public class SearchImageServiceImpl implements SearchImageService {
         int hashSum = BitUtils.sumOfBits(hashValue);
 
         try {
-            imageDhashDao.insert(new com.acimage.image.model.domain.ImageHash(imageId, hashValue, hashSum));
+            imageDhashDao.insert(new ImageHash(imageId, hashValue, hashSum));
         } catch (DuplicateKeyException e) {
             log.error("保存图片dhash时，插入数据库imageId：{}重复", imageId);
         }
@@ -125,16 +125,16 @@ public class SearchImageServiceImpl implements SearchImageService {
         } catch (IOException e) {
             throw new BusinessException("文件IO异常");
         }
-        List<com.acimage.image.model.domain.ImageHash> imageHashList = imageDhashDao.selectList(null);
-        List<com.acimage.image.model.domain.ImageHash> resultList = new ArrayList<>();
-        for (com.acimage.image.model.domain.ImageHash imageHash : imageHashList) {
+        List<ImageHash> imageHashList = imageDhashDao.selectList(null);
+        List<ImageHash> resultList = new ArrayList<>();
+        for (ImageHash imageHash : imageHashList) {
             int distance = DhashUtils.distanceBetween(hashValue, imageHash.getHashValue());
             imageHash.setDistance(distance);
             if (distance <= threshold) {
                 resultList.add(imageHash);
             }
         }
-        resultList.sort(Comparator.comparing(com.acimage.image.model.domain.ImageHash::getDistance));
+        resultList.sort(Comparator.comparing(ImageHash::getDistance));
         int toIndex = Math.min(rankEnd, resultList.size());
         log.info("搜索结果：{}", resultList);
 

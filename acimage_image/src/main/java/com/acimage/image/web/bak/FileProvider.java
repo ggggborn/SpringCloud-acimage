@@ -3,9 +3,9 @@ package com.acimage.image.web.bak;
 
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.image.service.FileService;
 import com.acimage.image.service.imagehash.ImageHashWriteService;
 import lombok.extern.slf4j.Slf4j;

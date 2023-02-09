@@ -2,7 +2,7 @@ package com.acimage.user.web.provider;
 
 
 
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.result.Result;

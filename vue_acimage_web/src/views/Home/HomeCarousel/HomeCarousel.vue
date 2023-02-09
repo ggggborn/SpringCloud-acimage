@@ -3,7 +3,7 @@
 		<!-- 图片走马灯 -->
 		<el-carousel trigger="click" height="350px" style="border-radius: 5px;width: 100%;" @change="onCarouselChange">
 			<el-carousel-item v-for="image in images" :key="image.id" class="hover-pointer">
-				<el-image :src="$global.trueImageUrl(image.url)" fit="cover"
+				<el-image :src="image.url" fit="cover"
 					style="width:100%;height: 350px;border-radius:5px;">
 				</el-image>
 			</el-carousel-item>

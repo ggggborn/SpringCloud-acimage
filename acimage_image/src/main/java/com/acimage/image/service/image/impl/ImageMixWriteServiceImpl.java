@@ -2,10 +2,10 @@ package com.acimage.image.service.image.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.model.domain.image.Image;
-import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
+import com.acimage.common.model.mq.dto.SyncImagesUpdateDto;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.ImageUtils;
 import com.acimage.common.utils.QiniuUtils;
@@ -51,7 +51,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     ImageWriteService imageWriteService;
     @Autowired
     ImageQueryService imageQueryService;
-    @Autowired
+    @Autowired(required = false)
     QiniuUtils qiniuUtils;
     @Autowired
     RedisUtils redisUtils;
@@ -102,7 +102,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     public String saveImage(MultipartFile imageFile) {
         long imageId = IdGenerator.getSnowflakeNextId();
         String suffix = String.format("%s.%s", imageId, FileFormatConstants.WEBP);
-        String url = minioUtils.generateUrl(StorePrefixConstants.TOPIC_IMAGE, new Date(), suffix);
+        String url = minioUtils.generateBaseUrl(StorePrefixConstants.TOPIC_IMAGE, new Date(), suffix);
         //压缩为webp,压缩后不超过200kb
         int limitSize = 200 * 1000;
         int size;
@@ -144,7 +144,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
 
 
     @Override
-    public void removeTopicImages(long topicId, List<String> imageUrls) {
+    public void removeTopicPartialImages(long topicId, List<String> imageUrls) {
         if (CollectionUtil.isEmpty(imageUrls)) {
             return;
         }
@@ -157,7 +157,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
     }
 
     @Override
-    public void removeTopicImages(long topicId) {
+    public void removeTopicPartialImages(long topicId) {
         //找到要删除的图片id
         List<Long> imageIds = imageQueryService.listImageIds(topicId);
         //删除图片
@@ -168,7 +168,7 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
 
 
     @Override
-    public void updateImageAndHash(HashImagesUpdateDto updateDto) {
+    public void updateImageAndHash(SyncImagesUpdateDto updateDto) {
         long topicId = updateDto.getTopicId();
         switch (updateDto.getServiceType()) {
             case ADD:
@@ -213,11 +213,11 @@ public class ImageMixWriteServiceImpl implements ImageMixWriteService {
 
                 //删除图片
                 List<String> removeImageUrlList = updateDto.getRemoveImageUrls();
-                this.removeTopicImages(topicId, removeImageUrlList);
+                this.removeTopicPartialImages(topicId, removeImageUrlList);
                 break;
 
             case DELETE:
-                this.removeTopicImages(topicId);
+                this.removeTopicPartialImages(topicId);
                 break;
         }
     }

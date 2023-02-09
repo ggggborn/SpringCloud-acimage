@@ -1,6 +1,6 @@
 package com.acimage.admin;
 
-import com.acimage.common.global.enums.ImageType;
+
 import com.acimage.common.utils.QiniuUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +19,7 @@ class AdminApplicationTest {
 		qiniuUtils.upload(file,"test/xlg.png");
 	}
 
-	@Test
-	void enumTest() {
-		ImageType imageType=ImageType.HOME_CAROUSEL;
-		System.out.println(imageType);
-		String homeCarousel="HOME_CAROUSEL";
-		System.out.println(ImageType.getImageType(homeCarousel));
-		String nullString=null;
-		System.out.println(nullString+"dsadsa");
-	}
+
 
 
 

@@ -1,7 +1,7 @@
 package com.acimage.gateway.globalfilter;
 
 
-import com.acimage.common.exception.NullTokenException;
+import com.acimage.common.global.exception.NullTokenException;
 import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.service.impl.TokenServiceImpl;
@@ -17,7 +17,6 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpStatus;
 
 
 import org.springframework.http.server.reactive.ServerHttpRequest;

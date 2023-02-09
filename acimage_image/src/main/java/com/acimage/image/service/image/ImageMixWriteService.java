@@ -1,6 +1,6 @@
 package com.acimage.image.service.image;
 
-import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
+import com.acimage.common.model.mq.dto.SyncImagesUpdateDto;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,9 +19,9 @@ public interface ImageMixWriteService {
     @Transactional(rollbackFor = Exception.class)
     String updateTopicIdAndReturnFirstImageUrl(String serviceToken, long topicId);
 
-    void removeTopicImages(long topicId, List<String> imageUrls);
+    void removeTopicPartialImages(long topicId, List<String> imageUrls);
 
-    void removeTopicImages(long topicId);
+    void removeTopicPartialImages(long topicId);
 
-    void updateImageAndHash(HashImagesUpdateDto updateDto);
+    void updateImageAndHash(SyncImagesUpdateDto updateDto);
 }

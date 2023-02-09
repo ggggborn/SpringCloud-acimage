@@ -7,7 +7,7 @@ import com.acimage.admin.model.request.ApiAddReq;
 import com.acimage.admin.model.request.ApiModifyReq;
 import com.acimage.admin.service.api.ApiWriteService;
 import com.acimage.admin.service.permission.PermissionQueryService;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.sys.Api;
 import com.acimage.common.model.domain.sys.Permission;
 import com.acimage.common.utils.common.BeanUtils;

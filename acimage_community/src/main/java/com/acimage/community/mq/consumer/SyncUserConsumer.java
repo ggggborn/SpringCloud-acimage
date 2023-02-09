@@ -1,10 +1,15 @@
 package com.acimage.community.mq.consumer;
 
 
+import com.acimage.common.global.consts.MqConstants;
+import com.acimage.common.model.Index.TopicIndex;
 import com.acimage.common.model.domain.community.CmtyUser;
+import com.acimage.common.model.mq.dto.EsUpdateByTermDto;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 
+import com.acimage.common.utils.EsUtils;
+import com.acimage.common.utils.LambdaUtils;
 import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
 import com.acimage.community.service.cmtyuser.UserMixWriteService;
 import com.rabbitmq.client.Channel;
@@ -16,21 +21,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Component
-@RabbitListener(queues = "sync-user-queue")
+@RabbitListener(queues = MqConstants.SYNC_USER_QUEUE)
 public class SyncUserConsumer {
 
     @Autowired
     CmtyUserWriteService cmtyUserWriteService;
+    @Autowired
+    EsUtils esUtils;
 
     @RabbitHandler
     public void syncUsername(Channel channel, Message message, UserIdWithUsername userIdWithUsername) {
         log.info("同步用户名：{}", userIdWithUsername);
         try {
             cmtyUserWriteService.updateUsername(userIdWithUsername.getUserId(), userIdWithUsername.getUsername());
-
+            TopicIndex topicIndex = TopicIndex.builder()
+                    .userId(userIdWithUsername.getUserId())
+                    .username(userIdWithUsername.getUsername())
+                    .build();
+            EsUpdateByTermDto updateDto = new EsUpdateByTermDto();
+            updateDto.with(topicIndex);
+            String termColumn = LambdaUtils.columnNameOf(TopicIndex::getUserId);
+            List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getUsername);
+            updateDto.setTermColumn(termColumn);
+            updateDto.setColumns(columns);
+            esUtils.UpdateByTerm(updateDto);
 
         } catch (Exception e) {
             e.printStackTrace();

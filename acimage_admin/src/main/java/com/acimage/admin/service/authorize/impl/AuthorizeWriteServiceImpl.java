@@ -3,7 +3,7 @@ package com.acimage.admin.service.authorize.impl;
 import com.acimage.admin.dao.sys.AuthorizeDao;
 import com.acimage.admin.service.authorize.AuthorizeWriteService;
 import com.acimage.admin.service.permission.PermissionQueryService;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.sys.Authorize;
 import com.acimage.common.model.domain.sys.Permission;
 import com.baomidou.dynamic.datasource.annotation.DS;

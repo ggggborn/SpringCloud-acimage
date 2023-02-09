@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.List;
 
+@Deprecated
 @Slf4j
-@Component
 public class RemoveTopicImagesConsumer {
     private static final String REMOVE_TOPIC_IMAGES_QUEUE = "remove-topic-images-queue";
 

@@ -7,7 +7,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.acimage.common.exception.NullTokenException;
+import com.acimage.common.global.exception.NullTokenException;
 
 
 import java.util.Date;
@@ -35,7 +35,7 @@ public class JwtUtils {
 
     public static void verifyToken(String token) throws JWTVerificationException {
         if(StrUtil.isBlank(token)){
-            throw new NullTokenException("token为空！");
+            throw new NullTokenException("token is null！");
         }
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(JWT_SECRET)).build();
         try {

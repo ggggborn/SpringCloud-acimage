@@ -1,6 +1,5 @@
 package com.acimage.community.web.provider;
 
-import com.acimage.common.global.annotation.Authentication;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.topic.TopicInfoWriteService;

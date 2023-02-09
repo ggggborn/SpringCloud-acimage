@@ -1,15 +1,15 @@
 package com.acimage.user.web.controller;
 
 
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.common.result.Result;
 
 import com.acimage.user.model.request.UserLoginReq;
 import com.acimage.user.model.request.UserRegisterReq;
-import com.acimage.user.service.mail.MainService;
 import com.acimage.user.service.user.LoginService;
+import com.acimage.user.service.user.UserQueryService;
 import com.acimage.user.service.verify.VerifyCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
@@ -32,6 +31,12 @@ public class LoginController {
     VerifyCodeService verifyCodeService;
     @Autowired
     LoginService loginService;
+    @Autowired
+    UserQueryService userQueryService;
+    @GetMapping("/isExist/{username}")
+    public Result<Boolean> isUsernameExist(@Size(min = 2, max = 12, message = "用户名长度在2到12之间") @PathVariable String username) {
+        return Result.ok(userQueryService.isUsernameExist(username));
+    }
 
 
     @GetMapping("/getPublicKey")

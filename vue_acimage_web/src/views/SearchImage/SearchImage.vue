@@ -37,12 +37,15 @@
 				<div class="search-result-container">
 					<template v-for="image in resultImages">
 						<router-link class="no-underline" :to="$global.getTopicUrl(image.topic.id)" :key="image.id">
-							<float-image :title="image.topic.title" :star="image.topic.starCount"
-								:page-view="image.topic.pageView" :username="image.topic.user.username"
-								:create-time="image.topic.createTime"
-								:photo-url="$global.truePhotoUrl(image.topic.user.photoUrl)"
-								:image-url="$global.trueImageUrl(image.url)">
-							</float-image>
+							<div class="result-image-container">
+								<float-image :title="image.topic.title" :star="image.topic.starCount"
+									:page-view="image.topic.pageView" :username="image.topic.user.username"
+									:create-time="image.topic.createTime"
+									:photo-url="$global.truePhotoUrl(image.topic.user.photoUrl)"
+									:image-url="image.url">
+								</float-image>
+							</div>
+
 						</router-link>
 					</template>
 				</div>

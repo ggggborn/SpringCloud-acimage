@@ -3,7 +3,7 @@ package com.acimage.user.service.user.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 
 import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.model.domain.community.CmtyUser;

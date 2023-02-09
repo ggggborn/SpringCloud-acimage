@@ -1,7 +1,7 @@
 package com.acimage.community.service.tag.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.Tag;
 import com.acimage.common.utils.common.ListUtils;

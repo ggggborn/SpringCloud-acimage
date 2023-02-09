@@ -1,7 +1,7 @@
 package com.acimage.community.web.controller;
 
 
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.Topic;

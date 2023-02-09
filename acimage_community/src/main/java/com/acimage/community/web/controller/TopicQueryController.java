@@ -6,7 +6,7 @@ import com.acimage.common.model.page.MyPage;
 import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.global.consts.PageSizeConstants;

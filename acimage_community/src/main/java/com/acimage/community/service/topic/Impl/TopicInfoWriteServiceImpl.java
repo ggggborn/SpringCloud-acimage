@@ -4,11 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.global.enums.ServiceType;
 import com.acimage.common.model.Index.TopicIndex;
+import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.domain.community.TopicHtml;
-import com.acimage.common.model.mq.dto.HashImagesUpdateDto;
+import com.acimage.common.model.mq.dto.SyncImagesUpdateDto;
 import com.acimage.common.utils.*;
-import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.community.global.consts.CoverImageConstants;
@@ -16,8 +16,7 @@ import com.acimage.common.global.consts.StorePrefixConstants;
 import com.acimage.community.listener.event.PublishTopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicModifyHtmlReq;
-import com.acimage.community.mq.producer.HashImageMqProducer;
-import com.acimage.community.mq.producer.RemoveTopicImagesMqProducer;
+import com.acimage.community.mq.producer.syncImagesMqProducer;
 import com.acimage.community.mq.producer.SyncEsMqProducer;
 import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
 import com.acimage.community.service.comment.CommentWriteService;
@@ -26,7 +25,7 @@ import com.acimage.community.service.tag.TagQueryService;
 import com.acimage.community.service.tag.TagTopicWriteService;
 import com.acimage.community.service.topic.*;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -56,11 +55,9 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     @Autowired
     TagQueryService tagQueryService;
     @Autowired
-    HashImageMqProducer hashImageMqProducer;
+    syncImagesMqProducer syncImagesMqProducer;
     @Autowired
     SyncEsMqProducer syncEsMqProducer;
-    @Autowired
-    RemoveTopicImagesMqProducer removeTopicImagesMqProducer;
     @Autowired
     CmtyUserWriteService cmtyUserWriteService;
     @Autowired
@@ -81,12 +78,12 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         long topicId = IdGenerator.getSnowflakeNextId();
         Date now = new Date();
         String suffix = String.format("%s.%s", topicId, FileFormatConstants.WEBP);
-        String url = minioUtils.generateUrl(StorePrefixConstants.COVER_IMAGE, now, suffix);
+        String url = minioUtils.generateBaseUrl(StorePrefixConstants.COVER_IMAGE, now, suffix);
         //图片压缩
         InputStream inputStream = ImageUtils.compressAsFixedWebpImage(coverImage,
                 CoverImageConstants.WIDTH,
                 CoverImageConstants.HEIGHT,
-                CoverImageConstants.SIZE_AFTER_COMPRESS);
+                CoverImageConstants.LIMIT_COMPRESS_SIZE);
 
         String coverImageUrl = minioUtils.upload(inputStream, url, FileFormatConstants.WEBP_CONTENT_TYPE);
         //过滤标题
@@ -108,6 +105,13 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .userId(UserContext.getUserId())
                 .categoryId(topicAddReq.getCategoryId())
                 .build();
+        if(UserContext.getUserId()!=null){
+            CmtyUser user=new CmtyUser();
+            user.setUsername(UserContext.getUsername());
+            user.setPhotoUrl(UserContext.getPhotoUrl());
+            user.setId(UserContext.getUserId());
+            topic.setUser(user);
+        }
 
         //检查标签是否存在
         List<Integer> noRepeatTagIds = ListUtils.removeRepeat(Arrays.asList(topicAddReq.getTagIds()));
@@ -124,14 +128,13 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         topicSpAttrWriteService.changeActivityTime(topicId, now);
         //获取话题内的站内图片链接
         List<String> newImageUrlList = HtmlUtils.getInnerImageUrls(topicAddReq.getHtml());
-        HashImagesUpdateDto updateDto = HashImagesUpdateDto.builder()
+        SyncImagesUpdateDto updateDto = SyncImagesUpdateDto.builder()
                 .addImageUrls(newImageUrlList)
                 .topicId(topicId)
                 .serviceType(ServiceType.ADD)
                 .build();
 
-        //发送到mq，用于以图识图
-        hashImageMqProducer.sendHashImagesMessage(updateDto);
+
         //同步到es
         TopicIndex topicIndex = TopicIndex.from(topic);
         topicIndex.setTagIds(noRepeatTagIds);
@@ -140,7 +143,10 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         topicIndex.setStarCount(0);
         topicIndex.setCommentCount(0);
         topicIndex.setPageView(0);
+
         syncEsMqProducer.sendAddMessage(topicIndex);
+        //发送到mq，用于以图识图
+        syncImagesMqProducer.sendSyncImagesMessage(updateDto);
 
         PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
         applicationContext.publishEvent(publishTopicEvent);
@@ -179,11 +185,11 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
 //        //同步es数据
 //        syncEsMqProducer.sendDeleteMessage(Long.toString(topicId), TopicIndex.class);
 //        //同步到以图识图
-//        HashImagesUpdateDto updateDto = HashImagesUpdateDto.builder()
+//        SyncImagesUpdateDto updateDto = SyncImagesUpdateDto.builder()
 //                .topicId(topicId)
 //                .serviceType(ServiceType.DELETE)
 //                .build();
-//        hashImageMqProducer.sendHashImagesMessage(updateDto);
+//        syncImagesMqProducer.sendHashImagesMessage(updateDto);
     }
 
     @Override
@@ -207,16 +213,15 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         topicSpAttrWriteService.removeAttributes(topicId);
         //更新用户统计数据
         cmtyUserWriteService.updateTopicCountByIncrement(userId, -1);
-        //发送删除图片的消息
-        removeTopicImagesMqProducer.sendRemoveTopicMessage(topicId);
+
         //同步es数据
         syncEsMqProducer.sendDeleteMessage(Long.toString(topicId), TopicIndex.class);
-        //同步到以图识图
-        HashImagesUpdateDto updateDto = HashImagesUpdateDto.builder()
+        //同步图片
+        SyncImagesUpdateDto updateDto = SyncImagesUpdateDto.builder()
                 .topicId(topicId)
                 .serviceType(ServiceType.DELETE)
                 .build();
-        hashImageMqProducer.sendHashImagesMessage(updateDto);
+        syncImagesMqProducer.sendSyncImagesMessage(updateDto);
     }
 
     @Override
@@ -240,14 +245,14 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         String subContent = StrUtil.subPre(content, Topic.CONTENT_MAX);
 
         //获取变化的图片链接
-        HashImagesUpdateDto updateDto = null;
+        SyncImagesUpdateDto updateDto = null;
         TopicHtml topicHtml = topicHtmlQueryService.getTopicHtml(topicId);
         if (topicHtml != null) {
             List<String> oldUrls = HtmlUtils.getInnerImageUrls(topicHtml.getHtml());
             List<String> newUrls = HtmlUtils.getInnerImageUrls(modifyReq.getHtml());
             List<String> addImageUrls = ListUtils.differenceSetOfV2(newUrls, oldUrls);
             List<String> removeImageUrls = ListUtils.differenceSetOfV2(oldUrls, newUrls);
-            updateDto = HashImagesUpdateDto.builder()
+            updateDto = SyncImagesUpdateDto.builder()
                     .topicId(topicId)
                     .addImageUrls(addImageUrls)
                     .removeImageUrls(removeImageUrls)
@@ -268,7 +273,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
 
         //同步图片哈希
         if (updateDto != null) {
-            hashImageMqProducer.sendHashImagesMessage(updateDto);
+            syncImagesMqProducer.sendSyncImagesMessage(updateDto);
         }
     }
 

@@ -3,7 +3,7 @@ package com.acimage.community.web.controller;
 
 
 import com.acimage.common.result.Result;
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.community.service.star.StarMixQueryService;
 import com.acimage.community.service.star.StarQueryService;

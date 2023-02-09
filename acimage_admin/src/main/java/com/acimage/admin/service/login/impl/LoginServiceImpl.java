@@ -4,9 +4,9 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.acimage.admin.dao.user.UserDao;
 import com.acimage.admin.dao.user.UserPrivacyDao;
 import com.acimage.admin.global.consts.ModuleConstants;
-import com.acimage.admin.model.request.LoginReq;
+import com.acimage.admin.model.request.AdminLoginReq;
 import com.acimage.admin.service.login.LoginService;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.model.domain.user.UserPrivacy;
 import com.acimage.common.service.TokenService;
@@ -29,9 +29,9 @@ public class LoginServiceImpl implements LoginService {
     TokenService tokenService;
 
     @Override
-    public String login(LoginReq loginReq) {
-        String email = loginReq.getEmail();
-        String password = loginReq.getPassword();
+    public String login(AdminLoginReq adminLoginReq) {
+        String email = adminLoginReq.getEmail();
+        String password = adminLoginReq.getPassword();
 
         LambdaQueryWrapper<UserPrivacy> qw = new LambdaQueryWrapper<>();
         qw.eq(UserPrivacy::getEmail, email);

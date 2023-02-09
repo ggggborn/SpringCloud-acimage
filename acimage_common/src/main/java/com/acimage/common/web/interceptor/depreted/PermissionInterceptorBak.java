@@ -1,6 +1,6 @@
 package com.acimage.common.web.interceptor.depreted;
 
-import com.acimage.common.global.annotation.utils.AuthenticationUtils;
+import com.acimage.common.deprecated.annotation.utils.AuthenticationUtils;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.common.global.enums.TokenStatus;

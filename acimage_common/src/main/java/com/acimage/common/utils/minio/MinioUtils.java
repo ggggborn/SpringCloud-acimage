@@ -1,17 +1,11 @@
 package com.acimage.common.utils.minio;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.http.HttpUtil;
 import io.minio.*;
-import io.minio.errors.*;
 import io.minio.messages.DeleteObject;
-import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,11 +13,6 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.file.Files;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -160,7 +149,7 @@ public class MinioUtils {
         }
     }
 
-    public String generateUrl(@Nullable String prefix, Date uploadTime, String suffix) {
+    public String generateBaseUrl(@Nullable String prefix, Date uploadTime, String suffix) {
         String formatPattern = "yyyy/MM/dd";
 
         String newPrefix = prefix == null ? "" : prefix + "/";

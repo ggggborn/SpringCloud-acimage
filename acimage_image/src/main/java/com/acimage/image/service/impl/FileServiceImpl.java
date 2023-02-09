@@ -3,7 +3,7 @@ package com.acimage.image.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.image.global.consts.MyFileConst;
 import com.acimage.image.global.context.DirectoryContext;

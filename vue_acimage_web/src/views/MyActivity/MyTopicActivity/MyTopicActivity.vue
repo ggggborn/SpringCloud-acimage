@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="activity-right">
-					<el-image :src="$global.trueImageUrl(topic.firstImageUrl)" fit="cover"
+					<el-image :src="topic.coverImageUrl" fit="cover"
 						style="height:70px;border-radius: 3px">
 					</el-image>
 

@@ -5,7 +5,7 @@ import com.acimage.common.redis.annotation.KeyParam;
 import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.community.dao.StarDao;
 import com.acimage.community.service.star.StarQueryService;
-import com.acimage.community.global.consts.StarKeyConsts;
+import com.acimage.community.global.consts.StarKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class StarQueryServiceImpl implements StarQueryService {
     @Autowired
     StarDao starDao;
 
-    @QueryRedis(keyPrefix = StarKeyConsts.STRINGKP_STAR_USER_TOPIC)
+    @QueryRedis(keyPrefix = StarKeyConstants.STRINGKP_STAR_USER_TOPIC)
     @Override
     public boolean isStar(@KeyParam long userId,@KeyParam long topicId) {
         LambdaQueryWrapper<Star> qw=new LambdaQueryWrapper<>();
@@ -24,7 +24,7 @@ public class StarQueryServiceImpl implements StarQueryService {
         return starDao.selectOne(qw) != null;
     }
 
-    @QueryRedis(keyPrefix = StarKeyConsts.STRINGKP_TOPIC_STAR_COUNT,expire = 31L)
+    @QueryRedis(keyPrefix = StarKeyConstants.STRINGKP_TOPIC_STAR_COUNT,expire = 31L)
     @Override
     public Integer getTopicStarCount(@KeyParam long topicId) {
         LambdaQueryWrapper<Star> qw=new LambdaQueryWrapper<>();
@@ -32,7 +32,7 @@ public class StarQueryServiceImpl implements StarQueryService {
         return starDao.selectCount(qw);
     }
 
-    @QueryRedis(keyPrefix = StarKeyConsts.STRINGKP_USER_STAR_COUNT, expire = 31L)
+    @QueryRedis(keyPrefix = StarKeyConstants.STRINGKP_USER_STAR_COUNT, expire = 31L)
     @Override
     public Integer getStarCountOwnedBy(@KeyParam long userId) {
         return starDao.countStarsOwnedBy(userId);

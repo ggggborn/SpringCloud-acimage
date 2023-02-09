@@ -90,12 +90,12 @@
 					//加密
 					let encryptRes = encryptor.encrypt(param.password);
 					if (encryptRes != false) {
-						let loginReq = {
+						let adminLoginReq = {
 							email: param.email,
 							password: encryptRes,
 							verifyCode: param.verifyCode
 						}
-						doLogin(loginReq).then((res: any) => {
+						doLogin(adminLoginReq).then((res: any) => {
 							if (res.code == Code.OK) {
 								store.setToken(res.token)
 								MessageUtils.success('登录成功', 1);

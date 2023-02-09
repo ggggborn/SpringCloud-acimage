@@ -1,7 +1,7 @@
 package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.acimage.common.exception.BusinessException;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.community.Comment;

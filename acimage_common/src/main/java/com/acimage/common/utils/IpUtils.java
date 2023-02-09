@@ -10,6 +10,7 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Objects;
 
 @Slf4j
 public class IpUtils {
@@ -86,7 +87,7 @@ public class IpUtils {
         }
         //兼容k8s集群获取ip
         if (StringUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddress().getAddress().getHostAddress();
+            ip = Objects.requireNonNull(request.getRemoteAddress()).getAddress().getHostAddress();
             if (LOCALHOST_IP1.equalsIgnoreCase(ip) || LOCALHOST_IP.equalsIgnoreCase(ip)) {
                 //根据网卡取本机配置的IP
                 InetAddress iNet = null;

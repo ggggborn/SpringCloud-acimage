@@ -19,7 +19,7 @@ public class HomeCarouselQueryServiceImpl implements HomeCarouselQueryService {
     @Autowired
     HomeCarrouselDao homeCarrouselDao;
 
-    @QueryRedis(keyPrefix = STRINGK_SP_IMAGE, expire = 24, unit = TimeUnit.HOURS)
+    @QueryRedis(keyPrefix = STRINGK_SP_IMAGE, expire = 2L )
     @Override
     public List<HomeCarousel> listAll() {
         LambdaQueryWrapper<HomeCarousel> qw = new LambdaQueryWrapper<>();

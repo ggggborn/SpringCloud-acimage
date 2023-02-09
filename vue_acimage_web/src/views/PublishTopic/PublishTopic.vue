@@ -173,6 +173,10 @@
 				MessageUtils.notice('最多上传1张图');
 			},
 			clickTag(tag) {
+				//长度限制，超过三个停止
+				if(this.chosenTagList.length>=3){
+					return;
+				}
 				//判断重复
 				for (let item of this.chosenTagList) {
 					if (tag.id == item.id) {

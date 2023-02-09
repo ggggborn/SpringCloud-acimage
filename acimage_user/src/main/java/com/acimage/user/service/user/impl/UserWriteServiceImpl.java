@@ -37,7 +37,7 @@ public class UserWriteServiceImpl implements UserWriteService {
     TokenService tokenService;
     @Autowired
     RedisUtils redisUtils;
-    @Autowired
+    @Autowired(required = false)
     QiniuUtils qiniuUtils;
     @Autowired
     SyncUserMqProducer syncUserMqProducer;

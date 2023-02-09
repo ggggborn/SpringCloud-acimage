@@ -18,7 +18,7 @@ module.exports = {
 				target: "http://127.0.0.1:81/", // 需要代理访问的api地址
 				changeOrigin: true, // 允许跨域请求
 			},
-			"/555": {
+			"/acfile": {
 				target: "http://127.0.0.1:81/", // 需要代理访问的api地址
 				changeOrigin: true, // 允许跨域请求
 			},

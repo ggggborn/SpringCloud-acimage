@@ -1,6 +1,6 @@
 package com.acimage.community.mq.config;
 
-import com.acimage.community.global.consts.ExchangeConstants;
+import com.acimage.common.global.consts.MqConstants;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,9 +8,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SyncEsMqConfig {
-    public static final String SYNC_ES_QUEUE = "sync-es-queue";
-    public static final String SYNC_ES_ROUTE = "sync-es-route";
-
     @Autowired
     AmqpAdmin rabbitAdmin;
 
@@ -22,24 +19,24 @@ public class SyncEsMqConfig {
         //   return new Queue("TestDirectQueue",true,true,false);
 
         //一般设置一下队列的持久化就好,其余两个就是默认false
-        return new Queue(SYNC_ES_QUEUE, true);
+        return new Queue(MqConstants.SYNC_ES_QUEUE, true);
     }
 
 
     @Bean
     DirectExchange syncEsExchange() {
-        return new DirectExchange(ExchangeConstants.SYNC_ES_EXCHANGE, true, false);
+        return new DirectExchange(MqConstants.SYNC_ES_EXCHANGE, true, false);
     }
 
     //绑定  将队列和交换机绑定, 并设置用于匹配键
     @Bean
     Binding bindingSyncEs() {
-        return BindingBuilder.bind(syncEsQueue()).to(syncEsExchange()).with(SYNC_ES_ROUTE);
+        return BindingBuilder.bind(syncEsQueue()).to(syncEsExchange()).with(MqConstants.SYNC_ES_ROUTE);
     }
 
     //创建交换机和队列
     @Bean
-    public void createSyncEsExchangeQueue() {
+    public void createExchangeQueueForSyncEs() {
         rabbitAdmin.declareExchange(syncEsExchange());
         rabbitAdmin.declareQueue(syncEsQueue());
     }

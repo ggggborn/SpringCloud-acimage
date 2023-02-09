@@ -2,7 +2,7 @@ package com.acimage.image.service.imagehash.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.image.dao.ImageHashDao;
-import com.acimage.image.model.domain.ImageHash;
+import com.acimage.common.model.domain.image.ImageHash;
 import com.acimage.image.service.imagehash.ImageHashWriteService;
 import com.acimage.image.utils.BitUtils;
 import com.acimage.image.utils.DhashUtils;

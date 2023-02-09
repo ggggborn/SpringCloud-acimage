@@ -1,10 +1,9 @@
 package com.acimage.user.mq.producer;
 
+import com.acimage.common.global.consts.MqConstants;
 import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
-import com.acimage.user.mq.config.SyncUserMqConfig;
-import com.acimage.user.mq.consts.ExchangeConstants;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,15 +15,15 @@ public class SyncUserMqProducer {
     RabbitTemplate rabbitTemplate;
 
     public void sendSyncUsernameMessage(UserIdWithUsername userIdWithUsername){
-        rabbitTemplate.convertAndSend(ExchangeConstants.COMMUNITY_USER_EXCHANGE, SyncUserMqConfig.SYNC_USER_ROUTE,userIdWithUsername);
+        rabbitTemplate.convertAndSend(MqConstants.COMMUNITY_USER_EXCHANGE, MqConstants.SYNC_USER_ROUTE,userIdWithUsername);
     }
 
     public void sendSyncUserPhotoUrlMessage(UserIdWithPhotoUrl userIdWithPhotoUrl){
-        rabbitTemplate.convertAndSend(ExchangeConstants.COMMUNITY_USER_EXCHANGE, SyncUserMqConfig.SYNC_USER_ROUTE,userIdWithPhotoUrl);
+        rabbitTemplate.convertAndSend(MqConstants.COMMUNITY_USER_EXCHANGE, MqConstants.SYNC_USER_ROUTE,userIdWithPhotoUrl);
     }
 
     public void sendAddUserMessage(CmtyUser cmtyUser){
-        rabbitTemplate.convertAndSend(ExchangeConstants.COMMUNITY_USER_EXCHANGE, SyncUserMqConfig.SYNC_USER_ROUTE, cmtyUser);
+        rabbitTemplate.convertAndSend(MqConstants.COMMUNITY_USER_EXCHANGE, MqConstants.SYNC_USER_ROUTE, cmtyUser);
     }
 
 

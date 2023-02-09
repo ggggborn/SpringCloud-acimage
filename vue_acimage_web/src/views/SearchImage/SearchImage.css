@@ -56,3 +56,10 @@ body{
 	margin-left:100px;
 	margin-right:100px;
 }
+
+.result-image-container{
+	margin-right:10px;
+	height:250px;
+	width:150px;
+	display:inline-block;
+}

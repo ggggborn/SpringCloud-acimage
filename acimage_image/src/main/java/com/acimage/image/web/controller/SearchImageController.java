@@ -1,7 +1,7 @@
 package com.acimage.image.web.controller;
 
 
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.result.Result;
 import com.acimage.image.service.imagehash.SearchImageService;

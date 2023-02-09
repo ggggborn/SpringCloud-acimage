@@ -1,14 +1,11 @@
 package com.acimage.community.web.controller;
 
 
-import com.acimage.common.global.annotation.Authentication;
+import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.redis.annotation.RequestLimit;
-import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.star.StarMixQueryService;
 import com.acimage.community.service.star.StarQueryService;
-import com.acimage.community.service.star.StarWriteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

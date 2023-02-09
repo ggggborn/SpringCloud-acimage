@@ -106,8 +106,7 @@
 </template>
 
 <script>
-	import { doLogin, doRegister, getPublicKey, sendCodeToEmail } from '@/api/login.js'
-	import { queryIsUsernameExist } from '@/api/user.js'
+	import { doLogin, doRegister, getPublicKey, sendCodeToEmail, queryIsUsernameExist } from '@/api/login.js'
 
 	import { Code } from '@/utils/result.js'
 	import CommonUtils from '@/utils/CommonUtils'
@@ -118,9 +117,10 @@
 		name: 'LoginA',
 		data() {
 			return {
-				username: 'wk',
+				
 				password: 'wk123456',
 				email: 'wk@qq.com',
+				username: 'wk',
 				verifyCode: '',
 				isRegisterMode: false,
 				isUsernameExist: false,
@@ -150,8 +150,8 @@
 				return false;
 			},
 			sendCode() {
-				sendCodeToEmail(this.email).then(res=>{
-					if(res.code==Code.OK){
+				sendCodeToEmail(this.email).then(res => {
+					if (res.code == Code.OK) {
 						MessageUtils.success("发送成功，请到邮箱查看");
 					}
 				})

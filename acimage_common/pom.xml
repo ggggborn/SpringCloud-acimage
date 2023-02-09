@@ -46,6 +46,12 @@
             <artifactId>commons-pool2</artifactId>
         </dependency>
 
+        <!--rabbitmq-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
         <!--nacos-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

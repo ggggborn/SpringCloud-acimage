@@ -68,6 +68,14 @@
             <artifactId>minio</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.nintha</groupId>
+            <artifactId>webp-imageio-core</artifactId>
+            <version>0.1.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/webp-imageio-core-0.1.0.jar</systemPath>
+        </dependency>
+
 
 
     </dependencies>
