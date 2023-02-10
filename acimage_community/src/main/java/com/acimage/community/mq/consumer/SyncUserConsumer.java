@@ -11,7 +11,6 @@ import com.acimage.common.model.mq.dto.UserIdWithUsername;
 import com.acimage.common.utils.EsUtils;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
-import com.acimage.community.service.cmtyuser.UserMixWriteService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -78,10 +77,21 @@ public class SyncUserConsumer {
         log.info("同步头像地址：{}", userIdWithPhotoUrl);
         try {
             cmtyUserWriteService.updatePhotoUrl(userIdWithPhotoUrl.getUserId(), userIdWithPhotoUrl.getPhotoUrl());
+            TopicIndex topicIndex = TopicIndex.builder()
+                    .userId(userIdWithPhotoUrl.getUserId())
+                    .photoUrl(userIdWithPhotoUrl.getPhotoUrl())
+                    .build();
+            EsUpdateByTermDto updateDto = new EsUpdateByTermDto();
+            updateDto.with(topicIndex);
+            String termColumn = LambdaUtils.columnNameOf(TopicIndex::getUserId);
+            List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getPhotoUrl);
+            updateDto.setTermColumn(termColumn);
+            updateDto.setColumns(columns);
+            esUtils.UpdateByTerm(updateDto);
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("同步头像地址任务失败 error:{} 对象：{}", e.getMessage(), userIdWithPhotoUrl);
+            log.error("同步头像地址任务失败 error:{} data:{}", e.getMessage(), userIdWithPhotoUrl);
 
         } finally {
             String messageBody = new String(message.getBody());

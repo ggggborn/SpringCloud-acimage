@@ -8,8 +8,9 @@ public interface TopicSpAttrWriteService {
     void updateStarCountByIncrement(List<Long> topicIds,List<Integer> increments);
     void updateCommentCountByIncrement(List<Long> topicIds,List<Integer> increments);
     void updatePageViewByIncrement(List<Long> topicIds,List<Integer> increments);
-    void updateActivityTime(List<Long> topicIds, List<Date> activityTimes);
+    void updateBatchActivityTime(List<Long> topicIds, List<Date> activityTimes);
     void changeActivityTime(long topicId, Date date);
+
     void increaseStarCount(long topicId, int increment);
     void increaseCommentCount(long topicId, int increment);
 

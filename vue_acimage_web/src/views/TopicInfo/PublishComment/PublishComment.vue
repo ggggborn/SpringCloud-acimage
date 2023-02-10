@@ -37,7 +37,12 @@
 					'topicId': this.topicId,
 					'content': this.content
 				};
-				CommonUtils.popMsgAndRefreshIfOk(addComment(data), '发表成功', 2);
+				addComment(data).then(res=>{
+					if(res.code==Code.OK){
+						MessageUtils.success("发表成功");
+						CommonUtils.delayRefresh(1)
+					}
+				})
 			}
 		}
 	}

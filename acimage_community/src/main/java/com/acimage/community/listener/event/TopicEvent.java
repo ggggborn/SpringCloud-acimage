@@ -7,11 +7,11 @@ import org.springframework.context.ApplicationEvent;
 
 @Getter
 @Setter
-public class PublishTopicEvent extends ApplicationEvent {
+public class TopicEvent extends ApplicationEvent {
     private Long userId;
     private Long topicId;
 
-    public PublishTopicEvent(Object source, Long userId, Long topicId) {
+    public TopicEvent(Object source, Long userId, Long topicId) {
         super(source);
         this.userId = userId;
         this.topicId = topicId;

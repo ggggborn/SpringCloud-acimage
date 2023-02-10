@@ -61,10 +61,10 @@ global.trueImageUrl = function(url) {
 //获取头像路径
 global.truePhotoUrl = function(url) {
 	if (CommonUtils.isEmpty(url) || url == '#') {
-		return global.baseImageUrl + 'userPhoto/default.jpeg';
+		return 'userPhoto/default.jpeg';
 
 	}
-	return global.baseImageUrl + url;
+	return url;
 }
 
 //获取分享链接

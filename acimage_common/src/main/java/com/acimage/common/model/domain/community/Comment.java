@@ -5,11 +5,13 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 
 @Data
+@NoArgsConstructor
 public class Comment {
     public static final int CONTENT_MIN=2;
     public static final int CONTENT_MAX=200;

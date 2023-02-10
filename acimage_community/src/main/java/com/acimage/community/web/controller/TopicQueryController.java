@@ -34,7 +34,7 @@ public class TopicQueryController {
     @Autowired
     TopicInfoQueryService topicInfoQueryService;
 
-    @RequestLimit(limitTimes = {5},durations = {10},penaltyTimes = {100},targets = {LimitTarget.ALL})
+    @RequestLimit(limitTimes = {10},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @RecordPageView
     @GetMapping("/info/{id}")
     public Result<TopicInfoVo> queryTopicAndFirstCommentPage(@TopicId @Positive @PathVariable("id") Long id) {

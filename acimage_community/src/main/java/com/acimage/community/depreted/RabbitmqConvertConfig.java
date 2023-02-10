@@ -1,4 +1,4 @@
-package com.acimage.community.mq.config;
+package com.acimage.community.depreted;
 
 
 import org.springframework.amqp.core.AcknowledgeMode;

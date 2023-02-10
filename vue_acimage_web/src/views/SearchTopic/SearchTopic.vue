@@ -38,7 +38,7 @@
 				</el-form>
 				<div style="margin-left: 120px;">
 					<div v-for="topic in topics" :key="topic.id" style="margin-bottom: 5px;">
-						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.createTime"
+						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.activityTime"
 							:starCount="topic.starCount" :commentCount="topic.commentCount" :pageView="topic.pageView"
 							:username="topic.user.username" :photoUrl="topic.user.photoUrl" :to="$global.getTopicUrl(topic.id)"
 							:categoryId="topic.categoryId" :tagIds="topic.tagIds" :coverImageUrl="topic.coverImageUrl"

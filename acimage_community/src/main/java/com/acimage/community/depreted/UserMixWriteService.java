@@ -1,4 +1,4 @@
-package com.acimage.community.service.cmtyuser;
+package com.acimage.community.depreted;
 
 import com.acimage.common.model.domain.community.CmtyUser;
 

@@ -6,6 +6,7 @@ import com.acimage.admin.dao.user.UserPrivacyDao;
 import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.model.request.AdminLoginReq;
 import com.acimage.admin.service.login.LoginService;
+import com.acimage.common.global.consts.JwtConstants;
 import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.model.domain.user.UserPrivacy;
@@ -58,7 +59,10 @@ public class LoginServiceImpl implements LoginService {
 
         //返回token
         User user=userDao.selectById(userId);
-        return tokenService.createAndRecordToken(userId, user.getUsername(), user.getPhotoUrl());
+        return tokenService.createAndRecordToken(userId,
+                user.getUsername(),
+                user.getPhotoUrl(),
+                JwtConstants.ADMIN_EXPIRE_DAYS);
 
     }
 }

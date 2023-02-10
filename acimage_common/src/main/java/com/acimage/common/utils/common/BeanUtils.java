@@ -10,6 +10,7 @@ import java.util.*;
 
 
 public class BeanUtils {
+    public static final String SET="set";
 
     public static Map<String, String> beanToFieldJsonMap(Object javaBean) {
 
@@ -35,7 +36,7 @@ public class BeanUtils {
                 //json转对象
                 Object obj = JacksonUtils.convert(json, ReflectUtil.getField(clz, key).getType());
                 //获取方法
-                String setMethodName = StringUtils.concatCapitalize("set", key);
+                String setMethodName = StringUtils.concatCapitalize(SET, key);
                 Method setMethod = ReflectUtil.getMethodByName(clz, setMethodName);
                 //调用方法，将属性set进去
                 ReflectUtil.invoke(instance, setMethod, obj);

@@ -24,6 +24,9 @@ public interface TopicDao extends BaseMapper<Topic> {
     @Update("update tb_topic set ${column}=${column}+#{increment} where id=#{id} and deleted=0")
     Integer updateColumnByIncrement(@Param("column") String column, @Param("id") long id, @Param("increment") int increment);
 
+    @Update("update tb_topic set activity_time=#{activityTime} where id=#{id} and deleted=0")
+    Integer updateActivityTime(@Param("id") long id, @Param("activityTime") Date activityTime);
+
     Integer batchUpdateActivityTime(@Param("idAndActivityTimes") List<Pair<Long, Date>> idAndActivityTimes);
 
     List<Topic> selectTopicsWithUserImagesOrderByPageView(@Param("startTime") String startTime, @Nullable @Param("limit") Integer limit);
@@ -36,7 +39,7 @@ public interface TopicDao extends BaseMapper<Topic> {
 
     List<Topic> selectTopicsWithUserImagesOrderByCreateTime(@Param("userId") long userId, @Param("startIndex") int startIndex, @Param("recordNumber") int recordNumber);
 
-    List<Topic> selectTopicsWithUserBasicByIds(@Param("ids") List<Long> ids);
+    List<Topic> selectTopicsWithUserByIds(@Param("ids") List<Long> ids);
 
     @Select("select count(*) from tb_topic where user_id=#{userId} and deleted=0")
     Integer countTopics(@Param("userId") long userId);

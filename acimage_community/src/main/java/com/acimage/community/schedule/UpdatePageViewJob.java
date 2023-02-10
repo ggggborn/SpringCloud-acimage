@@ -1,7 +1,13 @@
-package com.acimage.community.service.topic.schedule;
+package com.acimage.community.schedule;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.acimage.common.model.Index.TopicIndex;
+import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.utils.EsUtils;
+import com.acimage.common.utils.LambdaUtils;
+import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.redis.RedisUtils;
+import com.acimage.community.service.topic.TopicQueryService;
 import com.acimage.community.service.topic.TopicSpAttrWriteService;
 import com.acimage.community.global.consts.TopicKeyConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +18,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -21,15 +28,17 @@ public class UpdatePageViewJob extends QuartzJobBean {
     RedisUtils redisUtils;
     @Autowired
     TopicSpAttrWriteService topicSpAttrWriteService;
+    @Autowired
+    TopicQueryService topicQueryService;
+    @Autowired
+    EsUtils esUtils;
 
     /**
      * 从redis中获取话题的新增浏览量并写入到数据库中
      */
-
-
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        //批量更新到数据库的大小
+        //批量更新大小
         final int BATCH_SIZE = 10;
         log.info("start 系统定时任务：保存浏览量变化");
 
@@ -67,8 +76,19 @@ public class UpdatePageViewJob extends QuartzJobBean {
                 try {
                     topicSpAttrWriteService.updatePageViewByIncrement(batchTopicIds, batchPvIncrements);
                 } catch (Exception e) {
-                    log.error("error:更新pageView变化失败 ids:{} increments:{}",batchTopicIds,batchPvIncrements);
+                    log.error("error:数据库批量更新pageView变化失败 ids:{} increments:{}",batchTopicIds,batchPvIncrements);
                 }
+
+                List<Topic> topicList=topicQueryService.listByIds(batchTopicIds);
+                List<TopicIndex> topicIndexList= topicList.stream().map(TopicIndex::from).collect(Collectors.toList());
+                List<String> columns= LambdaUtils.columnsFrom(TopicIndex::getPageView);
+                try {
+                    esUtils.batchUpdateById(topicIndexList,columns);
+                } catch (Exception e) {
+                    List<Integer> pageViews= ListUtils.extract(Topic::getPageView,topicList);
+                    log.error("error:es批量更新pageView ids:{} pvs:{}",batchTopicIds,pageViews);
+                }
+
 
                 //批量移除对应值或删除对应键值，这两者顺序不可交换！
                 redisUtils.removeForSet(TopicKeyConstants.SETK_RECORDING_PV_INCREMENT, batchTopicIds);

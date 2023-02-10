@@ -1,4 +1,4 @@
-package com.acimage.community.service.topic.schedule;
+package com.acimage.community.schedule;
 
 
 import cn.hutool.core.collection.CollectionUtil;
@@ -72,7 +72,7 @@ public class UpdateCommentCountJob extends QuartzJobBean {
                 //批量移除对应值或删除对应键值，这两者顺序不可交换！
                 redisUtils.removeForSet(TopicKeyConstants.SETK_RECORDING_COMMENT_COUNT_INCREMENT, batchTopicIds);
 
-                log.info(logString.toString());
+                log.debug(logString.toString());
                 //清空
                 batchTopicIds.clear();
                 batchCcIncrements.clear();

@@ -3,6 +3,7 @@ package com.acimage.user.service.user.impl;
 
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.digest.DigestUtil;
+import com.acimage.common.global.consts.JwtConstants;
 import com.acimage.common.global.exception.BusinessException;
 
 import com.acimage.common.global.consts.HeaderKeyConstants;
@@ -105,7 +106,7 @@ public class LoginServiceImpl implements LoginService {
         cmtyUser.setPhotoUrl(defaultPhotoUrl);
         syncUserMqProducer.sendAddUserMessage(cmtyUser);
 
-        return tokenService.createAndRecordToken(userId, username, defaultPhotoUrl);
+        return tokenService.createAndRecordToken(userId, username, defaultPhotoUrl, JwtConstants.USER_EXPIRE_DAYS);
 
     }
 
@@ -139,7 +140,7 @@ public class LoginServiceImpl implements LoginService {
 
         //返回token
         User user=userDao.selectById(userId);
-        return tokenService.createAndRecordToken(userId, user.getUsername(), user.getPhotoUrl());
+        return tokenService.createAndRecordToken(userId, user.getUsername(), user.getPhotoUrl(),JwtConstants.USER_EXPIRE_DAYS);
 
     }
 

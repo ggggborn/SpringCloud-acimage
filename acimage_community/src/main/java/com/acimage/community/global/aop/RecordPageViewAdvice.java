@@ -40,7 +40,6 @@ public class RecordPageViewAdvice {
         }
 
         String ipAddress = UserContext.getIp();
-
         // 获取存入的key
         String topicPvLogKey = TopicKeyConstants.LOGKP_TOPIC_PV + topicId;
 
@@ -50,9 +49,9 @@ public class RecordPageViewAdvice {
         redisUtils.addForSet(TopicKeyConstants.SETK_RECORDING_PV_INCREMENT, topicId.toString());
 
         if (count == 0) {
-            log.info("ip：{} 已访问过 话题{}", ipAddress, topicId);
+            log.debug("ip：{} 已访问过 话题{}", ipAddress, topicId);
         } else {
-            log.info("ip：{} 访问话题{} 累计访问量 {}", ipAddress, topicId, redisUtils.sizeForHyperLogLog(topicPvLogKey));
+            log.debug("ip：{} 访问话题{} 累计访问量 {}", ipAddress, topicId, redisUtils.sizeForHyperLogLog(topicPvLogKey));
             //更新浏览量排行榜
             redisUtils.addForZSet(TopicKeyConstants.ZSETK_TOPIC_PV, topicId.toString(), topicSpAttrQueryService.getPageView(topicId));
         }

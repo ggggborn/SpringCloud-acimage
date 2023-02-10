@@ -1,4 +1,4 @@
-package com.acimage.community.service.topic.schedule;
+package com.acimage.community.schedule;
 
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +23,7 @@ public class UpdatePageViewJobConfig {
         Trigger trigger = TriggerBuilder.newTrigger()
                 .forJob(updatePageViewJobDetail())
                 .withIdentity("updatePageViewTrigger", "topicTrigger")
+                .withSchedule(CronScheduleBuilder.cronSchedule(cron))
                 .startNow()
                 .build();
         return trigger;

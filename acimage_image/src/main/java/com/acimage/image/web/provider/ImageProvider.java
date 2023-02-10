@@ -32,11 +32,4 @@ public class ImageProvider {
         return Result.ok(imageQueryService.listImagesOrderById(topicId));
     }
 
-    @Authentication
-    @GetMapping("/preparedTopicImages")
-    public Result<String> updateTopicIdAndReturnFirstImageUrl(@RequestParam("serviceToken") String serviceToken,
-                                                              @RequestParam("topicId") Long topicId) {
-        String firstImageUrl = imageMixWriteService.updateTopicIdAndReturnFirstImageUrl(serviceToken, topicId);
-        return Result.ok(firstImageUrl);
-    }
 }

@@ -20,9 +20,10 @@ public class ImageUtils {
 
     public static InputStream compressAsFixedWebpImage(MultipartFile multipartFile, int width, int height, int limitSize) {
         try {
-            float qualify = 0.8f;
+            float qualify = 0.77f;
             BufferedImage bufferedImage = Thumbnails.fromInputStreams(Collections.singletonList(multipartFile.getInputStream()))
-                    .outputQuality(qualify).size(width, height)
+                    .outputQuality(qualify)
+                    .size(width, height)
                     .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
             try (InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP)) {
@@ -38,19 +39,32 @@ public class ImageUtils {
         }
     }
 
-    public static InputStream compressAsWebpImage(MultipartFile multipartFile, int limitSize) {
+    public static InputStream compressAsWebpImage(MultipartFile multipartFile, int limitSize, int limitLength) {
         try {
-            float qualify = 0.8f;
+            float qualify = 0.77f;
             BufferedImage image = ImageIO.read(multipartFile.getInputStream());
             int width = image.getWidth();
             int height = image.getHeight();
+            if (width > limitLength || height > limitLength) {
+                if (width > height) {
+                    width = limitLength;
+                    //等比例缩放
+                    height = (int) (1.0 * height * limitLength / width);
+                } else {
+                    height = limitLength;
+                    width = (int) (1.0 * width * limitLength / height);
+                }
+            }
+
             BufferedImage bufferedImage = Thumbnails.fromInputStreams(Collections.singletonList(multipartFile.getInputStream()))
-                    .outputQuality(qualify).size(width, height)
+                    .outputQuality(qualify)
+                    .size(width, height)
                     .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
+
             try (InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP)) {
                 if (is != null && is.available() > limitSize) {
-                    log.error("图片压缩后仍然超过{} 大小为{}", limitSize, is.available());
+                    log.warn("the image size after compressing exceed {} size:{}", limitSize, is.available());
                     throw new BusinessException("图片压缩后仍然较大，请尝试其它图片");
                 }
                 return is;

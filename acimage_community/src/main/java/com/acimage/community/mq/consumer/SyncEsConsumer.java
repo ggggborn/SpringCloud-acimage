@@ -107,30 +107,30 @@ public class SyncEsConsumer {
         }
     }
 
-    @RabbitHandler
-    public void syncBatchUpdate(Channel channel, Message message, EsUpdateByTermDto updateDto) {
-        log.info("同步es数据：{}", updateDto);
-        try {
-            esUtils.UpdateByTerm(updateDto);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("同步es数据失败 error:{} data：{}", e.getMessage(), updateDto);
-
-        } finally {
-            String messageBody = new String(message.getBody());
-            try {
-                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-            } catch (IOException e) {
-                e.printStackTrace();
-                log.error("同步es数据ack失败 error:{} message:{}", e.getMessage(), messageBody);
-                try {
-                    channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    log.error("同步es数据reject失败 error:{} message:{}", ex.getMessage(), messageBody);
-                }
-            }
-        }
-    }
+//    @RabbitHandler
+//    public void syncBatchUpdate(Channel channel, Message message, EsUpdateByTermDto updateDto) {
+//        log.info("同步es数据：{}", updateDto);
+//        try {
+//            esUtils.UpdateByTerm(updateDto);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            log.error("同步es数据失败 error:{} data：{}", e.getMessage(), updateDto);
+//
+//        } finally {
+//            String messageBody = new String(message.getBody());
+//            try {
+//                channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                log.error("同步es数据ack失败 error:{} message:{}", e.getMessage(), messageBody);
+//                try {
+//                    channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                    log.error("同步es数据reject失败 error:{} message:{}", ex.getMessage(), messageBody);
+//                }
+//            }
+//        }
+//    }
 }

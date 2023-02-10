@@ -1,10 +1,10 @@
-package com.acimage.community.service.topic.schedule;
+package com.acimage.community.schedule;
 
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Deprecated
 public class UpdateStarCountJobConfig {
     //3分钟
     private String cron ="0 */3 * * * ?";

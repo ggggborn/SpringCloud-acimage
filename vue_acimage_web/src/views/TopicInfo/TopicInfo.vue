@@ -2,6 +2,7 @@
 	<div>
 		<my-header></my-header>
 		<div class="wrapper">
+			<!-- <el-skeleton class="wrapper-left" v-if="loading" :rows="10" animated /> -->
 			<div class="wrapper-left">
 				<!-- 当前话题的相关信息 -->
 				<div class="title">
@@ -36,9 +37,9 @@
 						style="border:none" :icon="isStar?'':'el-icon-star-off'">
 						{{isStar?'取消星星':'给TA星星'}}
 					</el-button>
-					<el-button type="danger" style="border:none" icon="el-icon-download" @click="onClickDownloadImages">
+<!-- 					<el-button type="danger" style="border:none" icon="el-icon-download" @click="onClickDownloadImages">
 						下载
-					</el-button>
+					</el-button> -->
 				</div>
 
 				<div class="time-hint">
@@ -103,7 +104,8 @@
 					</div>
 				</div>
 				<!--End 右侧话题主人信息-->
-				<div style="margin-top: 10px;">
+
+				<div v-if="!$global.isEmpty(topic.similarTopics)" style="margin-top: 10px;">
 					<topic-list label="相关话题" :topics="topic.similarTopics"></topic-list>
 				</div>
 			</div>
@@ -133,7 +135,7 @@
 		</el-dialog>
 
 		<!-- 修改图片描述对话框 -->
-<!-- 		<el-dialog title="修改内容" :visible.sync="imageDescriptionModifyVisible">
+		<!-- 		<el-dialog title="修改内容" :visible.sync="imageDescriptionModifyVisible">
 			<el-form>
 				<el-form-item label="新的描述(2-30字)">
 					<el-input v-model="imageDescriptionModify" maxlength="30" clearable=""></el-input>
@@ -156,9 +158,7 @@
 
 
 	import {
-		addTopicAndUploadImages,
 		deleteTopic,
-		modifyTopicAndImageDescriptions,
 		queryTopicAndFirstCommentPage,
 		modifyHtml,
 		modifyTitle
@@ -250,6 +250,7 @@
 				queryTopicAndFirstCommentPage(id).then(result => {
 					if (result.code == Code.OK) {
 						_this.topic = result.data;
+						_this.loading = false;
 						_this.initDataForModify();
 					}
 				})
@@ -280,11 +281,6 @@
 						});
 				}
 			},
-			// handleEditImageDescription(index) {
-			// 	this.imageDescriptionModifyVisible = true;
-			// 	this.imageDescriptionModify = this.topic.images[index].description;
-			// 	this.imageIdBeingModified = this.topic.images[index].id;
-			// },
 			onConfirmModifyImageDescription() {
 				modifyDescription(this.imageIdBeingModified, this.imageDescriptionModify).then(result => {
 					if (result.code == Code.OK) {
@@ -320,17 +316,6 @@
 				// }
 				this.titleModify = this.topic.title;
 				this.contentModify = this.topic.content;
-			},
-			//修改话题内容及图片描述
-			onConfirmModifyTopic() {
-				let data = {
-					'id': this.topic.id,
-					'content': this.contentModify,
-					'title': this.titleModify,
-					'descriptions': this.descriptionsModify
-				};
-				let _this = this;
-				CommonUtils.popMsgAndRefreshIfOk(modifyTopicAndImageDescriptions(data), "修改成功", 1);
 			},
 			//删除话题
 			onClickDeleteTopic() {

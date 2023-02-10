@@ -3,6 +3,7 @@ package com.acimage.community.service.cmtyuser.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Pair;
 import com.acimage.common.model.domain.community.CmtyUser;
+import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.PairUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.dao.CmtyUserDao;
@@ -69,7 +70,10 @@ public class CmtyUserWriteServiceImpl implements CmtyUserWriteService {
 
     @Override
     public Integer updateStarCountByIncrement(long userId, int increment) {
-        redisUtils.delete(KeyConstants.STRINGKP_CMTY_USER +userId);
-        return cmtyUserDao.updateStarCountByIncrement(userId,increment);
+        int col=cmtyUserDao.updateStarCountByIncrement(userId,increment);
+        String key=KeyConstants.STRINGKP_CMTY_USER +userId;
+        String column= LambdaUtils.columnNameOf(CmtyUser::getStarCount);
+        redisUtils.incrementIfPresentForFieldKey(key,column,increment);
+        return col;
     }
 }

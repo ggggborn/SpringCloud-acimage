@@ -7,7 +7,7 @@ import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.ImageUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.feign.client.UserClient;
-import com.acimage.image.global.consts.StorePrefixConstants;
+import com.acimage.common.global.consts.StorePrefixConstants;
 import com.acimage.image.service.photo.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,9 @@ public class PhotoServiceImpl implements PhotoService {
     @Autowired
     MinioUtils minioUtils;
 
+    /**
+     * 返回新token
+     */
     @Override
     public String uploadPhotoAndUpdatePhotoUrl(MultipartFile photoFile){
         //上传头像到七牛云

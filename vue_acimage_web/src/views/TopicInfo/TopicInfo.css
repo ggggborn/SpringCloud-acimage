@@ -6,7 +6,7 @@ body {
 
 .wrapper {
 	width: 1130px;
-	margin-left: calc((100% - 1130px) / 2);
+	margin-left: calc((100% - 1100px) / 2);
 	margin-top: 15px;
 	display: block;
 }

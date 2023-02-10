@@ -2,7 +2,6 @@ package com.acimage.community.global.consts;
 
 public class TopicKeyConstants {
     public static final String HASHKP_TOPIC = "acimage:topics:id:";
-
     public static final String HASHKP_TOPIC_HTML="acimage:community:topicHtml:topicId:";
 
 

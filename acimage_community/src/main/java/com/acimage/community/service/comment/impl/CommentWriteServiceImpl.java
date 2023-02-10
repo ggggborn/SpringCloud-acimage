@@ -3,6 +3,7 @@ package com.acimage.community.service.comment.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.acimage.common.utils.SensitiveWordUtils;
+import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.exception.BusinessException;
@@ -46,14 +47,14 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         comment.setId(id);
         comment.setUserId(UserContext.getUserId());
         //敏感词过滤
-        comment.setContent(SensitiveWordUtils.filter(commentAddReq.getContent()));
+        String filterContent = SensitiveWordUtils.filter(commentAddReq.getContent());
+        comment.setContent(filterContent);
         int col = commentDao.insert(comment);
 
         long topicId = commentAddReq.getTopicId();
-        //如果首页评论数未满，说明新增评论应在首页，所以删除redis相应数据
+        //删除首页评论
         String firstPageKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
         redisUtils.delete(firstPageKey);
-
         //更新评论数
         topicSpAttrWriteService.increaseCommentCount(topicId, 1);
         //更新话题的最新活跃时间
@@ -79,10 +80,8 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         //如果影响redis话题首页评论，则删除
         long topicId = comment.getTopicId();
         String firstPageKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
-        List<Comment> comments = redisUtils.getListFromString(firstPageKey, Comment.class);
-        if (comments != null && ListUtils.extract(Comment::getId, comments).contains(commentId)) {
-            redisUtils.delete(firstPageKey);
-        }
+
+        redisUtils.delete(firstPageKey);
 
         //更新评论数
         topicSpAttrWriteService.increaseCommentCount(topicId, -1);
@@ -103,11 +102,14 @@ public class CommentWriteServiceImpl implements CommentWriteService {
 
     @Override
     public Integer updateComment(CommentModifyReq commentModifyReq) {
+        Date now = new Date();
 
-        Comment modifiedComment = new Comment();
-        BeanUtil.copyProperties(commentModifyReq, modifiedComment, false);
+        Comment modifiedComment = BeanUtils.copyPropertiesTo(commentModifyReq, Comment.class);
+        //过滤敏感词
+        String filterContent = SensitiveWordUtils.filter(commentModifyReq.getContent());
+        modifiedComment.setContent(filterContent);
 
-        modifiedComment.setUpdateTime(new Date());
+        modifiedComment.setUpdateTime(now);
         log.info("评论修改为{}", modifiedComment);
 
         long commentId = commentModifyReq.getId();
@@ -119,7 +121,7 @@ public class CommentWriteServiceImpl implements CommentWriteService {
 
         if (col == 0) {
             log.error("用户{} 修改 评论{} 错误：评论已被删除或评论非当前用户所有", UserContext.getUsername(), commentId);
-            throw new BusinessException("更新失败");
+            throw new BusinessException("非法操作，更新失败");
         }
 
         //找到评论
@@ -134,7 +136,7 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         }
 
         //更新对应话题的最新活跃时间
-        topicSpAttrWriteService.changeActivityTime(topicId, new Date());
+        topicSpAttrWriteService.changeActivityTime(topicId, now);
         return col;
     }
 

@@ -12,9 +12,10 @@ import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.PageUtils;
 import com.acimage.community.dao.TopicDao;
 import com.acimage.common.model.page.MyPage;
+import com.acimage.community.global.consts.PageSizeConstants;
 import com.acimage.community.model.vo.TopicInfoVo;
 import com.acimage.community.service.cmtyuser.CmtyUserQueryService;
-import com.acimage.community.service.comment.CommentInfoService;
+import com.acimage.community.service.comment.CommentInfoQueryService;
 import com.acimage.community.service.tag.TagTopicQueryService;
 import com.acimage.community.service.topic.*;
 import com.acimage.community.global.enums.TopicAttribute;
@@ -32,7 +33,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     @Autowired
     TopicDao topicDao;
     @Autowired
-    CommentInfoService commentInfoService;
+    CommentInfoQueryService commentInfoQueryService;
     @Autowired
     TopicQueryService topicQueryService;
     @Autowired
@@ -53,10 +54,10 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     @Override
     public Topic getTopicWithUserTagIds(long topicId) {
         Topic topic = topicQueryService.getTopic(topicId);
-        if(topic==null){
+        if (topic == null) {
             return null;
         }
-        List<Integer> tagIds=tagTopicQueryService.listTagIds(topicId);
+        List<Integer> tagIds = tagTopicQueryService.listTagIds(topicId);
         topic.setTagIds(tagIds);
         return topic;
     }
@@ -67,35 +68,26 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         Topic topic = topicQueryService.getTopic(topicId);
 
         if (topic == null) {
-            log.error("user:{} 查询 话题:{} error：不存在或已被删除", UserContext.getUsername(), topicId);
+            log.warn("user:{} 查询 话题:{} error：不存在或已被删除", UserContext.getUsername(), topicId);
             throw new BusinessException("话题不存在或已被删除");
         }
-        TopicInfoVo topicInfoVo=new TopicInfoVo();
+        TopicInfoVo topicInfoVo = new TopicInfoVo();
         //设置浏览量、收藏量、评论数
         topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.COMMENT_COUNT, TopicAttribute.STAR_COUNT, TopicAttribute.PAGE_VIEW);
 
-        BeanUtil.copyProperties(topic,topicInfoVo,false);
+        BeanUtil.copyProperties(topic, topicInfoVo, false);
         //查找首页评论
         int pageNo = 1;
-        List<Comment> comments = commentInfoService.pageCommentsWithUser(topicId, pageNo);
+        List<Comment> comments = commentInfoQueryService.pageCommentsWithUser(topicId, pageNo, PageSizeConstants.TOPIC_COMMENTS);
         topicInfoVo.setComments(comments);
 
         CmtyUser cmtyUser = cmtyUserQueryService.getCmtyUser(topic.getUserId());
-//                userClient.queryUser(topic.getUserId()).getData();
-//        //设置用户主人相关信息
-//        if (user.getId() != null) {
-//            UserCommunityStatistic userStatistic = userCsQueryService.getUserCommunityStatistic(topic.getUserId());
-//            user.setStarCount(userStatistic.getStarCount());
-//            user.setTopicCount(userStatistic.getTopicCount());
-//        }
-        User user= BeanUtils.copyPropertiesTo(cmtyUser,User.class);
+
+        User user = BeanUtils.copyPropertiesTo(cmtyUser, User.class);
         topicInfoVo.setUser(user);
-        String html=topicHtmlQueryService.getTopicHtml(topicId).getHtml();
+        String html = topicHtmlQueryService.getTopicHtml(topicId).getHtml();
         topicInfoVo.setHtml(html);
-        topicInfoVo.setSimilarTopics(topicSearchService.searchSimilarByTitle(topicId,topicInfoVo.getTitle(), 10));
-//        topicSearchService.searchSimilar(topicId,10);
-//        List<Image> imageList = imageClient.queryTopicImages(topic.getId()).getData();
-//        topic.setImages(imageList);
+        topicInfoVo.setSimilarTopics(topicSearchService.searchSimilarByTitle(topicId, topicInfoVo.getTitle(), 10));
 
         return topicInfoVo;
     }
@@ -134,13 +126,8 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
 
         for (Topic topic : topicList) {
             //设置浏览量,评论数，收藏量
-            topicSpQueryService.setAttrIntoTopic(topic,
-                    TopicAttribute.ACTIVITY_TIME,
-                    TopicAttribute.PAGE_VIEW,
-                    TopicAttribute.STAR_COUNT,
-                    TopicAttribute.COMMENT_COUNT);
+            topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
         }
-
         topicList.sort(Comparator.comparing(Topic::getPageView).reversed());
         return topicList;
 
@@ -155,11 +142,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             Topic topic = getTopicWithUserTagIds(topicId);
             if (topic != null) {
                 //设置浏览量,评论数，收藏量
-                topicSpQueryService.setAttrIntoTopic(topic,
-                        TopicAttribute.ACTIVITY_TIME,
-                        TopicAttribute.PAGE_VIEW,
-                        TopicAttribute.STAR_COUNT,
-                        TopicAttribute.COMMENT_COUNT);
+                topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
                 topicList.add(topic);
             }
         }
@@ -176,16 +159,12 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             Topic topic = getTopicWithUserTagIds(topicId);
             if (topic != null) {
                 //设置浏览量,评论数，收藏量
-                topicSpQueryService.setAttrIntoTopic(topic,
-                        TopicAttribute.ACTIVITY_TIME,
-                        TopicAttribute.PAGE_VIEW,
-                        TopicAttribute.STAR_COUNT,
-                        TopicAttribute.COMMENT_COUNT);
+                topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
                 topicList.add(topic);
             }
         }
 
-        topicList.sort(Comparator.comparing(Topic::getActivityTime).reversed());
+//        topicList.sort(Comparator.comparing(Topic::getActivityTime).reversed());
         return new MyPage<>(topicRankQueryService.countTopicIdsInRank(TopicAttribute.ACTIVITY_TIME), topicList);
     }
 }

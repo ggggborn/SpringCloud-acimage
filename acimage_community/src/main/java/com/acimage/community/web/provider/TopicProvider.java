@@ -25,7 +25,7 @@ public class TopicProvider {
 
     @GetMapping("/ids")
     public Result<List<Topic>> queryTopics(@RequestParam("topicIds") List<Long> topicIds) {
-        return Result.ok(topicQueryService.listTopics(topicIds));
+        return Result.ok(topicQueryService.listTopicWithUser(topicIds));
     }
 
     @DeleteMapping("/{topicId}")

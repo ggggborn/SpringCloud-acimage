@@ -6,6 +6,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import com.acimage.common.model.Index.TopicIndex;
+import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.mq.dto.EsAddDto;
 import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateByIdDto;
@@ -32,6 +33,7 @@ import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -93,21 +95,40 @@ public class EsUtils {
         }
         //获取更新依据的term
         Class<?> indexClass = entity.getClass();
-        String termColumn=updateDto.getTermColumn();
-        Object termValue= BeanUtil.getFieldValue(entity,termColumn);
+        String termColumn = updateDto.getTermColumn();
+        Object termValue = BeanUtil.getFieldValue(entity, termColumn);
 
         IndexCoordinates indexCoordinates = indexCoordinatesOf(indexClass);
         Document document = this.createDocument(entity, columns);
 
-
         QueryBuilder queryBuilder = QueryBuilders.termQuery(termColumn, termValue);
-        Query query= new NativeSearchQueryBuilder()
+        Query query = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder).build();
         UpdateQuery updateQuery = UpdateQuery.builder(query)
                 .withDocument(document)
                 .build();
 
         esTemplate.updateByQuery(updateQuery, indexCoordinates);
+    }
+
+    public <T> void batchUpdateById(List<T> entityList, List<String> columns) {
+        if (CollectionUtil.isEmpty(entityList)) {
+            return;
+        }
+        Class<?> clz=entityList.get(0).getClass();
+        List<UpdateQuery> updateQueries = new ArrayList<>();
+
+        for (T entity : entityList) {
+            String id = Objects.requireNonNull(ReflectUtils.getAnnotatedFiled(entity, Id.class)).toString();
+            Document document = this.createDocument(entity, columns);
+
+            UpdateQuery updateQuery = UpdateQuery.builder(id)
+                    .withDocument(document)
+                    .build();
+            updateQueries.add(updateQuery);
+        }
+
+        esTemplate.bulkUpdate(updateQueries, clz);
     }
 
     public void save(EsAddDto esAddDto) {
@@ -140,7 +161,7 @@ public class EsUtils {
         moreLikeThisQuery.setPageable(PageRequest.of(pageNo - 1, pageSize));
         moreLikeThisQuery.setMinTermFreq(1);
         moreLikeThisQuery.setMinDocFreq(2);
-        System.out.println(esTemplate.search(moreLikeThisQuery, index).getSearchHits());
+        log.debug("{}", esTemplate.search(moreLikeThisQuery, index).getSearchHits());
         return toList(esTemplate.search(moreLikeThisQuery, index).getSearchHits());
     }
 
@@ -154,7 +175,7 @@ public class EsUtils {
                 .build();
 
         SearchHits<T> search = esTemplate.search(nativeSearchQuery, index);
-        System.out.println(search.getSearchHits());
+        log.debug("{}", search.getSearchHits());
         return toList(search.getSearchHits());
     }
 
@@ -177,12 +198,12 @@ public class EsUtils {
         //根据要更新的字段创建对应map
         for (String column : columns) {
             Object value = BeanUtil.getFieldValue(entity, column);
-            if (value instanceof Date) {
-                String formatDate = DateUtil.format((Date) value, DatePattern.NORM_DATETIME_PATTERN);
-                document.put(column, formatDate);
-            } else {
-                document.put(column, value);
-            }
+//            if (value instanceof Date) {
+//                String formatDate = DateUtil.format((Date) value, DatePattern.NORM_DATETIME_PATTERN);
+//                document.put(column, formatDate);
+//            } else {
+            document.put(column, value);
+//            }
         }
         return document;
     }

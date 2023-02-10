@@ -13,7 +13,8 @@ import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.community.global.consts.CoverImageConstants;
 import com.acimage.common.global.consts.StorePrefixConstants;
-import com.acimage.community.listener.event.PublishTopicEvent;
+import com.acimage.community.global.enums.TopicAttribute;
+import com.acimage.community.listener.event.TopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
 import com.acimage.community.model.request.TopicModifyHtmlReq;
 import com.acimage.community.mq.producer.syncImagesMqProducer;
@@ -50,6 +51,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     TopicQueryService topicQueryService;
     @Autowired
     TopicSpAttrWriteService topicSpAttrWriteService;
+    @Autowired
+    TopicRankWriteService topicRankWriteService;
     @Autowired
     TopicWriteService topicWriteService;
     @Autowired
@@ -124,8 +127,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //保存标签
         tagTopicWriteService.save(topicId, noRepeatTagIds);
 
-        //更新最新活跃时间
-        topicSpAttrWriteService.changeActivityTime(topicId, now);
+        //更新活跃排行榜
+        topicRankWriteService.updateRank(TopicAttribute.ACTIVITY_TIME, topicId, now.getTime());
         //获取话题内的站内图片链接
         List<String> newImageUrlList = HtmlUtils.getInnerImageUrls(topicAddReq.getHtml());
         SyncImagesUpdateDto updateDto = SyncImagesUpdateDto.builder()
@@ -148,8 +151,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
         //发送到mq，用于以图识图
         syncImagesMqProducer.sendSyncImagesMessage(updateDto);
 
-        PublishTopicEvent publishTopicEvent = new PublishTopicEvent(this, UserContext.getUserId(), topicId);
-        applicationContext.publishEvent(publishTopicEvent);
+        TopicEvent topicEvent = new TopicEvent(this, UserContext.getUserId(), topicId);
+        applicationContext.publishEvent(topicEvent);
         return topicId;
     }
 

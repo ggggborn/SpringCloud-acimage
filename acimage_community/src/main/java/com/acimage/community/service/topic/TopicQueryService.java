@@ -7,7 +7,9 @@ import java.util.List;
 public interface TopicQueryService {
     Topic getTopic(long id);
 
-    List<Topic> listTopics(List<Long> ids);
+    List<Topic> listTopicWithUser(List<Long> ids);
+
+    List<Topic> listByIds(List<Long> ids);
 
 
 }

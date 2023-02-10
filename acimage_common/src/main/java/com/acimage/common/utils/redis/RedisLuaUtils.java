@@ -18,17 +18,19 @@ import java.util.List;
 @Slf4j
 public class RedisLuaUtils {
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private final static DefaultRedisScript<Long> incrementIfPresent = new DefaultRedisScript<>();
-    private final static DefaultRedisScript<Long> incrementIfPresentZSet = new DefaultRedisScript<>();
+    private final static DefaultRedisScript<Long> ifpForZSet = new DefaultRedisScript<>();
     private final static DefaultRedisScript<String> getAndCombineAndDelete = new DefaultRedisScript<>();
 
     private final static DefaultRedisScript<Long> ifpForFieldKey = new DefaultRedisScript<>();
 
     private final static DefaultRedisScript<List> requestLimit = new DefaultRedisScript<>();
+
+    private final static DefaultRedisScript<Boolean> sfpForFieldKey = new DefaultRedisScript<>();
 
 
     @PostConstruct
@@ -44,14 +46,17 @@ public class RedisLuaUtils {
         getAndCombineAndDelete.setLocation(new ClassPathResource("lua/getAndCombineAndDelete.lua"));
         getAndCombineAndDelete.setResultType(String.class);
 
-        incrementIfPresentZSet.setLocation(new ClassPathResource("lua/incrementIfPresentForZSet.lua"));
-        incrementIfPresentZSet.setResultType(Long.class);
+        ifpForZSet.setLocation(new ClassPathResource("lua/incrementIfPresentForZSet.lua"));
+        ifpForZSet.setResultType(Long.class);
 
         ifpForFieldKey.setLocation(new ClassPathResource("lua/incrementIfPresentForFieldKey.lua"));
         ifpForFieldKey.setResultType(Long.class);
 
         requestLimit.setLocation(new ClassPathResource("lua/requestLimit.lua"));
         requestLimit.setResultType(List.class);
+
+        sfpForFieldKey.setLocation(new ClassPathResource("lua/setIfPresentForFieldKey.lua"));
+        sfpForFieldKey.setResultType(Boolean.class);
     }
 
 
@@ -77,7 +82,7 @@ public class RedisLuaUtils {
 
     public Long incrementIfPresentForZSet(String key, String value, long increment) {
         return stringRedisTemplate.opsForValue().getOperations()
-                .execute(incrementIfPresentZSet, Collections.singletonList(key), value, Long.toString(increment));
+                .execute(ifpForZSet, Collections.singletonList(key), value, Long.toString(increment));
     }
 
     public Long incrementIfPresentForFieldKey(String key, String filedKey, long increment) {
@@ -104,5 +109,9 @@ public class RedisLuaUtils {
         }
 
         return stringRedisTemplate.execute(requestLimit, keys, args);
+    }
+
+    public Boolean setIfPresentForFieldKey(String key, String filedKey, String value) {
+        return stringRedisTemplate.execute(sfpForFieldKey, Collections.singletonList(key), filedKey, value);
     }
 }

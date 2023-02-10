@@ -9,7 +9,6 @@ export let queryProfile = function() {
 }
 
 
-
 //操作
 export let modifyUsername = function(newUsername) {
 	return request.put('/api/user/users/operate/username/' + newUsername)

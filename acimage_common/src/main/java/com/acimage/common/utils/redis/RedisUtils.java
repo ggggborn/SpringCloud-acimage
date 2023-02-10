@@ -34,9 +34,9 @@ public class RedisUtils {
     }
 
     @Autowired
-    StringRedisTemplate stringRedisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
     @Autowired
-    RedisLuaUtils redisLuaUtils;
+    private RedisLuaUtils redisLuaUtils;
 
     @Deprecated
     public <T> void setListAsString(String key, List<T> objectList, long timeout, TimeUnit unit) {
@@ -143,6 +143,10 @@ public class RedisUtils {
 
     public Long incrementIfPresent(String key, long increment) {
         return redisLuaUtils.incrementIfPresent(key, increment);
+    }
+
+    public Boolean setIfPresentForFieldKey(String key, String filedKey, String value) {
+        return redisLuaUtils.setIfPresentForFieldKey(key,filedKey,value);
     }
 
     public Long getAndCombineAndDelete(String keyForIncrement, String hashKeyForBase, String field) {
@@ -260,7 +264,7 @@ public class RedisUtils {
         return stringRedisTemplate.opsForZSet().reverseRange(key, start, end);
     }
 
-    public Long incrementIfPresentForHashKey(String key, String hashKey, long increment) {
+    public Long incrementIfPresentForFieldKey(String key, String hashKey, long increment) {
         return redisLuaUtils.incrementIfPresentForFieldKey(key,hashKey,increment);
     }
 
