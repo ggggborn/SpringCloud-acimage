@@ -2,12 +2,15 @@
 	<div class="category-card-div">
 		<el-card shadow="hover">
 			<div slot="header">
-				<span class="c6">分类</span>
+				<span style="color:#FF9300">
+					<i class="el-icon-c-scale-to-original" />分类
+				</span>
 			</div>
 			<div class="categories-container">
 				<el-button :id="'btn'+item.id" v-for="item in $store.state.categoryList" size="small"
 					:type="$global.buttonType(item.id)" plain @click="handleClick(item.id)" :key="item.id">
-					{{item.label}}</el-button>
+					{{item.label}}
+				</el-button>
 			</div>
 		</el-card>
 	</div>

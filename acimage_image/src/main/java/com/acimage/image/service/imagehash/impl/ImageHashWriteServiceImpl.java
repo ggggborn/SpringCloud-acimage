@@ -1,6 +1,7 @@
 package com.acimage.image.service.imagehash.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.image.dao.ImageHashDao;
 import com.acimage.common.model.domain.image.ImageHash;
 import com.acimage.image.service.imagehash.ImageHashWriteService;
@@ -36,7 +37,7 @@ public class ImageHashWriteServiceImpl implements ImageHashWriteService {
             hashValue = DhashUtils.getImageDhashFrom(imageInputStream);
         } catch (IOException e) {
             log.error("imageId:{} 对应文件IO异常", imageId);
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException(e);
         }
         int hashSum = BitUtils.sumOfBits(hashValue);

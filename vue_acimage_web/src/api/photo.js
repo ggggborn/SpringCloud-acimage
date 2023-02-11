@@ -6,7 +6,7 @@ import global from '@/utils/global.js'
 
 export let uploadPhoto = function(reqData) {
 	let config = { 'Content-type': 'multipart/form-data' };
-	return request.post('/api/image/photos/upload', reqData, config);
+	return request.post('/api/image/photos/operate/upload', reqData, config);
 }
 
 

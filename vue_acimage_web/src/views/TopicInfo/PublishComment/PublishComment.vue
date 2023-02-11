@@ -8,9 +8,7 @@
 				v-model="content">
 			</el-input>
 		</div>
-		<div>
-			<el-button type="primary" style="height:74px;" @click="submitComment">评论</el-button>
-		</div>
+		<el-button type="primary" style="height:74px;margin-left: 5px;" @click="submitComment">评论</el-button>
 	</div>
 </template>
 
@@ -37,8 +35,8 @@
 					'topicId': this.topicId,
 					'content': this.content
 				};
-				addComment(data).then(res=>{
-					if(res.code==Code.OK){
+				addComment(data).then(res => {
+					if (res.code == Code.OK) {
 						MessageUtils.success("发表成功");
 						CommonUtils.delayRefresh(1)
 					}

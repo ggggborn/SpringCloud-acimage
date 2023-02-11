@@ -1,4 +1,4 @@
-package com.acimage.user.web.config;
+package com.acimage.user.global.config;
 
 
 

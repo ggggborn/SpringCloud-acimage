@@ -23,7 +23,7 @@ public class CommentOperateController {
     CommentWriteService commentWriteService;
 
     @PostMapping
-    public Result<String> addComment(@Validated @RequestBody CommentAddReq commentAddReq){
+    public Result<?> addComment(@Validated @RequestBody CommentAddReq commentAddReq){
         if(commentAddReq.getContent().trim().length()<2){
             return Result.fail("评论有效字数不能少于2个字");
         }

@@ -17,5 +17,7 @@ public interface TopicInfoQueryService {
 
     List<Topic> pageTopicsInfoRankByStarCount(int pageNo,int pageSize);
 
+    List<Topic> pageTopicsInfoRankByCommentCount(int pageNo, int pageSize);
+
     MyPage<Topic> pageTopicsInfoRankByActivityTime(int pageNo, int pageSize);
 }

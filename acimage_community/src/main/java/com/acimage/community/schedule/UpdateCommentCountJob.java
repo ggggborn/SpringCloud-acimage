@@ -47,7 +47,7 @@ public class UpdateCommentCountJob extends QuartzJobBean {
             index++;
             String ccIncrementKey = TopicKeyConstants.STRINGKP_TOPIC_COMMENT_COUNT_INCREMENT + topicId;
             String hashKeyForTopic= TopicKeyConstants.HASHKP_TOPIC+topicId;
-            String fieldName=LambdaUtils.columnNameOf(Topic::getCommentCount);
+            String fieldName=LambdaUtils.columnOf(Topic::getCommentCount);
             Long ccIncrement = redisUtils.getAndCombineAndDelete(ccIncrementKey, hashKeyForTopic, fieldName);
 
             //记录话题id，评论数增量，相应redis的key、value

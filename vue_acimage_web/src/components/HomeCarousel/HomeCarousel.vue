@@ -1,14 +1,11 @@
 <template>
-	<div class="carousel-container">
-		<!-- 图片走马灯 -->
-		<el-carousel trigger="click" height="350px" style="border-radius: 5px;width: 100%;" @change="onCarouselChange">
+	<div class="carousel-container" @click="toLink">
+		<el-carousel trigger="click" height="350px" @change="onCarouselChange">
 			<el-carousel-item v-for="image in images" :key="image.id" class="hover-pointer">
-				<el-image :src="image.url" fit="cover"
-					style="width:100%;height: 350px;border-radius:5px;">
+				<el-image :src="image.url" fit="cover">
 				</el-image>
 			</el-carousel-item>
 		</el-carousel>
-		<!-- 图片走马灯end -->
 		<div class="carousel-description">
 			<span style="margin-left:10px;">{{currentDescription}}</span>
 		</div>
@@ -17,6 +14,7 @@
 
 <script>
 	import { queryHomeCarousel } from '@/api/HomeCarousel.js'
+	import CommonUtils from '@/utils/CommonUtils';
 	import { Code } from '@/utils/result.js'
 
 	export default {
@@ -53,6 +51,13 @@
 		methods: {
 			onCarouselChange() {
 				this.index = (this.index + 1) % this.images.length;
+			},
+			toLink() {
+				let link = this.images[this.index].link;
+				// window.open("/#/topic/1575129660344836096");
+				if (!CommonUtils.isEmpty(link)) {
+					window.location.href = link;
+				}
 			}
 		}
 	}
@@ -62,6 +67,17 @@
 	.carousel-container {
 		width: 100%;
 		position: relative;
+	}
+
+	.carousel-container>>>.el-carousel {
+		border-radius: 5px;
+		width: 100%;
+	}
+
+	.carousel-container>>>.el-image {
+		width: 100%;
+		height: 350px;
+		border-radius: 5px;
 	}
 
 	.carousel-description {

@@ -25,12 +25,12 @@ public class StarQueryController {
     StarMixQueryService starMixQueryService;
 
     @GetMapping("/mine/{pageNo}")
-    public Result pageRecentStars(@Positive @PathVariable("pageNo") Integer pageNo) {
+    public Result<?> pageMyStars(@Positive @PathVariable("pageNo") Integer pageNo) {
         return Result.ok(starMixQueryService.pageStarsWithTopic(UserContext.getUserId(),pageNo));
     }
 
     @GetMapping("/isStar/{topicId}")
-    public Result isStar(@Positive @PathVariable("topicId") Long topicId){
+    public Result<?> isStar(@Positive @PathVariable("topicId") Long topicId){
         return Result.ok(starQueryService.isStar(UserContext.getUserId(),topicId));
     }
 }

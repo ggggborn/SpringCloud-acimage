@@ -29,13 +29,13 @@ public class StarOperateController {
     StarMixQueryService starMixQueryService;
 
     @PostMapping("/{topicId}")
-    public Result addStar(@Positive @PathVariable("topicId") Long topicId) {
+    public Result<?> addStar(@Positive @PathVariable("topicId") Long topicId) {
         starWriteService.saveStar(UserContext.getUserId(),topicId);
         return Result.ok();
     }
 
     @DeleteMapping("/{topicId}")
-    public Result deleteStar(@Positive @PathVariable("topicId") Long topicId) {
+    public Result<?> deleteStar(@Positive @PathVariable("topicId") Long topicId) {
         starWriteService.removeStar(UserContext.getUserId(),topicId);
         return Result.ok();
     }

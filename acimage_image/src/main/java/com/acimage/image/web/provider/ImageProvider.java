@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
-@Authentication
 @RequestMapping("/api/image/images")
 public class ImageProvider {
     @Autowired

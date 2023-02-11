@@ -1,4 +1,4 @@
-package com.acimage.feign.client;
+package com.acimage.feign.depreted;
 
 
 

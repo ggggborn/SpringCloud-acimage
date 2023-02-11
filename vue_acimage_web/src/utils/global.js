@@ -62,7 +62,6 @@ global.trueImageUrl = function(url) {
 global.truePhotoUrl = function(url) {
 	if (CommonUtils.isEmpty(url) || url == '#') {
 		return 'userPhoto/default.jpeg';
-
 	}
 	return url;
 }
@@ -77,51 +76,9 @@ global.isEmpty=function(object) {
 }
 
 global.buttonType=function(id){
-	let types=['success', 'primary', 'info', 'warning', 'danger'];
-	return types[id%5];
+	let types=['success', 'primary',  'warning', 'danger'];
+	return types[id%4];
 }
-
-// //token及token内信息
-// global.TOKEN = function() {
-// 	let token = localStorage.getItem("token");
-// 	if (CommonUtils.isEmpty(token)) {
-// 		return "";
-// 	} else {
-// 		return token;
-// 	}
-// }
-
-// global.setToken = function(token) {
-// 	localStorage.setItem("token", token);
-// }
-
-// global.removeToken = function() {
-// 	localStorage.removeItem("token");
-// }
-
-// global.PHOTO_URL = function() {
-// 	let token = global.TOKEN();
-// 	if (!CommonUtils.isEmpty(token)) {
-// 		return global.truePhotoUrl(jwtDecode(token).photoUrl);
-// 	}
-// 	return '#';
-// }
-
-// global.USERNAME = function() {
-// 	let token = global.TOKEN();
-// 	if (!CommonUtils.isEmpty(token)) {
-// 		return jwtDecode(token).username;
-// 	}
-// 	return '';
-// }
-
-// global.USER_ID = function() {
-// 	let token = global.TOKEN();
-// 	if (!CommonUtils.isEmpty(token)) {
-// 		return jwtDecode(token).userId;
-// 	}
-// 	return '';
-// }
 
 //限制显示长度
 global.omitStr = function(content, totalLength) {

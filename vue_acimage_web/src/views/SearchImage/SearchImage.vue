@@ -11,10 +11,10 @@
 			</div>
 			<div style="text-align: center;">
 				<div class="upload-container">
-					<el-upload action="https://jsonplaceholder.typicode.com/posts/" ref="upload"
-						list-type="picture-card" :class="{'upload-plus-disabled':imageList.length>=1}"
-						:on-preview="handlePictureCardPreview" :on-remove="handleRemove" :limit="1" :multiple="true"
-						:auto-upload="false" accept="image/*" :on-exceed="exceedLimit" :on-change="handleChange">
+					<el-upload action="#" ref="upload" list-type="picture-card"
+						:class="{'upload-plus-disabled':imageList.length>=1}" :on-preview="handlePictureCardPreview"
+						:on-remove="handleRemove" :limit="1" :multiple="true" :auto-upload="false" accept="image/*"
+						:on-exceed="exceedLimit" :on-change="handleChange">
 						<i class="el-icon-plus"></i>
 					</el-upload>
 					<el-dialog :visible.sync="dialogVisible">
@@ -27,30 +27,24 @@
 				<el-button @click="submitImage" type="primary">提交</el-button>
 			</div>
 
-			<template v-if="!haveSearched">
-				<el-empty description="快来搜索吧"></el-empty>
-			</template>
-			<template v-else-if="resultImages==null||resultImages.length==0">
-				<el-empty description="没有找到相似图片"></el-empty>
-			</template>
-			<template v-else>
-				<div class="search-result-container">
-					<template v-for="image in resultImages">
-						<router-link class="no-underline" :to="$global.getTopicUrl(image.topic.id)" :key="image.id">
-							<div class="result-image-container">
-								<float-image :title="image.topic.title" :star="image.topic.starCount"
-									:page-view="image.topic.pageView" :username="image.topic.user.username"
-									:create-time="image.topic.createTime"
-									:photo-url="$global.truePhotoUrl(image.topic.user.photoUrl)"
-									:image-url="image.url">
-								</float-image>
-							</div>
 
-						</router-link>
-					</template>
-				</div>
-			</template>
+			<el-empty v-if="!haveSearched" description="快来搜索吧"></el-empty>
+			<el-empty v-else-if="$global.isEmpty(resultImages)"></el-empty>
+			<div v-else class=" search-result-container">
+				<template v-for="image in resultImages">
+					<router-link class="no-underline" :to="$global.getTopicUrl(image.topic.id)" :key="image.id">
+						<div class="result-image-container">
+							<float-image :title="image.topic.title" :star="image.topic.starCount"
+								:page-view="image.topic.pageView" :username="image.topic.user.username"
+								:create-time="image.topic.createTime"
+								:photo-url="$global.truePhotoUrl(image.topic.user.photoUrl)" :image-url="image.url">
+							</float-image>
+						</div>
+
+					</router-link>
+				</template>
 		</div>
+	</div>
 	</div>
 </template>
 

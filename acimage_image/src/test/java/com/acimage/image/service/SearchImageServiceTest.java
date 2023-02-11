@@ -2,6 +2,7 @@ package com.acimage.image.service;
 
 
 
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.image.service.imagehash.SearchImageService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class SearchImageServiceTest {
         try {
             inputStream = new FileInputStream("F:\\MyImage\\素材\\0001.jpeg");
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException(e);
         }
 

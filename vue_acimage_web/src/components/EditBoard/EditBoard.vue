@@ -78,15 +78,15 @@
 							reject("上传失败");
 						});
 					}),
-					content_style: `
-					  body {font-size: 14pt;}
-					  html, body                { height:100%; }
-					  a                         { text-decoration: none; }
-					  p                         { line-height:1.6; margin: 0px; }
-					  table                     { word-wrap:break-word; word-break:break-all;max-width:100%; border:none; border-color:#999; }
-					  .mce-object-iframe        { width:100%; box-sizing:border-box; margin:0; padding:0; }
-					  ul,ol                     { list-style-position:inside; }
-					  `,
+					// content_style: `
+					//   body {font-size: 14pt;}
+					//   html, body                { height:100%; }
+					//   a                         { text-decoration: none; }
+					//   p                         { line-height:1.6; margin: 0px; }
+					//   table                     { word-wrap:break-word; word-break:break-all;max-width:100%; border:none; border-color:#999; }
+					//   .mce-object-iframe        { width:100%; box-sizing:border-box; margin:0; padding:0; }
+					//   ul,ol                     { list-style-position:inside; }
+					//   `,
 					// img                       { max-width:100%; display:block;height:auto; }
 					fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
 

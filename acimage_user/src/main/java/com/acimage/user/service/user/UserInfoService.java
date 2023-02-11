@@ -7,6 +7,6 @@ import com.acimage.user.model.vo.ProfileVo;
 
 public interface UserInfoService {
     ProfileVo getProfile();
-    User getUserWithStarCount(long userId);
+
 
 }

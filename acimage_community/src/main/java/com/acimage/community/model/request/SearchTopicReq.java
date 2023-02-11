@@ -27,13 +27,13 @@ public class SearchTopicReq {
                 case NORMAL:
                     return null;
                 case TIME:
-                    return LambdaUtils.columnNameOf(TopicIndex::getCreateTime);
+                    return LambdaUtils.columnOf(TopicIndex::getCreateTime);
                 case STAR_COUNT:
-                    return LambdaUtils.columnNameOf(TopicIndex::getStarCount);
+                    return LambdaUtils.columnOf(TopicIndex::getStarCount);
                 case PAGE_VIEW:
-                    return LambdaUtils.columnNameOf(TopicIndex::getPageView);
+                    return LambdaUtils.columnOf(TopicIndex::getPageView);
                 case COMMENT_COUNT:
-                    return LambdaUtils.columnNameOf(TopicIndex::getCommentCount);
+                    return LambdaUtils.columnOf(TopicIndex::getCommentCount);
             }
             return null;
         }

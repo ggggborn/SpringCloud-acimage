@@ -4,6 +4,7 @@ package com.acimage.common.utils.redis;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Pair;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.JacksonUtils;
 import com.acimage.common.utils.common.ListUtils;
@@ -61,7 +62,7 @@ public class RedisUtils {
             //错误写法：result=mapper.readValue(json,new TypeReference<List<T>>() { });
             result = mapper.readValue(json, javaType);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("redis数据反序列化异常,key：{} json：{}", key, json);
             throw new BusinessException("服务器出错了~~请稍后重试(>m<)");
         }
@@ -98,7 +99,7 @@ public class RedisUtils {
             return null;
         }
         if (targetType == Date.class) {
-            Long millis=Long.parseLong(str);
+            Long millis = Long.parseLong(str);
             return Convert.convert(targetType, millis);
         }
         return Convert.convert(targetType, str);
@@ -106,6 +107,10 @@ public class RedisUtils {
 
     public String getForString(String key) {
         return stringRedisTemplate.opsForValue().get(key);
+    }
+
+    public List<String> multiGetForString(List<String> keys) {
+        return stringRedisTemplate.opsForValue().multiGet(keys);
     }
 
     public void setAsString(String key, Object value) {
@@ -123,14 +128,13 @@ public class RedisUtils {
     /**
      * redis6.2版本之后才支持
      * @param key
-     * @return
      */
     public String getAndDeleteForString(String key) {
         return stringRedisTemplate.opsForValue().getAndDelete(key);
     }
 
-    public String getAndExpire(String key,long timeout,TimeUnit timeUnit) {
-        return stringRedisTemplate.opsForValue().getAndExpire(key,timeout,timeUnit);
+    public String getAndExpire(String key, long timeout, TimeUnit timeUnit) {
+        return stringRedisTemplate.opsForValue().getAndExpire(key, timeout, timeUnit);
     }
 
     public void setIfPresent(String key, String value) {
@@ -146,7 +150,7 @@ public class RedisUtils {
     }
 
     public Boolean setIfPresentForFieldKey(String key, String filedKey, String value) {
-        return redisLuaUtils.setIfPresentForFieldKey(key,filedKey,value);
+        return redisLuaUtils.setIfPresentForFieldKey(key, filedKey, value);
     }
 
     public Long getAndCombineAndDelete(String keyForIncrement, String hashKeyForBase, String field) {
@@ -216,7 +220,7 @@ public class RedisUtils {
     }
 
     public <T> Long removeForSet(String key, List<T> valueList) {
-        if(CollectionUtil.isEmpty(valueList)){
+        if (CollectionUtil.isEmpty(valueList)) {
             return 0L;
         }
         Object[] values = ListUtils.convert(valueList, String.class).toArray(new String[valueList.size()]);
@@ -249,9 +253,9 @@ public class RedisUtils {
     }
 
     public Long removeForZSet(String key, Object... toStringValues) {
-        String[] valueStrings=new String[toStringValues.length];
-        for(int i=0;i<valueStrings.length;i++){
-            valueStrings[i]=toStringValues[i].toString();
+        String[] valueStrings = new String[toStringValues.length];
+        for (int i = 0; i < valueStrings.length; i++) {
+            valueStrings[i] = toStringValues[i].toString();
         }
         return stringRedisTemplate.opsForZSet().remove(key, valueStrings);
     }
@@ -265,7 +269,7 @@ public class RedisUtils {
     }
 
     public Long incrementIfPresentForFieldKey(String key, String hashKey, long increment) {
-        return redisLuaUtils.incrementIfPresentForFieldKey(key,hashKey,increment);
+        return redisLuaUtils.incrementIfPresentForFieldKey(key, hashKey, increment);
     }
 
 
@@ -285,7 +289,7 @@ public class RedisUtils {
         return valueAndScoreList;
     }
 
-    public <T,V> List<Pair<T, V>> reverseRangeWithScoreForZSet(String key, int start, int end,Class<T> valueType,Class<V> scoreType) {
+    public <T, V> List<Pair<T, V>> reverseRangeWithScoreForZSet(String key, int start, int end, Class<T> valueType, Class<V> scoreType) {
         Set<ZSetOperations.TypedTuple<String>> valueAnsScoreSet = stringRedisTemplate.opsForZSet().reverseRangeWithScores(key, start, end);
         if (valueAnsScoreSet == null) {
             return new ArrayList<>();
@@ -293,14 +297,14 @@ public class RedisUtils {
 
         List<Pair<T, V>> valueAndScoreList = new ArrayList<>();
         for (ZSetOperations.TypedTuple<String> item : valueAnsScoreSet) {
-            T value=Convert.convert(valueType,item.getValue());
-            Object newScore=item.getValue();
-            if(scoreType== Date.class){
+            T value = Convert.convert(valueType, item.getValue());
+            Object newScore = item.getValue();
+            if (scoreType == Date.class) {
                 assert newScore != null;
-                newScore=Long.parseLong(newScore.toString());
+                newScore = Long.parseLong(newScore.toString());
             }
 
-            V score=Convert.convert(scoreType,newScore);
+            V score = Convert.convert(scoreType, newScore);
             Pair<T, V> pair = new Pair<>(value, score);
             valueAndScoreList.add(pair);
         }
@@ -308,6 +312,6 @@ public class RedisUtils {
     }
 
     public List<Long> requestLimitScript(List<String> keys, List<Long> limitTimes, List<Long> expireSeconds, List<Long> penaltyTimes) {
-        return redisLuaUtils.requestLimitScript(keys,limitTimes,expireSeconds,penaltyTimes);
+        return redisLuaUtils.requestLimitScript(keys, limitTimes, expireSeconds, penaltyTimes);
     }
 }

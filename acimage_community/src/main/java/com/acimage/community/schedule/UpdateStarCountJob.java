@@ -11,7 +11,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +51,7 @@ public class UpdateStarCountJob extends QuartzJobBean {
             index++;
             String scIncrementKey = TopicKeyConstants.STRINGKP_TOPIC_STAR_COUNT_INCREMENT + topicId;
             String hashKeyForTopic= TopicKeyConstants.HASHKP_TOPIC+topicId;
-            String fieldName= LambdaUtils.columnNameOf(Topic::getStarCount);
+            String fieldName= LambdaUtils.columnOf(Topic::getStarCount);
             Long scIncrement = redisUtils.getAndCombineAndDelete(scIncrementKey, hashKeyForTopic, fieldName);
 
 

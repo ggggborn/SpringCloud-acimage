@@ -4,10 +4,6 @@
 		</el-image>
 		<div class="title">
 			{{$global.omitStr(title,20)}}
-			<!-- 			<div style="float:right;">
-				<i class="el-icon-view" style="font-size:10px;"></i>
-				<div class="scan-in-title">{{pageView}}</div>
-			</div> -->
 		</div>
 		<div class="info">
 			<el-avatar :src="photoUrl" :size="20"></el-avatar>

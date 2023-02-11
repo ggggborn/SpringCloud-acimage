@@ -1,12 +1,12 @@
 package com.acimage.admin.service.homecarousel.impl;
 
-import com.acimage.admin.dao.image.HomeCarouselDao;
+import com.acimage.admin.dao.community.HomeCarouselDao;
 import com.acimage.admin.global.consts.ModuleConstants;
 import com.acimage.admin.service.homecarousel.HomeCarouselWriteService;
 import com.acimage.common.global.consts.StorePrefixConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.exception.BusinessException;
-import com.acimage.common.model.domain.image.HomeCarousel;
+import com.acimage.common.model.domain.community.HomeCarousel;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.utils.minio.MinioUtils;
@@ -21,7 +21,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-@DS(ModuleConstants.IMAGE)
+@DS(ModuleConstants.COMMUNITY)
 public class HomeCarouselWriteServiceImpl implements HomeCarouselWriteService {
     @Autowired
     HomeCarouselDao homeCarouselDao;

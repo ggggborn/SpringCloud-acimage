@@ -2,8 +2,8 @@
 	<div>
 		<my-header></my-header>
 		<div class="wrapper">
-			<!-- <el-skeleton class="wrapper-left" v-if="loading" :rows="10" animated /> -->
-			<div class="wrapper-left">
+			<el-skeleton class="wrapper-left" v-if="loading" :rows="10" animated />
+			<div v-else class="wrapper-left">
 				<!-- 当前话题的相关信息 -->
 				<div class="title">
 					{{topic.title}}
@@ -11,20 +11,30 @@
 				<div class="topic-info">
 					<i class="el-icon-user"></i>
 					{{topic.user.username}}
-					<el-divider direction="vertical"></el-divider>
-					{{topic.createTime}}
-					<el-divider direction="vertical"></el-divider>
-					{{topic.pageView}}浏览<el-divider direction="vertical"></el-divider>
-					{{topic.starCount}}收藏<el-divider direction="vertical"></el-divider>
-					{{topic.commentCount}}评论<el-divider direction="vertical"></el-divider>
+					<el-divider direction="vertical"></el-divider> {{topic.createTime}}
+					<el-divider direction="vertical"></el-divider> {{topic.pageView}}浏览
+					<el-divider direction="vertical"></el-divider> {{topic.starCount}}收藏
+					<el-divider direction="vertical"></el-divider> {{topic.commentCount}}评论
 					<!-- 编辑标题按钮 -->
 					<div v-if="$store.state.userId == topic.userId" class="title-edit-button">
 						<el-button @click="titleModifyVisible=true" class="gray-color" type="text" size="mini">编辑标题
 						</el-button>
 					</div>
+					<div style="margin-top: 8px;">
+						<el-tag :type="$global.buttonType(topic.categoryId)" effect="plain" size="small" :key="-1">
+							{{$store.getters.categoryLabel(topic.categoryId)}}
+						</el-tag>
+						<span class="tags-container">
+							<el-tag v-for="tagId in topic.tagIds" :type="$global.buttonType(tagId)" effect="plain"
+								size="mini" :key="tagId">
+								{{$store.getters.tagLabel(tagId)}}
+							</el-tag>
+						</span>
+
+					</div>
 				</div>
 				<!--End 当前话题的相关信息 -->
-				<div style="margin-top:-10px;width:90%;margin-left:5%">
+				<div style="margin-top:-20px;width:90%;margin-left:5%">
 					<el-divider direction="horizontal"></el-divider>
 				</div>
 				<!--话题内容 -->
@@ -37,7 +47,7 @@
 						style="border:none" :icon="isStar?'':'el-icon-star-off'">
 						{{isStar?'取消星星':'给TA星星'}}
 					</el-button>
-<!-- 					<el-button type="danger" style="border:none" icon="el-icon-download" @click="onClickDownloadImages">
+					<!-- 					<el-button type="danger" style="border:none" icon="el-icon-download" @click="onClickDownloadImages">
 						下载
 					</el-button> -->
 				</div>
@@ -125,27 +135,14 @@
 		</el-dialog>
 
 		<!-- 修改内容对话框 -->
-		<el-dialog title="修改内容" :visible.sync="contentModifyVisible" width="800px">
-			<edit-board ref="editBoard" width="720px" :html="topic.html"></edit-board>
+		<el-dialog title="修改内容" :visible.sync="contentModifyVisible" width="900px">
+			<edit-board ref="editBoard" width="820px" :html="topic.html"></edit-board>
 			<div slot="footer" class="dialog-footer">
-				<!-- <el-button @click="contentModifyVisible = false">重置</el-button> -->
 				<el-button @click="contentModifyVisible = false">取 消</el-button>
 				<el-button type="primary" @click="onConfirmModifyHtml">确 定</el-button>
 			</div>
 		</el-dialog>
 
-		<!-- 修改图片描述对话框 -->
-		<!-- 		<el-dialog title="修改内容" :visible.sync="imageDescriptionModifyVisible">
-			<el-form>
-				<el-form-item label="新的描述(2-30字)">
-					<el-input v-model="imageDescriptionModify" maxlength="30" clearable=""></el-input>
-				</el-form-item>
-			</el-form>
-			<div slot="footer" class="dialog-footer">
-				<el-button @click="imageDescriptionModifyVisible = false">取 消</el-button>
-				<el-button type="primary" @click="onConfirmModifyImageDescription">确 定</el-button>
-			</div>
-		</el-dialog> -->
 	</div>
 </template>
 
@@ -186,9 +183,6 @@
 				titleModifyVisible: false,
 				titleModify: '',
 				contentModifyVisible: false,
-				imageDescriptionModifyVisible: false,
-				imageDescriptionModify: '',
-				imageIdBeingModified: '',
 				// 当前用户的评论
 				comment: {
 					content: ''
@@ -208,6 +202,7 @@
 						starCount: 996,
 						photoUrl: '',
 					},
+					categoryId: 4,
 					createTime: '2022-2-22 22:22:22',
 					updateTime: '2022-2-22 22:22:22',
 					pageView: 996,
@@ -238,7 +233,6 @@
 		mounted() {
 			//获取参数
 			let id = this.$route.params.id;
-			console.log(id);
 			this.init(id);
 		},
 		methods: {
@@ -250,6 +244,7 @@
 				queryTopicAndFirstCommentPage(id).then(result => {
 					if (result.code == Code.OK) {
 						_this.topic = result.data;
+						console.log(_this.topic)
 						_this.loading = false;
 						_this.initDataForModify();
 					}
@@ -281,15 +276,6 @@
 						});
 				}
 			},
-			onConfirmModifyImageDescription() {
-				modifyDescription(this.imageIdBeingModified, this.imageDescriptionModify).then(result => {
-					if (result.code == Code.OK) {
-						MessageUtils.success("修改描述", 1);
-						CommonUtils.delayRefresh(0.5);
-					}
-
-				})
-			},
 			onConfirmModifyTitle() {
 				modifyTitle(this.topic.id, this.titleModify).then(result => {
 					if (result.code == Code.OK) {
@@ -309,13 +295,8 @@
 			},
 			initDataForModify() {
 				this.isModifyTopic = false;
-				this.descriptionsModify = [];
 				this.contentModify = this.topic.content;
-				// for (let image of this.topic.images) {
-				// 	this.descriptionsModify.push(image.description);
-				// }
 				this.titleModify = this.topic.title;
-				this.contentModify = this.topic.content;
 			},
 			//删除话题
 			onClickDeleteTopic() {
@@ -339,7 +320,6 @@
 					imageIds.push(image.id);
 				}
 				downloadImages(imageIds, this.topic.id);
-
 			},
 			//获取对应页评论
 			onPageNoChange() {

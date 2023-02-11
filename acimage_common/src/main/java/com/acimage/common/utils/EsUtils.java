@@ -18,25 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.QueryShardContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.IndexOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.*;
 import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -97,31 +90,45 @@ public class EsUtils {
         Class<?> indexClass = entity.getClass();
         String termColumn = updateDto.getTermColumn();
         Object termValue = BeanUtil.getFieldValue(entity, termColumn);
+        QueryBuilder queryBuilder = QueryBuilders.termQuery(termColumn, termValue);
 
         IndexCoordinates indexCoordinates = indexCoordinatesOf(indexClass);
-        Document document = this.createDocument(entity, columns);
 
-        QueryBuilder queryBuilder = QueryBuilders.termQuery(termColumn, termValue);
+        //建立脚本和参数
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder script = new StringBuilder();
+        for (String column : columns) {
+            Object value = BeanUtil.getFieldValue(entity, column);
+            script.append(String.format("ctx._source.%s=params.%s;", column, column));
+            params.put(column, value);
+        }
+
         Query query = new NativeSearchQueryBuilder()
-                .withQuery(queryBuilder).build();
-        UpdateQuery updateQuery = UpdateQuery.builder(query)
-                .withDocument(document)
+                .withQuery(queryBuilder)
                 .build();
 
-        esTemplate.updateByQuery(updateQuery, indexCoordinates);
+        UpdateQuery updateQuery = UpdateQuery.builder(query)
+                .withParams(params)
+                .withScript(script.toString())
+                .withScriptType(ScriptType.INLINE)
+                .withAbortOnVersionConflict(false)
+                .build();
+
+        ByQueryResponse byQueryResponse = esTemplate.updateByQuery(updateQuery, indexCoordinates);
+        log.debug("更新了{}条", byQueryResponse.getUpdated());
+
     }
 
     public <T> void batchUpdateById(List<T> entityList, List<String> columns) {
         if (CollectionUtil.isEmpty(entityList)) {
             return;
         }
-        Class<?> clz=entityList.get(0).getClass();
+        Class<?> clz = entityList.get(0).getClass();
         List<UpdateQuery> updateQueries = new ArrayList<>();
 
         for (T entity : entityList) {
             String id = Objects.requireNonNull(ReflectUtils.getAnnotatedFiled(entity, Id.class)).toString();
             Document document = this.createDocument(entity, columns);
-
             UpdateQuery updateQuery = UpdateQuery.builder(id)
                     .withDocument(document)
                     .build();
@@ -198,14 +205,18 @@ public class EsUtils {
         //根据要更新的字段创建对应map
         for (String column : columns) {
             Object value = BeanUtil.getFieldValue(entity, column);
-//            if (value instanceof Date) {
-//                String formatDate = DateUtil.format((Date) value, DatePattern.NORM_DATETIME_PATTERN);
-//                document.put(column, formatDate);
-//            } else {
             document.put(column, value);
-//            }
         }
         return document;
+    }
+
+    private String buildScript(Object entity, List<String> columns) {
+        StringBuilder script = new StringBuilder();
+        for (String column : columns) {
+            Object value = BeanUtil.getFieldValue(entity, column);
+            script.append(String.format("ctx.source.%s=params.%s;", column, column));
+        }
+        return script.toString();
     }
 
 }

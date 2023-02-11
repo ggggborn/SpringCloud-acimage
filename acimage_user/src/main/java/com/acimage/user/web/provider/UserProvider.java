@@ -18,22 +18,19 @@ import javax.validation.constraints.Positive;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/user/users")
+@RequestMapping("/user/users")
 @Validated
-@Authentication
 public class UserProvider {
     @Autowired
     UserQueryService userQueryService;
     @Autowired
     UserWriteService userWriteService;
 
-    @Authentication(type = AuthenticationType.NONE)
     @GetMapping("/id/{id}")
     public Result<User> queryUser(@PathVariable @Positive Long id) {
         User user = userQueryService.getUser(id);
         return Result.ok(user);
     }
-
 
     @PutMapping("/photoUrl")
     Result<String> modifyPhotoUrl(@RequestBody @NotNull String photoUrl){

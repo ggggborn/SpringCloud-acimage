@@ -22,6 +22,8 @@ public class TopicInfoVo {
     private Integer pageView;
     private Integer commentCount;
     private String coverImageUrl;
+    private Integer categoryId;
+    private List<Integer> tagIds;
 
     private Date activityTime;
     private Date createTime;

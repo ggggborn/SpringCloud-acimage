@@ -11,7 +11,6 @@ import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.IdGenerator;
-import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.user.dao.UserDao;
 import com.acimage.user.dao.UserPrivacyDao;
 import com.acimage.common.model.domain.user.UserPrivacy;
@@ -20,6 +19,7 @@ import com.acimage.user.model.request.UserRegisterReq;
 import com.acimage.user.mq.producer.SyncUserMqProducer;
 import com.acimage.user.service.user.LoginService;
 import com.acimage.common.utils.RsaUtils;
+import com.acimage.user.service.verify.VerifyCodeService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     SyncUserMqProducer syncUserMqProducer;
     @Autowired
-    RedisUtils redisUtils;
+    VerifyCodeService verifyCodeService;
 
     @Override
     public String getPublicKey() {
@@ -151,6 +151,18 @@ public class LoginServiceImpl implements LoginService {
         //获取cookie中的token
         String token = request.getHeader(HeaderKeyConstants.AUTHORIZATION);
         tokenService.invalidate(token);
+    }
+
+    @Override
+    public void checkAndSendCodeToEmail(String email){
+        //检查邮箱是否存在
+        LambdaQueryWrapper<UserPrivacy> qw=new LambdaQueryWrapper<>();
+        qw.select(UserPrivacy::getEmail).eq(UserPrivacy::getEmail,email);
+        if(userPrivacyDao.selectOne(qw)!=null){
+            throw new BusinessException("邮箱已存在");
+        }
+        verifyCodeService.sendVerifyCodeToEmail(email,UserRegisterReq.VERIFY_CODE_LENGTH);
+
     }
 
 

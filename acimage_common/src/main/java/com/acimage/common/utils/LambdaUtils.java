@@ -3,6 +3,7 @@ package com.acimage.common.utils;
 import cn.hutool.core.util.ReflectUtil;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import lombok.extern.slf4j.Slf4j;
 
 import java.lang.invoke.SerializedLambda;
 import java.lang.reflect.InvocationTargetException;
@@ -10,17 +11,18 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class LambdaUtils {
     public static final String TOKEN_GET="get";
     public static final String TOKEN_IS="is";
     public static final String WRITE_REPLACE="writeReplace";
 
     public static <T> String getUnderlineColumnName(SFunction<T, ?> getOrIs) {
-        return StringUtils.camelToUnderline(columnNameOf(getOrIs));
+        return StringUtils.camelToUnderline(columnOf(getOrIs));
 
     }
 
-    public static <T> String columnNameOf(SFunction<T, ?> getOrIs) {
+    public static <T> String columnOf(SFunction<T, ?> getOrIs) {
 
         // 从function取出序列化方法
         Method writeReplaceMethod = ReflectUtil.getMethodByName(getOrIs.getClass(), WRITE_REPLACE);
@@ -52,7 +54,7 @@ public class LambdaUtils {
     public static <T> List<String> columnsFrom(SFunction<T, ?>... getOrIsFunctions) {
         List<String> columns=new ArrayList<>();
         for(SFunction<T,?> function:getOrIsFunctions){
-            columns.add(columnNameOf(function));
+            columns.add(columnOf(function));
         }
         return columns;
     }

@@ -10,14 +10,11 @@
 }
 
 .wrapper {
-	width: 1090px;
-	margin-left: calc((100% - 1100px) / 2);
+	width: 1130px;
+	margin-left: calc((100% - 1120px) / 2);
 	margin-top: 15px;
 	display: block;
-	padding: 0px;
-	/*
-	background-color: white;
-	box-shadow:0px 0px 5px #CCCCCC;*/
+	padding-bottom: 100px;
 	border-radius: 5px;
 }
 
@@ -72,7 +69,7 @@
 }
 
 .wrapper-right {
-	width: 300px;
+	width: 340px;
 	display: inline-block;
 	vertical-align: top;
 	/* 	border-radius: 5px;

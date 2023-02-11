@@ -14,6 +14,8 @@ import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortMode;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
@@ -37,7 +39,7 @@ public class TopicSearchServiceImpl implements TopicSearchService {
 
     @Override
     public MyPage<Topic> searchByTagId(Integer tagId, int pageNo, int pageSize) {
-        String column = LambdaUtils.columnNameOf(Topic::getTagIds);
+        String column = LambdaUtils.columnOf(Topic::getTagIds);
         MyPage<TopicIndex> topicIndexPage = esUtils.termQuery(column, tagId, TopicIndex.class, pageNo, pageSize);
         List<Topic> topicList = TopicIndex.toTopicList(topicIndexPage.getDataList());
         return new MyPage<>(topicIndexPage.getTotalCount(), topicList);
@@ -52,15 +54,15 @@ public class TopicSearchServiceImpl implements TopicSearchService {
 
     @Override
     public List<Topic> searchSimilarByTitle(long topicId, String title, int size) {
-        String column = LambdaUtils.columnNameOf(TopicIndex::getTitle);
+        String column = LambdaUtils.columnOf(TopicIndex::getTitle);
         float score = 0.2f;
         List<TopicIndex> topicIndices = esUtils.matchQuery(TopicIndex.class, column, title, 1, size + 1, score);
-        List<Topic> topicList= TopicIndex.toTopicList(topicIndices).stream()
+        List<Topic> topicList = TopicIndex.toTopicList(topicIndices).stream()
                 .filter(o -> !o.getId().equals(topicId))
                 .collect(Collectors.toList());
-        if(topicList.size()==size+1){
-            return topicList.subList(0,size);
-        }else{
+        if (topicList.size() == size + 1) {
+            return topicList.subList(0, size);
+        } else {
             return topicList;
         }
     }
@@ -78,8 +80,8 @@ public class TopicSearchServiceImpl implements TopicSearchService {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         HighlightBuilder highlightBuilder = null;
 
-        String titleColumn = LambdaUtils.columnNameOf(TopicIndex::getTitle);
-        String contentColumn = LambdaUtils.columnNameOf(TopicIndex::getContent);
+        String titleColumn = LambdaUtils.columnOf(TopicIndex::getTitle);
+        String contentColumn = LambdaUtils.columnOf(TopicIndex::getContent);
 
         if (!StrUtil.isBlank(search)) {
             HighlightBuilder.Field titleField = new HighlightBuilder.Field(titleColumn);
@@ -95,11 +97,11 @@ public class TopicSearchServiceImpl implements TopicSearchService {
             boolQuery.must().add(matchQuery);
         }
         if (tagId != null) {
-            String tagIdsColumn = LambdaUtils.columnNameOf(TopicIndex::getTagIds);
+            String tagIdsColumn = LambdaUtils.columnOf(TopicIndex::getTagIds);
             boolQuery.filter().add(QueryBuilders.termQuery(tagIdsColumn, tagId));
         }
         if (categoryId != null) {
-            String categoryIdColumn = LambdaUtils.columnNameOf(TopicIndex::getCategoryId);
+            String categoryIdColumn = LambdaUtils.columnOf(TopicIndex::getCategoryId);
             boolQuery.filter().add(QueryBuilders.termQuery(categoryIdColumn, categoryId));
         }
 
@@ -111,7 +113,8 @@ public class TopicSearchServiceImpl implements TopicSearchService {
             nativeSearchQuery.withHighlightBuilder(highlightBuilder);
         }
         if (sort != null && sort.toColumn() != null) {
-            FieldSortBuilder sortBuilder = new FieldSortBuilder(Objects.requireNonNull(sort.toColumn()));
+            FieldSortBuilder sortBuilder = new FieldSortBuilder(Objects.requireNonNull(sort.toColumn()))
+                    .order(SortOrder.DESC);
             nativeSearchQuery.withSort(sortBuilder);
         }
 

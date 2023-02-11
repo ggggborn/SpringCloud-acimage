@@ -2,7 +2,7 @@
 	<div class="topic-list-div">
 		<el-card shadow="hover" style="border-width: 2px;">
 			<div slot="header">
-				<span class="c6">{{label}}</span>
+				<span :style="'color:'+labelColor">{{label}}</span>
 			</div>
 			<div>
 				<div v-for="(item,index) in topics" :key="item.id" class="item-container">
@@ -41,9 +41,12 @@
 				type: String,
 				default: '热门话题'
 			},
+			labelColor:{
+				default:'#666666'
+			},
 			titleLimit: {
 				type: Number,
-				default: 17
+				default: 21
 			},
 			topics: {
 				type: Array,

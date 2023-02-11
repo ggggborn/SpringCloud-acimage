@@ -3,6 +3,7 @@ package com.acimage.common.utils.common;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
+import com.acimage.common.utils.ExceptionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -28,7 +29,7 @@ public class AopUtils {
                     .getMethod(signature.getMethod().getName(),
                             signature.getMethod().getParameterTypes());
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException(e);
         }
 
@@ -56,48 +57,6 @@ public class AopUtils {
         return annotationList;
     }
 
-    /**
-     * 返回首个被annotation注解的实参或实参成员变量
-     */
-//    public static <T extends Annotation, V> V annotatedArgOrArgFieldOf(@NotNull JoinPoint joinPoint, Class<T> annotation, Class<V> targetType) {
-//
-//        Parameter[] parameters = methodOf(joinPoint).getParameters();
-//        Object[] args = joinPoint.getArgs();
-//
-//        Integer firstIndex = indexOfFirstAnnotatedParameter(parameters, annotation);
-//        if (firstIndex != null) {
-//            return Convert.convert(targetType, args[firstIndex]);
-//        }
-//
-//        for (Parameter parameter : parameters) {
-//            Field field = firstAnnotatedField(parameter.getType(), annotation);
-//            if (field == null) {
-//                continue;
-//            }
-//
-//            String fieldName = field.getName();
-//
-//            String getMethodName = StringUtils.concatCapitalize("get", fieldName);
-//            Method method;
-//            try {
-//                method = parameter.getType().getMethod(getMethodName);
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//                log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
-//                throw new RuntimeException(e);
-//            }
-//
-//            try {
-//                Object result = method.invoke();
-//                return Convert.convert(targetType, result);
-//            } catch (IllegalAccessException | InvocationTargetException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//
-//        return null;
-//    }
-
     public static <T extends Annotation, V> V annotatedArgOrArgFieldOf(@NotNull JoinPoint joinPoint, Class<T> annotation, Class<V> targetType) {
 
         Parameter[] parameters = methodOf(joinPoint).getParameters();
@@ -119,22 +78,7 @@ public class AopUtils {
             String fieldName = field.getName();
             Object result= BeanUtil.getFieldValue(args[i],fieldName);
             return Convert.convert(targetType, result);
-//            String getMethodName = StringUtils.concatCapitalize("get", fieldName);
-//            Method method;
-//            try {
-//                method = parameter.getType().getMethod(getMethodName);
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//                log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
-//                throw new RuntimeException(e);
-//            }
-//
-//            try {
-//                Object result = method.invoke(args[i]);
-//                return Convert.convert(targetType, result);
-//            } catch (IllegalAccessException | InvocationTargetException e) {
-//                throw new RuntimeException(e);
-//            }
+
         }
 
         return null;

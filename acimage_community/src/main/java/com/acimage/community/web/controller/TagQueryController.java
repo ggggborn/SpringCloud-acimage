@@ -22,7 +22,7 @@ public class TagQueryController {
     TagQueryService tagQueryService;
 
     @GetMapping("/all")
-    public Result<List<Tag>> queryAll() {
+    public Result<List<Tag>> queryAllTags() {
         return Result.ok(tagQueryService.listAll());
     }
 }

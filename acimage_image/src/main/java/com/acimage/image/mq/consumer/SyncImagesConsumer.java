@@ -1,9 +1,10 @@
 package com.acimage.image.mq.consumer;
 
 
-
 import com.acimage.common.global.consts.MqConstants;
 import com.acimage.common.model.mq.dto.SyncImagesUpdateDto;
+import com.acimage.common.utils.ExceptionUtils;
+import com.acimage.common.utils.SpringContextUtils;
 import com.acimage.image.service.image.ImageMixWriteService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -44,18 +45,19 @@ public class SyncImagesConsumer {
         try {
             imageMixWriteService.updateImageAndHash(updateDto);
         } catch (Exception e) {
+            ExceptionUtils.printIfDev(e);
             log.error("同步图片消费者任务失败 error:{} data:{}", e.getLocalizedMessage(), updateDto);
         } finally {
             String messageBody = new String(message.getBody());
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("同步图片ack失败 error:{} message:{} data:{}", e.getMessage(), messageBody, updateDto);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    e.printStackTrace();
+                    ExceptionUtils.printIfDev(e);
                     log.error("同步图片reject失败 error:{} message:{} data:{}", e.getMessage(), messageBody, updateDto);
                 }
             }

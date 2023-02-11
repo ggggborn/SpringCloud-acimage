@@ -14,10 +14,6 @@ import com.acimage.common.global.exception.NullTokenException;
 import java.util.Date;
 
 public class JwtUtils {
-    /**
-     * 过期时间10min
-     */
-
 
     public static String createToken(long userId,String username,String photoUrl,int expireDays) {
 

@@ -89,7 +89,7 @@ public class QiniuUtils {
         try {
             is = multipartFile.getInputStream();
         } catch (IOException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("error: multipartFile.getInputStream()异常:{}", e.getMessage());
             throw new RuntimeException(e);
         }
@@ -149,7 +149,7 @@ public class QiniuUtils {
             client.post(trueUrl, "", str);
         } catch (QiniuException e) {
             log.error("刷新查询oss url失败 url:{}", url);
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
         }
     }
 
@@ -208,7 +208,7 @@ public class QiniuUtils {
         try {
             encodedUrl = URLEncoder.encode(url, "utf-8").replace("+", "%20");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("url编码失败 error：{}", e.getLocalizedMessage());
         }
         String publicUrl = domain + "/" + encodedUrl;

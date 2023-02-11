@@ -1,4 +1,4 @@
-package com.acimage.feign.bak;
+package com.acimage.feign.depreted;
 
 import com.acimage.common.result.Result;
 import org.springframework.cloud.openfeign.FeignClient;

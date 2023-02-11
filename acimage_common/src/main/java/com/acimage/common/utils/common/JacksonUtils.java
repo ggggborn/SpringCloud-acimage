@@ -1,6 +1,7 @@
 package com.acimage.common.utils.common;
 
 
+import com.acimage.common.utils.ExceptionUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
@@ -23,8 +24,8 @@ public class JacksonUtils {
         try {
             json = mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            log.error("对象序列化成json错误 对象[{}]", object);
+            ExceptionUtils.printIfDev(e);
+            log.error("对象序列化成json错误 对象[{}] error:{}", object,e.getMessage());
             throw new RuntimeException(e);
         }
         return json;

@@ -91,7 +91,7 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
         //更新数据库
         topicDao.updateActivityTime(topicId, date);
         String key = TopicKeyConstants.HASHKP_TOPIC + topicId;
-        String column = LambdaUtils.columnNameOf(Topic::getActivityTime);
+        String column = LambdaUtils.columnOf(Topic::getActivityTime);
         //保存最新值
         redisUtils.setIfPresentForFieldKey(key, column, Long.toString(date.getTime()));
         //更新排行榜
@@ -112,7 +112,7 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
             //改数据库
             this.updateByIncrement(Topic::getStarCount, topicId, increment);
             //同步到redis
-            String column = LambdaUtils.columnNameOf(Topic::getStarCount);
+            String column = LambdaUtils.columnOf(Topic::getStarCount);
             String key = TopicKeyConstants.HASHKP_TOPIC + topicId;
             //获取最新值更新排行榜
             Long starCount = redisUtils.incrementIfPresentForFieldKey(key, column, increment);
@@ -143,7 +143,7 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
             //改数据库
             this.updateByIncrement(Topic::getCommentCount, topicId, increment);
             //同步到redis
-            String column = LambdaUtils.columnNameOf(Topic::getCommentCount);
+            String column = LambdaUtils.columnOf(Topic::getCommentCount);
             String key = TopicKeyConstants.HASHKP_TOPIC + topicId;
             //获取最新值更新排行榜
             Long commentCount = redisUtils.incrementIfPresentForFieldKey(key, column, increment);

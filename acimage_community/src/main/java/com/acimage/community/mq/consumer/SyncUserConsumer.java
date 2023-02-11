@@ -9,7 +9,9 @@ import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 
 import com.acimage.common.utils.EsUtils;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.common.utils.LambdaUtils;
+import com.acimage.common.utils.SpringContextUtils;
 import com.acimage.community.service.cmtyuser.CmtyUserWriteService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
@@ -43,14 +45,14 @@ public class SyncUserConsumer {
                     .build();
             EsUpdateByTermDto updateDto = new EsUpdateByTermDto();
             updateDto.with(topicIndex);
-            String termColumn = LambdaUtils.columnNameOf(TopicIndex::getUserId);
+            String termColumn = LambdaUtils.columnOf(TopicIndex::getUserId);
             List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getUsername);
             updateDto.setTermColumn(termColumn);
             updateDto.setColumns(columns);
             esUtils.UpdateByTerm(updateDto);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("同步用户名任务失败 error:{} 对象：{}", e.getMessage(), userIdWithUsername);
 
         } finally {
@@ -58,12 +60,12 @@ public class SyncUserConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("同步用户名ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(e);
                     log.error("同步用户名reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }
@@ -83,14 +85,14 @@ public class SyncUserConsumer {
                     .build();
             EsUpdateByTermDto updateDto = new EsUpdateByTermDto();
             updateDto.with(topicIndex);
-            String termColumn = LambdaUtils.columnNameOf(TopicIndex::getUserId);
+            String termColumn = LambdaUtils.columnOf(TopicIndex::getUserId);
             List<String> columns = LambdaUtils.columnsFrom(TopicIndex::getPhotoUrl);
             updateDto.setTermColumn(termColumn);
             updateDto.setColumns(columns);
             esUtils.UpdateByTerm(updateDto);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("同步头像地址任务失败 error:{} data:{}", e.getMessage(), userIdWithPhotoUrl);
 
         } finally {
@@ -98,12 +100,12 @@ public class SyncUserConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("同步头像地址ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(e);
                     log.error("同步头像地址reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }
@@ -116,7 +118,7 @@ public class SyncUserConsumer {
         try {
             cmtyUserWriteService.save(cmtyUser);
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("新增用户 error:{} 对象：{}", e.getMessage(), cmtyUser);
 
         } finally {
@@ -124,12 +126,12 @@ public class SyncUserConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("新增用户ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(e);
                     log.error("新增用户reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }

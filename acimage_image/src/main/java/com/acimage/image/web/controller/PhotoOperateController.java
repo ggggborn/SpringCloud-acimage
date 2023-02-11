@@ -18,8 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @Validated
 @Authentication
-@RequestMapping("/api/image/photos")
-public class PhotoController {
+@RequestMapping("/api/image/photos/operate")
+public class PhotoOperateController {
     @Autowired
     PhotoServiceImpl photoService;
 

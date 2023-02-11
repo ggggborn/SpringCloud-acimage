@@ -1,6 +1,7 @@
 package com.acimage.community.utils;
 
 import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -83,7 +84,7 @@ public class RedisTest {
             List<Topic> topics1=redisUtils.getListFromString(KEY, Topic.class);
             System.out.println(topics1);
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException();
         }
     }

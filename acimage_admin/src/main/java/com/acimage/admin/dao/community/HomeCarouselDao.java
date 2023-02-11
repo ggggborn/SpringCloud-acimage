@@ -1,7 +1,7 @@
-package com.acimage.admin.dao.image;
+package com.acimage.admin.dao.community;
 
 
-import com.acimage.common.model.domain.image.HomeCarousel;
+import com.acimage.common.model.domain.community.HomeCarousel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Select;
 

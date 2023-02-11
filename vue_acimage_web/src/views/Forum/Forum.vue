@@ -3,7 +3,7 @@
 		<my-header></my-header>
 		<div class="wrapper">
 			<div class="wrapper-header">
-				<div style="display: inline-block;width:560px">
+				<div style="display: inline-block;width:598px">
 					<home-carousel></home-carousel>
 				</div>
 				<div class="mask-images-container">
@@ -16,32 +16,8 @@
 						</router-link>
 					</div>
 				</div>
-				<!-- 				<img src="/static/image/user-rank-header.jpg" width="60%" height="80%" object-fit="cover"/>
-				<i class="el-icon-chat-round wrapper-header-icon" style=""></i>
-				<div class="wrapper-header-title">AC论坛</div> -->
 			</div>
 			<div class="wrapper-left">
-<!-- 				<div class="hot-container" style="height: 600px;">
-					<div class="hot-header">
-						<i class="el-icon-discover hot-header-icon"></i>
-						<div class="hot-header-title">近期热门</div>
-						<div style="margin-top:-20px;">
-							<el-divider direction="horizontal"></el-divider>
-						</div>
-					</div>
-					<template v-for="topic in recentHotTopics">
-						<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" class="no-underline">
-							<div style="display: inline-block;margin-right: 10px;width: 150px;">
-								<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
-									:username="topic.user.username" :create-time="topic.createTime"
-									:photo-url="$global.truePhotoUrl(topic.user.photoUrl)"
-									:image-url="$global.trueImageUrl(topic.coverImageUrl)">
-								</float-image>
-							</div>
-						</router-link>
-					</template>
-				</div> -->
-
 				<el-skeleton v-if="loading" :rows="6" animated />
 				<template v-else>
 					<div v-for="topic in topics" style="margin-bottom:12px;" :key="topic.id">
@@ -65,8 +41,13 @@
 					<tag-card :click-tag="clickTag"></tag-card>
 				</div>
 				<div class="mt10">
-					<topic-list medalMode label="火热讨论"></topic-list>
+					<topic-list medalMode label="火热讨论" :topics="mostCommentCountTopics" :showData="false"></topic-list>
 				</div>
+				<div style="margin-top:20px">
+					<user-rank></user-rank>
+				</div>
+
+
 			</div>
 		</div>
 	</div>
@@ -78,8 +59,9 @@
 	import CategoryCard from '@/components/CategoryCard/CategoryCard.vue'
 	import TagCard from '@/components/TagCard/TagCard.vue'
 	import TopicList from '@/components/TopicList/TopicList.vue'
-	import HomeCarousel from '@/views/Home/HomeCarousel/HomeCarousel.vue'
+	import HomeCarousel from '@/components/HomeCarousel/HomeCarousel.vue'
 	import MaskImage from '@/components/MaskImage/MaskImage.vue'
+	import UserRank from '@/views/Home/UserRank/UserRank.vue'
 	// import FloatImage from '@/components/FloatImage/FloatImage.vue'
 
 	import { Code } from '@/utils/result.js'
@@ -87,7 +69,7 @@
 	import MessageUtils from '@/utils/MessageUtils'
 
 	import { pageRencentTopic } from '@/api/topic.js'
-	import { queryRecentHotTopics, queryRecommendTopics } from '@/api/topic.js'
+	import { queryRecentHotTopics, queryRecommendTopics, queryMostCommentCountTopics } from '@/api/topic.js'
 
 	export default {
 		name: 'ForumA',
@@ -100,6 +82,7 @@
 
 			HomeCarousel,
 			MaskImage,
+			UserRank
 			// FloatImage
 		},
 		data() {
@@ -112,6 +95,7 @@
 				recentHotTopics: [
 
 				],
+				mostCommentCountTopics:[],
 				topics: [{
 					id: 405,
 					userId: 999,
@@ -161,6 +145,11 @@
 					_this.recentHotTopics = result.data;
 				}
 			});
+			queryMostCommentCountTopics().then(res=>{
+				if (res.code == Code.OK) {
+					_this.mostCommentCountTopics = res.data;
+				}
+			})
 
 		},
 		methods: {

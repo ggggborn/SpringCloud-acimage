@@ -28,6 +28,7 @@ public class CmtyUserWriteServiceImpl implements CmtyUserWriteService {
         uw.set(CmtyUser::getUsername, username)
                 .eq(CmtyUser::getId, userId);
         cmtyUserDao.update(null, uw);
+        redisUtils.delete(KeyConstants.STRINGKP_CMTY_USER);
     }
 
     @Override
@@ -36,6 +37,7 @@ public class CmtyUserWriteServiceImpl implements CmtyUserWriteService {
         uw.set(CmtyUser::getPhotoUrl, photoUrl)
                 .eq(CmtyUser::getId, userId);
         cmtyUserDao.update(null, uw);
+        redisUtils.delete(KeyConstants.STRINGKP_CMTY_USER);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class CmtyUserWriteServiceImpl implements CmtyUserWriteService {
     public Integer updateStarCountByIncrement(long userId, int increment) {
         int col=cmtyUserDao.updateStarCountByIncrement(userId,increment);
         String key=KeyConstants.STRINGKP_CMTY_USER +userId;
-        String column= LambdaUtils.columnNameOf(CmtyUser::getStarCount);
+        String column= LambdaUtils.columnOf(CmtyUser::getStarCount);
         redisUtils.incrementIfPresentForFieldKey(key,column,increment);
         return col;
     }

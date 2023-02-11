@@ -51,22 +51,6 @@ public class ReflectUtils {
 
         String fieldName = field.getName();
         return BeanUtil.getFieldValue(obj,fieldName);
-//
-//        String getMethodName = StringUtils.concatCapitalize("get", fieldName);
-//        Method method;
-//        try {
-//            method = obj.getClass().getMethod(getMethodName);
-//        } catch (NoSuchMethodException e) {
-//            e.printStackTrace();
-//            log.error("反射获取class对象[{}]方法[{}]失败", annotation, getMethodName);
-//            throw new RuntimeException(e);
-//        }
-//
-//        try {
-//            return method.invoke(obj);
-//        } catch (IllegalAccessException | InvocationTargetException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     public static <T extends Annotation> Field firstAnnotatedField(Class<?> objectClass, Class<T> annotation) {

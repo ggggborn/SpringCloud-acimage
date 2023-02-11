@@ -5,12 +5,9 @@
 </template>
 
 <script>
-	import MyHeader from '@/components/MyHeader/MyHeader.vue'
-
 	export default {
 		name: 'App',
 		created() {
-			// this.$store.commit('init');
 			this.$store.commit("init");
 		}
 	}

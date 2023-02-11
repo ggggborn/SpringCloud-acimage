@@ -5,7 +5,7 @@
 			<div class="wrapper-top">
 				<el-form ref="form" label-width="120px" style="width: 900px;" :model="query">
 					<el-form-item label="关键词">
-						<el-input style="width:300px;" v-model="query.search" prefix-icon="el-icon-edit-outline"
+						<el-input @keydown.native.enter="submitSearch" style="width:300px;" v-model="query.search" prefix-icon="el-icon-edit-outline"
 							maxlength="15" clearable></el-input>
 						<el-button @click="submitSearch" style="margin-left:30px;" type="primary" plain>提交搜索</el-button>
 					</el-form-item>
@@ -36,16 +36,18 @@
 						</el-tabs>
 					</el-form-item>
 				</el-form>
+
 				<div style="margin-left: 120px;">
-					<div v-for="topic in topics" :key="topic.id" style="margin-bottom: 5px;">
+					<el-skeleton v-if="loading" :rows="6" animated />
+					<el-empty v-else-if="$global.isEmpty(topics)" description="搜索结果空空如也~~"></el-empty>
+					<div v-else v-for="topic in topics" :key="topic.id" style="margin-bottom: 5px;">
 						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.activityTime"
 							:starCount="topic.starCount" :commentCount="topic.commentCount" :pageView="topic.pageView"
-							:username="topic.user.username" :photoUrl="topic.user.photoUrl" :to="$global.getTopicUrl(topic.id)"
-							:categoryId="topic.categoryId" :tagIds="topic.tagIds" :coverImageUrl="topic.coverImageUrl"
-							titleHtml contentHtml>
+							:username="topic.user.username" :photoUrl="topic.user.photoUrl"
+							:to="$global.getTopicUrl(topic.id)" :categoryId="topic.categoryId" :tagIds="topic.tagIds"
+							:coverImageUrl="topic.coverImageUrl" titleHtml contentHtml>
 						</topic-card>
 					</div>
-
 				</div>
 				<div style="text-align: center;">
 					<el-pagination background layout="prev, pager, next" :total="totalCount"
@@ -70,6 +72,7 @@
 	import { pageRencentTopic } from '@/api/topic.js'
 	import { searchTopicsAsPage } from '@/api/TopicSearch'
 
+
 	let SortBy = {
 		NORMAL: 'NORMAL',
 		TIME: 'TIME',
@@ -89,6 +92,7 @@
 			return {
 				curPage: 1,
 				totalCount: 1,
+				loading: false,
 				query: {
 					search: '',
 					pageNo: 1,
@@ -101,15 +105,30 @@
 			};
 		},
 		watch: {
+			'$route'(to, from) {
+				if (!CommonUtils.isEmpty(to.query.search.trim())) {
+					this.query.search = to.query.search;
+					this.submitSearch();
+				}
+			},
 			query: {
 				handler(newVal, oldVal) {
-					console.log('query新值' + this.query.search)
+					this.$route.query.search = newVal.search;
 				},
 				deep: true
 			}
 		},
-		created() {
-			this.getRecentTopicPage();
+		mounted() {
+			CommonUtils.copyProperties(this.$route.query, this.query)
+			console.log(this.query)
+			if (!CommonUtils.isEmpty(this.query.search.trim()) ||
+				this.query.pageNo != 1 ||
+				this.query.categoryId != null ||
+				this.query.tagId != null) {
+				this.submitSearch();
+			}
+			// console.log(this.query)
+			// this.getRecentTopicPage();
 		},
 		methods: {
 			handleTabClick(tab) {
@@ -140,6 +159,7 @@
 				if (CommonUtils.isEmpty(this.query.categoryId)) {
 					this.query.categoryId = null;
 				}
+				this.loading = true;
 				// let searchForm = CommonUtils.getFormData(this.query);
 				searchTopicsAsPage(_this.query).then(res => {
 					if (res.code == Code.OK) {
@@ -147,6 +167,7 @@
 						_this.topics = res.data.dataList;
 						_this.totalCount = res.data.totalCount;
 					}
+					this.loading = false;
 				})
 			},
 			getRecentTopicPage() {

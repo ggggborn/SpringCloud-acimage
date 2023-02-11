@@ -65,7 +65,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     @Override
     public TopicInfoVo getTopicInfoAndFirstCommentPage(long topicId) {
 
-        Topic topic = topicQueryService.getTopic(topicId);
+        Topic topic = this.getTopicWithUserTagIds(topicId);
 
         if (topic == null) {
             log.warn("user:{} 查询 话题:{} error：不存在或已被删除", UserContext.getUsername(), topicId);
@@ -139,7 +139,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         List<Long> rankList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.STAR_COUNT, pageNo, pageSize);
         List<Topic> topicList = new ArrayList<>();
         for (Long topicId : rankList) {
-            Topic topic = getTopicWithUserTagIds(topicId);
+            Topic topic = this.getTopicWithUserTagIds(topicId);
             if (topic != null) {
                 //设置浏览量,评论数，收藏量
                 topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
@@ -147,7 +147,22 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
             }
         }
 
-        topicList.sort(Comparator.comparing(Topic::getStarCount).reversed());
+        return topicList;
+    }
+
+    @Override
+    public List<Topic> pageTopicsInfoRankByCommentCount(int pageNo, int pageSize) {
+        List<Long> rankList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.COMMENT_COUNT, pageNo, pageSize);
+        List<Topic> topicList = new ArrayList<>();
+        for (Long topicId : rankList) {
+            Topic topic = this.getTopicWithUserTagIds(topicId);
+            if (topic != null) {
+                //设置浏览量,评论数，收藏量
+                topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
+                topicList.add(topic);
+            }
+        }
+
         return topicList;
     }
 
@@ -158,7 +173,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         for (Long topicId : topicIdList) {
             Topic topic = getTopicWithUserTagIds(topicId);
             if (topic != null) {
-                //设置浏览量,评论数，收藏量
+                //设置浏览量
                 topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
                 topicList.add(topic);
             }

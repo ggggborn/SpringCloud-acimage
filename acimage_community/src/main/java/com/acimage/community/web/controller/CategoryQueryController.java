@@ -21,7 +21,7 @@ public class CategoryQueryController {
     CategoryQueryService categoryQueryService;
 
     @GetMapping("/all")
-    public Result<List<Category>> queryAll() {
+    public Result<List<Category>> queryAllCategories() {
         return Result.ok(categoryQueryService.listAll());
     }
 

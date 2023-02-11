@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CmtyUserClient {
 
     @GetMapping("/userId/{userId}")
-    Result<CmtyUser> queryUserCommunityStatistic(@PathVariable Long userId);
+    Result<CmtyUser> queryCmtyUser(@PathVariable Long userId);
 }

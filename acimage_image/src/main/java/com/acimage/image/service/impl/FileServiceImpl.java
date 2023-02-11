@@ -4,6 +4,7 @@ package com.acimage.image.service.impl;
 import cn.hutool.core.util.IdUtil;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.exception.BusinessException;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.image.global.consts.MyFileConst;
 import com.acimage.image.global.context.DirectoryContext;
@@ -142,7 +143,7 @@ public class FileServiceImpl implements FileService {
         try {
             FileUtils.packageFiles(files, zipFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             zipFile.delete();
             log.error("文件{} 打包时异常：{}", zipPath, e.getStackTrace());
             throw new BusinessException("压缩包打包异常，请刷新重试");

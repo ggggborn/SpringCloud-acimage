@@ -51,10 +51,10 @@
 					</el-tag>
 				</div>
 				<div class="tags-container">
-					<template v-for="item in tagIds">
-						<el-tag v-if="!$global.isEmpty($store.getters.tagLabel(item))" effect="plain"
-							:type="$global.buttonType(item)" :key="item.id">
-							{{$store.getters.tagLabel(item)}}
+					<template v-for="id in tagIds">
+						<el-tag v-if="!$global.isEmpty($store.getters.tagLabel(id))" effect="plain"
+							:type="$global.buttonType(id)" :key="id">
+							{{$store.getters.tagLabel(id)}}
 						</el-tag>
 					</template>
 				</div>

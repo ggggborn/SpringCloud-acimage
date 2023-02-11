@@ -56,7 +56,7 @@
 							<el-button type="danger" @click="register" style="width: 120px;">
 								注册
 							</el-button>
-							<el-button type="primary" style="width: 120px;" plain>
+							<el-button @click="toHome" type="primary" style="width: 120px;" plain>
 								返回主页
 							</el-button>
 						</el-row>
@@ -94,7 +94,7 @@
 							<el-button type="danger" @click="login" style="width: 120px;">
 								登录
 							</el-button>
-							<el-button type="primary" style="width: 120px;" plain>
+							<el-button @click="toHome" type="primary" style="width: 120px;" plain>
 								返回主页
 							</el-button>
 						</el-row>
@@ -226,6 +226,9 @@
 							}
 						})
 				}
+			},
+			toHome(){
+				this.$route.push({ path: '/' })
 			}
 		}
 	}

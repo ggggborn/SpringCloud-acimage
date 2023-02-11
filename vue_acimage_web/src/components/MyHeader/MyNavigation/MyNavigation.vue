@@ -2,7 +2,7 @@
 	<div>
 		<div class="wrapper">
 			<el-row>
-				<el-menu mode="horizontal" router style="border: 0px;height:52px;margin-top:-12px;opacity: 0.85;">
+				<el-menu router mode="horizontal"  style="border: 0px;height:52px;margin-top:-12px;opacity: 0.85;">
 					<el-menu-item index="/">
 						<i class="el-icon-house" style="color:orange"></i>主页
 					</el-menu-item>
@@ -10,17 +10,14 @@
 						<i class="el-icon-magic-stick" style="color:orange"></i>我的动态
 					</el-menu-item>
 
-					<el-menu-item index="2">
+<!-- 					<el-menu-item>
 						<i class="el-icon-bell" style="color:red"></i>消息
-					</el-menu-item>
+					</el-menu-item> -->
 
 					<el-submenu index="3">
 						<template slot="title">
 							<i class="el-icon-user-solid" style="color:orange"></i>个人中心
 						</template>
-						<el-menu-item index="3-1">
-							<i class="el-icon-bell" style="color:red"></i>消息中心
-						</el-menu-item>
 						<el-menu-item index="/profile">
 							<i class="el-icon-info" style="color:orange"></i>我的信息
 						</el-menu-item>
@@ -33,8 +30,8 @@
 						</el-button>
 					</el-menu-item>
 				</el-menu>
-				<el-input v-model="search" placeholder="想搜点什么呢..." maxlength="15" prefix-icon="el-icon-edit"
-					size="small" clearable>
+				<el-input v-model="search" @keyup.enter.native="enterSearch" placeholder="想搜点什么呢..." maxlength="15"
+					prefix-icon="el-icon-edit" size="small" clearable>
 				</el-input>
 				<el-avatar :src="$store.getters.truePhotoUrl" :size="50"
 					style="margin-top:15px;position:fixed;right:10px;top:-10px;">
@@ -72,6 +69,12 @@
 				MessageUtils.confirm('确定跳转到登录界面？').then(() => {
 					_this.$router.push({ path: '/login' });
 				})
+			},
+			enterSearch() {
+				this.$router.push({
+					path: '/SearchTopic',
+					query: { search: this.search }
+				});
 			}
 
 		}

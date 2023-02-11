@@ -1,7 +1,9 @@
 package com.acimage.feign.fallback;
 
 import com.acimage.common.model.domain.image.Image;
-import com.acimage.feign.client.ImageClient;
+import com.acimage.common.utils.ExceptionUtils;
+import com.acimage.common.utils.SpringContextUtils;
+import com.acimage.feign.depreted.ImageClient;
 import com.acimage.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
@@ -20,21 +22,24 @@ public class ImageClientFallbackFactory implements FallbackFactory<ImageClient> 
         return new ImageClient() {
             @Override
             public Result queryImagesWithTopic(List<Long> imageIds) {
-                cause.printStackTrace();
+                if(SpringContextUtils.isDev()){
+                    ExceptionUtils.printIfDev(cause);
+                }
+
                 log.error("feign 查询失败，imageIds:{}",imageIds);
                 return Result.fail("服务繁忙，查询失败");
             }
 
             @Override
             public Result<List<Image>> queryTopicImages(Long topicId) {
-                cause.printStackTrace();
+                ExceptionUtils.printIfDev(cause);
                 log.error("feign 查询话题图片失败，topicId:{}",topicId);
                 return Result.ok(new ArrayList<>());
             }
 
             @Override
             public Result<String> updateTopicIdAndReturnFirstImageUrl(String serviceToken, Long topicId) {
-                cause.printStackTrace();
+                ExceptionUtils.printIfDev(cause);
                 log.error("feign topicId提交到image-service失败，topicId:{}",topicId);
                 return Result.fail("服务繁忙，查询失败");
             }

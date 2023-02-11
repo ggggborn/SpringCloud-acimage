@@ -36,8 +36,7 @@ public class SensitiveWordUtils {
         BufferedReader bufr = new BufferedReader(isr);
         String line = null;
         try {
-            while ((line = bufr.readLine())!=null)//判断　读取行　非空
-            {
+            while ((line = bufr.readLine())!=null) {
                 words.add(line);
             }
         } catch (IOException e) {

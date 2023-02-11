@@ -1,16 +1,15 @@
-package com.acimage.image.service.homecarousel.impl;
+package com.acimage.community.service.homecarousel.impl;
 
-import com.acimage.common.model.domain.image.HomeCarousel;
+import com.acimage.common.model.domain.community.HomeCarousel;
 import com.acimage.common.redis.annotation.QueryRedis;
 
-import com.acimage.image.dao.HomeCarrouselDao;
-import com.acimage.image.service.homecarousel.HomeCarouselQueryService;
+import com.acimage.community.service.homecarousel.HomeCarouselQueryService;
+import com.acimage.community.dao.HomeCarrouselDao;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 @Service

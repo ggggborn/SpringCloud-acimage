@@ -23,4 +23,5 @@ public interface LoginService {
 
     void logout(HttpServletRequest request);
 
+    void checkAndSendCodeToEmail(String email);
 }

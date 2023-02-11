@@ -17,13 +17,13 @@ import java.util.List;
 @Slf4j
 @Validated
 @Authentication
-@RequestMapping("/api/image")
+@RequestMapping("/api/image/images")
 public class SearchImageController {
     @Autowired
     SearchImageService searchImageService;
 
 
-    @PostMapping("/images/searchByImage")
+    @PostMapping("/searchByImage")
     public Result<List<Image>> searchImageWithTopicByImage(@RequestParam("imageFile") MultipartFile multipartFile) {
         return Result.ok(searchImageService.searchMostSimilarImages(multipartFile));
     }

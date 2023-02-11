@@ -3,6 +3,7 @@ package com.acimage.image.mq.consumer;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.model.domain.image.Image;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.common.utils.QiniuUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.image.service.image.ImageQueryService;
@@ -55,7 +56,7 @@ public class RemoveTopicImagesConsumer {
             }).start();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("移除话题图片消费者任务失败 error:{} 对象：{}", e.getMessage(), topicId);
 
         } finally {
@@ -63,12 +64,12 @@ public class RemoveTopicImagesConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("移除话题图片ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(e);
                     log.error("移除话题图片reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }

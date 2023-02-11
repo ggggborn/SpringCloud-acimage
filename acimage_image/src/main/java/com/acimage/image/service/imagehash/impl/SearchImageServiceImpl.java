@@ -6,6 +6,7 @@ import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.model.domain.community.Topic;
+import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.feign.client.TopicClient;
 import com.acimage.image.dao.ImageHashDao;
@@ -95,7 +96,7 @@ public class SearchImageServiceImpl implements SearchImageService {
             hashValue = DhashUtils.getImageDhashFrom(imageInputStream);
         } catch (IOException e) {
             log.error("imageId:{} 对应文件IO异常", imageId);
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException(e);
         }
         int hashSum = BitUtils.sumOfBits(hashValue);

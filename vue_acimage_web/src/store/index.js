@@ -25,9 +25,9 @@ export default new Vuex.Store({
 	getters: {
 		truePhotoUrl(state) {
 			if (!CommonUtils.isEmpty(state.photoUrl)) {
-				return Config.domainOfImages + state.photoUrl;
+				return state.photoUrl;
 			}
-			return Config.domainOfImages + 'userPhoto/default.jpeg';
+			return 'userPhoto/default.jpeg';
 		},
 		categoryLabel(state) {
 			return (id) => {

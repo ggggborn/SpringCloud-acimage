@@ -1,4 +1,4 @@
-package com.acimage.common.model.domain.image;
+package com.acimage.common.model.domain.community;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

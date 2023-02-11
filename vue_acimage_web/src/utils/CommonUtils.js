@@ -57,5 +57,14 @@ export default {
 			}
 		})
 		return formData
+	},
+	
+	copyProperties(source,target){
+		Object.keys(source).forEach(key => {
+			const value = source[key]
+			if(target[key]!=undefined){
+				target[key]=source[key]
+			}		
+		})
 	}
 }

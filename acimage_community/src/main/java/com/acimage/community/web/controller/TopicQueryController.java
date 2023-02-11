@@ -34,7 +34,7 @@ public class TopicQueryController {
     @Autowired
     TopicInfoQueryService topicInfoQueryService;
 
-    @RequestLimit(limitTimes = {10},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
+    @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @RecordPageView
     @GetMapping("/info/{id}")
     public Result<TopicInfoVo> queryTopicAndFirstCommentPage(@TopicId @Positive @PathVariable("id") Long id) {
@@ -42,7 +42,7 @@ public class TopicQueryController {
         return Result.ok(topicInfoVo);
     }
 
-    @Authentication(type = AuthenticationType.NONE)
+    @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @GetMapping("/recentHot")
     public Result<List<Topic>> queryRecentHotTopics() {
         int rankEnd = 8;
@@ -50,7 +50,14 @@ public class TopicQueryController {
         return Result.ok(topicInfoQueryService.pageTopicsInfoRankByPageView(pageNo, rankEnd));
     }
 
-    @Authentication(type = AuthenticationType.NONE)
+    @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
+    @GetMapping("/most/commentCount")
+    public Result<List<Topic>> queryMostCommentCountTopics() {
+        int rankEnd = 10;
+        int pageNo = 1;
+        return Result.ok(topicInfoQueryService.pageTopicsInfoRankByCommentCount(pageNo, rankEnd));
+    }
+
     @GetMapping("/recommend")
     public Result<List<Topic>> queryRecommendedTopics() {
         int rankEnd = 4;
@@ -58,7 +65,6 @@ public class TopicQueryController {
         return Result.ok(topicInfoQueryService.pageTopicsInfoRankByStarCount(pageNo, rankEnd));
     }
 
-    @Authentication(type = AuthenticationType.NONE)
     @GetMapping("/pageRecentTopics/{pageNo}")
     public Result<MyPage<Topic>> pageActiveTopics(@Positive @NotNull @PathVariable int pageNo) {
         return Result.ok(topicInfoQueryService.pageTopicsInfoRankByActivityTime(pageNo, PageSizeConstants.FORUM_TOPICS));

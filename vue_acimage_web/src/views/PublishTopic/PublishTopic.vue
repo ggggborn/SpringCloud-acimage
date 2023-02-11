@@ -51,7 +51,7 @@
 
 				</el-form-item>
 				<el-dialog :visible.sync="cropperVisible">
-					<div class="cropper" style="text-align:center;width: 300px;height: 300px;margin-left: 100px;">
+					<div  class="cropper-container">
 						<vueCropper ref="cropper" :img="imageUrl" :outputSize="option.size"
 							:outputType="option.outputType" :info="true" :full="option.full" :canMove="option.canMove"
 							:canMoveBox="option.canMoveBox" :original="option.original" :autoCrop="option.autoCrop"
@@ -67,7 +67,7 @@
 			</el-form>
 
 			<div style="text-align: center;">
-				<edit-board ref="editBoard" margin="160px" width="720px"></edit-board>
+				<edit-board ref="editBoard" margin="160px" width="820px"></edit-board>
 				<el-button @click="submitTopic" type="primary" style="margin-top: 20px;">提交</el-button>
 			</div>
 		</div>

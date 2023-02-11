@@ -11,6 +11,10 @@ export let queryRecommendTopics = function() {
 	return request.get('/api/community/topics/query/recommend');
 }
 
+export let queryMostCommentCountTopics = function() {
+	return request.get('/api/community/topics/query/most/commentCount');
+}
+
 export let queryTopicAndFirstCommentPage = function(topicId) {
 	return request.get('/api/community/topics/query/info/' + topicId);
 }

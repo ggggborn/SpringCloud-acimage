@@ -1,8 +1,7 @@
 package com.acimage.admin.dao.community;
 
 
-import com.acimage.admin.dao.image.HomeCarouselDao;
-import com.acimage.common.model.domain.image.HomeCarousel;
+import com.acimage.common.model.domain.community.HomeCarousel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

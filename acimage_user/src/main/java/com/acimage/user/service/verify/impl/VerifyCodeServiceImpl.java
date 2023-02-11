@@ -69,7 +69,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         int timeoutMinute=3;
         mainService.sendVerifyCodeMailMessage(email,code,timeoutMinute);
         String key=STRINGKP_EMAIL_VERIFY+email;
-        redisUtils.setAsString(key,code);
+        redisUtils.setAsString(key,code,timeoutMinute,TimeUnit.MINUTES);
     }
 
     @Override

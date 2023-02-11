@@ -50,7 +50,7 @@
         <minio.version>8.2.1</minio.version>
         <sensitive-word.version>0.2.0</sensitive-word.version>
         <toolgood-words.version>3.0.3.1</toolgood-words.version>
-        <elasticsearch.version>7.7.0</elasticsearch.version>
+        <elasticsearch.version>7.12.0</elasticsearch.version>
         <data-elasticsearch.version>4.2.12</data-elasticsearch.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->

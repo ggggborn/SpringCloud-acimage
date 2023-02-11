@@ -32,7 +32,7 @@ public class IpUtils {
                 try {
                     inet = InetAddress.getLocalHost();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    ExceptionUtils.printIfDev(e);
                 }
                 assert inet != null;
                 ip = inet.getHostAddress();

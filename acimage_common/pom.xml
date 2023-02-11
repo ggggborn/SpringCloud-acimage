@@ -50,6 +50,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!--nacos-->
@@ -96,6 +97,7 @@
             <artifactId>minio</artifactId>
             <optional>true</optional>
         </dependency>
+
         <!--敏感词过滤-->
         <dependency>
             <groupId>com.github.houbb</groupId>

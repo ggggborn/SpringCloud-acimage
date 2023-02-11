@@ -28,7 +28,7 @@
 
 				<template v-for="topic in recentHotTopics">
 					<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" class="no-underline">
-						<div style="display: inline-block;margin-right: 10px;width: 150px;">
+						<div style="display: inline-block;margin-right: 30px;width: 190px;">
 							<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
 								:username="topic.user.username" :create-time="topic.createTime"
 								:photo-url="$global.truePhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
@@ -37,17 +37,17 @@
 					</router-link>
 				</template>
 			</div>
-			<div class="user-rank-container">
+<!-- 			<div class="user-rank-container">
 				<user-rank></user-rank>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
 
 <script>
 	//组件
-	import HomeCarousel from './HomeCarousel/HomeCarousel.vue'
-	import UserRank from './UserRank/UserRank.vue'
+	import HomeCarousel from '@/components/HomeCarousel/HomeCarousel.vue'
+	// import UserRank from './UserRank/UserRank.vue'
 	import MyHeader from '@/components/MyHeader/MyHeader.vue'
 	import MaskImage from '@/components/MaskImage/MaskImage.vue'
 	import FloatImage from '@/components/FloatImage/FloatImage.vue'
@@ -66,7 +66,6 @@
 			HomeCarousel,
 			MaskImage,
 			FloatImage,
-			UserRank
 		},
 		data() {
 			return {

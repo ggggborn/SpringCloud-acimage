@@ -40,20 +40,24 @@ public class LoginController {
 
 
     @GetMapping("/getPublicKey")
-    public Result getPublicKey() {
+    public Result<?> getPublicKey() {
         return Result.ok(loginService.getPublicKey());
     }
 
     @PostMapping("/sendCode")
-    public Result sendVerifyCodeToEmail(@Email @Size(min=6,max=32,message = "邮箱长度在6到32之间") @RequestParam("email") String email) {
-        verifyCodeService.sendVerifyCodeToEmail(email,UserRegisterReq.VERIFY_CODE_LENGTH);
+    public Result<?> sendVerifyCodeToEmail(@Email @Size(min=6,max=32,message = "邮箱长度在6到32之间") @RequestParam("email") String email) {
+        loginService.checkAndSendCodeToEmail(email);
         return Result.ok();
     }
 
     @PostMapping("/doRegister")
-    public Result register(@Validated @RequestBody UserRegisterReq userRegister) {
+    public Result<?> register(@Validated @RequestBody UserRegisterReq userRegister) {
+
         String code=userRegister.getVerifyCode().trim();
         String email= userRegister.getEmail().trim();
+        userRegister.setVerifyCode(code);
+        userRegister.setEmail(email);
+
         if(code.length()!=UserRegisterReq.VERIFY_CODE_LENGTH){
             return Result.fail("邮箱验证码错误");
         }
@@ -67,7 +71,7 @@ public class LoginController {
     }
 
     @PostMapping("/doLogin")
-    public Result login(@Validated @RequestBody UserLoginReq userLogin, HttpServletRequest request) {
+    public Result<?> login(@Validated @RequestBody UserLoginReq userLogin, HttpServletRequest request) {
         String code = userLogin.getVerifyCode();
         boolean verifyCorrect = verifyCodeService.verifyAndRemoveIfSuccess(request, code);
         if (!verifyCorrect) {
@@ -79,7 +83,7 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public Result logout(HttpServletRequest request) {
+    public Result<?> logout(HttpServletRequest request) {
         loginService.logout(request);
         return Result.ok();
     }

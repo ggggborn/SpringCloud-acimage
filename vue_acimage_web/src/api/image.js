@@ -42,18 +42,9 @@ export let searchImagesByImage = function(reqData) {
 	return request.post('/api/image/images/searchByImage', reqData, config);
 }
 
-export let uploadTopicImages = function(reqData) {
-	let config = { 'Content-type': 'multipart/form-data' };
-	return request.post('/api/image/images/upload/topicImages', reqData, config);
-}
-
 export let uploadTopicImage = function(reqData) {
 	let config = { 'Content-type': 'multipart/form-data' };
-	return request.post('/api/image/images/upload/topicImage', reqData, config);
-}
-
-export let modifyDescription = function(imageId, description) {
-	return request.put('/api/image/images/description/' + imageId + '/' + description);
+	return request.post('/api/image/images/operate/upload/topicImage', reqData, config);
 }
 
 
