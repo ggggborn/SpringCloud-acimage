@@ -39,7 +39,7 @@ public class JacksonUtils {
         try {
             return mapper.readValue(json, javaType);
         } catch (JsonProcessingException e) {
-            log.error("数据反序列化异常 json：{} type:{}", json,javaType);
+            log.error("数据反序列化异常 json：{} type:{} error:{}", json,javaType,e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -52,7 +52,7 @@ public class JacksonUtils {
         try {
             return mapper.readValue(json, targetType);
         } catch (JsonProcessingException e) {
-            log.error("数据反序列化异常 json：{} type:{}", json,targetType);
+            log.error("数据反序列化异常 json：{} type:{} error:{}", json,targetType,e.getMessage());
             throw new RuntimeException(e);
         }
     }

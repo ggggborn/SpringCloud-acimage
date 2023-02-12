@@ -20,7 +20,7 @@ public class ImageUtils {
 
     public static InputStream compressAsFixedWebpImage(MultipartFile multipartFile, int width, int height, int limitSize) {
         try {
-            float qualify = 0.77f;
+            float qualify = 0.76f;
             BufferedImage bufferedImage = Thumbnails.fromInputStreams(Collections.singletonList(multipartFile.getInputStream()))
                     .outputQuality(qualify)
                     .size(width, height)
@@ -41,7 +41,7 @@ public class ImageUtils {
 
     public static InputStream compressAsWebpImage(MultipartFile multipartFile, int limitSize, int limitLength) {
         try {
-            float qualify = 0.77f;
+            float qualify = 0.76f;
             BufferedImage image = ImageIO.read(multipartFile.getInputStream());
             int width = image.getWidth();
             int height = image.getHeight();

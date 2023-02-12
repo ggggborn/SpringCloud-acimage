@@ -17,7 +17,7 @@ public class LambdaUtils {
     public static final String TOKEN_IS="is";
     public static final String WRITE_REPLACE="writeReplace";
 
-    public static <T> String getUnderlineColumnName(SFunction<T, ?> getOrIs) {
+    public static <T> String underlineColumnNameOf(SFunction<T, ?> getOrIs) {
         return StringUtils.camelToUnderline(columnOf(getOrIs));
 
     }

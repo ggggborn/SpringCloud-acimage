@@ -7,6 +7,7 @@ import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.community.Tag;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.domain.user.User;
+import com.acimage.common.model.page.MyPage;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -73,8 +74,8 @@ public class TopicIndex {
 
     public static TopicIndex from(Topic topic) {
         TopicIndex topicIndex = BeanUtils.copyPropertiesTo(topic, TopicIndex.class);
-        CmtyUser user=topic.getUser();
-        if(user!=null){
+        CmtyUser user = topic.getUser();
+        if (user != null) {
             topicIndex.setUsername(user.getUsername());
             topicIndex.setPhotoUrl(user.getPhotoUrl());
         }
@@ -84,7 +85,7 @@ public class TopicIndex {
 
     public static Topic toTopic(TopicIndex topicIndex) {
         Topic topic = BeanUtils.copyPropertiesTo(topicIndex, Topic.class);
-        CmtyUser user=new CmtyUser();
+        CmtyUser user = new CmtyUser();
         user.setUsername(topicIndex.getUsername());
         user.setPhotoUrl(topicIndex.getPhotoUrl());
         topic.setUser(user);
@@ -95,6 +96,11 @@ public class TopicIndex {
         return topicIndexList.stream()
                 .map(TopicIndex::toTopic)
                 .collect(Collectors.toList());
+    }
+
+    public static MyPage<Topic> toTopicPage(MyPage<TopicIndex> topicPage) {
+        List<Topic> topicList = toTopicList(topicPage.getDataList());
+        return new MyPage<>(topicPage.getTotalCount(),topicList);
     }
 
 

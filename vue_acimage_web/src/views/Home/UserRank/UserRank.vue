@@ -2,7 +2,7 @@
 	<div>
 		<div class="wrapper">
 			<div class="wrapper-header">
-				<img src="static/image/user-rank-header.jpg" />
+				<img src="static/image/user-rank-header.webp" />
 				<div class="white-gradient">
 					<div class="header-title">用户排行</div>
 				</div>

@@ -34,7 +34,7 @@
 			handleClick(categoryId) {
 				if (this.activeId == categoryId) {
 					this.activeId = null;
-					document.querySelector('#btn' + categoryId).blur()
+					// document.querySelector('#btn' + categoryId).blur()
 					// document.querySelector('#btn'+categoryId).mouseleave()
 				} else {
 					this.activeId = categoryId

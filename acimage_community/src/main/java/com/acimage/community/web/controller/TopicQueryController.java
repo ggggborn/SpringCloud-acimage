@@ -7,10 +7,12 @@ import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.common.deprecated.annotation.Authentication;
-import com.acimage.common.global.enums.AuthenticationType;
 import com.acimage.community.global.annotation.TopicId;
 import com.acimage.community.global.consts.PageSizeConstants;
+import com.acimage.community.model.request.TopicQueryByCategoryIdReq;
+import com.acimage.community.model.request.TopicQueryByTagIdReq;
 import com.acimage.community.model.vo.TopicInfoVo;
+import com.acimage.community.service.topic.TopicEsSearchService;
 import com.acimage.community.service.topic.TopicInfoQueryService;
 import com.acimage.community.global.annotation.RecordPageView;
 import com.acimage.common.global.context.UserContext;
@@ -33,6 +35,8 @@ import java.util.List;
 public class TopicQueryController {
     @Autowired
     TopicInfoQueryService topicInfoQueryService;
+    @Autowired
+    TopicEsSearchService topicEsSearchService;
 
     @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @RecordPageView
@@ -40,6 +44,16 @@ public class TopicQueryController {
     public Result<TopicInfoVo> queryTopicAndFirstCommentPage(@TopicId @Positive @PathVariable("id") Long id) {
         TopicInfoVo topicInfoVo = topicInfoQueryService.getTopicInfoAndFirstCommentPage(id);
         return Result.ok(topicInfoVo);
+    }
+
+    @GetMapping("/byTagId")
+    public Result<MyPage<Topic>> pageByTagId(@Validated @ModelAttribute TopicQueryByTagIdReq queryReq) {
+        return Result.ok(topicEsSearchService.searchByTagId(queryReq));
+    }
+
+    @GetMapping("/byCategoryId")
+    public Result<MyPage<Topic>> pageByCategoryId(@Validated @ModelAttribute TopicQueryByCategoryIdReq queryReq) {
+        return Result.ok(topicEsSearchService.searchByCategoryId(queryReq));
     }
 
     @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
@@ -58,6 +72,7 @@ public class TopicQueryController {
         return Result.ok(topicInfoQueryService.pageTopicsInfoRankByCommentCount(pageNo, rankEnd));
     }
 
+    @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @GetMapping("/recommend")
     public Result<List<Topic>> queryRecommendedTopics() {
         int rankEnd = 4;
@@ -65,11 +80,13 @@ public class TopicQueryController {
         return Result.ok(topicInfoQueryService.pageTopicsInfoRankByStarCount(pageNo, rankEnd));
     }
 
+    @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @GetMapping("/pageRecentTopics/{pageNo}")
     public Result<MyPage<Topic>> pageActiveTopics(@Positive @NotNull @PathVariable int pageNo) {
         return Result.ok(topicInfoQueryService.pageTopicsInfoRankByActivityTime(pageNo, PageSizeConstants.FORUM_TOPICS));
     }
 
+    @RequestLimit(limitTimes = {15},durations = {5},penaltyTimes = {-1},targets = {LimitTarget.IP})
     @GetMapping("/mine/{pageNo}")
     public Result<MyPage<Topic>> queryMyTopics(@Positive @PathVariable("pageNo") int pageNo) {
         return Result.ok(topicInfoQueryService.pageTopicsInfoOrderByCreateTime(UserContext.getUserId(), pageNo, PageSizeConstants.ACTIVITY_TOPICS));

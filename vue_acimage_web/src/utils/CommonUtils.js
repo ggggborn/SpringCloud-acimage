@@ -44,7 +44,7 @@ export default {
 	},
 
 
-	getFormData(object) {
+	toFormData(object) {
 		const formData = new FormData()
 		Object.keys(object).forEach(key => {
 			const value = object[key]
@@ -59,11 +59,11 @@ export default {
 		return formData
 	},
 	
-	copyProperties(source,target){
+	copyPropertiesTo(source,target){
 		Object.keys(source).forEach(key => {
 			const value = source[key]
 			if(target[key]!=undefined){
-				target[key]=source[key]
+				target[key]=value
 			}		
 		})
 	}

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.data.annotation.Id;
@@ -28,6 +29,7 @@ import org.springframework.data.elasticsearch.core.document.Document;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.*;
 import org.springframework.stereotype.Component;
+import reactor.util.annotation.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -148,14 +150,16 @@ public class EsUtils {
     }
 
 
-    public <T> MyPage<T> termQuery(String column, Object value, Class<T> clz, int pageNo, int pageSize) {
+    public <T> MyPage<T> termQuery(String column, Object value, Class<T> indexClass, int pageNo, int pageSize,@Nullable FieldSortBuilder sortBuilder) {
         QueryBuilder queryBuilder = QueryBuilders.termQuery(column, value);
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
-                .withPageable(pageable)
-                .build();
-        SearchHits<T> search = esTemplate.search(nativeSearchQuery, clz);
+                .withPageable(pageable);
+        if(sortBuilder!=null){
+            nativeSearchQueryBuilder.withSort(sortBuilder);
+        }
+        SearchHits<T> search = esTemplate.search(nativeSearchQueryBuilder.build(), indexClass);
         int totalCount = (int) search.getTotalHits();
         List<T> dateList = toList(search.getSearchHits());
         return new MyPage<>(totalCount, dateList);

@@ -41,7 +41,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     @Autowired
     TopicRankQueryService topicRankQueryService;
     @Autowired
-    TopicSearchService topicSearchService;
+    TopicEsSearchService topicEsSearchService;
     @Autowired
     CmtyUserQueryService cmtyUserQueryService;
     @Autowired
@@ -87,7 +87,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         topicInfoVo.setUser(user);
         String html = topicHtmlQueryService.getTopicHtml(topicId).getHtml();
         topicInfoVo.setHtml(html);
-        topicInfoVo.setSimilarTopics(topicSearchService.searchSimilarByTitle(topicId, topicInfoVo.getTitle(), 10));
+        topicInfoVo.setSimilarTopics(topicEsSearchService.searchSimilarByTitle(topicId, topicInfoVo.getTitle(), 10));
 
         return topicInfoVo;
     }
@@ -113,7 +113,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
 //            Date beginOfDay = DateUtil.beginOfDay(new Date());
 //            Date startDate = DateUtil.offsetDay(beginOfDay, dayOffset);
 //            String startTime = DateUtil.format(startDate, dateFormat);
-            String column = LambdaUtils.getUnderlineColumnName(Topic::getPageView);
+            String column = LambdaUtils.underlineColumnNameOf(Topic::getPageView);
             topicList = topicDao.selectTopicsWithUserOrderBy(column, pageSize);
         } else {
             for (Long topicId : rankList) {

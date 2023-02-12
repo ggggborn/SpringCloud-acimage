@@ -41,7 +41,7 @@ public class TopicDaoTest {
 
     @Test
     public void testSelectTopicsWithUserOrderBy() {
-        String column = LambdaUtils.getUnderlineColumnName(Topic::getPageView);
+        String column = LambdaUtils.underlineColumnNameOf(Topic::getPageView);
         List<Topic> topicList = topicDao.selectTopicsWithUserOrderBy(column, 100);
         System.out.println(topicList);
         System.out.println(topicList.size());

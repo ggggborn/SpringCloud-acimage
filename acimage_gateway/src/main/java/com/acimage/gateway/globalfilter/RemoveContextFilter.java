@@ -13,11 +13,9 @@ import reactor.core.publisher.Mono;
 @Order(Integer.MAX_VALUE)
 public class RemoveContextFilter implements GlobalFilter {
 
-   @Override
+    @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
         UserContext.remove();
-
         return chain.filter(exchange);
 
     }

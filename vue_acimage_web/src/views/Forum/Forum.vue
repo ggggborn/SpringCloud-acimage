@@ -40,9 +40,12 @@
 				<div class="mt10">
 					<tag-card :click-tag="clickTag"></tag-card>
 				</div>
-				<div class="mt10">
-					<topic-list medalMode label="火热讨论" :topics="mostCommentCountTopics" :showData="false"></topic-list>
+				<div style="margin-top:20px;">
+					<topic-rank :labels="['火热评论','抢先收藏','引人注目']" :topics="mostCommentCountTopics" :showData="false"></topic-rank>
 				</div>
+<!-- 				<div class="mt10">
+					<topic-list medalMode label="火热讨论" :topics="mostCommentCountTopics" :showData="false"></topic-list>
+				</div> -->
 				<div style="margin-top:20px">
 					<user-rank></user-rank>
 				</div>
@@ -59,6 +62,7 @@
 	import CategoryCard from '@/components/CategoryCard/CategoryCard.vue'
 	import TagCard from '@/components/TagCard/TagCard.vue'
 	import TopicList from '@/components/TopicList/TopicList.vue'
+	import TopicRank from '@/components/TopicRank/TopicRank.vue'
 	import HomeCarousel from '@/components/HomeCarousel/HomeCarousel.vue'
 	import MaskImage from '@/components/MaskImage/MaskImage.vue'
 	import UserRank from '@/views/Home/UserRank/UserRank.vue'
@@ -78,7 +82,8 @@
 			TopicCard,
 			CategoryCard,
 			TagCard,
-			TopicList,
+			// TopicList,
+			TopicRank,
 
 			HomeCarousel,
 			MaskImage,
@@ -89,6 +94,7 @@
 			return {
 				loading: true,
 				totalCount: 100,
+				
 				recommendTopics: [
 
 				],

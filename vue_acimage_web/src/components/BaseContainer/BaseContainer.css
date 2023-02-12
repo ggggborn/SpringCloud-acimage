@@ -1,0 +1,22 @@
+.container{
+	display:inline-block;
+	width: 100%;
+}
+
+.header{
+	position:relative;
+	height:60px;
+}
+
+.header-icon{
+	font-size:40px;
+	color:#E5E544;
+}
+
+.header-title{
+	position:relative;
+	top:-6px;
+	display: inline-block;
+	font-size:25px;
+	color:#999999;
+}

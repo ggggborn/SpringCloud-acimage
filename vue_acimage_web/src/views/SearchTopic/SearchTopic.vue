@@ -5,8 +5,8 @@
 			<div class="wrapper-top">
 				<el-form ref="form" label-width="120px" style="width: 900px;" :model="query">
 					<el-form-item label="关键词">
-						<el-input @keydown.native.enter="submitSearch" style="width:300px;" v-model="query.search" prefix-icon="el-icon-edit-outline"
-							maxlength="15" clearable></el-input>
+						<el-input @keydown.native.enter="submitSearch" style="width:300px;" v-model="query.search"
+							prefix-icon="el-icon-edit-outline" maxlength="15" clearable></el-input>
 						<el-button @click="submitSearch" style="margin-left:30px;" type="primary" plain>提交搜索</el-button>
 					</el-form-item>
 					<el-form-item label="分类">
@@ -31,8 +31,9 @@
 						</div>
 					</el-form-item>
 					<el-form-item label="排序">
-						<el-tabs tab-position="top" style="width:410px;" @tab-click="handleTabClick">
-							<el-tab-pane v-for="(label,index) in sortLabels" :label="label" :key="index"></el-tab-pane>
+						<el-tabs v-model="query.sortMode" tab-position="top" style="width:380px;" @tab-click="handleTabClick">
+							<el-tab-pane v-for="(label,index) in sortLabels" :label="label" :name="sortKeys[index]" :key="label">
+							</el-tab-pane>
 						</el-tabs>
 					</el-form-item>
 				</el-form>
@@ -70,17 +71,16 @@
 	import CommonUtils from '@/utils/CommonUtils'
 
 	import { pageRencentTopic } from '@/api/topic.js'
-	import { searchTopicsAsPage } from '@/api/TopicSearch'
+	import { searchTopics } from '@/api/TopicSearch'
 
 
-	let SortBy = {
-		NORMAL: 'NORMAL',
-		TIME: 'TIME',
-		STAR_COUNT: 'STAR_COUNT',
-		PAGE_VIEW: 'PAGE_VIEW',
-		COMMENT_COUNT: 'COMMENT_COUNT'
-	}
-	let sortModes = [SortBy.NORMAL, SortBy.TIME, SortBy.STAR_COUNT, SortBy.COMMENT_COUNT, SortBy.PAGE_VIEW];
+	let sortModes = {
+		NORMAL: '相关性',
+		CREATE_TIME: '创建时间',
+		STAR_COUNT: 'star',
+		COMMENT_COUNT: '评论数',
+		PAGE_VIEW: '浏览量',
+	};
 
 	export default {
 		name: 'SearchTopic',
@@ -98,70 +98,68 @@
 					pageNo: 1,
 					categoryId: null,
 					tagId: null,
-					sortBy: SortBy.NORMAL
+					sortMode: 'NORMAL'
 				},
-				sortLabels: ['相关性', '时间', 'star', '评论数', '浏览量'],
 				topics: []
 			};
 		},
+		computed: {
+			sortKeys() {
+				return Object.keys(sortModes);
+			},
+			sortLabels() {
+				let keys = this.sortKeys;
+				let labels = [];
+				for (let key of keys) {
+					labels.push(sortModes[key])
+				}
+				return labels;
+			},
+		},
 		watch: {
 			'$route'(to, from) {
+				CommonUtils.copyPropertiesTo(this.$route.query, this.query)
 				if (!CommonUtils.isEmpty(to.query.search.trim())) {
-					this.query.search = to.query.search;
-					this.submitSearch();
+					if (!CommonUtils.isEmpty(this.query.search.trim()) ||
+						this.query.pageNo != 1 ||
+						this.query.categoryId != null ||
+						this.query.tagId != null ||
+						this.query.sortMode != 'NORMAL') {
+						if (to.path != from.path) {
+							this.toSearch();
+						}
+					}
 				}
 			},
-			query: {
-				handler(newVal, oldVal) {
-					this.$route.query.search = newVal.search;
-				},
-				deep: true
-			}
 		},
-		mounted() {
-			CommonUtils.copyProperties(this.$route.query, this.query)
-			console.log(this.query)
-			if (!CommonUtils.isEmpty(this.query.search.trim()) ||
-				this.query.pageNo != 1 ||
-				this.query.categoryId != null ||
-				this.query.tagId != null) {
-				this.submitSearch();
-			}
-			// console.log(this.query)
-			// this.getRecentTopicPage();
+		mounted(){
+			CommonUtils.copyPropertiesTo(this.$route.query, this.query)
 		},
 		methods: {
 			handleTabClick(tab) {
-				this.query.sortBy = sortModes[tab.index];
+				this.query.sortMode = this.sortKeys[tab.index];
 			},
 			handlePageChange() {
 				this.query.pageNo = this.curPage;
-				this.submitSearch();
-			},
-			validateForm() {
-				let text = this.$refs['editBoard'].Html.toString();
-				// text.replace(new RegExp("</?[^>]+>", "gm"), "");
-				// // eslint-disable-next-line
-				// text.replace(new RegExp("<a>\\s*|\t|\r|\n</a>", "gm"), "");
-				let pureText = StringUtils.html2Text(text);
-				console.log(pureText)
-				if (pureText.trim().length <= 4) {
-					MessageUtils.notice("内容至少要四个字符");
-					return false;
-				} else if (text.length > 5000) {
-					MessageUtils.notice("文本过长，请缩减");
-					return false;
-				}
-				return true;
+				this.toSearch();
 			},
 			submitSearch() {
+				if (JSON.stringify(this.query) != JSON.stringify(this.$route.query)) {
+					this.$router.replace({ query: this.query })
+					this.toSearch();
+				} else {
+					MessageUtils.notice("请改变搜索选项")
+				}
+
+			},
+			toSearch() {
 				let _this = this;
 				if (CommonUtils.isEmpty(this.query.categoryId)) {
 					this.query.categoryId = null;
 				}
 				this.loading = true;
-				// let searchForm = CommonUtils.getFormData(this.query);
-				searchTopicsAsPage(_this.query).then(res => {
+				// let searchForm = CommonUtils.toFormData(this.query);
+				searchTopics(_this.query).then(res => {
 					if (res.code == Code.OK) {
 						MessageUtils.success("搜索成功", 1);
 						_this.topics = res.data.dataList;
@@ -169,19 +167,7 @@
 					}
 					this.loading = false;
 				})
-			},
-			getRecentTopicPage() {
-				let _this = this;
-				pageRencentTopic(_this.query.pageNo)
-					.then(result => {
-						if (result.code == Code.OK) {
-							_this.topics = result.data.dataList;
-							_this.totalCount = result.data.totalCount;
-							_this.loading = false;
-						}
-					})
 			}
-
 		}
 	}
 </script>

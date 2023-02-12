@@ -2,19 +2,28 @@ package com.acimage.community.service.topic.Impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.Index.TopicIndex;
+import com.acimage.common.model.domain.community.Category;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.page.MyPage;
 import com.acimage.common.utils.EsUtils;
 import com.acimage.common.utils.LambdaUtils;
-import com.acimage.community.model.request.SearchTopicReq;
-import com.acimage.community.service.topic.TopicSearchService;
+import com.acimage.common.utils.common.ListUtils;
+import com.acimage.community.global.enums.SortMode;
+import com.acimage.community.model.request.TopicQueryByCategoryIdReq;
+import com.acimage.community.model.request.TopicQueryByTagIdReq;
+import com.acimage.community.model.request.TopicSearchReq;
+import com.acimage.community.service.categoty.CategoryQueryService;
+import com.acimage.community.service.tag.TagQueryService;
+import com.acimage.community.service.topic.TopicEsSearchService;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortMode;
+import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,26 +33,20 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
-public class TopicSearchServiceImpl implements TopicSearchService {
+public class TopicEsSearchServiceImpl implements TopicEsSearchService {
     @Autowired
     EsUtils esUtils;
     @Autowired
     ElasticsearchRestTemplate esTemplate;
-
-
-    @Override
-    public MyPage<Topic> searchByTagId(Integer tagId, int pageNo, int pageSize) {
-        String column = LambdaUtils.columnOf(Topic::getTagIds);
-        MyPage<TopicIndex> topicIndexPage = esUtils.termQuery(column, tagId, TopicIndex.class, pageNo, pageSize);
-        List<Topic> topicList = TopicIndex.toTopicList(topicIndexPage.getDataList());
-        return new MyPage<>(topicIndexPage.getTotalCount(), topicList);
-    }
+    @Autowired
+    CategoryQueryService categoryQueryService;
+    @Autowired
+    TagQueryService tagQueryService;
 
     @Override
     public List<Topic> searchSimilar(long topicId, int size) {
@@ -67,14 +70,50 @@ public class TopicSearchServiceImpl implements TopicSearchService {
         }
     }
 
+    @Override
+    public MyPage<Topic> searchByTagId(TopicQueryByTagIdReq queryReq) {
+        Integer tagId=queryReq.getTagId();
+        int pageNo=queryReq.getPageNo();
+        int pageSize=queryReq.getPageSize();
+        SortMode sortMode=queryReq.getSortMode();
+        //检查tagId是否存在
+        tagQueryService.checkAndListTags(Collections.singletonList(tagId));
+        //获取sortBuilder
+        FieldSortBuilder sortBuilder=SortMode.toSortBuilder(sortMode);
+
+        String column = LambdaUtils.columnOf(Topic::getTagIds);
+        MyPage<TopicIndex> topicIndexPage = esUtils.termQuery(column, tagId, TopicIndex.class, pageNo, pageSize,sortBuilder);
+        return TopicIndex.toTopicPage(topicIndexPage);
+    }
 
     @Override
-    public MyPage<Topic> search(SearchTopicReq searchTopicReq) {
-        String search = searchTopicReq.getSearch();
-        Integer categoryId = searchTopicReq.getCategoryId();
-        Integer tagId = searchTopicReq.getTagId();
-        Integer pageNo = searchTopicReq.getPageNo();
-        SearchTopicReq.SortBy sort = searchTopicReq.getSortBy();
+    public MyPage<Topic> searchByCategoryId(TopicQueryByCategoryIdReq queryReq) {
+        int categoryId=queryReq.getCategoryId();
+        int pageNo=queryReq.getPageNo();
+        int pageSize=queryReq.getPageSize();
+        SortMode sortMode=queryReq.getSortMode();
+
+        FieldSortBuilder sortBuilder=SortMode.toSortBuilder(sortMode);
+
+        List<Integer> categoryIds = ListUtils.extract(Category::getId, categoryQueryService.listAll());
+        if(!categoryIds.contains(categoryId)){
+            log.warn("用户查询分类 id:{}不存在",categoryId);
+            throw new BusinessException("分类不存在");
+        }
+        String column=LambdaUtils.columnOf(TopicIndex::getCategoryId);
+
+        MyPage<TopicIndex> topicIndexPage=esUtils.termQuery(column,categoryId, TopicIndex.class,pageNo,pageSize,sortBuilder);
+        return TopicIndex.toTopicPage(topicIndexPage);
+    }
+
+
+    @Override
+    public MyPage<Topic> search(TopicSearchReq topicSearchReq) {
+        String search = topicSearchReq.getSearch();
+        Integer categoryId = topicSearchReq.getCategoryId();
+        Integer tagId = topicSearchReq.getTagId();
+        Integer pageNo = topicSearchReq.getPageNo();
+        SortMode sort = topicSearchReq.getSortMode();
 
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();

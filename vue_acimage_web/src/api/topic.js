@@ -28,6 +28,19 @@ export let pageRencentTopic = function(pageNo) {
 }
 
 
+
+export let pageByCategoryId = function(formData) {
+	return request.get('/api/community/topics/query/byCategoryId',{params:formData})
+}
+
+export let pageByTagId = function(formData) {
+	return request.get('/api/community/topics/query/byTagId',{params:formData})
+}
+
+
+
+
+
 //操作话题
 export let addTopic = function(formData) {
 	let config = { 'Content-type': 'multipart/form-data' };

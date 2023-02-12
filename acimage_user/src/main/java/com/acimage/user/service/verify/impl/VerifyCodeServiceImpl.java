@@ -18,72 +18,74 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Service
 public class VerifyCodeServiceImpl implements VerifyCodeService {
-    public static final String STRINGKP_VERIFY_CODE="acimage:user:verifyCode:sessionId:";
-    public static final String STRINGKP_EMAIL_VERIFY="acimage:user:logins:emailVerify:email";
+    public static final String STRINGKP_VERIFY_CODE = "acimage:user:verifyCode:sessionId:";
+    public static final String STRINGKP_EMAIL_VERIFY = "acimage:user:logins:emailVerify:email";
     @Autowired
     RedisUtils redisUtils;
     @Autowired
     MainService mainService;
+
     @Override
-    public void writeCodeImageToResponseAndRecord(HttpServletRequest request, HttpServletResponse response){
-        int width=100;
-        int height=40;
-        int codeCount=4;
-        int thickness=4;
+    public void writeCodeImageToResponseAndRecord(HttpServletRequest request, HttpServletResponse response) {
+        int width = 100;
+        int height = 40;
+        int codeCount = 4;
+        int thickness = 4;
         ShearCaptcha captcha = CaptchaUtil.createShearCaptcha(width, height, codeCount, thickness);
         //图形验证码写出，可以写出到文件，也可以写出到流
         try {
             captcha.write(response.getOutputStream());
         } catch (IOException e) {
-            log.error("response.getOutputStream()错误 {}",e.getMessage());
+            log.error("response.getOutputStream()错误 {}", e.getMessage());
             throw new RuntimeException(e);
         }
         //获取验证码中的文字内容
         String verifyCode = captcha.getCode();
         //记录到redis
-        String sessionId=request.getSession().getId();
-        long timeout=30L;
-        redisUtils.setAsString(STRINGKP_VERIFY_CODE+sessionId,verifyCode,timeout, TimeUnit.SECONDS);
+        String sessionId = request.getSession().getId();
+        long timeout = 30L;
+        redisUtils.setAsString(STRINGKP_VERIFY_CODE + sessionId, verifyCode, timeout, TimeUnit.SECONDS);
+
     }
 
     @Override
-    public boolean verifyAndRemoveIfSuccess(HttpServletRequest request, String code){
-        String key=STRINGKP_VERIFY_CODE+request.getSession().getId();
+    public boolean verifyAndRemoveIfSuccess(HttpServletRequest request, String code) {
+        String key = STRINGKP_VERIFY_CODE + request.getSession().getId();
 
-        String trueCode=redisUtils.getForString(key);
-        if(trueCode==null){
+        String trueCode = redisUtils.getForString(key);
+        if (trueCode == null) {
             return false;
         }
 
-        if(trueCode.equals(code)){
+        if (trueCode.equals(code)) {
             redisUtils.delete(key);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
-    public void sendVerifyCodeToEmail(String email,int length){
-        String code= RandomUtil.randomString(length);
-        int timeoutMinute=3;
-        mainService.sendVerifyCodeMailMessage(email,code,timeoutMinute);
-        String key=STRINGKP_EMAIL_VERIFY+email;
-        redisUtils.setAsString(key,code,timeoutMinute,TimeUnit.MINUTES);
+    public void sendVerifyCodeToEmail(String email, int length) {
+        String code = RandomUtil.randomString(length);
+        int timeoutMinute = 3;
+        mainService.sendVerifyCodeMailMessage(email, code, timeoutMinute);
+        String key = STRINGKP_EMAIL_VERIFY + email;
+        redisUtils.setAsString(key, code, timeoutMinute, TimeUnit.MINUTES);
     }
 
     @Override
-    public boolean verifyEmailByVerifyCode(String email,String code){
-        String key=STRINGKP_EMAIL_VERIFY+email;
-        String trueCode=redisUtils.getForString(key);
-        if(trueCode==null){
+    public boolean verifyEmailByVerifyCode(String email, String code) {
+        String key = STRINGKP_EMAIL_VERIFY + email;
+        String trueCode = redisUtils.getForString(key);
+        if (trueCode == null) {
             return false;
         }
 
-        if(trueCode.equals(code)){
+        if (trueCode.equals(code)) {
             redisUtils.delete(key);
             return true;
-        }else{
+        } else {
             return false;
         }
     }

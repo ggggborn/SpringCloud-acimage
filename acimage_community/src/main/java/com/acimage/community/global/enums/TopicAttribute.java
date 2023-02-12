@@ -61,7 +61,7 @@ public enum TopicAttribute {
     }
 
     public String toUnderlineColumnName() {
-        return LambdaUtils.getUnderlineColumnName(toTopicField.get(this));
+        return LambdaUtils.underlineColumnNameOf(toTopicField.get(this));
     }
 
     public String toFieldName() {

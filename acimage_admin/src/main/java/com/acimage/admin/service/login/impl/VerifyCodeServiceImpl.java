@@ -1,7 +1,8 @@
-package com.acimage.admin.service.login;
+package com.acimage.admin.service.login.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
+import com.acimage.admin.service.login.VerifyCodeService;
 import com.acimage.common.utils.redis.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
-public class VerifyCodeServiceImpl implements VerifyCodeService{
+public class VerifyCodeServiceImpl implements VerifyCodeService {
     @Autowired
     RedisUtils redisUtils;
     public static final String STRINGKP_VERIFY_CODE="acimage:admin:verifyCode:sessionId:";

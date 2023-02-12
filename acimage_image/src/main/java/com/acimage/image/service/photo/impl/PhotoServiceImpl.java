@@ -32,7 +32,7 @@ public class PhotoServiceImpl implements PhotoService {
         Date now = new Date();
         String suffix = String.format("%s.%s", IdGenerator.getSnowflakeNextId(), FileFormatConstants.WEBP);
         //压缩后限制大小
-        int limitSize=30*1000;
+        int limitSize=20*1000;
         int width=200;
         int height=200;
         InputStream inputStream= ImageUtils.compressAsFixedWebpImage(photoFile,width,height,limitSize);

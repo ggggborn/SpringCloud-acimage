@@ -22,7 +22,7 @@ public class UserCsRankServiceImpl implements UserCsRankService {
 
     private List<User> pageUserRankBy(SFunction<UserCommunityStatistic, Integer> attr, int pageNo, int pageSize){
         int start= PageUtils.startIndexOf(pageNo,pageSize);
-        String column= LambdaUtils.getUnderlineColumnName(attr);
+        String column= LambdaUtils.underlineColumnNameOf(attr);
         List<UserCommunityStatistic> userCsList= userCsDao.selectListOrderByColumn(column,start,pageSize);
         List<User> users =new ArrayList<>();
         for(UserCommunityStatistic userCs:userCsList){

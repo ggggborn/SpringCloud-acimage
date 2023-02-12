@@ -94,7 +94,7 @@ public class HomeCarouselWriteServiceImpl implements HomeCarouselWriteService {
                 .eq(HomeCarousel::getId, id);
         homeCarouselDao.update(null, uw);
 
-        //异步删除文件
+        //删除文件
         minioUtils.deleteFile(oldUrl);
 
     }

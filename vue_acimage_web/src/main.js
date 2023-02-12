@@ -17,7 +17,7 @@ import global from '@/utils/global.js';
 Vue.prototype.$global=global
 
 //防xss攻击
- import VueDOMPurifyHTML from 'vue-dompurify-html'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 Vue.use(VueDOMPurifyHTML)
 
 Vue.config.productionTip = false

@@ -14,11 +14,11 @@ import java.util.List;
 
 @Service
 public class HomeCarouselQueryServiceImpl implements HomeCarouselQueryService {
-    public static final String STRINGK_SP_IMAGE = "acimage:image:homeCarousel";
+    public static final String STRINGK_HOME_CAROUSEL = "acimage:community:homeCarousels:list";
     @Autowired
     HomeCarrouselDao homeCarrouselDao;
 
-    @QueryRedis(keyPrefix = STRINGK_SP_IMAGE, expire = 2L )
+    @QueryRedis(keyPrefix = STRINGK_HOME_CAROUSEL, expire = 2L )
     @Override
     public List<HomeCarousel> listAll() {
         LambdaQueryWrapper<HomeCarousel> qw = new LambdaQueryWrapper<>();

@@ -73,7 +73,7 @@ public class TopicSpAttrWriteServiceImpl implements TopicSpAttrWriteService {
     }
 
     private void updateByIncrement(SFunction<Topic, ?> column, long topicId, int increment) {
-        String underlineName = LambdaUtils.getUnderlineColumnName(column);
+        String underlineName = LambdaUtils.underlineColumnNameOf(column);
         topicDao.updateColumnByIncrement(underlineName, topicId, increment);
     }
 
