@@ -12,6 +12,7 @@ import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.community.global.enums.SortMode;
 import com.acimage.community.model.request.TopicQueryByCategoryIdReq;
+import com.acimage.community.model.request.TopicQueryBySortReq;
 import com.acimage.community.model.request.TopicQueryByTagIdReq;
 import com.acimage.community.model.request.TopicSearchReq;
 import com.acimage.community.service.categoty.CategoryQueryService;
@@ -23,7 +24,6 @@ import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -87,7 +87,7 @@ public class TopicEsSearchServiceImpl implements TopicEsSearchService {
     }
 
     @Override
-    public MyPage<Topic> searchByCategoryId(TopicQueryByCategoryIdReq queryReq) {
+    public MyPage<Topic> searchBySort(TopicQueryByCategoryIdReq queryReq) {
         int categoryId=queryReq.getCategoryId();
         int pageNo=queryReq.getPageNo();
         int pageSize=queryReq.getPageSize();
@@ -95,6 +95,7 @@ public class TopicEsSearchServiceImpl implements TopicEsSearchService {
 
         FieldSortBuilder sortBuilder=SortMode.toSortBuilder(sortMode);
 
+        //校验分类是否存在
         List<Integer> categoryIds = ListUtils.extract(Category::getId, categoryQueryService.listAll());
         if(!categoryIds.contains(categoryId)){
             log.warn("用户查询分类 id:{}不存在",categoryId);
@@ -103,6 +104,18 @@ public class TopicEsSearchServiceImpl implements TopicEsSearchService {
         String column=LambdaUtils.columnOf(TopicIndex::getCategoryId);
 
         MyPage<TopicIndex> topicIndexPage=esUtils.termQuery(column,categoryId, TopicIndex.class,pageNo,pageSize,sortBuilder);
+        return TopicIndex.toTopicPage(topicIndexPage);
+    }
+
+    @Override
+    public MyPage<Topic> searchBySort(TopicQueryBySortReq queryReq) {
+        int pageNo=queryReq.getPageNo();
+        int pageSize=queryReq.getPageSize();
+        SortMode sortMode=queryReq.getSortMode();
+
+        FieldSortBuilder sortBuilder=SortMode.toSortBuilder(sortMode);
+
+        MyPage<TopicIndex> topicIndexPage=esUtils.queryBySort(TopicIndex.class,pageNo,pageSize,sortBuilder);
         return TopicIndex.toTopicPage(topicIndexPage);
     }
 
@@ -123,6 +136,7 @@ public class TopicEsSearchServiceImpl implements TopicEsSearchService {
         String contentColumn = LambdaUtils.columnOf(TopicIndex::getContent);
 
         if (!StrUtil.isBlank(search)) {
+            //有关键词则高亮
             HighlightBuilder.Field titleField = new HighlightBuilder.Field(titleColumn);
 
             HighlightBuilder.Field contentField = new HighlightBuilder.Field(contentColumn);

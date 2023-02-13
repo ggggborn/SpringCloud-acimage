@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 
 public interface SearchImageService {
+    @Deprecated
     void processImagesHashForNotProcessedImages();
 
     void hashImageByDhashAlgorithm(InputStream imageInputStream, long imageId) ;

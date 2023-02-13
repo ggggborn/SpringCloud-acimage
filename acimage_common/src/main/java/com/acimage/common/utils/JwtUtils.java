@@ -48,4 +48,8 @@ public class JwtUtils {
         return JWT.decode(token).getClaim(JwtConstants.KEY_PHOTO_URL).asString();
     }
 
+    public static Date getExpire(String token) throws JWTDecodeException {
+        return JWT.decode(token).getExpiresAt();
+    }
+
 }

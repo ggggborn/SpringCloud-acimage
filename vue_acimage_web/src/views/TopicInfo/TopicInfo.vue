@@ -79,7 +79,7 @@
 						共 {{topic.commentCount}} 条评论
 					</div>
 					<user-comment v-for="comment in topic.comments" :key="comment.id"
-						:photo-src="$global.truePhotoUrl(comment.user.photoUrl)" :username="comment.user.username"
+						:photo-src="$global.getPhotoUrl(comment.user.photoUrl)" :username="comment.user.username"
 						:content="comment.content" :createTime="comment.createTime" :comment-id="comment.id"
 						:editable="$store.state.userId==comment.user.id">
 					</user-comment>
@@ -96,7 +96,7 @@
 			<div class="wrapper-right">
 				<!-- 右侧话题主人信息 -->
 				<div class="user-container hover-shadow">
-					<el-avatar :src="$global.truePhotoUrl(topic.user.photoUrl)" :size="90" style="margin-top:20px;">
+					<el-avatar :src="$global.getPhotoUrl(topic.user.photoUrl)" :size="90" style="margin-top:20px;">
 					</el-avatar>
 					<br />
 					<span style="color:#F67B7B;">{{topic.user.username}}</span>
@@ -249,15 +249,21 @@
 						_this.initDataForModify();
 					}
 				})
+				if (_this.$store.getters.isLogin) {
+					queryIsStar(id).then(result => {
+						if (result.code == Code.OK) {
+							_this.isStar = result.data;
+						}
+					})
+				}
 
-				queryIsStar(id).then(result => {
-					if (result.code == Code.OK) {
-						_this.isStar = result.data;
-					}
-				})
 			},
 			onClickStar() {
 				let _this = this;
+				if (!_this.$store.getters.isLogin) {
+					MessageUtils.notice("请先登录");
+					return;
+				}
 				if (this.isStar) {
 					deleteStar(this.topic.id)
 						.then(result => {
@@ -302,8 +308,8 @@
 			onClickDeleteTopic() {
 				let _this = this;
 				MessageUtils.confirm('确认删除？操作不可逆').then(() => {
-					deleteTopic(_this.topic.id).then(result => {
-						if (result.code == Code.OK) {
+					deleteTopic(_this.topic.id).then(res => {
+						if (res.code == Code.OK) {
 							MessageUtils.success('删除成功')
 							setTimeout(function() {
 								_this.$router.push({ path: '/' })

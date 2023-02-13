@@ -7,6 +7,7 @@ import com.acimage.common.model.domain.community.CmtyUser;
 import com.acimage.common.model.domain.community.Comment;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.domain.user.User;
+import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.utils.LambdaUtils;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.PageUtils;
@@ -24,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -46,7 +47,6 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
     CmtyUserQueryService cmtyUserQueryService;
     @Autowired
     TagTopicQueryService tagTopicQueryService;
-
     @Autowired
     TopicHtmlQueryService topicHtmlQueryService;
 
@@ -92,27 +92,21 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         return topicInfoVo;
     }
 
+    @QueryRedis(keyPrefix = "acimage:community:topics:userId:",expire = 8L,unit = TimeUnit.SECONDS)
     @Override
-    public MyPage<Topic> pageTopicsInfoOrderByCreateTime(long userId, int pageNo, int pageSize) {
+    public MyPage<Topic> pageUserTopicsInfoOrderByCreateTime(long userId, int pageNo, int pageSize) {
         int starIndex = PageUtils.startIndexOf(pageNo, pageSize);
-        List<Topic> topics = topicDao.selectTopicsWithUserImagesOrderByCreateTime(userId, starIndex, pageSize);
+        List<Topic> topics = topicDao.selectTopicsWithUserOrderByCreateTime(userId, starIndex, pageSize);
         return new MyPage<>(topicDao.countTopics(userId), topics);
     }
 
     @Override
-    public List<Topic> pageTopicsInfoRankByPageView(int pageNo, int pageSize) {
+    public List<Topic> listTopicsInfoSortBy(TopicAttribute attr, int pageNo, int pageSize) {
 
-        List<Long> rankList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.PAGE_VIEW, pageNo, pageSize);
+        List<Long> rankList = topicRankQueryService.listTopicIdsInRank(attr, pageNo, pageSize);
         List<Topic> topicList = new ArrayList<>();
 
         if (pageNo == 1 && rankList.size() < pageSize) {
-            //数据数不够则从数据库查
-//            int dayOffset = -300;
-//            String dateFormat = "yyyy-MM-dd HH:mm:ss";
-//            //获取统计开始时间
-//            Date beginOfDay = DateUtil.beginOfDay(new Date());
-//            Date startDate = DateUtil.offsetDay(beginOfDay, dayOffset);
-//            String startTime = DateUtil.format(startDate, dateFormat);
             String column = LambdaUtils.underlineColumnNameOf(Topic::getPageView);
             topicList = topicDao.selectTopicsWithUserOrderBy(column, pageSize);
         } else {
@@ -125,50 +119,41 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         }
 
         for (Topic topic : topicList) {
-            //设置浏览量,评论数，收藏量
+            //设置浏览量
             topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
         }
-        topicList.sort(Comparator.comparing(Topic::getPageView).reversed());
-        return topicList;
-
-    }
-
-    @Override
-    public List<Topic> pageTopicsInfoRankByStarCount(int pageNo, int pageSize) {
-
-        List<Long> rankList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.STAR_COUNT, pageNo, pageSize);
-        List<Topic> topicList = new ArrayList<>();
-        for (Long topicId : rankList) {
-            Topic topic = this.getTopicWithUserTagIds(topicId);
-            if (topic != null) {
-                //设置浏览量,评论数，收藏量
-                topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
-                topicList.add(topic);
-            }
-        }
 
         return topicList;
     }
 
     @Override
-    public List<Topic> pageTopicsInfoRankByCommentCount(int pageNo, int pageSize) {
-        List<Long> rankList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.COMMENT_COUNT, pageNo, pageSize);
+    public List<Topic> listRandomTopicsInRank(int size) {
+        //获取随机属性
+        TopicAttribute[] attrs = TopicAttribute.values();
+        int len = attrs.length;
+        int i = (int) (System.currentTimeMillis() % len);
+        TopicAttribute attr=attrs[i];
+        //从随机属性排行中获取随机话题
+        List<Long> rankList = topicRankQueryService.listRandomTopicIdsInRank(attr, size);
         List<Topic> topicList = new ArrayList<>();
         for (Long topicId : rankList) {
-            Topic topic = this.getTopicWithUserTagIds(topicId);
+            Topic topic = getTopicWithUserTagIds(topicId);
             if (topic != null) {
-                //设置浏览量,评论数，收藏量
-                topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
                 topicList.add(topic);
             }
         }
 
+        for (Topic topic : topicList) {
+            //设置浏览量
+            topicSpQueryService.setAttrIntoTopic(topic, TopicAttribute.PAGE_VIEW);
+        }
         return topicList;
+
     }
 
     @Override
     public MyPage<Topic> pageTopicsInfoRankByActivityTime(int pageNo, int pageSize) {
-        List<Long> topicIdList = topicRankQueryService.pageTopicIdsInRank(TopicAttribute.ACTIVITY_TIME, pageNo, pageSize);
+        List<Long> topicIdList = topicRankQueryService.listTopicIdsInRank(TopicAttribute.ACTIVITY_TIME, pageNo, pageSize);
         List<Topic> topicList = new ArrayList<>();
         for (Long topicId : topicIdList) {
             Topic topic = getTopicWithUserTagIds(topicId);
@@ -178,8 +163,6 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
                 topicList.add(topic);
             }
         }
-
-//        topicList.sort(Comparator.comparing(Topic::getActivityTime).reversed());
         return new MyPage<>(topicRankQueryService.countTopicIdsInRank(TopicAttribute.ACTIVITY_TIME), topicList);
     }
 }

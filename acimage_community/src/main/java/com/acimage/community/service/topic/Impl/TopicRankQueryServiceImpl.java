@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TopicRankQueryServiceImpl implements TopicRankQueryService {
@@ -18,13 +19,21 @@ public class TopicRankQueryServiceImpl implements TopicRankQueryService {
     RedisUtils redisUtils;
 
     @Override
-    public List<Long> pageTopicIdsInRank(TopicAttribute topicAttribute, int pageNo, int pageSize) {
-        List<Pair<Long, Double>> topicIdAndScores = pageTopicIdWithScoresInRank(topicAttribute, pageNo, pageSize);
+    public List<Long> listTopicIdsInRank(TopicAttribute topicAttribute, int pageNo, int pageSize) {
+        List<Pair<Long, Double>> topicIdAndScores = listTopicIdWithScoresInRank(topicAttribute, pageNo, pageSize);
         return ListUtils.extractKeyFrom(topicIdAndScores);
     }
 
     @Override
-    public List<Pair<Long, Double>> pageTopicIdWithScoresInRank(TopicAttribute topicAttribute, int pageNo, int pageSize) {
+    public List<Long> listRandomTopicIdsInRank(TopicAttribute topicAttribute, int size) {
+        return redisUtils.randomMembersForZSet(topicAttribute.zSetKey(),size)
+                .stream()
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Pair<Long, Double>> listTopicIdWithScoresInRank(TopicAttribute topicAttribute, int pageNo, int pageSize) {
         int startIndex = PageUtils.startIndexOf(pageNo, pageSize);
         int endIndex = PageUtils.endIndexOf(pageNo, pageSize);
         String zSetKey = topicAttribute.zSetKey();

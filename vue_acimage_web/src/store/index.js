@@ -2,13 +2,14 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import Config from '@/config.js'
 import CommonUtils from '@/utils/CommonUtils.js'
-//应用vuex插件
-Vue.use(Vuex)
 
 import jwtDecode from "jwt-decode";
 import { queryAllCategories } from "@/api/category.js"
 import { queryAllTags } from "@/api/tag.js"
 import { Code } from '@/utils/result.js'
+
+//应用vuex插件
+Vue.use(Vuex)
 
 export default new Vuex.Store({
 	//数据，相当于data
@@ -20,7 +21,7 @@ export default new Vuex.Store({
 		categoryList: [],
 		tagList: [],
 		//elementui五种按钮类型
-		types: ['success', 'primary', 'info', 'warning', 'danger']
+		// types: ['success', 'primary', 'info', 'warning', 'danger']
 	},
 	getters: {
 		truePhotoUrl(state) {
@@ -48,6 +49,10 @@ export default new Vuex.Store({
 				}
 				return null;
 			}
+		},
+		isLogin(state) {
+			let token = localStorage.getItem("token");
+			return !CommonUtils.isEmpty(token);
 		}
 
 	},
@@ -64,14 +69,16 @@ export default new Vuex.Store({
 				state.username = '';
 				state.photoUrl = '';
 			}
+			//查询分类
 			queryAllCategories().then(res => {
-					if (res.code == Code.OK) {
-						state.categoryList = res.data;
-					}
-				}),
-				queryAllTags().then(res => {
-					state.tagList = res.data;
-				});
+				if (res.code == Code.OK) {
+					state.categoryList = res.data;
+				}
+			});
+			//查询标签
+			queryAllTags().then(res => {
+				state.tagList = res.data;
+			});
 		},
 		setToken(state, token) {
 			localStorage.setItem("token", token);

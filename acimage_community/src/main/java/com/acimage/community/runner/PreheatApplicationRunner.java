@@ -17,24 +17,20 @@ public class PreheatApplicationRunner implements ApplicationRunner {
     @Autowired
     TopicPreheatService topicPreheatService;
 
-
-
     @Override
     public void run(ApplicationArguments args) {
-        log.debug("akshdkjashdkad i");
-
         log.info("start 预热热点topic");
-        int initialRankSize = 10;
-        int numberOfCacheTopics = 20;
+        int initialRankSize = 30;
+        int cacheSize = 10;
         long expireSeconds = 3L;
 
         for (TopicAttribute attr : TopicAttribute.values()) {
             log.info("start 根据{}预热", attr);
             int size=initialRankSize;
             if(attr==TopicAttribute.ACTIVITY_TIME){
-                size=100;
+                size=1000;
             }
-            topicPreheatService.preheatTopicsOrderBy(attr, size, numberOfCacheTopics,
+            topicPreheatService.preheatTopicsOrderBy(attr, size, cacheSize,
                     expireSeconds, TimeUnit.SECONDS);
         }
         log.info("end 预热热点topic");

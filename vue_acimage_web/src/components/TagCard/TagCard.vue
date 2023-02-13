@@ -42,6 +42,8 @@
 					this.activeId = tagId
 					document.querySelector('#tag-btn' + this.activeId).style.border = "1px solid blue"
 				}
+				
+				this.clickTag(tagId)
 
 			}
 		}

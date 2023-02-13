@@ -41,7 +41,7 @@ public class RedisTest {
     void testOpsForList(){
         final String KEY="recentHotTopics";
         String startTime="2022-09-23 00:00:00";
-        List<Topic> topics = topicDao.selectTopicsWithUserImagesOrderByPageView(startTime,null);
+        List<Topic> topics = topicDao.selectTopicsWithUserOrderByPageView(startTime,null);
         System.out.println(stringRedisTemplate.opsForList());
     }
 
@@ -49,7 +49,7 @@ public class RedisTest {
     void testOpsForValue(){
         final String KEY="recentHotTopics";
         String startTime="2022-09-23 00:00:00";
-        List<Topic> topics = topicDao.selectTopicsWithUserImagesOrderByPageView(startTime,null);
+        List<Topic> topics = topicDao.selectTopicsWithUserOrderByPageView(startTime,null);
         String jsonTopics=null;
         try {
             jsonTopics=mapper.writeValueAsString(topics);
@@ -73,7 +73,7 @@ public class RedisTest {
     void testRedisUtilsForList(){
         final String KEY="recentHotTopics";
         String startTime="2022-09-23 00:00:00";
-        List<Topic> topics = topicDao.selectTopicsWithUserImagesOrderByPageView(startTime,null);
+        List<Topic> topics = topicDao.selectTopicsWithUserOrderByPageView(startTime,null);
 
 //        try {
 //            RedisUtils.setListAsString(stringRedisTemplate,KEY,topics,5, TimeUnit.SECONDS);

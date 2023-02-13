@@ -12,42 +12,6 @@ import StringUtils from '@/utils/StringUtils.js'
 
 let global = new Vue();
 
-
-//消息提示功能
-// global.popupHint = function(msg) {
-// 	this.$notify({
-// 		title: '提示',
-// 		message: msg,
-// 		type: 'warning'
-// 	});
-// }
-
-// global.popupSuccess = function(msg) {
-// 	this.$notify({
-// 		title: '成功',
-// 		message: msg,
-// 		type: 'success'
-// 	});
-// }
-
-// global.popupMsgIfOk = function(request, msg) {
-// 	request.then(result => {
-// 		console.log(result);
-// 		if (result.code == Code.OK) {
-// 			global.popupSuccess(msg);
-// 		}
-// 	});
-// }
-
-// global.openConfirm = function(msg) {
-// 	return MessageBox.confirm(msg, '提示', {
-// 		confirmButtonText: '确定',
-// 		cancelButtonText: '取消',
-// 		type: 'warning'
-// 	})
-// }
-
-
 //真实图片链接
 global.baseImageUrl = Config.domainOfImages;
 
@@ -59,7 +23,7 @@ global.trueImageUrl = function(url) {
 }
 
 //获取头像路径
-global.truePhotoUrl = function(url) {
+global.getPhotoUrl = function(url) {
 	if (CommonUtils.isEmpty(url) || url == '#') {
 		return 'userPhoto/default.jpeg';
 	}

@@ -150,13 +150,13 @@ public class EsUtils {
     }
 
 
-    public <T> MyPage<T> termQuery(String column, Object value, Class<T> indexClass, int pageNo, int pageSize,@Nullable FieldSortBuilder sortBuilder) {
+    public <T> MyPage<T> termQuery(String column, Object value, Class<T> indexClass, int pageNo, int pageSize, @Nullable FieldSortBuilder sortBuilder) {
         QueryBuilder queryBuilder = QueryBuilders.termQuery(column, value);
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
                 .withPageable(pageable);
-        if(sortBuilder!=null){
+        if (sortBuilder != null) {
             nativeSearchQueryBuilder.withSort(sortBuilder);
         }
         SearchHits<T> search = esTemplate.search(nativeSearchQueryBuilder.build(), indexClass);
@@ -190,6 +190,18 @@ public class EsUtils {
         return toList(search.getSearchHits());
     }
 
+    public <T> MyPage<T> queryBySort(Class<T> indexClass, int pageNo, int pageSize, @Nullable FieldSortBuilder sortBuilder) {
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder()
+                .withPageable(pageable);
+        if (sortBuilder != null) {
+            nativeSearchQueryBuilder.withSort(sortBuilder);
+        }
+        SearchHits<T> search = esTemplate.search(nativeSearchQueryBuilder.build(), indexClass);
+        int totalCount = (int) search.getTotalHits();
+        List<T> dateList = toList(search.getSearchHits());
+        return new MyPage<>(totalCount, dateList);
+    }
 
     public IndexCoordinates indexCoordinatesOf(Class<?> clz) {
         String indexName = clz.getAnnotation(org.springframework.data.elasticsearch.annotations.Document.class)

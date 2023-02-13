@@ -37,7 +37,7 @@
 							<float-image :title="image.topic.title" :star="image.topic.starCount"
 								:page-view="image.topic.pageView" :username="image.topic.user.username"
 								:create-time="image.topic.createTime"
-								:photo-url="$global.truePhotoUrl(image.topic.user.photoUrl)" :image-url="image.url">
+								:photo-url="$global.getPhotoUrl(image.topic.user.photoUrl)" :image-url="image.url">
 							</float-image>
 						</div>
 

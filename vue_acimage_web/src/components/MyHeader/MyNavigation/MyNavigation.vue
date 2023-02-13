@@ -2,17 +2,13 @@
 	<div>
 		<div class="wrapper">
 			<el-row>
-				<el-menu router mode="horizontal"  style="border: 0px;height:52px;margin-top:-12px;opacity: 0.85;">
+				<el-menu router mode="horizontal" style="border: 0px;height:52px;margin-top:-12px;opacity: 0.85;">
 					<el-menu-item index="/">
 						<i class="el-icon-house" style="color:orange"></i>主页
 					</el-menu-item>
 					<el-menu-item index="/MyActivity">
 						<i class="el-icon-magic-stick" style="color:orange"></i>我的动态
 					</el-menu-item>
-
-<!-- 					<el-menu-item>
-						<i class="el-icon-bell" style="color:red"></i>消息
-					</el-menu-item> -->
 
 					<el-submenu index="3">
 						<template slot="title">
@@ -25,6 +21,7 @@
 							<i class="el-icon-upload2" style="color:orange"></i>登出
 						</el-menu-item>
 					</el-submenu>
+
 					<el-menu-item>
 						<el-button @click="onClickLogin" type="danger" style="position:fixed;right:80px;top: 0px;">登录
 						</el-button>
@@ -71,10 +68,14 @@
 				})
 			},
 			enterSearch() {
-				this.$router.push({
-					path: '/SearchTopic',
-					query: { search: this.search }
-				});
+				if (this.$router.path == '/SearchTopic') {
+					this.$router.replace({ query: { search: this.search } })
+				} else {
+					this.$router.push({
+						path: '/SearchTopic',
+						query: { search: this.search }
+					});
+				}
 			}
 
 		}

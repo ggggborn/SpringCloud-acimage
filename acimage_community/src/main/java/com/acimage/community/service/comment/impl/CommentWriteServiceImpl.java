@@ -8,6 +8,7 @@ import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.community.Comment;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import com.acimage.community.model.request.CommentAddReq;
 import com.acimage.community.model.request.CommentModifyReq;
 import com.acimage.community.service.comment.CommentQueryService;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -40,6 +42,11 @@ public class CommentWriteServiceImpl implements CommentWriteService {
 
     @Override
     public Integer saveComment(CommentAddReq commentAddReq) {
+        String publishedContent = redisUtils.getForString(CommentKeyConstants.STRINGKP_PUBLISHED_COMMENTS);
+        if (publishedContent == null || publishedContent.equals(commentAddReq.getContent())) {
+            log.warn("user:{}重复发表评论 title:{}", UserContext.getUsername(), commentAddReq.getContent());
+            throw new BusinessException("短期已经发表过该评论了，请刷新尝试");
+        }
         Comment comment = new Comment();
         BeanUtil.copyProperties(commentAddReq, comment);
 
@@ -56,9 +63,13 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         String firstPageKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
         redisUtils.delete(firstPageKey);
         //更新评论数
-        topicSpAttrWriteService.increaseCommentCount(topicId, 1);
+        topicSpAttrWriteService.increaseCommentCount(topicId, col);
         //更新话题的最新活跃时间
         topicSpAttrWriteService.changeActivityTime(topicId, new Date());
+
+        long timeout = 10L;
+        redisUtils.setAsString(CommentKeyConstants.STRINGKP_PUBLISHED_COMMENTS + UserContext.getUserId(),
+                commentAddReq.getContent(), timeout, TimeUnit.SECONDS);
 
         return col;
     }

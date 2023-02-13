@@ -25,7 +25,7 @@
 						{{username}}
 					</div>
 					<div class="data">
-						更新于 {{$global.timeView(updateTime)}}
+						{{timeLabel}} {{$global.timeView(updateTime)}}
 						<template v-if="starCount != null">
 							·
 							<i class="el-icon-star-off"></i>
@@ -85,21 +85,14 @@
 				type: Number,
 				default: 500
 			},
-			username: {
-
+			username: {},
+			updateTime: {},
+			timeLabel:{
+				default:'更新于'
 			},
-			updateTime: {
-
-			},
-			starCount: {
-				default: 888,
-			},
-			commentCount: {
-				default: 888,
-			},
-			pageView: {
-				default: 888,
-			},
+			starCount: {},
+			commentCount: {},
+			pageView: {},
 			photoUrl: {
 				default: "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
 			},

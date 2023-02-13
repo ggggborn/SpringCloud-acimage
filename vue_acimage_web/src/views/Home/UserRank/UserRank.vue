@@ -10,15 +10,12 @@
 			<el-tabs type="card" style="margin-top:-5px;" v-model="sortMode">
 				<el-tab-pane label="星星收割者" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
 				<el-tab-pane label="话题达人" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
-				<el-tab-pane label="评论区水怪" @click="onClickSortByTopicCount"></el-tab-pane>
 			</el-tabs>
 
 			<el-skeleton v-if="loading" :rows="6" animated style="width: 90%;margin-left:5%" />
 			<div v-else v-for="user in users" class="user-item-container" :key="user.id">
 				<div class="user-item-left">
-					<el-avatar :size="40" :src="$global.truePhotoUrl(user.photoUrl)">
-						<img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png" />
-					</el-avatar>
+					<el-avatar :size="40" :src="$global.getPhotoUrl(user.photoUrl)"></el-avatar>
 				</div>
 				<div class="user-item-right">
 					<div class="user-item-right-header">
@@ -47,15 +44,7 @@
 			return {
 				sortMode: 'starCount',
 				loading: true,
-				users: [
-					// {
-					// 	id: 0,
-					// 	username: 'xlg',
-					// 	photoUrl: '',
-					// 	starCount: 888,
-					// 	topicCount: 888,
-					// },
-				]
+				users: []
 			}
 		},
 		watch: {

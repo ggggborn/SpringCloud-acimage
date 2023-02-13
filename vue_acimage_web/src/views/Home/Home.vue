@@ -2,7 +2,7 @@
 	<div class="home-wrapper">
 		<my-header></my-header>
 		<div class="home-main">
-			<div style="display: inline-block;width:598px">
+			<div style="display: inline-block;width:598px;">
 				<home-carousel></home-carousel>
 			</div>
 
@@ -22,24 +22,38 @@
 				<el-skeleton v-if="loading" :rows="8" animated />
 				<template v-else>
 					<router-link v-for="topic in pictureTopics" :key="topic.id" :to="$global.getTopicUrl(topic.id)">
-						<div style="display: inline-block;margin-left: 18px;margin-right:18px;width: 190px;">
+						<div class="float-image-container">
 							<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
 								:username="topic.user.username" :create-time="topic.createTime"
-								:photo-url="$global.truePhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
+								:photo-url="$global.getPhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
+							</float-image>
+						</div>
+					</router-link>
+				</template>
+			</base-container>
+			
+			<base-container title="番剧茶馆" icon="el-icon-milk-tea" iconColor="#FFA131" style="margin-top: 20px;">
+				<el-skeleton v-if="loading" :rows="8" animated />
+				<template v-else>
+					<router-link v-for="topic in animationTopis" :key="topic.id" :to="$global.getTopicUrl(topic.id)">
+						<div class="float-image-container">
+							<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
+								:username="topic.user.username" :create-time="topic.createTime"
+								:photo-url="$global.getPhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
 							</float-image>
 						</div>
 					</router-link>
 				</template>
 			</base-container>
 
-			<base-container title="近期热门">
+			<base-container title="最新发表" style="margin-top: 20px;">
 				<el-skeleton v-if="loading" :rows="8" animated />
 				<template v-else>
-					<router-link v-for="topic in recentHotTopics" :key="topic.id" :to="$global.getTopicUrl(topic.id)">
-						<div style="display: inline-block;margin-left: 18px;margin-right:18px;width: 190px;">
+					<router-link v-for="topic in latestPublicTopics" :key="topic.id" :to="$global.getTopicUrl(topic.id)">
+						<div class="float-image-container">
 							<float-image :title="topic.title" :star="topic.starCount" :page-view="topic.pageView"
 								:username="topic.user.username" :create-time="topic.createTime"
-								:photo-url="$global.truePhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
+								:photo-url="$global.getPhotoUrl(topic.user.photoUrl)" :image-url="topic.coverImageUrl">
 							</float-image>
 						</div>
 					</router-link>
@@ -58,13 +72,13 @@
 	import FloatImage from '@/components/FloatImage/FloatImage.vue'
 	import BaseContainer from '@/components/BaseContainer/BaseContainer.vue'
 
-
 	import {
 		queryRecentHotTopics,
 		queryRecommendTopics,
-		pageByCategoryId
+		pageByCategoryId,
+		pageBySort
 	} from '@/api/topic.js'
-	import { pageRencentTopic } from '@/api/topic.js'
+	import { pageActiveTopics } from '@/api/topic.js'
 	import axios from 'axios'
 
 	import { Code } from '@/utils/result.js'
@@ -81,41 +95,18 @@
 		data() {
 			return {
 				loading: true,
-				query:{
-					pageNo:1,
-					pageSize:10,
-					categoryId:null
+				queryCategory: {
+					pageNo: 1,
+					pageSize: 10,
+					categoryId: null
 				},
 				//美图分享话题
-				pictureTopics:[],
-				recentHotTopics: [
-					// 	{
-					// 	id: 0,
-					// 	title: '加载中...',
-					// 	starCount: 888,
-					// 	pageView: 88888,
-					// 	createTime: '2022-2-22 22:22:22',
-					// 	user: {
-					// 		username: '加载中...',
-					// 		photoUrl: ''
-					// 	},
-					// 	coverImageUrl: '',
-					// }, 
-				],
-				recommendTopics: [
-					// 	{
-					// 	id: 0,
-					// 	title: '加载中...',
-					// 	starCount: 888,
-					// 	pageView: 88888,
-					// 	createTime: '2022-2-22 22:22:22',
-					// 	user: {
-					// 		username: '加载中...',
-					// 		photoUrl: ''
-					// 	},
-					// 	coverImageUrl: '',
-					// },
-				]
+				pictureTopics: [],
+				//番剧茶馆话题
+				animationTopis:[],
+				//最新发表话题
+				latestPublicTopics:[],
+				recommendTopics: []
 			};
 
 		},
@@ -129,20 +120,28 @@
 		mounted() {
 			let _this = this;
 			//美图分享id
-			this.query.categoryId=4;
-			pageByCategoryId(this.query).then(res=>{
+			this.queryCategory.categoryId = 4;
+			pageByCategoryId(this.queryCategory).then(res => {
 				if (res.code == Code.OK) {
 					_this.pictureTopics = res.data.dataList;
 					_this.loading = false;
 				}
 			})
-			pageRencentTopic(1).then(result => {
-				if (result.code == Code.OK) {
-					_this.recentHotTopics = result.data.dataList;
+			//番剧茶馆id
+			this.queryCategory.categoryId = 1;
+			pageByCategoryId(this.queryCategory).then(res => {
+				if (res.code == Code.OK) {
+					_this.animationTopis = res.data.dataList;
 					_this.loading = false;
 				}
-				console.log(result)
+			})
+			
+			pageBySort({pageNo:1,pageSize:10,sortMode:'CREATE_TIME'}).then(res=>{
+				if(res.code==Code.OK){
+					_this.latestPublicTopics=res.data.dataList
+				}
 			});
+			
 			queryRecommendTopics().then(result => {
 				if (result.code == Code.OK) {
 					_this.recommendTopics = result.data;

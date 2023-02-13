@@ -21,10 +21,8 @@ public class CommentInfoQueryServiceImpl implements CommentInfoQueryService {
     @Autowired
     CommentDao commentDao;
 
-    @QueryRedis(keyPrefix = CommentKeyConstants.STRINGKP_TOPIC_COMMENTS, expire = 5L, unit = TimeUnit.SECONDS)
-    public List<Comment> pageCommentsWithUser(long topicId,
-                                              @KeyParam(specials = {"1"}, expires = {37L}) int pageNo,
-                                              int pageSize) {
+    @QueryRedis(keyPrefix = CommentKeyConstants.STRINGKP_TOPIC_COMMENTS, expire = 3L, unit = TimeUnit.SECONDS)
+    public List<Comment> pageCommentsWithUser(long topicId, int pageNo, int pageSize) {
         //如果没有则查数据库
         int startIndex = PageUtils.startIndexOf(pageNo, pageSize);
         return commentDao.selectCommentsWithUser(topicId, startIndex, pageSize);

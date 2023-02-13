@@ -22,3 +22,10 @@
 	display: inline-block;
 }
 
+.float-image-container{
+	display: inline-block;
+	margin-left: 18px;
+	margin-right:18px;
+	width: 190px;
+}
+

@@ -2,6 +2,8 @@ package com.acimage.community.web.controller;
 
 
 
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.community.model.request.CommentAddReq;
 import com.acimage.community.model.request.CommentModifyReq;
@@ -22,6 +24,7 @@ public class CommentOperateController {
     @Autowired
     CommentWriteService commentWriteService;
 
+    @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
     @PostMapping
     public Result<?> addComment(@Validated @RequestBody CommentAddReq commentAddReq){
         if(commentAddReq.getContent().trim().length()<2){
@@ -32,6 +35,7 @@ public class CommentOperateController {
         return Result.ok("评论成功");
     }
 
+    @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
     @PutMapping
     public Result<?> modifyComment(@Validated @RequestBody CommentModifyReq commentModifyReq){
         log.info("修改了 {}", commentModifyReq);
@@ -39,6 +43,7 @@ public class CommentOperateController {
         return Result.ok();
     }
 
+    @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
     @DeleteMapping("/{id}")
     public Result<?> deleteComment(@Positive @NotNull @PathVariable("id") Long id){
         log.info("删除 评论{}",id);

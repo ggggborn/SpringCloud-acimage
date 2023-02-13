@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class UserCommunityStatisticFallbackFactory implements FallbackFactory<CmtyUserClient> {
+public class CmtyUserClientFallbackFactory implements FallbackFactory<CmtyUserClient> {
     @Override
     public CmtyUserClient create(Throwable cause) {
         return new CmtyUserClient() {

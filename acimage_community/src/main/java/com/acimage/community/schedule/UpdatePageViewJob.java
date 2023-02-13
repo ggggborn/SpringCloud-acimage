@@ -79,7 +79,7 @@ public class UpdatePageViewJob extends QuartzJobBean {
                     log.error("error:数据库批量更新pageView变化失败 ids:{} increments:{}",batchTopicIds,batchPvIncrements);
                 }
 
-                List<Topic> topicList=topicQueryService.listByIds(batchTopicIds);
+                List<Topic> topicList=topicQueryService.listTopicsByIds(batchTopicIds);
                 List<TopicIndex> topicIndexList= topicList.stream().map(TopicIndex::from).collect(Collectors.toList());
                 List<String> columns= LambdaUtils.columnsFrom(TopicIndex::getPageView);
                 try {

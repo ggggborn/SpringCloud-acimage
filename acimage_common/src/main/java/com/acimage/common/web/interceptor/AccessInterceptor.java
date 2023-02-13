@@ -21,7 +21,7 @@ public class AccessInterceptor implements HandlerInterceptor {
         String ip = IpUtils.getIp(request);
         UserContext.setIp(ip);
 
-        log.info("access 用户:{} 访问:{} {} ip:{}",
+        log.debug("access 用户:{} 访问:{} {} ip:{}",
                 UserContext.getUsername(), request.getRequestURI(), request.getMethod(), ip);
         return true;
     }

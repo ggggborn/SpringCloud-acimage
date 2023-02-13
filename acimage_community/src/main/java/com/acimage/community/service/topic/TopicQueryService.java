@@ -6,10 +6,7 @@ import java.util.List;
 
 public interface TopicQueryService {
     Topic getTopic(long id);
-
     List<Topic> listTopicWithUser(List<Long> ids);
-
-    List<Topic> listByIds(List<Long> ids);
-
+    List<Topic> listTopicsByIds(List<Long> ids);
 
 }

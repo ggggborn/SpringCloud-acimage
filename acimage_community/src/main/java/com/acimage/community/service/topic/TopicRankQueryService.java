@@ -11,8 +11,11 @@ import java.util.List;
  */
 public interface TopicRankQueryService {
 
-    List<Long> pageTopicIdsInRank(TopicAttribute topicAttribute, int pageNo, int pageSize);
-    List<Pair<Long, Double>> pageTopicIdWithScoresInRank(TopicAttribute topicAttribute, int pageNo, int pageSize);
+    List<Long> listTopicIdsInRank(TopicAttribute topicAttribute, int pageNo, int pageSize);
+
+    List<Long> listRandomTopicIdsInRank(TopicAttribute topicAttribute, int size);
+
+    List<Pair<Long, Double>> listTopicIdWithScoresInRank(TopicAttribute topicAttribute, int pageNo, int pageSize);
     Integer countTopicIdsInRank(TopicAttribute topicAttribute);
 
 }

@@ -81,7 +81,7 @@
         select * from tb_topic where id=#{id} and deleted=0
     </select>
 
-    <select id="selectTopicsWithUserImagesOrderByPageView" resultMap="topicWithUser">
+    <select id="selectTopicsWithUserOrderByPageView" resultMap="topicWithUser">
         select * from tb_topic where create_time>#{startTime} order by page_view desc
         <if test="limit!=null">
             limit #{limit}
@@ -92,20 +92,17 @@
         select * from tb_topic where deleted=0 order by ${column} desc limit #{limit}
     </select>
 
-    <select id="selectTopicsWithUserBasicByIds" resultMap="topicWithUser">
+    <select id="selectTopicsWithUserByIds" resultMap="topicWithUser">
         select * from tb_topic where deleted=0 and id in
         <foreach collection="ids" item="id" index="index" separator="," open="(" close=")">
             #{id}
         </foreach>
     </select>
 
-    <select id="selectTopicsWithUserImagesOrderByCreateTime" resultMap="topicWithUser">
+    <select id="selectTopicsWithUserOrderByCreateTime" resultMap="topicWithUser">
         select * from tb_topic where user_id=#{userId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
     </select>
 
-    <select id="selectTopicWithUserBasicAndTagIds" resultMap="topicWithUserTagIds">
-        select * from tb_topic where user_id=#{userId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
-    </select>
 
 
 

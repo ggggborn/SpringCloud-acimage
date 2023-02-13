@@ -8,7 +8,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
-@Configuration
+@Deprecated
 @EnableAsync
 public class DhashTaskPoolConfig {
         public static final String DHASH_TASK_POOL="dhashTask";

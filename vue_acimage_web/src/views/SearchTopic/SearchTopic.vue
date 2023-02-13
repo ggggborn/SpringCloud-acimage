@@ -31,8 +31,10 @@
 						</div>
 					</el-form-item>
 					<el-form-item label="排序">
-						<el-tabs v-model="query.sortMode" tab-position="top" style="width:380px;" @tab-click="handleTabClick">
-							<el-tab-pane v-for="(label,index) in sortLabels" :label="label" :name="sortKeys[index]" :key="label">
+						<el-tabs v-model="query.sortMode" tab-position="top" style="width:380px;"
+							@tab-click="handleTabClick">
+							<el-tab-pane v-for="(label,index) in sortLabels" :label="label" :name="sortKeys[index]"
+								:key="label">
 							</el-tab-pane>
 						</el-tabs>
 					</el-form-item>
@@ -40,11 +42,12 @@
 
 				<div style="margin-left: 120px;">
 					<el-skeleton v-if="loading" :rows="6" animated />
-					<el-empty v-else-if="$global.isEmpty(topics)" description="搜索结果空空如也~~"></el-empty>
+					<el-empty v-else-if="$global.isEmpty(topics)" image="static/image/sad.jpeg"
+						description="没有你想要的结果 ┑(￣Д ￣)┍"></el-empty>
 					<div v-else v-for="topic in topics" :key="topic.id" style="margin-bottom: 5px;">
 						<topic-card :title="topic.title" :html="topic.content" :updateTime="topic.activityTime"
 							:starCount="topic.starCount" :commentCount="topic.commentCount" :pageView="topic.pageView"
-							:username="topic.user.username" :photoUrl="topic.user.photoUrl"
+							:username="topic.user.username" :photoUrl="$global.getPhotoUrl(topic.user.photoUrl)"
 							:to="$global.getTopicUrl(topic.id)" :categoryId="topic.categoryId" :tagIds="topic.tagIds"
 							:coverImageUrl="topic.coverImageUrl" titleHtml contentHtml>
 						</topic-card>
@@ -118,22 +121,29 @@
 		},
 		watch: {
 			'$route'(to, from) {
-				CommonUtils.copyPropertiesTo(this.$route.query, this.query)
-				if (!CommonUtils.isEmpty(to.query.search.trim())) {
-					if (!CommonUtils.isEmpty(this.query.search.trim()) ||
-						this.query.pageNo != 1 ||
-						this.query.categoryId != null ||
-						this.query.tagId != null ||
-						this.query.sortMode != 'NORMAL') {
-						if (to.path != from.path) {
-							this.toSearch();
-						}
-					}
-				}
+				// CommonUtils.copyPropertiesTo(this.$route.query, this.query)
+				// if (!CommonUtils.isEmpty(this.query.search.trim()) ||
+				// 	this.query.pageNo != 1 ||
+				// 	this.query.categoryId != null ||
+				// 	this.query.tagId != null ||
+				// 	this.query.sortMode != 'NORMAL') {
+				// 	if (to.path == from.path) {
+				// 		this.toSearch();
+				// 	}
+				// }
 			},
 		},
-		mounted(){
+		mounted() {
 			CommonUtils.copyPropertiesTo(this.$route.query, this.query)
+			if (!CommonUtils.isEmpty(this.query.search.trim()) ||
+				this.query.pageNo != 1 ||
+				this.query.categoryId != null ||
+				this.query.tagId != null ||
+				this.query.sortMode != 'NORMAL') {
+
+				this.toSearch();
+
+			}
 		},
 		methods: {
 			handleTabClick(tab) {
@@ -166,7 +176,7 @@
 						_this.totalCount = res.data.totalCount;
 					}
 					this.loading = false;
-				})
+				});
 			}
 		}
 	}

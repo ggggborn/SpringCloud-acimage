@@ -18,7 +18,7 @@
 					<template v-if="index<endIndex">
 						<div class="image-container">
 							<el-image fit="cover" lazy
-								src="/acfile-test/coverImage/2023/02/11/1624327122976251904.webp"></el-image>
+								src="topic.coverImageUrl"></el-image>
 							<div class="index image-index">
 								{{index+1}}
 							</div>
@@ -55,6 +55,9 @@
 	export default {
 		name: 'TopicList',
 		props: {
+			handleTabHover:{
+				type:Function
+			},
 			endIndex: {
 				default: 3
 			},
@@ -121,17 +124,18 @@
 		},
 		mounted() {
 			this.activeIndex = 0
-			document.querySelector("#header-item" + 0).style.backgroundColor = "#FF566A"
+			document.querySelector("#header-item0").style.backgroundColor = "#FF566A"
 		},
 		watch: {
 			activeIndex: {
 				handler(newVal, oldVal) {
 					for (let i = 0; i < this.labels.length; i++) {
-						document.querySelector("#header-item" + i).style.backgroundColor = "#CCCCCC"
+						document.querySelector("#header-item" + i).style.backgroundColor = "#CCCCCC";
 					}
-					document.querySelector("#header-item" + newVal).style.backgroundColor = "#FF566A"
+					document.querySelector("#header-item" + newVal).style.backgroundColor = "#FF566A";
+					this.handleTabHover(this.activeIndex)
 				},
-				immediate: true
+				immediate: false
 			}
 		},
 		computed: {

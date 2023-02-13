@@ -23,21 +23,8 @@ import java.io.*;
 @Configuration
 @RabbitListener(queues = MqConstants.SYNC_IMAGES_QUEUE)
 public class SyncImagesConsumer {
-
-    public String tempDirectory;
     @Autowired
     ImageMixWriteService imageMixWriteService;
-
-
-    @PostConstruct
-    public void init() {
-        tempDirectory = System.getProperty("user.dir") + "//temp";
-        //创建目录
-        File directory = new File(tempDirectory);
-        if (directory.mkdir()) {
-            log.info("创建临时目录：{}", tempDirectory);
-        }
-    }
 
     @RabbitHandler
     public void syncImages(Channel channel, Message message, SyncImagesUpdateDto updateDto) {

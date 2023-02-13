@@ -11,8 +11,10 @@ import com.acimage.common.model.mq.dto.SyncImagesUpdateDto;
 import com.acimage.common.utils.*;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.utils.minio.MinioUtils;
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.community.global.consts.CoverImageConstants;
 import com.acimage.common.global.consts.StorePrefixConstants;
+import com.acimage.community.global.consts.TopicKeyConstants;
 import com.acimage.community.global.enums.TopicAttribute;
 import com.acimage.community.listener.event.TopicEvent;
 import com.acimage.community.model.request.TopicAddReq;
@@ -37,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -71,12 +74,18 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     TagTopicWriteService tagTopicWriteService;
     @Autowired
     MinioUtils minioUtils;
+    @Autowired
+    RedisUtils redisUtils;
     @Resource
     ApplicationContext applicationContext;
 
-
     @Override
     public long saveTopicInfo(TopicAddReq topicAddReq, MultipartFile coverImage) {
+        String publishedTitle = redisUtils.getForString(TopicKeyConstants.STRINGKP_PUBLISHED_TOPIC_TITLE);
+        if (publishedTitle == null || publishedTitle.equals(topicAddReq.getTitle())) {
+            log.warn("user:{}重复发表话题 title:{}", UserContext.getUsername(), topicAddReq.getTitle());
+            throw new BusinessException("已经发表过该话题了，请刷新");
+        }
         //生成id
         long topicId = IdGenerator.getSnowflakeNextId();
         Date now = new Date();
@@ -108,8 +117,8 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
                 .userId(UserContext.getUserId())
                 .categoryId(topicAddReq.getCategoryId())
                 .build();
-        if(UserContext.getUserId()!=null){
-            CmtyUser user=new CmtyUser();
+        if (UserContext.getUserId() != null) {
+            CmtyUser user = new CmtyUser();
             user.setUsername(UserContext.getUsername());
             user.setPhotoUrl(UserContext.getPhotoUrl());
             user.setId(UserContext.getUserId());
@@ -153,6 +162,12 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
 
         TopicEvent topicEvent = new TopicEvent(this, UserContext.getUserId(), topicId);
         applicationContext.publishEvent(topicEvent);
+
+        //保存，用于幂等校验
+        long timeout = 10L;
+        redisUtils.setAsString(TopicKeyConstants.STRINGKP_PUBLISHED_TOPIC_TITLE + UserContext.getUserId(),
+                topicAddReq.getTitle(), timeout, TimeUnit.SECONDS);
+
         return topicId;
     }
 
@@ -196,13 +211,13 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     }
 
     @Override
-    public void removeTopicInfoWithoutVerification(long topicId){
+    public void removeTopicInfoWithoutVerification(long topicId) {
         Topic topic = topicQueryService.getTopic(topicId);
         if (topic == null) {
             log.error("话题不存在 话题:{} 用户:{}", topicId, UserContext.getUsername());
             throw new BusinessException("话题不存在~~");
         }
-        long userId=topic.getUserId();
+        long userId = topic.getUserId();
         //删除star
         starWriteService.removeStars(topicId);
         //删除评论

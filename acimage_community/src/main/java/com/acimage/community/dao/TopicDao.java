@@ -29,15 +29,13 @@ public interface TopicDao extends BaseMapper<Topic> {
 
     Integer batchUpdateActivityTime(@Param("idAndActivityTimes") List<Pair<Long, Date>> idAndActivityTimes);
 
-    List<Topic> selectTopicsWithUserImagesOrderByPageView(@Param("startTime") String startTime, @Nullable @Param("limit") Integer limit);
+    List<Topic> selectTopicsWithUserOrderByPageView(@Param("startTime") String startTime, @Nullable @Param("limit") Integer limit);
 
     List<Topic> selectTopicsWithUserOrderBy(@Param("column") String columnForOrder, @Param("limit") int limit);
 
     Topic selectTopicWithUser(@Param("id") long id);
 
-    Topic selectTopicWithUserBasicAndTagIds(@Param("id") long id);
-
-    List<Topic> selectTopicsWithUserImagesOrderByCreateTime(@Param("userId") long userId, @Param("startIndex") int startIndex, @Param("recordNumber") int recordNumber);
+    List<Topic> selectTopicsWithUserOrderByCreateTime(@Param("userId") long userId, @Param("startIndex") int startIndex, @Param("recordNumber") int recordNumber);
 
     List<Topic> selectTopicsWithUserByIds(@Param("ids") List<Long> ids);
 

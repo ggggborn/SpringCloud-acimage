@@ -1,5 +1,6 @@
 package com.acimage.community.service.topic.Impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.redis.annotation.QueryRedis;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -20,8 +22,6 @@ import java.util.List;
 public class TopicQueryServiceImpl implements TopicQueryService {
     @Autowired
     TopicDao topicDao;
-    @Autowired
-    RedisUtils redisUtils;
 
     @QueryRedis(expire = 11L, keyPrefix = TopicKeyConstants.HASHKP_TOPIC, dataType = DataType.HASH)
     @Override
@@ -36,11 +36,14 @@ public class TopicQueryServiceImpl implements TopicQueryService {
 
     @Override
     public List<Topic> listTopicWithUser(List<Long> ids) {
+        if(CollectionUtil.isEmpty(ids)){
+            return new ArrayList<>();
+        }
         return topicDao.selectTopicsWithUserByIds(ids);
     }
 
     @Override
-    public List<Topic> listByIds(List<Long> ids) {
+    public List<Topic> listTopicsByIds(List<Long> ids) {
         return topicDao.selectBatchIds(ids);
     }
 }

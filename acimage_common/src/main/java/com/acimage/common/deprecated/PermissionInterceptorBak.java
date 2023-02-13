@@ -1,4 +1,4 @@
-package com.acimage.common.web.interceptor.depreted;
+package com.acimage.common.deprecated;
 
 import com.acimage.common.deprecated.annotation.utils.AuthenticationUtils;
 import com.acimage.common.global.context.UserContext;

@@ -73,7 +73,12 @@ public class LogAdvice {
         }
 
         String classMethod = method.getName() + " " + method.getDeclaringClass().getSimpleName();
-        log.info("{}耗时 {}ms", classMethod, System.currentTimeMillis() - startTime);
+        long cost = System.currentTimeMillis() - startTime;
+        if (cost > 500) {
+            log.warn("{}耗时 {}ms", classMethod, classMethod);
+        } else {
+            log.debug("{}耗时 {}ms", classMethod, classMethod);
+        }
 
         return obj;
     }

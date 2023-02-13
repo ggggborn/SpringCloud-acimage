@@ -23,7 +23,7 @@ public class TopicDaoTest {
     @Test
     public void selectTopicsOrderByScan() {
         String startTime = "2022-09-23 00:00:00";
-        List<Topic> topics = topicDao.selectTopicsWithUserImagesOrderByPageView(startTime, null);
+        List<Topic> topics = topicDao.selectTopicsWithUserOrderByPageView(startTime, null);
         System.out.println(topics);
     }
 

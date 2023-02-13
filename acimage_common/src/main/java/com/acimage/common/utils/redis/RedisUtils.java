@@ -127,6 +127,7 @@ public class RedisUtils {
 
     /**
      * redis6.2版本之后才支持
+     *
      * @param key
      */
     public String getAndDeleteForString(String key) {
@@ -258,6 +259,32 @@ public class RedisUtils {
             valueStrings[i] = toStringValues[i].toString();
         }
         return stringRedisTemplate.opsForZSet().remove(key, valueStrings);
+    }
+
+    public List<String> randomMembersForZSet(String key, int count) {
+        //randomMembers 在redis 6.2之后才有，测试环境redis部署在本地，先自己实现一个
+        Long sizeLong = stringRedisTemplate.opsForZSet().size(key);
+        if (sizeLong == null) {
+            return new ArrayList<>();
+        }
+        int size = sizeLong.intValue();
+        Random random = new Random(System.currentTimeMillis());
+        List<String> resultList=new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            int index=random.nextInt(size);
+            Set<String> set=stringRedisTemplate.opsForZSet().reverseRange(key,index,index);
+            String idString=null;
+            if(!CollectionUtil.isEmpty(set)){
+                for(String item:set){
+                    idString=item;
+                }
+            }
+            if(idString!=null){
+                resultList.add(idString);
+            }
+        }
+        return resultList;
+//        return stringRedisTemplate.opsForZSet().randomMembers(key, count);
     }
 
     public Long incrementIfPresentForZSet(String key, String value, long increment) {

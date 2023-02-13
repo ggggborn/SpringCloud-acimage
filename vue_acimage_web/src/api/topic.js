@@ -23,18 +23,26 @@ export let pageMyPublishTopic = function(pageNo) {
 	return request.get('/api/community/topics/query/mine/' + pageNo);
 }
 
-export let pageRencentTopic = function(pageNo) {
-	return request.get('/api/community/topics/query/pageRecentTopics/' + pageNo)
+export let pageActiveTopics = function(pageNo,pageSize) {
+	return request.get('/api/community/topics/query/most/active/' + pageNo+'/'+pageSize)
+}
+
+export let get3HotTopicLists = function() {
+	return request.get('/api/community/topics/query/hot/3attrs')
 }
 
 
-
+//
 export let pageByCategoryId = function(formData) {
 	return request.get('/api/community/topics/query/byCategoryId',{params:formData})
 }
 
 export let pageByTagId = function(formData) {
 	return request.get('/api/community/topics/query/byTagId',{params:formData})
+}
+
+export let pageBySort = function(formData) {
+	return request.get('/api/community/topics/query/bySort',{params:formData})
 }
 
 
@@ -56,5 +64,5 @@ export let modifyHtml= function(data) {
 }
 
 export let deleteTopic = function(topicId) {
-	return request.delete('/api/community/topics/operate' + topicId)
+	return request.delete('/api/community/topics/operate/' + topicId)
 }

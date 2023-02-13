@@ -12,7 +12,7 @@
 				</router-link>
 				<el-divider direction="vertical"></el-divider>
 				<router-link to="/forum" class="no-underline tabs-item-link">
-					<i class="el-icon-s-home" style="color: red;"></i>论坛
+					<i class="el-icon-chat-line-square" style="color: red;"></i>论坛
 				</router-link>
 				<el-divider direction="vertical"></el-divider>
 				<router-link to="/publish" class="no-underline tabs-item-link">
@@ -24,7 +24,11 @@
 				</router-link>
 				<el-divider direction="vertical"></el-divider>
 				<router-link to="/SearchImage" class="no-underline tabs-item-link">
-					<i class="el-icon-search" style="color: red;"></i>识图
+					<i class="el-icon-picture" style="color: red;"></i>识图
+				</router-link>
+				<el-divider direction="vertical"></el-divider>
+				<router-link to="/about" class="no-underline tabs-item-link">
+					<i class="el-icon-info" style="color: red;"></i>关于
 				</router-link>
 			</div>
 			<!-- <span style="color:red;">HOT</span> -->
