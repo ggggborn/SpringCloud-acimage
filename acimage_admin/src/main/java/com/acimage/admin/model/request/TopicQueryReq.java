@@ -2,6 +2,7 @@ package com.acimage.admin.model.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.*;
 
@@ -13,7 +14,6 @@ public class TopicQueryReq {
     @Positive
     @NotNull
     Integer pageNo;
-    @Min(2)
-    @Max(10)
+    @Range(min=5,max=20)
     Integer pageSize;
 }

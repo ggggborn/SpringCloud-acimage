@@ -4,6 +4,8 @@ package com.acimage.user.web.controller;
 import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.enums.AuthenticationType;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 
 import com.acimage.user.model.request.UserLoginReq;
@@ -50,6 +52,7 @@ public class LoginController {
         return Result.ok();
     }
 
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/doRegister")
     public Result<?> register(@Validated @RequestBody UserRegisterReq userRegister) {
 
@@ -70,6 +73,7 @@ public class LoginController {
         return Result.ok(token);
     }
 
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/doLogin")
     public Result<?> login(@Validated @RequestBody UserLoginReq userLogin, HttpServletRequest request) {
         String code = userLogin.getVerifyCode();

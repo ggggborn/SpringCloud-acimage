@@ -8,7 +8,6 @@ import com.acimage.common.utils.common.ListUtils;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.exception.BusinessException;
 import com.acimage.common.model.domain.community.Comment;
-import com.acimage.community.global.consts.TopicKeyConstants;
 import com.acimage.community.model.request.CommentAddReq;
 import com.acimage.community.model.request.CommentModifyReq;
 import com.acimage.community.service.comment.CommentQueryService;
@@ -43,16 +42,19 @@ public class CommentWriteServiceImpl implements CommentWriteService {
     @Override
     public Integer saveComment(CommentAddReq commentAddReq) {
         String publishedContent = redisUtils.getForString(CommentKeyConstants.STRINGKP_PUBLISHED_COMMENTS);
-        if (publishedContent == null || publishedContent.equals(commentAddReq.getContent())) {
+        if (publishedContent != null && publishedContent.equals(commentAddReq.getContent())) {
             log.warn("user:{}重复发表评论 title:{}", UserContext.getUsername(), commentAddReq.getContent());
             throw new BusinessException("短期已经发表过该评论了，请刷新尝试");
         }
         Comment comment = new Comment();
         BeanUtil.copyProperties(commentAddReq, comment);
 
+        Date now=new Date();
         long id = IdGenerator.getSnowflakeNextId();
         comment.setId(id);
         comment.setUserId(UserContext.getUserId());
+        comment.setCreateTime(now);
+        comment.setUpdateTime(now);
         //敏感词过滤
         String filterContent = SensitiveWordUtils.filter(commentAddReq.getContent());
         comment.setContent(filterContent);
@@ -95,7 +97,28 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         redisUtils.delete(firstPageKey);
 
         //更新评论数
-        topicSpAttrWriteService.increaseCommentCount(topicId, -1);
+        topicSpAttrWriteService.increaseCommentCount(topicId, -col);
+
+        return col;
+    }
+
+    @Override
+    public Integer removeCommentWithoutVerification(long commentId) {
+        Comment comment = commentQueryService.getComment(commentId);
+        if (comment == null) {
+            log.error("user:{} 删除评论{} 错误：评论不存在", UserContext.getUsername(), commentId);
+            throw new BusinessException("评论不存在");
+        }
+        int col = commentDao.deleteById(commentId);
+
+        //如果影响redis话题首页评论，则删除
+        long topicId = comment.getTopicId();
+        String firstPageKey = CommentKeyConstants.keyOfTopicComments(topicId, 1);
+
+        redisUtils.delete(firstPageKey);
+
+        //更新评论数
+        topicSpAttrWriteService.increaseCommentCount(topicId, -col);
 
         return col;
     }

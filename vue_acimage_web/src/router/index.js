@@ -9,6 +9,7 @@ import PublishTopic from '@/views/PublishTopic/PublishTopic.vue'
 import MyProfile from '@/views/MyProfile/MyProfile.vue'
 import MyActivity from '@/views/MyActivity/MyActivity.vue'
 import Forum from '@/views/Forum/Forum.vue'
+import About from '@/views/About/About.vue'
 import SearchImage from '@/views/SearchImage/SearchImage.vue'
 import SearchTopic from '@/views/SearchTopic/SearchTopic.vue'
 
@@ -50,6 +51,10 @@ const router = new VueRouter({
 		{
 			path: '/SearchImage',
 			component: SearchImage
+		},
+		{
+			path: '/about',
+			component: About
 		},
 
 		

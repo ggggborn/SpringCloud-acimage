@@ -1,8 +1,9 @@
-package com.acimage.common.utils;
+package com.acimage.common.deprecated;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.http.HttpUtil;
 import com.acimage.common.global.exception.BusinessException;
+import com.acimage.common.utils.ExceptionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qiniu.cdn.CdnManager;
@@ -36,7 +37,6 @@ import java.util.List;
 
 @Deprecated
 @Slf4j
-@Component
 @ConditionalOnClass(Auth.class)
 @ConfigurationProperties(prefix = "qiniu")
 public class QiniuUtils {

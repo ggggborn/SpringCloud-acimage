@@ -27,10 +27,10 @@
 						</el-button>
 					</el-menu-item>
 				</el-menu>
-				<el-input v-model="search" @keyup.enter.native="enterSearch" placeholder="想搜点什么呢..." maxlength="15"
+				<el-input v-model="search" @keyup.enter.native="enterSearch" placeholder=" ( ﹁ ﹁ ) ~→搜什么呢..." maxlength="15"
 					prefix-icon="el-icon-edit" size="small" clearable>
 				</el-input>
-				<el-avatar :src="$store.getters.truePhotoUrl" :size="50"
+				<el-avatar :src="$store.getters.getPhotoUrl" :size="50"
 					style="margin-top:15px;position:fixed;right:10px;top:-10px;">
 				</el-avatar>
 

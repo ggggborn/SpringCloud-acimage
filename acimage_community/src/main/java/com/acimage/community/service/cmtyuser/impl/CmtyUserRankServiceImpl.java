@@ -20,8 +20,8 @@ public class CmtyUserRankServiceImpl implements CmtyUserRankService {
     private List<CmtyUser> pageUserRankBy(SFunction<CmtyUser, Integer> attr, int pageNo, int pageSize){
         int start= PageUtils.startIndexOf(pageNo,pageSize);
         String column= LambdaUtils.underlineColumnNameOf(attr);
-        List<CmtyUser> userCsList= cmtyUserDao.selectListOrderByColumn(column,start,pageSize);
-        return userCsList;
+        List<CmtyUser> cmtyUserList= cmtyUserDao.selectListOrderByColumn(column,start,pageSize);
+        return cmtyUserList;
     }
 
     @Override

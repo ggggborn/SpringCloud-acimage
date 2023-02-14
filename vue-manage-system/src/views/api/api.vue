@@ -21,7 +21,6 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="note" label="note"></el-table-column>
-				<el-table-column prop="matchRule" label="匹配规则"></el-table-column>
 				<el-table-column prop="enable" label="是否启用"></el-table-column>
 				<el-table-column prop="createTime" label="创建时间" width="70"></el-table-column>
 
@@ -58,12 +57,6 @@
 				</el-form-item>
 				<el-form-item label="备注">
 					<el-input v-model="addForm.note" maxlength="100"></el-input>
-				</el-form-item>
-				<el-form-item label="匹配规则">
-					<el-radio-group v-model="addForm.matchRule">
-						<el-radio label="EXACT">EXACT</el-radio>
-						<el-radio label="PREFIX">PREFIX</el-radio>
-					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="启用">
 					<el-radio-group v-model="addForm.enable">
@@ -105,12 +98,6 @@
 				</el-form-item>
 				<el-form-item label="备注">
 					<el-input v-model="editForm.note" maxlength="100"></el-input>
-				</el-form-item>
-				<el-form-item label="匹配规则">
-					<el-radio-group v-model="editForm.matchRule">
-						<el-radio label="EXACT">EXACT</el-radio>
-						<el-radio label="PREFIX">PREFIX</el-radio>
-					</el-radio-group>
 				</el-form-item>
 				<el-form-item label="启用">
 					<el-radio-group v-model="editForm.enable">
@@ -159,7 +146,6 @@
 	interface Api {
 		id: number;
 		path: string;
-		matchRule: string;
 		method: string;
 		note: string;
 		enable: boolean;
@@ -210,7 +196,6 @@
 	let editForm = reactive({
 		id: 0,
 		path: '',
-		matchRule: '',
 		note: '',
 		permissionId: -1,
 		method: '',
@@ -220,7 +205,6 @@
 	const handleEdit = (index: number, row: Api) => {
 		editForm.id = apis.value[index].id;
 		editForm.path = apis.value[index].path;
-		editForm.matchRule = apis.value[index].matchRule;
 		editForm.note = apis.value[index].note;
 		editForm.permissionId = apis.value[index].permissionId;
 		editForm.method = apis.value[index].method;
@@ -229,9 +213,9 @@
 	};
 
 	const saveEdit = () => {
-		modifyApi(editForm).then((res:any)=>{
-			if(res.code==Code.OK){
-				MessageUtils.success("修改成功",2);
+		modifyApi(editForm).then((res: any) => {
+			if (res.code == Code.OK) {
+				MessageUtils.success("修改成功", 2);
 				CommonUtils.delayRefresh(1);
 			}
 		})
@@ -240,7 +224,6 @@
 	//新增接口
 	let addForm = reactive({
 		path: null,
-		matchRule: "EXACT",
 		method: "GET",
 		note: null,
 		permissionId: null,
@@ -256,13 +239,13 @@
 			}
 		})
 	}
-	
-	
-	const handleDelete=(index: number)=>{
-		MessageUtils.confirm("是否确定删除？操作不可逆！").then(()=>{
-			deleteApi(apis.value[index].id).then((res:any)=>{
-				if(res.code==Code.OK){
-					MessageUtils.success("修改成功",2);
+
+
+	const handleDelete = (index: number) => {
+		MessageUtils.confirm("是否确定删除？操作不可逆！").then(() => {
+			deleteApi(apis.value[index].id).then((res: any) => {
+				if (res.code == Code.OK) {
+					MessageUtils.success("修改成功", 2);
 					CommonUtils.delayRefresh(1);
 				}
 			})

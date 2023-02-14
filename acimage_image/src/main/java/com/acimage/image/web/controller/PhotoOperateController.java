@@ -2,6 +2,8 @@ package com.acimage.image.web.controller;
 
 
 import com.acimage.common.deprecated.annotation.Authentication;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.image.service.photo.impl.PhotoServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class PhotoOperateController {
     @Autowired
     PhotoServiceImpl photoService;
 
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/upload")
     public Result<String> uploadPhoto(@RequestParam("photoFile") MultipartFile photoFile) {
         String url = photoService.uploadPhotoAndUpdatePhotoUrl(photoFile);

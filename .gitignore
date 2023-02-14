@@ -8,4 +8,5 @@ application-prod.yml
 application-prod?.yml
 application-server.yml
 application-server?.yml
+application-common-secret.yml
 application-qiniu.yml

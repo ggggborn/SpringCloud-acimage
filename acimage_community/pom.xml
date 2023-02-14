@@ -34,10 +34,9 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
-        <!--mybatis-plus-->
 <!--        <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-actuator</artifactId>-->
 <!--        </dependency>-->
 
         <!--druid依赖-->
@@ -58,7 +57,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
-<!--        quartz-->
+        <!--quartz-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-quartz</artifactId>
@@ -69,10 +68,6 @@
             <artifactId>minio</artifactId>
         </dependency>
         <!--敏感词过滤-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.houbb</groupId>-->
-<!--            <artifactId>sensitive-word</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>io.github.toolgood</groupId>
             <artifactId>toolgood-words</artifactId>

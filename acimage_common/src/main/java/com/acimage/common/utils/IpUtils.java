@@ -2,7 +2,6 @@ package com.acimage.common.utils;
 
 import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.consts.HeaderKeyConstants;
-import com.alibaba.csp.sentinel.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
@@ -60,7 +59,7 @@ public class IpUtils {
         // 多次反向代理后会有多个ip值 的分割符
         // 根据 HttpHeaders 获取 请求 IP地址
         String ip = request.getHeaders().getFirst("X-Forwarded-For");
-        if (StringUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (StrUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeaders().getFirst("x-forwarded-for");
             if (ip != null && ip.length() != 0 && !UNKNOWN.equalsIgnoreCase(ip)) {
                 // 多次反向代理后会有多个ip值，第一个ip才是真实ip
@@ -86,7 +85,7 @@ public class IpUtils {
             ip = request.getHeaders().getFirst("X-Real-IP");
         }
         //兼容k8s集群获取ip
-        if (StringUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+        if (StrUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = Objects.requireNonNull(request.getRemoteAddress()).getAddress().getHostAddress();
             if (LOCALHOST_IP1.equalsIgnoreCase(ip) || LOCALHOST_IP.equalsIgnoreCase(ip)) {
                 //根据网卡取本机配置的IP
@@ -95,7 +94,7 @@ public class IpUtils {
                     iNet = InetAddress.getLocalHost();
                     ip = iNet.getHostAddress();
                 } catch (UnknownHostException e) {
-                    log.error("getClientIp error: ", e);
+                    log.error("getClientIp error:{}", e.getMessage());
                 }
 
             }

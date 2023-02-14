@@ -26,6 +26,7 @@ public class ArgumentValidateExceptionHandler {
      */
     @ExceptionHandler(value = {ConstraintViolationException.class})
     public Result doConstraintViolationException(ConstraintViolationException ex) {
+        ExceptionUtils.printIfDev(ex);
         log.warn(ex.getMessage());
         //获取报错信息
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();

@@ -2,7 +2,7 @@
 	<div>
 		<div class="container">
 			<div class="handle-box">
-<!-- 				<el-select placeholder="排序字段" class="handle-select mr10" style="width:160px;">
+				<!-- 				<el-select placeholder="排序字段" class="handle-select mr10" style="width:160px;">
 					<el-option key="1" label="createTime" value="createTime"></el-option>
 				</el-select> -->
 				<el-input placeholder="关键字" class="handle-input mr10" v-model="query.keyword"></el-input>
@@ -142,12 +142,15 @@
 	}
 
 	const handleDeleteRole = (roleId) => {
-		deleteRoleForUser(editForm.userId,roleId).then((res:any)=>{
-			if(res.code==Code.OK){
-				MessageUtils.success("删除成功",2);
-				CommonUtils.delayRefresh(1)
-			}
-		})
+		MessageUtils.confirm("确定删除角色吗").then(() => {
+			deleteRoleForUser(editForm.userId, roleId).then((res: any) => {
+				if (res.code == Code.OK) {
+					MessageUtils.success("删除成功", 2);
+					CommonUtils.delayRefresh(1)
+				}
+			})
+		}).catch(e => e)
+
 	}
 </script>
 

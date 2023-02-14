@@ -9,6 +9,7 @@ body {
 	margin-left: calc((100% - 1200px) / 2);
 	margin-top: 15px;
 	display: block;
+	padding-bottom:200px;
 }
 
 .wrapper-left {

@@ -27,7 +27,9 @@ public class CommentOperateController {
     @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
     @PostMapping
     public Result<?> addComment(@Validated @RequestBody CommentAddReq commentAddReq){
-        if(commentAddReq.getContent().trim().length()<2){
+        String trimContent=commentAddReq.getContent().trim();
+        commentAddReq.setContent(trimContent);
+        if(trimContent.length()<2){
             return Result.fail("评论有效字数不能少于2个字");
         }
         commentWriteService.saveComment(commentAddReq);
@@ -38,6 +40,11 @@ public class CommentOperateController {
     @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
     @PutMapping
     public Result<?> modifyComment(@Validated @RequestBody CommentModifyReq commentModifyReq){
+        String trimContent=commentModifyReq.getContent().trim();
+        commentModifyReq.setContent(trimContent);
+        if(trimContent.length()<2){
+            return Result.fail("评论有效字数不能少于2个字");
+        }
         log.info("修改了 {}", commentModifyReq);
         commentWriteService.updateComment(commentModifyReq);
         return Result.ok();

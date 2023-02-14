@@ -2,6 +2,8 @@ package com.acimage.admin.web.controller;
 
 
 import cn.hutool.core.util.StrUtil;
+import com.acimage.admin.model.request.CarouselAddReq;
+import com.acimage.admin.model.request.CarouselModifyReq;
 import com.acimage.admin.service.homecarousel.HomeCarouselWriteService;
 import com.acimage.admin.service.homecarousel.HomeCarouselQueryService;
 import com.acimage.common.global.consts.FileFormatConstants;
@@ -29,13 +31,13 @@ public class HomeCarouselController {
 
     @PostMapping
     public Result<?> addImage(@RequestParam("image") MultipartFile imageFile,
-                              @RequestParam("description") @Size(min = HomeCarousel.DESC_MIN, max = HomeCarousel.DESC_MAX, message = HomeCarousel.DESC_INVALID_MSG) String description) {
+                              @Validated @ModelAttribute CarouselAddReq carouselAddReq) {
         String originName = imageFile.getOriginalFilename();
         String format = StrUtil.subAfter(originName, '.', true);
-        if (!FileFormatConstants.ALLOWED_IMAGE_FORMAT.contains(format)) {
-            return Result.fail("图片格式需为jpg，jpeg，png");
+        if (!FileFormatConstants.ALLOWED_CAROUSEL_FORMAT.contains(format)) {
+            return Result.fail("图片格式需为"+FileFormatConstants.ALLOWED_CAROUSEL_FORMAT);
         }
-        homeCarouselWriteService.saveHomeCarouselImage(imageFile, description);
+        homeCarouselWriteService.saveHomeCarouselImage(imageFile, carouselAddReq);
         return Result.ok();
     }
 
@@ -46,10 +48,9 @@ public class HomeCarouselController {
         return Result.ok();
     }
 
-    @PutMapping("/description")
-    public Result<?> modifyDescription(@RequestParam("id") @Positive Long id,
-                                       @RequestParam("description") @Size(min = HomeCarousel.DESC_MIN, max = HomeCarousel.DESC_MAX, message = HomeCarousel.DESC_INVALID_MSG) String description) {
-        homeCarouselWriteService.updateHomeCarouselImage(id, description);
+    @PutMapping("/descriptionAndLink")
+    public Result<?> modifyDescription(@Validated @ModelAttribute CarouselModifyReq carouselModifyReq) {
+        homeCarouselWriteService.updateHomeCarouselImage(carouselModifyReq);
         return Result.ok();
     }
 
@@ -58,8 +59,8 @@ public class HomeCarouselController {
                                     @RequestParam("image") MultipartFile imageFile) {
         String originName = imageFile.getOriginalFilename();
         String format = StrUtil.subAfter(originName, '.', true);
-        if (!FileFormatConstants.ALLOWED_IMAGE_FORMAT.contains(format)) {
-            return Result.fail("图片格式需为jpg，jpeg，png");
+        if (!FileFormatConstants.ALLOWED_CAROUSEL_FORMAT.contains(format)) {
+            return Result.fail("图片格式需为"+FileFormatConstants.ALLOWED_CAROUSEL_FORMAT);
         }
         homeCarouselWriteService.coverHomeCarouselImage(id, imageFile);
         return Result.ok();

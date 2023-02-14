@@ -1,6 +1,7 @@
 package com.acimage.common.utils.minio;
 
 import cn.hutool.http.HttpUtil;
+import com.acimage.common.utils.ExceptionUtils;
 import io.minio.*;
 import io.minio.messages.DeleteObject;
 import lombok.extern.slf4j.Slf4j;
@@ -39,13 +40,15 @@ public class MinioUtils {
                     .build()
             );
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
+            log.error(e.getMessage());
         } finally {
             if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
+                    ExceptionUtils.printIfDev(e);
                 }
             }
         }
@@ -69,7 +72,8 @@ public class MinioUtils {
                 try {
                     is.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage());
+                    ExceptionUtils.printIfDev(e);
                 }
             }
         }
@@ -78,12 +82,12 @@ public class MinioUtils {
 
     public void downloadTo(String url, String destSrc) {
         try {
-            String slashBucket=String.format("/%s",minioProperties.getBucket());
-            boolean isInnerUrl=url.startsWith(slashBucket);
-            if(!isInnerUrl){
+            String slashBucket = String.format("/%s", minioProperties.getBucket());
+            boolean isInnerUrl = url.startsWith(slashBucket);
+            if (!isInnerUrl) {
                 return;
             }
-            String innerUrl=url.substring(slashBucket.length());
+            String innerUrl = url.substring(slashBucket.length());
             minioClient.downloadObject(
                     DownloadObjectArgs.builder()
                             .bucket(minioProperties.getBucket())
@@ -115,12 +119,12 @@ public class MinioUtils {
 
 
     public void deleteFile(String totalUrl) {
-        String slashBucket=String.format("/%s",minioProperties.getBucket());
-        boolean isInnerUrl=totalUrl.startsWith(slashBucket);
-        if(!isInnerUrl){
+        String slashBucket = String.format("/%s", minioProperties.getBucket());
+        boolean isInnerUrl = totalUrl.startsWith(slashBucket);
+        if (!isInnerUrl) {
             return;
         }
-        String innerUrl=totalUrl.substring(slashBucket.length());
+        String innerUrl = totalUrl.substring(slashBucket.length());
         try {
             minioClient.removeObject(RemoveObjectArgs.builder()
                     .bucket(minioProperties.getBucket())
@@ -128,7 +132,8 @@ public class MinioUtils {
                     .build()
             );
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException(e);
         }
     }
@@ -144,7 +149,8 @@ public class MinioUtils {
                     .objects(deleteObjectList)
                     .build());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            ExceptionUtils.printIfDev(e);
             throw new RuntimeException(e);
         }
     }

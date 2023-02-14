@@ -1,6 +1,7 @@
 package com.acimage.gateway.globalfilter;
 
 
+import com.acimage.common.global.consts.SysKeyConstants;
 import com.acimage.common.global.exception.NullTokenException;
 import com.acimage.common.global.consts.HeaderKeyConstants;
 import com.acimage.common.global.context.UserContext;
@@ -8,7 +9,6 @@ import com.acimage.common.service.impl.TokenServiceImpl;
 import com.acimage.common.utils.IpUtils;
 import com.acimage.common.utils.JwtUtils;
 import com.acimage.common.utils.redis.RedisUtils;
-import com.acimage.gateway.config.IgnoreUrlConfig;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +29,7 @@ import reactor.core.publisher.Mono;
 @Component
 public class AuthenticationFilter implements GlobalFilter {
 
-    @Autowired
-    StringRedisTemplate stringRedisTemplate;
+
     @Autowired
     RedisUtils redisUtils;
 
@@ -39,12 +38,15 @@ public class AuthenticationFilter implements GlobalFilter {
 
         ServerHttpRequest request = exchange.getRequest();
         String url = request.getURI().getPath();
-        if (IgnoreUrlConfig.isIgnoreUrl(url)) {
-            return chain.filter(exchange);
-        }
 
         String token = request.getHeaders().getFirst(HeaderKeyConstants.AUTHORIZATION);
         String ip = IpUtils.getUserIp(request);
+        UserContext.setIp(ip);
+        //记录接口访问次数
+        redisUtils.increment(SysKeyConstants.STRINGK_INTERFACE_TOTAL,1);
+        //记录访问量
+        redisUtils.addForHyperLogLog(SysKeyConstants.LOGK_PAGE_VIEW,ip);
+
         boolean isException = false;
         //验证token
         try {

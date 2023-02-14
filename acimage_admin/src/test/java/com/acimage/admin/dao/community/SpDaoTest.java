@@ -12,12 +12,6 @@ import java.util.Date;
 public class SpDaoTest {
     @Autowired
     HomeCarouselDao homeCarouselDao;
-    @Test
-    public void insertTest(){
-        HomeCarousel homeCarousel =new HomeCarousel(10086L,"10086","/test/888", 1,10086,new Date());
-        homeCarouselDao.insert(homeCarousel);
-        System.out.println(homeCarouselDao.selectOne(null));
-    }
 
     @Test
     public void deleteTest(){

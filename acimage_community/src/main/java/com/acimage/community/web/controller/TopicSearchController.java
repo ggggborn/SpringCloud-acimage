@@ -3,6 +3,8 @@ package com.acimage.community.web.controller;
 
 import com.acimage.common.model.domain.community.Topic;
 import com.acimage.common.model.page.MyPage;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.community.model.request.TopicSearchReq;
 import com.acimage.community.service.topic.TopicEsSearchService;
@@ -20,6 +22,7 @@ public class TopicSearchController {
     @Autowired
     TopicEsSearchService topicEsSearchService;
 
+    @RequestLimit(limitTimes = {2}, durations = {1}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/multiSearch")
     public Result<MyPage<Topic>> searchTopics(@Validated @ModelAttribute TopicSearchReq topicSearchReq) {
         String search= topicSearchReq.getSearch();

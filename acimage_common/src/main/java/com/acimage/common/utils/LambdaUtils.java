@@ -27,15 +27,20 @@ public class LambdaUtils {
         // 从function取出序列化方法
         Method writeReplaceMethod = ReflectUtil.getMethodByName(getOrIs.getClass(), WRITE_REPLACE);
         // 从序列化方法取出序列化的lambda信息
-        boolean isAccessible = writeReplaceMethod.isAccessible();
+//        boolean isAccessible = writeReplaceMethod.isAccessible();
+        /**
+         * 如果要通过isAccessible设置回去，一定要考虑并发问题
+         */
         writeReplaceMethod.setAccessible(true);
         SerializedLambda serializedLambda;
         try {
             serializedLambda = (SerializedLambda) writeReplaceMethod.invoke(getOrIs);
         } catch (IllegalAccessException | InvocationTargetException e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
-        writeReplaceMethod.setAccessible(isAccessible);
+        //如果将访问属性设置回去，这里可能会出错
+        //writeReplaceMethod.setAccessible(isAccessible);
 
         // 从lambda信息取出method等
         String methodName = serializedLambda.getImplMethodName();

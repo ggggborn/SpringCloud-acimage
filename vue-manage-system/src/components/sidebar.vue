@@ -68,11 +68,6 @@ const items = [
         title: '首页管理',
         permiss: '2',
         subs: [
-            {
-                index: '/table',
-                title: '常用表格',
-                permiss: '2',
-            },
 			{
 			    index: '/HomeCarousel',
 			    title: '走马灯',
@@ -91,6 +86,11 @@ const items = [
 			    title: '话题',
 			    permiss: '2',
 			},
+			{
+			    index: '/comment',
+			    title: '评论',
+			    permiss: '2',
+			},
 	        {
 	            index: '/user',
 	            title: '用户',
@@ -98,12 +98,6 @@ const items = [
 	        },
 	    ],
 	},
-    {
-        icon: 'DocumentCopy',
-        index: '/tabs',
-        title: 'tab选项卡',
-        permiss: '3',
-    },
     {
         icon: 'Edit',
         index: '3',
@@ -125,53 +119,21 @@ const items = [
 			    title: '授权',
 			    permiss: '1',
 			},
+        ],
+    },
+	{
+	    icon: 'Edit',
+	    index: '34',
+	    title: '接口管理',
+	    permiss: '4',
+	    subs: [
 			{
 			    index: '/api',
 			    title: '接口',
 			    permiss: '1',
 			},
-            {
-                index: '/upload',
-                title: '文件上传',
-                permiss: '6',
-            },
-            {
-                index: '4',
-                title: '三级菜单',
-                permiss: '7',
-                subs: [
-                    {
-                        index: '/editor',
-                        title: '富文本编辑器',
-                        permiss: '8',
-                    },
-                    {
-                        index: '/markdown',
-                        title: 'markdown编辑器',
-                        permiss: '9',
-                    },
-                ],
-            },
-        ],
-    },
-    {
-        icon: 'PieChart',
-        index: '/charts',
-        title: 'schart图表',
-        permiss: '11',
-    },
-    {
-        icon: 'Warning',
-        index: '/permissionx',
-        title: '权限管理',
-        permiss: '13',
-    },
-    {
-        icon: 'CoffeeCup',
-        index: '/donate',
-        title: '支持作者',
-        permiss: '14',
-    },
+	    ],
+	},
 ];
 
 const route = useRoute();

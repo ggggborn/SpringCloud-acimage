@@ -82,7 +82,7 @@ public class TopicInfoWriteServiceImpl implements TopicInfoWriteService {
     @Override
     public long saveTopicInfo(TopicAddReq topicAddReq, MultipartFile coverImage) {
         String publishedTitle = redisUtils.getForString(TopicKeyConstants.STRINGKP_PUBLISHED_TOPIC_TITLE);
-        if (publishedTitle == null || publishedTitle.equals(topicAddReq.getTitle())) {
+        if (publishedTitle != null && publishedTitle.equals(topicAddReq.getTitle())) {
             log.warn("user:{}重复发表话题 title:{}", UserContext.getUsername(), topicAddReq.getTitle());
             throw new BusinessException("已经发表过该话题了，请刷新");
         }

@@ -16,8 +16,7 @@ import java.io.IOException;
 @SpringBootTest
 public class FileServiceTest {
 
-    @Autowired
-    FileService fileService;
+
 
     @Autowired
     SearchImageService searchImageService;

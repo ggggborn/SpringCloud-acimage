@@ -7,6 +7,7 @@ import com.acimage.common.model.domain.community.Comment;
 import com.acimage.community.global.consts.PageSizeConstants;
 import com.acimage.community.service.comment.CommentInfoQueryService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +26,13 @@ public class CommentQueryController {
 
     @GetMapping("/topicComments")
     public Result<?> pageTopicComments(@Positive @RequestParam("topicId") Long topicId,
-                                       @Positive @RequestParam("pageNo") Integer pageNo) {
+                                       @Range(min=1,max=100,message="页码在1-100之间") @RequestParam("pageNo") Integer pageNo) {
         List<Comment> comments = commentInfoQueryService.pageCommentsWithUser(topicId, pageNo, PageSizeConstants.TOPIC_COMMENTS);
         return Result.ok(comments);
     }
 
     @GetMapping("/mine/{pageNo}")
-    public Result<?> pageMyComments(@Positive @NotNull @PathVariable("pageNo") Integer pageNo) {
+    public Result<?> pageMyComments(@Range(min=1,max=100,message="页码在1-100之间") @PathVariable("pageNo") Integer pageNo) {
         return Result.ok(commentInfoQueryService.pageCommentsWithTopicOrderByCreateTime(UserContext.getUserId(),
                 pageNo,
                 PageSizeConstants.ACTIVITY_COMMENTS));

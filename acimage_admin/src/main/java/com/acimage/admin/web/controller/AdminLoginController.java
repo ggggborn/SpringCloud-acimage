@@ -4,6 +4,8 @@ package com.acimage.admin.web.controller;
 import com.acimage.admin.model.request.AdminLoginReq;
 import com.acimage.admin.service.login.LoginService;
 import com.acimage.admin.service.login.VerifyCodeService;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.RsaUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,8 @@ public class AdminLoginController {
     LoginService loginService;
     @Autowired
     VerifyCodeService verifyCodeService;
+
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/doLogin")
     public Result<?> doLogin(@Validated @RequestBody AdminLoginReq adminLoginReq, HttpServletRequest request) {
         String code = adminLoginReq.getVerifyCode();

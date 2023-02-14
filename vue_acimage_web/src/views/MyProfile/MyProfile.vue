@@ -13,7 +13,7 @@
 				<div class="profile-content">
 					<div class="profile-content-left">
 						<div style="display: inline-block;text-align: right: 10px;">
-							<el-avatar :src="$store.getters.truePhotoUrl" :size="120"></el-avatar>
+							<el-avatar :src="$store.getters.getPhotoUrl" :size="120"></el-avatar>
 						</div>
 
 						<br />

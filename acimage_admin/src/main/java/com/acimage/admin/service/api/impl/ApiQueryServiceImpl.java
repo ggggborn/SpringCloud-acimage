@@ -28,6 +28,7 @@ public class ApiQueryServiceImpl implements ApiQueryService {
         if (keyword != null) {
             qw.like(Api::getPath, keyword);
         }
-        return MyPage.from(apiDao.selectPage(page, qw));
+        IPage<Api> resultPage=apiDao.selectPage(page, qw);
+        return MyPage.from(resultPage);
     }
 }

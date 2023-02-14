@@ -117,10 +117,9 @@
 		name: 'LoginA',
 		data() {
 			return {
-				
-				password: 'wk123456',
-				email: 'wk@qq.com',
-				username: 'wk',
+				password: '',
+				email: '',
+				username: '',
 				verifyCode: '',
 				isRegisterMode: false,
 				isUsernameExist: false,
@@ -195,7 +194,6 @@
 					//获取公钥
 					return result.data;
 				}).then(publicKey => {
-					console.log('公钥：' + publicKey);
 					let encryptor = new JSEncrypt();
 					encryptor.setPublicKey(publicKey);
 					//加密
@@ -228,7 +226,7 @@
 				}
 			},
 			toHome(){
-				this.$route.push({ path: '/' })
+				this.$router.push({ path: '/' })
 			}
 		}
 	}

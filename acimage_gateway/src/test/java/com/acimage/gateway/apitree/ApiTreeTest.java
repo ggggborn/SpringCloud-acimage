@@ -18,7 +18,7 @@ public class ApiTreeTest {
 
     @Test
     public void testApiTree() {
-        ApiTree apiTree = ApiTreeUtils.buildApiTreeFrom(apiQueryService.listEnableApisBy(null));
+        ApiTree apiTree = ApiTreeUtils.buildApiTreeFrom(apiQueryService.listEnableApis());
         List<String> paths = Arrays.asList("/api/community/topics/operate",
                 "/api/community/topics/query",
                 "/api/topics/community/query",
@@ -31,7 +31,7 @@ public class ApiTreeTest {
 
     @Test
     public void testApiTree2() {
-        ApiTree apiTree = ApiTreeUtils.buildApiTreeFrom(apiQueryService.listEnableApisBy(null));
+        ApiTree apiTree = ApiTreeUtils.buildApiTreeFrom(apiQueryService.listEnableApis());
         List<String> paths = Arrays.asList(
                 "/api/community/topics/operate");
 

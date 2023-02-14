@@ -25,19 +25,10 @@ const routes: RouteRecordRaw[] = [
 				component: () => import(/* webpackChunkName: "dashboard" */ '../views/dashboard.vue'),
 			},
 			{
-				path: '/table',
-				name: 'basetable',
-				meta: {
-					title: '表格',
-					permiss: '2',
-				},
-				component: () => import(/* webpackChunkName: "table" */ '../views/table.vue'),
-			},
-			{
 				path: '/HomeCarousel',
 				name: 'HomeCarousel',
 				meta: {
-					title: '表格',
+					title: '走马灯',
 					permiss: '2',
 				},
 				component: () => import(/* webpackChunkName: "HomeCarousel" */ '../views/HomeCarousel/HomeCarousel.vue'),
@@ -97,67 +88,13 @@ const routes: RouteRecordRaw[] = [
 				component: () => import(/* webpackChunkName: "user" */ '../views/user/user.vue'),
 			},
 			{
-				path: '/charts',
-				name: 'basecharts',
+				path: '/comment',
+				name: 'comment',
 				meta: {
-					title: '图表',
-					permiss: '11',
+					title: '评论',
+					permiss: '1',
 				},
-				component: () => import(/* webpackChunkName: "charts" */ '../views/charts.vue'),
-			},
-			{
-				path: '/tabs',
-				name: 'tabs',
-				meta: {
-					title: 'tab标签',
-					permiss: '3',
-				},
-				component: () => import(/* webpackChunkName: "tabs" */ '../views/tabs.vue'),
-			},
-			{
-				path: '/donate',
-				name: 'donate',
-				meta: {
-					title: '鼓励作者',
-					permiss: '14',
-				},
-				component: () => import(/* webpackChunkName: "donate" */ '../views/donate.vue'),
-			},
-			{
-				path: '/permissionx',
-				name: 'permissionx',
-				meta: {
-					title: '权限管理',
-					permiss: '13',
-				},
-				component: () => import(/* webpackChunkName: "permissionx" */ '../views/permissionx.vue'),
-			},
-			{
-				path: '/upload',
-				name: 'upload',
-				meta: {
-					title: '上传插件',
-					permiss: '6',
-				},
-				component: () => import(/* webpackChunkName: "upload" */ '../views/upload.vue'),
-			},
-			{
-				path: '/editor',
-				name: 'editor',
-				meta: {
-					title: '富文本编辑器',
-					permiss: '8',
-				},
-				component: () => import(/* webpackChunkName: "editor" */ '../views/editor.vue'),
-			},
-			{
-				path: '/markdown',
-				name: 'markdown',
-				meta: {
-					title: 'markdown编辑器',
-					permiss: '9',
-				},
-				component: () => import(/* webpackChunkName: "markdown" */ '../views/markdown.vue'),
+				component: () => import(/* webpackChunkName: "comment" */ '../views/comment/comment.vue'),
 			},
 		],
 	},

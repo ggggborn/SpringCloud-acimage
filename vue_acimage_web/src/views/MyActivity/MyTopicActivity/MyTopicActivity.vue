@@ -3,7 +3,7 @@
 		<template v-for="(topic,index) in topics">
 			<el-divider v-if="index>0" :key="topic.id"></el-divider>
 			<div class="activity-content-item" :key="topic.id">
-				<el-avatar :src="$store.getters.truePhotoUrl" :size="60"></el-avatar>
+				<el-avatar :src="$store.getters.getPhotoUrl" :size="60"></el-avatar>
 				<div class="activity-medium">
 					<div>
 						<span class="activity-title-label">分享了</span>
@@ -55,24 +55,7 @@
 			return {
 				pageNo: 1,
 				totalCount: 2,
-				topics: [{
-						id: 0,
-						title: '随便起个名字',
-						createTime: '2022-2-22 22:22:22',
-						starCount: 888,
-						commentCount: 888,
-						pageView: 888,
-						firstImageUrl: '',
-					},
-					{
-						title: '随便起个名字',
-						createTime: '2022-2-22 22:22:22',
-						starCount: 888,
-						commentCount: 888,
-						pageView: 888,
-						firstImageUrl: '',
-					}
-				]
+				topics: []
 			}
 		},
 		mounted() {

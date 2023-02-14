@@ -7,7 +7,7 @@ import com.acimage.common.redis.annotation.QueryRedis;
 import com.acimage.common.utils.common.ListUtils;
 import com.acimage.image.dao.ImageDao;
 import com.acimage.image.service.image.ImageQueryService;
-import com.acimage.image.service.image.consts.KeyConsts;
+import com.acimage.image.global.consts.TopicImageKeyConstants;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class ImageQueryServiceImpl implements ImageQueryService {
     @Autowired
     ImageDao imageDao;
 
-    @QueryRedis(keyPrefix = KeyConsts.STRINGKP_TOPIC_IMAGES, expire = 3L)
+    @QueryRedis(keyPrefix = TopicImageKeyConstants.STRINGKP_TOPIC_IMAGES, expire = 3L)
     @Override
     public List<Image> listImagesOrderById(long topicId) {
         LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
@@ -28,7 +28,7 @@ public class ImageQueryServiceImpl implements ImageQueryService {
         return imageDao.selectList(qw);
     }
 
-    @QueryRedis(keyPrefix = KeyConsts.STRINGKP_IMAGE, expire = 3L)
+    @QueryRedis(keyPrefix = TopicImageKeyConstants.STRINGKP_IMAGE, expire = 3L)
     @Override
     public Image getImage(long imageId) {
         return imageDao.selectById(imageId);

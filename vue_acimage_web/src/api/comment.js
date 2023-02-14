@@ -7,7 +7,7 @@ export let addComment = function(data) {
 }
 
 export let deleteComment = function(commentId) {
-	return request.delete('/api/community/comments/operate' + commentId);
+	return request.delete('/api/community/comments/operate/' + commentId);
 }
 
 export let modifyComment = function(data) {

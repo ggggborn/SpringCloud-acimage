@@ -1,4 +1,4 @@
-package com.acimage.admin.web.config;
+package com.acimage.admin.config;
 
 import com.acimage.common.web.interceptor.AccessInterceptor;
 import com.acimage.common.web.interceptor.JwtInterceptor;

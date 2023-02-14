@@ -86,7 +86,7 @@
 					<!-- 分页 -->
 					<div v-if="topic.comments.length!=0" style="text-align: center;">
 						<el-pagination background layout="prev, pager, next" :total="topic.commentCount"
-							:current-page.sync="pageNo" @current-change="onPageNoChange" :page-size="5">
+							:current-page.sync="pageNo" @current-change="onPageNoChange" :page-size="10">
 						</el-pagination>
 					</div>
 				</div>
@@ -209,16 +209,7 @@
 					starCount: 996,
 					commentCount: 20,
 					html: `这些图片辛苦找来的，大家且看且珍惜`,
-					comments: [{
-						id: 0,
-						userId: 996,
-						user: {
-							username: '牛逼之刚',
-							photoUrl: ''
-						},
-						updateTime: '2022-2-22 22:22:22',
-						content: 'testEnglish这个流派兵种太多了，手机玩太折磨了，还是超龙一字滑适合我：从前有座山，山上有座庙，庙里有个老人在讲故事,从前有座山，山上有座庙，庙里有个老人在讲故事：从前有座山，山上有座庙，庙里有个老人在讲故事：从前有座山，山上有座庙，庙里有个老人在讲故事'
-					}],
+					comments: [],
 					similarTopics: []
 				}
 			};

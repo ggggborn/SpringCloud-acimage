@@ -22,13 +22,7 @@
 		data() {
 			return {
 				index: 0,
-				images: [
-					// {
-					// 	id: 2,
-					// 	url: 'static/image/2.jpeg',
-					// 	description: '欢迎来到......'
-					// },
-				]
+				images: []
 			}
 		},
 		computed: {
@@ -36,7 +30,7 @@
 				if (this.images.length == 0) {
 					return '';
 				}
-				return this.$global.omitStr(this.images[this.index].description, 20);
+				return this.$global.omitStr(this.images[this.index].description, 30);
 			}
 		},
 		mounted() {
@@ -54,9 +48,9 @@
 			},
 			toLink() {
 				let link = this.images[this.index].link;
-				// window.open("/#/topic/1575129660344836096");
-				if (!CommonUtils.isEmpty(link)) {
-					window.location.href = link;
+				if (!CommonUtils.isEmpty(link) && !CommonUtils.isEmpty(link.trim())) {
+					window.open(link)
+					// window.location.href = link;
 				}
 			}
 		}
@@ -67,6 +61,7 @@
 	.carousel-container {
 		width: 100%;
 		position: relative;
+		overflow: hidden;
 	}
 
 	.carousel-container>>>.el-carousel {

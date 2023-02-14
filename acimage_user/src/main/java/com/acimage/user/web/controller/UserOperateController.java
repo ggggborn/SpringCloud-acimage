@@ -2,6 +2,8 @@ package com.acimage.user.web.controller;
 
 
 import com.acimage.common.deprecated.annotation.Authentication;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.user.model.vo.ProfileVo;
 import com.acimage.user.service.user.UserInfoService;
@@ -25,9 +27,14 @@ public class UserOperateController {
     @Autowired
     UserWriteService userWriteService;
 
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.USER})
     @PutMapping("/username/{username}")
     public Result<?> modifyUsername(@Size(min = 2, max = 12, message = "用户名长度在2到12之间") @PathVariable String username, HttpServletResponse resp) {
-        String newToken = userWriteService.updateUsername(username, resp);
+        String trimUsername = username.trim();
+        if (trimUsername.length() < 2 || trimUsername.length() > 12) {
+            return Result.fail("用户名有效长度在2-12之间");
+        }
+        String newToken = userWriteService.updateUsername(trimUsername);
         return Result.ok(newToken);
     }
 

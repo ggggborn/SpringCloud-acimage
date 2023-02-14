@@ -4,6 +4,8 @@ package com.acimage.image.web.controller;
 import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.consts.FileFormatConstants;
 import com.acimage.common.global.context.UserContext;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.image.service.image.ImageMixWriteService;
@@ -23,10 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageOperateController {
     @Autowired
     ImageMixWriteService imageMixWriteService;
-    @Autowired
-    ImageWriteService imageWriteService;
 
 
+
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/upload/topicImage")
     public Result<String> uploadTopicImage(@RequestParam("imageFile") MultipartFile imageFile) {
 

@@ -28,8 +28,6 @@ public class ApiAddReq {
     @Size(min= Api.PATH_MIN,max=Api.PATH_MAX)
     String path;
     @NotNull
-    MatchRule matchRule;
-    @NotNull
     MyHttpMethod method;
     @Positive
     @NotNull

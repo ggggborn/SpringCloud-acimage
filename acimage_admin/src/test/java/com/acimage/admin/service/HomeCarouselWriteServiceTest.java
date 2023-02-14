@@ -11,10 +11,5 @@ public class HomeCarouselWriteServiceTest {
     @Autowired
     HomeCarouselWriteService homeCarouselWriteService;
 
-    @Test
-    void updateImageTest(){
-        long id=1595422558785183744L;
-        String description="三分钟diy虚拟形象改";
-        homeCarouselWriteService.updateHomeCarouselImage(id,description);
-    }
+
 }

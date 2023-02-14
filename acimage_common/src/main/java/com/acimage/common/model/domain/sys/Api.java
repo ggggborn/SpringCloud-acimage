@@ -27,7 +27,7 @@ public class Api {
     @TableId(type = IdType.AUTO)
     Integer id;
     String path;
-    MatchRule matchRule;
+
     MyHttpMethod method;
 
     Integer permissionId;

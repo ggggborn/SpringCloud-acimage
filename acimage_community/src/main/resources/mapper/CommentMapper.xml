@@ -24,15 +24,15 @@
     </resultMap>
 
     <select id="selectCommentsWithUserByTopicId" resultMap="commentWithUser">
-        select * from tb_comment where topic_id = #{topicId} order by create_time desc
+        select * from tb_comment where topic_id = #{topicId} and deleted=0 order by create_time desc
     </select>
 
     <select id="selectCommentsWithUser" resultMap="commentWithUser">
-        select * from tb_comment where topic_id=#{topicId} order by create_time desc limit #{startIndex},#{recordNumber}
+        select * from tb_comment where topic_id=#{topicId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
     </select>
 
     <select id="selectCommentsWithTopicOrderByCreateTime" resultMap="commentWithTopic">
-        select * from tb_comment where user_id=#{userId} order by create_time desc limit #{startIndex},#{recordNumber}
+        select * from tb_comment where user_id=#{userId} and deleted=0 order by create_time desc limit #{startIndex},#{recordNumber}
     </select>
 
 </mapper>

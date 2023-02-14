@@ -7,6 +7,7 @@ import com.acimage.common.model.mq.dto.EsDeleteDto;
 import com.acimage.common.model.mq.dto.EsUpdateByIdDto;
 import com.acimage.common.model.mq.dto.EsUpdateByTermDto;
 import com.acimage.common.utils.EsUtils;
+import com.acimage.common.utils.ExceptionUtils;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -32,7 +33,7 @@ public class SyncEsConsumer {
             esUtils.save(esAddDto);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("同步es数据失败 error:{} data：{}", e.getMessage(), esAddDto);
 
         } finally {
@@ -40,12 +41,12 @@ public class SyncEsConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("同步es数据ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(ex);
                     log.error("同步es数据reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }
@@ -60,7 +61,7 @@ public class SyncEsConsumer {
             esUtils.remove(esDeleteDto);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("同步es数据失败 error:{} data：{}", e.getMessage(), esDeleteDto);
 
         } finally {
@@ -68,12 +69,12 @@ public class SyncEsConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("同步es数据ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(ex);
                     log.error("同步es数据reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }
@@ -87,7 +88,7 @@ public class SyncEsConsumer {
             esUtils.updateById(esUpdateDto);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("同步es数据失败 error:{} data：{}", e.getMessage(), esUpdateDto);
 
         } finally {
@@ -95,12 +96,12 @@ public class SyncEsConsumer {
             try {
                 channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionUtils.printIfDev(e);
                 log.error("同步es数据ack失败 error:{} message:{}", e.getMessage(), messageBody);
                 try {
                     channel.basicReject(message.getMessageProperties().getDeliveryTag(), false);
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ExceptionUtils.printIfDev(ex);
                     log.error("同步es数据reject失败 error:{} message:{}", ex.getMessage(), messageBody);
                 }
             }

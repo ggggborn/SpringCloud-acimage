@@ -12,20 +12,19 @@ import StringUtils from '@/utils/StringUtils.js'
 
 let global = new Vue();
 
-//真实图片链接
-global.baseImageUrl = Config.domainOfImages;
 
-global.trueImageUrl = function(url) {
-	if (CommonUtils.isEmpty(url) || url == '#') {
-		return '#';
-	}
-	return global.baseImageUrl + url;
-}
+
+// global.trueImageUrl = function(url) {
+// 	if (CommonUtils.isEmpty(url) || url == '#') {
+// 		return '#';
+// 	}
+// 	return global.baseImageUrl + url;
+// }
 
 //获取头像路径
 global.getPhotoUrl = function(url) {
 	if (CommonUtils.isEmpty(url) || url == '#') {
-		return 'userPhoto/default.jpeg';
+		return 'static/image/default-photo.webp';
 	}
 	return url;
 }

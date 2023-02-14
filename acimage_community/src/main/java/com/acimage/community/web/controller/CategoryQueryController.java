@@ -1,6 +1,8 @@
 package com.acimage.community.web.controller;
 
 import com.acimage.common.model.domain.community.Category;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.categoty.CategoryQueryService;
 import lombok.extern.slf4j.Slf4j;

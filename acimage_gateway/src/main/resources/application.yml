@@ -1,6 +1,8 @@
 spring:
   profiles:
+    include: common,common-secret
     active: dev2
+
   application:
     name: gateway-server
   datasource:
@@ -42,17 +44,6 @@ mybatis-plus:
   global-config:
     db-config:
       table-prefix: tb_
-
-ignore:
-  urls:
-    - /api/community/topics/recentHot
-    - /api/community/topics/recommend
-    - /api/community/topics/info/*
-    - /api/community/users/rank/**
-    - /api/image/spImages/homeCarousel
-    - /api/user/logins/**
-    - /api/user/users/isExist/**
-    - /api/user/verifies/**
 
 role:
   visitorId: 2

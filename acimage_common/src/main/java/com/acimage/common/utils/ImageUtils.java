@@ -23,7 +23,7 @@ public class ImageUtils {
             float qualify = 0.76f;
             BufferedImage bufferedImage = Thumbnails.fromInputStreams(Collections.singletonList(multipartFile.getInputStream()))
                     .outputQuality(qualify)
-                    .size(width, height)
+                    .forceSize(width, height)
                     .outputFormat(FileFormatConstants.WEBP)
                     .asBufferedImage();
             try (InputStream is = ImageUtils.bufferedImage2InputStream(bufferedImage, FileFormatConstants.WEBP)) {

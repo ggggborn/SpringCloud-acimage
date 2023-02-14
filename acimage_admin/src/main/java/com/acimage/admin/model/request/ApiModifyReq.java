@@ -26,8 +26,6 @@ public class ApiModifyReq {
     @Pattern(regexp = Api.PATH_PATTERN)
     String path;
     @NotNull
-    MatchRule matchRule;
-    @NotNull
     MyHttpMethod method;
     @Positive
     @NotNull

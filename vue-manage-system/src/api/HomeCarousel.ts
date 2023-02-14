@@ -35,7 +35,7 @@ export function deleteById(id) {
 
 export function modifyDescription(params) {
 	let config = { params: params };
-	return request.put("/api/admin/homeCarousels/description", {}, config);
+	return request.put("/api/admin/homeCarousels/descriptionAndLink", {}, config);
 }
 
 export function coverImage(reqData) {

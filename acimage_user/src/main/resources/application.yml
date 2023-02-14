@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: common,qiniu
+    include: common,common-secret
     active: dev2
   servlet:
     multipart:

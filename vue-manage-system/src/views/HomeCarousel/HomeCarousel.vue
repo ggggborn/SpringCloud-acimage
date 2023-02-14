@@ -17,7 +17,7 @@
 						{{scope.$index+1}}
 					</template>
 				</el-table-column>
-				<el-table-column prop="id" label="ID" width="120" align="center"></el-table-column>
+				<el-table-column prop="id" label="ID" width="50" align="center"></el-table-column>
 
 				<el-table-column label="图片" align="center">
 					<template #default="scope">
@@ -27,6 +27,7 @@
 					</template>
 				</el-table-column>
 				<el-table-column prop="description" label="描述"></el-table-column>
+				<el-table-column prop="link" label="链接"></el-table-column>
 				<el-table-column prop="updateTime" label="更新时间"></el-table-column>
 				<el-table-column label="文件大小">
 					<template #default="scope">{{ Math.ceil(scope.row.size/1000) }}KB</template>
@@ -57,6 +58,9 @@
 			<el-form label-width="70px">
 				<el-form-item label="新的描述">
 					<el-input v-model="editForm.description" maxlength="30"></el-input>
+				</el-form-item>
+				<el-form-item label="新的链接">
+					<el-input v-model="editForm.link" maxlength="100"></el-input>
 				</el-form-item>
 			</el-form>
 			<template #footer>
@@ -98,7 +102,10 @@
 					</el-upload>
 				</el-form-item>
 				<el-form-item label="描述" prop="description">
-					<el-input v-model="addImageForm.description"></el-input>
+					<el-input v-model="addImageForm.description" maxlength="30"></el-input>
+				</el-form-item>
+				<el-form-item label="链接" prop="link">
+					<el-input v-model="addImageForm.link" maxlength="100"></el-input>
 				</el-form-item>
 			</el-form>
 			<template #footer>
@@ -134,6 +141,7 @@
 		id: number;
 		updateTime: string;
 		description: string;
+		link:string
 		url: string;
 		size: number;
 	}
@@ -143,6 +151,7 @@
 		updateTime: '2016-05-02 22:22:22',
 		description: '好看的',
 		url: 'homeCarousel/2023/01/07/1611730070081744896.jpeg',
+		link:'',
 		size: 1008610,
 	}]);
 
@@ -158,20 +167,18 @@
 	//编辑
 	let editForm = reactive({
 		id: 0,
-		description: ''
+		description: '',
+		link:''
 	});
 	let editVisible = ref(false);
 	const handleEdit = (index: number, row: Image) => {
 		editForm.id = homeCarousel.value[index].id;
 		editForm.description = row.description;
+		editForm.link = row.link;
 		editVisible.value = true;
 	};
 	const saveEdit = () => {
-		let params = {
-			description: editForm.description,
-			id: editForm.id
-		};
-		modifyDescription(params).then((res: any) => {
+		modifyDescription(editForm).then((res: any) => {
 			if (res.code == Code.OK) {
 				MessageUtils.success("修改成功", 1);
 				CommonUtils.delayRefresh(1);
@@ -211,6 +218,7 @@
 	let addImageVisible = ref(false);
 	let addImageForm = reactive({
 		description: '',
+		link:'',
 	});
 	let addImageList = ref < UploadFile[] > ([]);
 
@@ -226,6 +234,7 @@
 
 		let reqData: any = new FormData();
 		reqData.append("description", addImageForm.description);
+		reqData.append("link", addImageForm.link);
 		reqData.append("image", addImageList.value[0].raw);
 
 		add(reqData).then((res: any) => {

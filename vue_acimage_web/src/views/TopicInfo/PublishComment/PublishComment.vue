@@ -1,7 +1,7 @@
 <template>
 	<div class="user-comment-container">
 		<div>
-			<el-avatar :src="$store.getters.truePhotoUrl" :size="60"></el-avatar>
+			<el-avatar :src="$store.getters.getPhotoUrl" :size="60"></el-avatar>
 		</div>
 		<div>
 			<el-input type="textarea" :rows="3" style="width:400px;" maxlength="200" placeholder="快来发表友好的评论吧~"
@@ -38,7 +38,7 @@
 				addComment(data).then(res => {
 					if (res.code == Code.OK) {
 						MessageUtils.success("发表成功");
-						CommonUtils.delayRefresh(1)
+						CommonUtils.delayRefresh(0.5)
 					}
 				})
 			}

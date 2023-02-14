@@ -17,10 +17,14 @@ public class HomeCarousel {
     public static final int DESC_MAX = 30;
     public static final String DESC_INVALID_MSG ="图片描述字数在"+ DESC_MIN +"-"+ DESC_MAX +"之间";
 
-    @TableId(type= IdType.INPUT)
-    private Long id;
+    public static final int LINK_MAX = 100;
+    public static final String LINK_INVALID_MSG ="图片描述字数在"+ 0 +"-"+ LINK_MAX +"之间";
+
+    @TableId(type= IdType.AUTO)
+    private Integer id;
     private String description;
     private String url;
+    private String link;
     private Integer location;
     private Integer size;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -28,12 +32,4 @@ public class HomeCarousel {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
-    public HomeCarousel(Long id, String description, String url, Integer location, Integer size, Date createTime) {
-        this.id = id;
-        this.description = description;
-        this.url = url;
-        this.location = location;
-        this.size = size;
-        this.createTime = createTime;
-    }
 }

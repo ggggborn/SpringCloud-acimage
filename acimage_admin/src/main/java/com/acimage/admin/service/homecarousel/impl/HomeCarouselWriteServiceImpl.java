@@ -1,7 +1,10 @@
 package com.acimage.admin.service.homecarousel.impl;
 
+import cn.hutool.core.util.RandomUtil;
 import com.acimage.admin.dao.community.HomeCarouselDao;
 import com.acimage.admin.global.consts.ModuleConstants;
+import com.acimage.admin.model.request.CarouselAddReq;
+import com.acimage.admin.model.request.CarouselModifyReq;
 import com.acimage.admin.service.homecarousel.HomeCarouselWriteService;
 import com.acimage.common.global.consts.StorePrefixConstants;
 import com.acimage.common.global.context.UserContext;
@@ -28,18 +31,29 @@ public class HomeCarouselWriteServiceImpl implements HomeCarouselWriteService {
     @Autowired
     MinioUtils minioUtils;
 
-    private final String URL_PREFIX = "homeCarousel";
-
     @Override
-    public void saveHomeCarouselImage(MultipartFile multipartFile, String description) {
-        long id = IdGenerator.getSnowflakeNextId();
+    public void saveHomeCarouselImage(MultipartFile multipartFile, CarouselAddReq carouselAddReq) {
+        String description = carouselAddReq.getDescription();
+        String link = carouselAddReq.getLink().trim();
+        int length = 5;
+        String idString = RandomUtil.randomString(length);
         int size = (int) multipartFile.getSize();
         int location = homeCarouselDao.getMaxLocation() + 1;
         Date now = new Date();
-        String fileName=String.format("%s.%s",id,FileUtils.formatOf(multipartFile));
-        String url=minioUtils.generateBaseUrl(StorePrefixConstants.HOME_CAROUSEL,now,fileName);
-        String newUrl=minioUtils.upload(multipartFile, url);
-        HomeCarousel homeCarousel = new HomeCarousel(id, description, newUrl,  location, size, now, now);
+        String fileName = String.format("%s.%s", idString, FileUtils.formatOf(multipartFile));
+        String url = minioUtils.generateBaseUrl(StorePrefixConstants.HOME_CAROUSEL, now, fileName);
+        String newUrl = minioUtils.upload(multipartFile, url);
+
+        HomeCarousel homeCarousel = new HomeCarousel();
+        homeCarousel.setSize(size);
+        homeCarousel.setDescription(description);
+        homeCarousel.setCreateTime(now);
+        homeCarousel.setUpdateTime(now);
+        homeCarousel.setUrl(newUrl);
+        homeCarousel.setLocation(location);
+        homeCarousel.setLink(link);
+
+
         homeCarouselDao.insert(homeCarousel);
     }
 
@@ -59,9 +73,13 @@ public class HomeCarouselWriteServiceImpl implements HomeCarouselWriteService {
     }
 
     @Override
-    public void updateHomeCarouselImage(long id, String description) {
+    public void updateHomeCarouselImage(CarouselModifyReq modifyReq) {
+        Integer id = modifyReq.getId();
+        String description = modifyReq.getDescription();
+        String link = modifyReq.getLink();
         LambdaUpdateWrapper<HomeCarousel> uw = new LambdaUpdateWrapper<>();
         uw.set(HomeCarousel::getDescription, description)
+                .set(HomeCarousel::getLink, link)
                 .set(HomeCarousel::getUpdateTime, new Date())
                 .eq(HomeCarousel::getId, id);
 
@@ -76,7 +94,7 @@ public class HomeCarouselWriteServiceImpl implements HomeCarouselWriteService {
     @Override
     public void coverHomeCarouselImage(long id, MultipartFile multipartFile) {
         HomeCarousel homeCarousel = homeCarouselDao.selectById(id);
-        if (homeCarouselDao == null ) {
+        if (homeCarouselDao == null) {
             log.error("用户：{} 操作：覆盖主页走马灯 特殊图片id:{} 错误：图片不存在", UserContext.getUsername(), id);
             throw new BusinessException("图片不存在");
         }
@@ -84,9 +102,9 @@ public class HomeCarouselWriteServiceImpl implements HomeCarouselWriteService {
         int size = (int) multipartFile.getSize();
         Date now = new Date();
         String oldUrl = homeCarousel.getUrl();
-        String suffix=String.format("%s.%s",IdGenerator.getSnowflakeNextId(), FileUtils.formatOf(multipartFile));
-        String newUrl = minioUtils.generateBaseUrl(StorePrefixConstants.HOME_CAROUSEL, now,suffix );
-        newUrl=minioUtils.upload(multipartFile,newUrl);
+        String suffix = String.format("%s.%s", IdGenerator.getSnowflakeNextId(), FileUtils.formatOf(multipartFile));
+        String newUrl = minioUtils.generateBaseUrl(StorePrefixConstants.HOME_CAROUSEL, now, suffix);
+        newUrl = minioUtils.upload(multipartFile, newUrl);
         LambdaUpdateWrapper<HomeCarousel> uw = new LambdaUpdateWrapper<>();
         uw.set(HomeCarousel::getSize, size)
                 .set(HomeCarousel::getUpdateTime, now)

@@ -9,11 +9,25 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.acimage.common.global.exception.NullTokenException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 
+@Component
 public class JwtUtils {
+    @Value("${jwt.secret-key}")
+    public String secretKey;
+
+    private static String SECRET_KEY;
+
+    @PostConstruct
+    private void init(){
+        SECRET_KEY=this.secretKey;
+    }
+
 
     public static String createToken(long userId, String username, String photoUrl, int expireDays) {
 
@@ -23,14 +37,14 @@ public class JwtUtils {
                 .withClaim(JwtConstants.KEY_USER_ID, userId)    //载荷，存储不敏感的用户信息
                 .withClaim(JwtConstants.KEY_USERNAME, username)
                 .withClaim(JwtConstants.KEY_PHOTO_URL, photoUrl)
-                .sign(Algorithm.HMAC256(JwtConstants.JWT_SECRET));   //加密(摘要)
+                .sign(Algorithm.HMAC256(SECRET_KEY));   //加密(摘要)
     }
 
     public static void verifyToken(String token) throws JWTVerificationException {
         if (StrUtil.isBlank(token)) {
             throw new NullTokenException("token is null！");
         }
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(JwtConstants.JWT_SECRET)).build();
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET_KEY)).build();
 
         verifier.verify(token);
 

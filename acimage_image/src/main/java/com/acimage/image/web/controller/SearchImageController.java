@@ -3,6 +3,8 @@ package com.acimage.image.web.controller;
 
 import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.model.domain.image.Image;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.image.service.imagehash.SearchImageService;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +25,7 @@ public class SearchImageController {
     SearchImageService searchImageService;
 
 
+    @RequestLimit(limitTimes = {1,20}, durations = {3,1}, penaltyTimes = {-1}, targets = {LimitTarget.IP,LimitTarget.ALL})
     @PostMapping("/searchByImage")
     public Result<List<Image>> searchImageWithTopicByImage(@RequestParam("imageFile") MultipartFile multipartFile) {
         return Result.ok(searchImageService.searchMostSimilarImages(multipartFile));

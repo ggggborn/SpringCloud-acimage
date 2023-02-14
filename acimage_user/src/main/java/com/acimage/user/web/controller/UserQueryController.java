@@ -2,6 +2,8 @@ package com.acimage.user.web.controller;
 
 
 import com.acimage.common.deprecated.annotation.Authentication;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.user.model.vo.ProfileVo;
 import com.acimage.user.service.user.UserInfoService;
@@ -26,6 +28,7 @@ public class UserQueryController {
     @Autowired
     UserInfoService userInfoService;
 
+    @RequestLimit(limitTimes = {15}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/me")
     public Result<ProfileVo> me() {
         return Result.ok(userInfoService.getProfile());

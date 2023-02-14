@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface UserWriteService {
     @Transactional
-    String updateUsername(String username, HttpServletResponse resp);
+    String updateUsername(String username);
 
     @Deprecated
     @Transactional(rollbackFor = Exception.class)
-    String uploadPhotoAndUpdatePhotoUrl(MultipartFile photoFile, HttpServletResponse resp);
+    String uploadPhotoAndUpdatePhotoUrl(MultipartFile photoFile);
 
 
     String updatePhotoUrl(String newPhotoUrl);

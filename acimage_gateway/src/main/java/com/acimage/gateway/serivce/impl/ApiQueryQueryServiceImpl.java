@@ -17,12 +17,9 @@ public class ApiQueryQueryServiceImpl implements ApiQueryService {
     ApiDao apiDao;
 
     @Override
-    public List<Api> listEnableApisBy(@Nullable MatchRule matchRule) {
+    public List<Api> listEnableApis() {
         LambdaQueryWrapper<Api> qw = new LambdaQueryWrapper<>();
         qw.eq(Api::isEnable, true);
-        if (matchRule != null) {
-            qw.eq(Api::getMatchRule, matchRule);
-        }
         return apiDao.selectList(qw);
     }
 }

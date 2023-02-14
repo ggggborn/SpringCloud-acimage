@@ -49,16 +49,19 @@ public class TopicQueryController {
         return Result.ok(topicInfoVo);
     }
 
+    @RequestLimit(limitTimes = {15}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/byTagId")
     public Result<MyPage<Topic>> pageByTagId(@Validated @ModelAttribute TopicQueryByTagIdReq queryReq) {
         return Result.ok(topicEsSearchService.searchByTagId(queryReq));
     }
 
+    @RequestLimit(limitTimes = {20}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/byCategoryId")
     public Result<MyPage<Topic>> pageByCategoryId(@Validated @ModelAttribute TopicQueryByCategoryIdReq queryReq) {
         return Result.ok(topicEsSearchService.searchBySort(queryReq));
     }
 
+    @RequestLimit(limitTimes = {15}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/bySort")
     public Result<MyPage<Topic>> pageTopicsBySort(@Validated @ModelAttribute TopicQueryBySortReq queryReq) {
         return Result.ok(topicEsSearchService.searchBySort(queryReq));
@@ -67,6 +70,7 @@ public class TopicQueryController {
     /**
      * @return 三个列表，分别是最多评论，最多star，最多浏览的评论
      */
+    @RequestLimit(limitTimes = {15}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/hot/3attrs")
     public Result<List<List<Topic>>> combineHotTopics() {
         List<List<Topic>> list=new ArrayList<>();

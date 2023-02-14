@@ -64,18 +64,22 @@ public class TopicOperateController {
     @PutMapping("/title/{id}/{title}")
     public Result<?> modifyTitle(@Positive @PathVariable Long id,
                                  @PathVariable @Size(min = Topic.TITLE_MIN, max = Topic.TITLE_MAX, message = Topic.TITLE_VALIDATION_MSG) String title) {
-        topicWriteService.updateTitle(id, title);
+        String trimTitle = title.trim();
+        if (trimTitle.length() < Topic.TITLE_MIN) {
+            return Result.fail(String.format("标题有效长度不少于%s", Topic.TITLE_MIN));
+        }
+        topicWriteService.updateTitle(id, trimTitle);
         return Result.ok();
     }
 
-    @RequestLimit(limitTimes = {1, 10}, durations = {3, TimeConstants.DAY_SECONDS}, penaltyTimes = {-1, -1}, targets = {LimitTarget.IP, LimitTarget.USER})
+    @RequestLimit(limitTimes = {1, 15}, durations = {3, TimeConstants.DAY_SECONDS}, penaltyTimes = {-1, -1}, targets = {LimitTarget.IP, LimitTarget.USER})
     @PutMapping("/html")
     public Result<?> modifyHtml(@Validated @RequestBody TopicModifyHtmlReq topicModifyHtmlReq) {
         topicInfoWriteService.updateHtml(topicModifyHtmlReq);
         return Result.ok();
     }
 
-    @RequestLimit(limitTimes = {1, 20}, durations = {3, TimeConstants.DAY_SECONDS}, penaltyTimes = {-1, -1}, targets = {LimitTarget.IP, LimitTarget.USER})
+    @RequestLimit(limitTimes = {1, 15}, durations = {3, TimeConstants.DAY_SECONDS}, penaltyTimes = {-1, -1}, targets = {LimitTarget.IP, LimitTarget.USER})
     @DeleteMapping("/{id}")
     public Result<?> deleteTopic(@Positive @PathVariable("id") Long id) {
         log.info("删除了话题：{}", id);

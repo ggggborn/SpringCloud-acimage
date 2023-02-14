@@ -10,7 +10,7 @@ import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.IdGenerator;
-import com.acimage.common.utils.QiniuUtils;
+import com.acimage.common.deprecated.QiniuUtils;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.user.dao.UserDao;
@@ -44,7 +44,7 @@ public class UserWriteServiceImpl implements UserWriteService {
     SyncUserMqProducer syncUserMqProducer;
 
     @Override
-    public String updateUsername(String username, HttpServletResponse resp) {
+    public String updateUsername(String username) {
         LambdaUpdateWrapper<User> qw = new LambdaUpdateWrapper<>();
         qw.eq(User::getId, UserContext.getUserId())
                 .set(User::getUsername, username);
@@ -64,7 +64,7 @@ public class UserWriteServiceImpl implements UserWriteService {
     }
 
     @Override
-    public String uploadPhotoAndUpdatePhotoUrl(MultipartFile photoFile, HttpServletResponse resp) {
+    public String uploadPhotoAndUpdatePhotoUrl(MultipartFile photoFile) {
         //上传头像到七牛云
         Date now = new Date();
         String format = FileUtils.formatOf(photoFile.getOriginalFilename());

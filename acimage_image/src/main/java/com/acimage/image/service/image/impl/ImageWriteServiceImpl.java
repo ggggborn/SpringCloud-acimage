@@ -7,7 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.image.Image;
 import com.acimage.common.utils.IdGenerator;
-import com.acimage.common.utils.QiniuUtils;
+import com.acimage.common.deprecated.QiniuUtils;
 import com.acimage.common.utils.minio.MinioUtils;
 import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.common.utils.common.FileUtils;
@@ -15,7 +15,7 @@ import com.acimage.common.utils.common.PairUtils;
 import com.acimage.image.dao.ImageDao;
 import com.acimage.image.service.image.ImageQueryService;
 import com.acimage.image.service.image.ImageWriteService;
-import com.acimage.image.service.image.consts.KeyConsts;
+import com.acimage.image.global.consts.TopicImageKeyConstants;
 import com.acimage.image.service.imagehash.SearchImageService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
@@ -82,7 +82,7 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
         qw.eq(Image::getTopicId, topicId);
         imageDao.delete(qw);
         //删除话题图片
-        redisUtils.delete(KeyConsts.STRINGKP_TOPIC_IMAGES);
+        redisUtils.delete(TopicImageKeyConstants.STRINGKP_TOPIC_IMAGES);
     }
 
     @Override
@@ -102,8 +102,8 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
 
         //删除相应缓存
         Image image = imageQueryService.getImage(imageId);
-        redisUtils.delete(KeyConsts.STRINGKP_IMAGE + imageId);
-        redisUtils.delete(KeyConsts.STRINGKP_TOPIC_IMAGES + image.getTopicId());
+        redisUtils.delete(TopicImageKeyConstants.STRINGKP_IMAGE + imageId);
+        redisUtils.delete(TopicImageKeyConstants.STRINGKP_TOPIC_IMAGES + image.getTopicId());
     }
 
     @Override

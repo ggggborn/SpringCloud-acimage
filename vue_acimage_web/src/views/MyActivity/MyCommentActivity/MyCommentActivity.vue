@@ -3,7 +3,7 @@
 		<template v-for="(comment,index) in comments">
 			<el-divider v-if="index>0" :key="comment.topic.id"></el-divider>
 			<div class="activity-content-item" :key="comment.id">
-				<el-avatar :src="$store.getters.truePhotoUrl" :size="60"></el-avatar>
+				<el-avatar :src="$store.getters.getPhotoUrl" :size="60"></el-avatar>
 				<div class="activity-medium">
 					<div>
 						<span class="activity-title-label">评论了</span>
@@ -49,17 +49,7 @@
 			return {
 				pageNo: 1,
 				totalCount: 2,
-				comments: [{
-					id: 1,
-					content: '这是瞎写的评论',
-					createTime: '2020-2-22 22:22:22',
-					topic: {
-						title: '评论标题',
-						createTime: '2021-2-22 22:22:22',
-						starCount: 888,
-						firstImageUrl: '',
-					}
-				}],
+				comments: [],
 			}
 		},
 		mounted() {

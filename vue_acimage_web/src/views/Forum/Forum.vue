@@ -9,7 +9,7 @@
 				<div class="mask-images-container">
 					<div v-for="topic in recommendTopics" :key="topic.id">
 						<router-link :key="topic.id" :to="$global.getTopicUrl(topic.id)" :underline="false">
-							<mask-image :image-url="$global.trueImageUrl(topic.coverImageUrl)" :title="topic.title"
+							<mask-image :image-url="topic.coverImageUrl" :title="topic.title"
 								:star-count="topic.starCount" :page-view="topic.pageView"
 								:commentCount="topic.commentCount" :username="topic.user.username">
 							</mask-image>

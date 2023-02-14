@@ -25,7 +25,7 @@
 						</div>
 						<div class="front-title">
 							<el-link :href="'/#/topic/'+topic.id" :underline="false">
-								{{$global.omitStr(topic.title,titleLimit)}}
+								{{$global.omitStr(topic.title,titleLimit+6)}}
 							</el-link>
 							<br />
 							<span style="color:#666666;font-size: 12px;">
@@ -68,19 +68,12 @@
 				type: Boolean,
 				default: true
 			},
-			medalMode: {
-				type: Boolean,
-				default: false
-			},
 			labels: {
 				type: Array,
 			},
-			labelColor: {
-				default: '#666666'
-			},
 			titleLimit: {
 				type: Number,
-				default: 21
+				default: 17
 			},
 			topics: {
 				type: Array,

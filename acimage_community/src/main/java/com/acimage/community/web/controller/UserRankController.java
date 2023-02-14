@@ -2,6 +2,8 @@ package com.acimage.community.web.controller;
 
 
 import com.acimage.common.model.domain.community.CmtyUser;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.community.service.cmtyuser.CmtyUserRankService;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +27,14 @@ public class UserRankController {
     @Autowired
     CmtyUserRankService cmtyUserRankService;
 
+    @RequestLimit(limitTimes = {15}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/topicCount/{pageNo}")
     public Result<List<CmtyUser>> rankByTopicCount(@PathVariable @Min(1) @Max(10) Integer pageNo) {
         int pageSize=10;
         return Result.ok(cmtyUserRankService.pageUserRankByTopicCount(pageNo, pageSize));
     }
 
+    @RequestLimit(limitTimes = {15}, durations = {5}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/starCount/{pageNo}")
     public Result<List<CmtyUser>> pageUsersRankByStarCount(@PathVariable @Min(1) @Max(10) Integer pageNo) {
         int pageSize=10;

@@ -1,6 +1,5 @@
 package com.acimage.gateway.schedule;
 
-import com.acimage.common.global.enums.MatchRule;
 import com.acimage.gateway.apitree.ApiTree;
 import com.acimage.gateway.apitree.ApiTreeFactory;
 import com.acimage.gateway.apitree.ApiTreeUtils;
@@ -23,12 +22,12 @@ public class RefreshApiTreeSchedule {
     public static final int FIX_RATE=10*1000;
 
     /**
-     * 1分钟刷新一次api tree
+     * 10分钟刷新一次api tree
      */
-    @Scheduled(cron ="0 */7 * * * ?")
+    @Scheduled(cron ="0 */10 * * * ?")
     public void refreshApiTree(){
         log.info("开始刷新api tree");
-        ApiTree apiTree= ApiTreeUtils.buildApiTreeFrom(apiQueryService.listEnableApisBy(null));
+        ApiTree apiTree= ApiTreeUtils.buildApiTreeFrom(apiQueryService.listEnableApis());
         apiTreeFactory.setApiTree(apiTree);
         log.info("刷新api tree完成");
     }

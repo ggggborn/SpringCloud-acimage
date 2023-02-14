@@ -62,15 +62,15 @@ service.interceptors.response.use(
 		//拦截到失败的数据
 		console.log('错误码', error)
 		if (error.response.status == 401) {
-			MessageUtils.notice('请先登录再操作')
+			MessageUtils.notice('(￣_,￣ )请登录或成为认证用户后再操作')
+		} else if(error.response.status == 429){
+			MessageUtils.notice('系统繁忙┗( T﹏T )┛')
 		} else {
-			MessageUtils.notice(error, 4)
+			MessageUtils.notice("出错了o(≧口≦)o，状态码"+error.response.status)
 		}
 		// 出错了直接关闭loading
 		requestNum = 0;
 		loading.close();
-
-
 		return Promise.reject(error);
 	}
 );

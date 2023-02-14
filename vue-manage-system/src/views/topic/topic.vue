@@ -22,8 +22,8 @@
 				<el-table-column prop="userId" label="用户ID" width="50" align="center"></el-table-column>
 				<el-table-column label="封面" align="center" width="100">
 					<template #default="scope">
-						<el-image class="table-td-thumb" :src="global.trueImageUrl(scope.row.coverImageUrl)"
-							:z-index="10" :preview-src-list="[global.trueImageUrl(scope.row.coverImageUrl)]"
+						<el-image class="table-td-thumb" :src="scope.row.coverImageUrl"
+							:z-index="10" :preview-src-list="[scope.row.coverImageUrl]"
 							preview-teleported>
 						</el-image>
 					</template>
@@ -54,52 +54,11 @@
 					:page-size="query.pageSize" :total="totalCount" @current-change="handlePageChange"></el-pagination>
 			</div>
 		</div>
-
-		<!-- 编辑弹出框 -->
-		<el-dialog title="编辑" v-model="editVisible">
-			<el-form label-width="70px">
-				<el-form-item label="标题">
-					<el-input v-model="editForm.content" maxlength="30"></el-input>
-				</el-form-item>
-				<el-select v-model="edit.categoryId" placeholder="角色" class="handle-select mr10">
-					<el-option v-for="item in categoryList" :key="item.id" :label="item.roleName" :value="item.id">
-					</el-option>
-				</el-select>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="editVisible = false">取 消</el-button>
-					<el-button type="primary" @click="saveEdit">确 定</el-button>
-				</span>
-			</template>
-		</el-dialog>
-		<!-- 覆盖图片对话框 -->
-		<el-dialog title="覆盖图片" v-model="coverVisible">
-			<el-form>
-				<el-form-item>
-					<el-upload action="#" ref="cover" :class="{'hide':coverImageList.length >= 1}"
-						list-type="picture-card" :limit="1" :auto-upload="false" accept="image/*"
-						v-model:file-list="coverImageList">
-						<el-icon>
-							<Plus />
-						</el-icon>
-					</el-upload>
-				</el-form-item>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="coverVisible = false">取 消</el-button>
-					<el-button type="primary" @click="saveCover()">确 定</el-button>
-				</span>
-			</template>
-		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts" name="topic">
 	import { ref, reactive, onMounted } from 'vue';
-	import { UploadFile } from 'element-plus';
-	import { Plus } from '@element-plus/icons-vue';
 	import { useStore } from '@/store/store';
 
 	import { queryTopicsOrderBy, deleteTopic } from '@/api/topic'
@@ -148,7 +107,7 @@
 	let query = reactive({
 		column: 'createTime',
 		pageNo: 1,
-		pageSize: 5,
+		pageSize: 10,
 	});
 	const getData = () => {
 		queryTopicsOrderBy(query).then((res: any) => {

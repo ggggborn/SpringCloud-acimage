@@ -1,8 +1,9 @@
-package com.acimage.common.utils;
+package com.acimage.common.deprecated;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.http.HttpUtil;
 import com.acimage.common.global.exception.BusinessException;
+import com.acimage.common.utils.ExceptionUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qiniu.cdn.CdnManager;
@@ -88,7 +89,7 @@ public class QiniuUtilsBak {
         try {
             is = multipartFile.getInputStream();
         } catch (IOException e) {
-            e.printStackTrace();
+            ExceptionUtils.printIfDev(e);
             log.error("error: multipartFile.getInputStream()异常:{}", e.getMessage());
             throw new RuntimeException(e);
         }
@@ -147,8 +148,8 @@ public class QiniuUtilsBak {
         try {
             client.post(trueUrl, "", str);
         } catch (QiniuException e) {
-            log.error("刷新查询oss url失败 url:{}", url);
-            e.printStackTrace();
+            log.error("刷新查询oss url失败 url:{} error:{}", url,e.getMessage());
+            ExceptionUtils.printIfDev(e);
         }
     }
 
@@ -207,8 +208,8 @@ public class QiniuUtilsBak {
         try {
             encodedUrl = URLEncoder.encode(url, "utf-8").replace("+", "%20");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            log.error("url编码失败 error：{}", e.getLocalizedMessage());
+            ExceptionUtils.printIfDev(e);
+            log.error("url编码失败 error：{}", e.getMessage());
         }
         String publicUrl = domain + "/" + encodedUrl;
         long expireInSeconds = 3600;//1小时，可以自定义链接过期时间
@@ -219,11 +220,11 @@ public class QiniuUtilsBak {
     private void putAndLog(Object inputStreamOrFile, String urlWithoutDomain, String token) {
         Response response = null;
         try {
-            if (inputStreamOrFile instanceof InputStream ) {
-                InputStream is=(InputStream) inputStreamOrFile;
+            if (inputStreamOrFile instanceof InputStream) {
+                InputStream is = (InputStream) inputStreamOrFile;
                 response = uploadManager.put(is, urlWithoutDomain, token, null, null);
             } else if (inputStreamOrFile instanceof File) {
-                File file=(File) inputStreamOrFile;
+                File file = (File) inputStreamOrFile;
                 response = uploadManager.put(file, urlWithoutDomain, token);
             } else {
                 throw new IllegalArgumentException(String.format("参数inputStreamOrFile类型错误:%s", inputStreamOrFile.getClass()));

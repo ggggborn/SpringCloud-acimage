@@ -24,11 +24,11 @@ export default new Vuex.Store({
 		// types: ['success', 'primary', 'info', 'warning', 'danger']
 	},
 	getters: {
-		truePhotoUrl(state) {
+		getPhotoUrl(state) {
 			if (!CommonUtils.isEmpty(state.photoUrl)) {
 				return state.photoUrl;
 			}
-			return 'userPhoto/default.jpeg';
+			return 'static/image/default-photo.webp';
 		},
 		categoryLabel(state) {
 			return (id) => {

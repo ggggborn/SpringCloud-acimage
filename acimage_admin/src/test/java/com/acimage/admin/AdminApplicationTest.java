@@ -1,7 +1,7 @@
 package com.acimage.admin;
 
 
-import com.acimage.common.utils.QiniuUtils;
+import com.acimage.common.deprecated.QiniuUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

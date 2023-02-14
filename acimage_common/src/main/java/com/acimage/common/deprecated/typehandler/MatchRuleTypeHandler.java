@@ -1,4 +1,4 @@
-package com.acimage.common.config.typehandler;
+package com.acimage.common.deprecated.typehandler;
 
 
 import com.acimage.common.global.enums.MatchRule;
