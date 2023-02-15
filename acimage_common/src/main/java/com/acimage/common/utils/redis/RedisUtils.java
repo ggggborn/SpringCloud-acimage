@@ -5,6 +5,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Pair;
 import com.acimage.common.utils.ExceptionUtils;
+import com.acimage.common.utils.SpringContextUtils;
 import com.acimage.common.utils.common.BeanUtils;
 import com.acimage.common.utils.common.JacksonUtils;
 import com.acimage.common.utils.common.ListUtils;
@@ -253,38 +254,39 @@ public class RedisUtils {
         return stringRedisTemplate.opsForZSet().size(key);
     }
 
-    public Long removeForZSet(String key, Object... toStringValues) {
-        String[] valueStrings = new String[toStringValues.length];
-        for (int i = 0; i < valueStrings.length; i++) {
-            valueStrings[i] = toStringValues[i].toString();
-        }
-        return stringRedisTemplate.opsForZSet().remove(key, valueStrings);
+    public Long removeForZSet(String key, Object toStringValue) {
+        return stringRedisTemplate.opsForZSet().remove(key, toStringValue.toString());
     }
 
     public List<String> randomMembersForZSet(String key, int count) {
-        //randomMembers 在redis 6.2之后才有，测试环境redis部署在本地，先自己实现一个
-        Long sizeLong = stringRedisTemplate.opsForZSet().size(key);
-        if (sizeLong == null) {
-            return new ArrayList<>();
-        }
-        int size = sizeLong.intValue();
-        Random random = new Random(System.currentTimeMillis());
-        List<String> resultList=new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            int index=random.nextInt(size);
-            Set<String> set=stringRedisTemplate.opsForZSet().reverseRange(key,index,index);
-            String idString=null;
-            if(!CollectionUtil.isEmpty(set)){
-                for(String item:set){
-                    idString=item;
+        if (SpringContextUtils.isDev()) {
+            //randomMembers 在redis 6.2之后才有，我开发环境redis是windows 3.x版本，先自己实现一个
+            Long sizeLong = stringRedisTemplate.opsForZSet().size(key);
+            if (sizeLong == null) {
+                return new ArrayList<>();
+            } else if (sizeLong <= 0) {
+                return new ArrayList<>();
+            }
+            int size = sizeLong.intValue();
+            Random random = new Random(System.currentTimeMillis());
+            List<String> resultList = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                int index = random.nextInt(size);
+                Set<String> set = stringRedisTemplate.opsForZSet().reverseRange(key, index, index);
+                String idString = null;
+                if (!CollectionUtil.isEmpty(set)) {
+                    for (String item : set) {
+                        idString = item;
+                    }
+                }
+                if (idString != null) {
+                    resultList.add(idString);
                 }
             }
-            if(idString!=null){
-                resultList.add(idString);
-            }
+            return resultList;
+        } else {
+            return stringRedisTemplate.opsForZSet().randomMembers(key, count);
         }
-        return resultList;
-//        return stringRedisTemplate.opsForZSet().randomMembers(key, count);
     }
 
     public Long incrementIfPresentForZSet(String key, String value, long increment) {

@@ -71,7 +71,7 @@
 
 
     <springProfile name="dev2">
-        <logger name="com.acimage.community.dao" level="INFO" additivity="false">
+        <logger name="com.acimage.image.dao" level="INFO" additivity="false">
             <appender-ref ref="info"/>
             <appender-ref ref="warn"/>
             <appender-ref ref="error"/>

@@ -44,7 +44,7 @@
 					<tag-card :click-tag="clickTag"></tag-card>
 				</div>
 				<div style="margin-top:20px;">
-					<topic-rank :labels="['火热评论','抢先收藏','引人注目']" :topics="topicsInTab" :showData="false"
+					<topic-rank :labels="['火热讨论','抢先收藏','引人注目']" :topics="topicsInTab"
 					:handleTabHover="handleTabHover">
 					</topic-rank>
 				</div>
@@ -103,23 +103,7 @@
 				recentHotTopics: [],
 				topicsInTab: [],
 				hotTopicLists:[[],[],[]],
-				topics: [{
-					id: 405,
-					userId: 999,
-					title: "这是标题这是标题这是标题这是标题这是标题",
-					content: `不知道写什么不知道写什么不知道写什么不知道写什么不知道写什么不知道写什么不知道写什么
-						不知道写什么不知道写什么不知道写什么不知道写什么不知道写什么不知道写什么不知道写什么`,
-					activityTime: '2022-2-22 2:22:22',
-					starCount: 666,
-					pageView: 777,
-					commentCount: 888,
-					coverImageUrl: '',
-					categoryId: 1,
-					tagIds: [],
-					user: {
-						photoUrl: ''
-					}
-				}],
+				topics: [],
 				tabIndex:0,
 				curPage: 1,
 				query: {
@@ -140,7 +124,7 @@
 				deep: true
 			}
 		},
-		mounted() {
+		created() {
 			this.getTopics();
 			let _this = this;
 			queryRecommendTopics().then(result => {

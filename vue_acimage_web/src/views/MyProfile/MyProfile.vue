@@ -166,13 +166,7 @@
 				uploadPhotoVisible: false,
 				imageList: [],
 				//用户个人信息
-				user: {
-					username: '无名氏',
-					email: 'wyktxdy999@qq.com',
-					registerTime: '2022-2-22 22:22:22',
-					topicCount: 666,
-					starCount: 666
-				}
+				user: {}
 			}
 		},
 		mounted() {

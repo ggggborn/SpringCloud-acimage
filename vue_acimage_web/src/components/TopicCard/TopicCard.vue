@@ -77,9 +77,6 @@
 			},
 			html: {
 				type: String,
-				default: `<span style="color:red">内染上了</span>肯德基爱丽丝的骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技
-				内染上了肯德基爱丽丝的骄傲了圣诞节拉开就爱丽丝肯德基爱丽丝的骄傲了山东科技
-				骄傲了圣诞节拉开就爱丽丝肯德基爱丽`
 			},
 			contentLimit: {
 				type: Number,
@@ -93,9 +90,7 @@
 			starCount: {},
 			commentCount: {},
 			pageView: {},
-			photoUrl: {
-				default: "https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
-			},
+			photoUrl: {},
 			coverImageUrl: {},
 			tagIds: {
 				type: Array

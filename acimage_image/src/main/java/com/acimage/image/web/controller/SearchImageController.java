@@ -25,7 +25,7 @@ public class SearchImageController {
     SearchImageService searchImageService;
 
 
-    @RequestLimit(limitTimes = {1,20}, durations = {3,1}, penaltyTimes = {-1}, targets = {LimitTarget.IP,LimitTarget.ALL})
+    @RequestLimit(limitTimes = {1,10}, durations = {3,1}, penaltyTimes = {-1,-1}, targets = {LimitTarget.IP,LimitTarget.ALL})
     @PostMapping("/searchByImage")
     public Result<List<Image>> searchImageWithTopicByImage(@RequestParam("imageFile") MultipartFile multipartFile) {
         return Result.ok(searchImageService.searchMostSimilarImages(multipartFile));

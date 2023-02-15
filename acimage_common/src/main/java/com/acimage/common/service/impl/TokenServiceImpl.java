@@ -1,5 +1,6 @@
 package com.acimage.common.service.impl;
 
+import com.acimage.common.global.consts.JwtConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.service.TokenService;
 import com.acimage.common.utils.JwtUtils;
@@ -22,23 +23,19 @@ public class TokenServiceImpl implements TokenService {
         //生成token
         String token = JwtUtils.createToken(userId, username,photoUrl,expireDays);
         //记录token和ip的对应
-        record(token, UserContext.getIp());
-
+        record(token, expireDays);
         return token;
     }
 
     @Override
-    public void record(String token,String ip){
-        long EXPIRE_DAYS=10L;
-        redisUtils.setAsString(STRINGKP_TOKEN +token,ip,EXPIRE_DAYS, TimeUnit.DAYS);
+    public void record(String token,int expireDays){
+        redisUtils.setAsString(STRINGKP_TOKEN +token,Boolean.TRUE.toString(), expireDays, TimeUnit.DAYS);
     }
 
     @Override
-    public Boolean isMatch(String token,String ip){
-        if(ip==null){
-            return false;
-        }
-        return ip.equals(redisUtils.getForString(STRINGKP_TOKEN +token));
+    public Boolean hasRecorded(String token){
+
+        return redisUtils.getForString(STRINGKP_TOKEN +token)!=null;
     }
 
     @Override

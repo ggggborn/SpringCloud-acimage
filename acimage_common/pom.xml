@@ -94,6 +94,7 @@
             <artifactId>okhttp</artifactId>
             <version>3.14.2</version>
             <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
 
         <!--minio-->
@@ -104,11 +105,12 @@
         </dependency>
 
         <!--敏感词过滤-->
-        <dependency>
-            <groupId>com.github.houbb</groupId>
-            <artifactId>sensitive-word</artifactId>
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.houbb</groupId>-->
+<!--            <artifactId>sensitive-word</artifactId>-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
+
         <!--敏感词过滤2-->
         <dependency>
             <groupId>io.github.toolgood</groupId>

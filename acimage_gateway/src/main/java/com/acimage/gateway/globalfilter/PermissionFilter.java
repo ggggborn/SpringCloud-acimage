@@ -32,12 +32,11 @@ public class PermissionFilter implements GlobalFilter {
     @Autowired
     private ApiTreeFactory apiTreeFactory;
     @Autowired
-    AuthorizeQueryService authorizeQueryService;
+    private AuthorizeQueryService authorizeQueryService;
     @Autowired
-    UserRoleQueryService userRoleQueryService;
-
+    private UserRoleQueryService userRoleQueryService;
     @Autowired
-    RoleConfig roleConfig;
+    private RoleConfig roleConfig;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -58,7 +57,7 @@ public class PermissionFilter implements GlobalFilter {
         //获取访客权限
         List<Integer> permissionIds=map.get(roleConfig.getVisitorId());
         if(permissionIds!=null&&permissionIds.contains(api.getPermissionId())){
-            log.info(api.getPath()+api.getMethod()+"通过");
+            log.debug(api.getPath()+api.getMethod()+"通过");
             UserContext.remove();
             return chain.filter(exchange);
         }
@@ -67,7 +66,7 @@ public class PermissionFilter implements GlobalFilter {
         if(UserContext.getUserId()!=null){
             permissionIds=map.get(roleConfig.getUserId());
             if(permissionIds!=null&&permissionIds.contains(api.getPermissionId())){
-                log.info(api.getPath()+api.getMethod()+"通过");
+                log.debug(api.getPath()+api.getMethod()+"通过");
                 UserContext.remove();
                 return chain.filter(exchange);
             }
@@ -79,7 +78,7 @@ public class PermissionFilter implements GlobalFilter {
             for(Integer roleId:roleIds){
                 permissionIds=map.get(roleId);
                 if(permissionIds!=null&&permissionIds.contains(api.getPermissionId())){
-                    log.info(api.getPath()+api.getMethod()+"通过");
+                    log.debug(api.getPath()+api.getMethod()+"通过");
                     UserContext.remove();
                     return chain.filter(exchange);
                 }

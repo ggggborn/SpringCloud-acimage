@@ -60,7 +60,7 @@ public class JwtInterceptorBak implements HandlerInterceptor {
             return true;
         }
 
-        if (!tokenService.isMatch(token, ip)) {
+        if (!tokenService.hasRecorded(token)) {
             UserContext.setTokenStatus(TokenStatus.MISMATCH_IP);
         } else {
             UserContext.setTokenStatus(TokenStatus.VALID);

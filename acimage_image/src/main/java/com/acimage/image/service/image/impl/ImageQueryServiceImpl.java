@@ -24,24 +24,21 @@ public class ImageQueryServiceImpl implements ImageQueryService {
     @Override
     public List<Image> listImagesOrderById(long topicId) {
         LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
-        qw.orderByAsc(Image::getId).eq(Image::getTopicId, topicId);
+        qw.select(Image::getUrl,Image::getSize,Image::getId,Image::getTopicId)
+                .orderByAsc(Image::getId)
+                .eq(Image::getTopicId, topicId);
         return imageDao.selectList(qw);
     }
 
-    @QueryRedis(keyPrefix = TopicImageKeyConstants.STRINGKP_IMAGE, expire = 3L)
     @Override
-    public Image getImage(long imageId) {
-        return imageDao.selectById(imageId);
-    }
-
-    @Override
-    public List<Image> listImagesByImageIdsInOrder(List<Long> imageIds) {
+    public List<Image> listImagesByIds(List<Long> imageIds) {
         if(CollectionUtil.isEmpty(imageIds)){
             return new ArrayList<>();
         }
 
         LambdaQueryWrapper<Image> qw = new LambdaQueryWrapper<>();
-        qw.in(Image::getId, imageIds);
+        qw.select(Image::getUrl,Image::getSize,Image::getId,Image::getTopicId)
+                .in(Image::getId, imageIds);
         List<Image> images = imageDao.selectList(qw);
 
         //按照给出的imageIds顺序排好

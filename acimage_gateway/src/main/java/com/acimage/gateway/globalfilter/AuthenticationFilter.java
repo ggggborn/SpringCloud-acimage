@@ -1,6 +1,7 @@
 package com.acimage.gateway.globalfilter;
 
 
+import com.acimage.common.global.consts.JwtConstants;
 import com.acimage.common.global.consts.SysKeyConstants;
 import com.acimage.common.global.exception.NullTokenException;
 import com.acimage.common.global.consts.HeaderKeyConstants;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -52,27 +52,28 @@ public class AuthenticationFilter implements GlobalFilter {
         try {
             JwtUtils.verifyToken(token);
         } catch (NullTokenException e) {
-            log.info("access 无token 访问:{} ip:{}", url, ip);
+            log.debug("access 无token 访问:{} ip:{}", url, ip);
             isException = true;
 
         } catch (TokenExpiredException e) {
-            log.warn("access token过期 用户:{}  访问:{} ip:{}",
+            log.info("access token过期 用户:{}  访问:{} ip:{}",
                     JwtUtils.getUsername(token), url, ip);
             isException = true;
 
         } catch (JWTVerificationException e1) {
-            log.error("access 非法token 访问:{} ip:{}", url, ip);
+            log.warn("access 非法token 访问:{} ip:{} token:{}", url, ip,token);
             isException = true;
         }
 
         if (!isException) {
-            if (!this.isMatch(token, ip)) {
-                log.info("access token和ip不匹配 用户:{} 访问:{} ip:{}",
+            if (!this.hasRecorded(token)) {
+                log.info("access token未被记录 用户:{} 访问:{} ip:{}",
                         JwtUtils.getUsername(token), url, ip);
+                return chain.filter(exchange);
             }
 
             String method = request.getMethodValue();
-            log.info("access 用户:{} 访问:{} {} ip:{}",
+            log.debug("access 用户:{} 访问:{} {} ip:{}",
                     JwtUtils.getUsername(token), url, method, ip);
 
             UserContext.setUserId(JwtUtils.getUserId(token));
@@ -85,10 +86,7 @@ public class AuthenticationFilter implements GlobalFilter {
 
     }
 
-    private boolean isMatch(String token, String ip) {
-        if (ip == null) {
-            return false;
-        }
-        return ip.equals(redisUtils.getForString(TokenServiceImpl.STRINGKP_TOKEN + token));
+    private boolean hasRecorded(String token) {
+        return redisUtils.getForString(TokenServiceImpl.STRINGKP_TOKEN+token)!=null;
     }
 }

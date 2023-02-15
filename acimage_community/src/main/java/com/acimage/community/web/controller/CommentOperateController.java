@@ -2,6 +2,7 @@ package com.acimage.community.web.controller;
 
 
 
+import com.acimage.common.global.consts.TimeConstants;
 import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
@@ -24,7 +25,10 @@ public class CommentOperateController {
     @Autowired
     CommentWriteService commentWriteService;
 
-    @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
+    @RequestLimit(limitTimes = {1,20},
+            durations = {3, TimeConstants.DAY_SECONDS},
+            penaltyTimes = {-1,-1},
+            targets = {LimitTarget.IP,LimitTarget.USER})
     @PostMapping
     public Result<?> addComment(@Validated @RequestBody CommentAddReq commentAddReq){
         String trimContent=commentAddReq.getContent().trim();
@@ -37,7 +41,10 @@ public class CommentOperateController {
         return Result.ok("评论成功");
     }
 
-    @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
+    @RequestLimit(limitTimes = {1,20},
+            durations = {3, TimeConstants.DAY_SECONDS},
+            penaltyTimes = {-1,-1},
+            targets = {LimitTarget.IP,LimitTarget.USER})
     @PutMapping
     public Result<?> modifyComment(@Validated @RequestBody CommentModifyReq commentModifyReq){
         String trimContent=commentModifyReq.getContent().trim();
@@ -50,7 +57,10 @@ public class CommentOperateController {
         return Result.ok();
     }
 
-    @RequestLimit(limitTimes = {1},durations = {3},penaltyTimes = {1},targets = {LimitTarget.USER})
+    @RequestLimit(limitTimes = {1,20},
+            durations = {3, TimeConstants.DAY_SECONDS},
+            penaltyTimes = {-1,-1},
+            targets = {LimitTarget.IP,LimitTarget.USER})
     @DeleteMapping("/{id}")
     public Result<?> deleteComment(@Positive @NotNull @PathVariable("id") Long id){
         log.info("删除 评论{}",id);

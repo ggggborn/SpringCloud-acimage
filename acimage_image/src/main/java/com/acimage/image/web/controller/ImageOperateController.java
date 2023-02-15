@@ -3,6 +3,7 @@ package com.acimage.image.web.controller;
 
 import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.consts.FileFormatConstants;
+import com.acimage.common.global.consts.TimeConstants;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
@@ -26,9 +27,10 @@ public class ImageOperateController {
     @Autowired
     ImageMixWriteService imageMixWriteService;
 
-
-
-    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
+    @RequestLimit(limitTimes = {1, 20},
+            durations = {2, TimeConstants.DAY_SECONDS},
+            penaltyTimes = {-1, -1},
+            targets = {LimitTarget.IP, LimitTarget.USER})
     @PostMapping("/upload/topicImage")
     public Result<String> uploadTopicImage(@RequestParam("imageFile") MultipartFile imageFile) {
 
@@ -36,7 +38,7 @@ public class ImageOperateController {
 
         String format = FileUtils.formatOf(originName);
         if (!FileFormatConstants.ALLOWED_IMAGE_FORMAT.contains(format)) {
-            return Result.fail("图片格式需为"+FileFormatConstants.ALLOWED_IMAGE_FORMAT);
+            return Result.fail("图片格式需为" + FileFormatConstants.ALLOWED_IMAGE_FORMAT);
         }
         log.info("用户：{} 话题: 上传话题图片", UserContext.getUsername());
         return Result.ok(imageMixWriteService.saveImage(imageFile));

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(value="image-service/api/image/images",fallbackFactory = ImageClientFallbackFactory.class)
+@FeignClient(value="image-service/image/images",fallbackFactory = ImageClientFallbackFactory.class)
 public interface ImageClient {
     @GetMapping("/imageIds")
     Result queryImagesWithTopic(@RequestParam("imageIds") List<Long> imageIds);

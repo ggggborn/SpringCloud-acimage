@@ -120,7 +120,7 @@
 		mounted() {
 			let _this = this;
 			//美图分享id
-			this.queryCategory.categoryId = 4;
+			this.queryCategory.categoryId = 6;
 			pageByCategoryId(this.queryCategory).then(res => {
 				if (res.code == Code.OK) {
 					_this.pictureTopics = res.data.dataList;

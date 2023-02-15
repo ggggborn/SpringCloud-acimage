@@ -113,17 +113,31 @@ public class SearchImageServiceImpl implements SearchImageService {
         int rankEnd = 10;
         final int threshold = 20;
 
-        InputStream inputStream;
+        InputStream inputStream=null;
         try {
             inputStream = imageFile.getInputStream();
         } catch (IOException e) {
             log.error("用户：{} 以图搜图 错误：传入文件getInputStream异常", UserContext.getUsername());
+            if(inputStream!=null){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
             throw new BusinessException("文件IO异常");
         }
         long hashValue;
         try {
             hashValue = DhashUtils.getImageDhashFrom(inputStream);
         } catch (IOException e) {
+            if(inputStream!=null){
+                try {
+                    inputStream.close();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
             throw new BusinessException("文件IO异常");
         }
         List<ImageHash> imageHashList = imageDhashDao.selectList(null);
@@ -137,11 +151,11 @@ public class SearchImageServiceImpl implements SearchImageService {
         }
         resultList.sort(Comparator.comparing(ImageHash::getDistance));
         int toIndex = Math.min(rankEnd, resultList.size());
-        log.info("搜索结果：{}", resultList);
+        log.debug("搜索结果：{}", resultList);
 
         //找到图片对象
         List<Long> imageIds=ListUtils.extract(ImageHash::getImageId, resultList.subList(0, toIndex));
-        List<Image> images=imageQueryService.listImagesByImageIdsInOrder(imageIds);
+        List<Image> images=imageQueryService.listImagesByIds(imageIds);
         if(CollectionUtil.isEmpty(images)){
             return new ArrayList<>();
         }
@@ -155,6 +169,14 @@ public class SearchImageServiceImpl implements SearchImageService {
                     image.setTopic(topic);
                     imageWithTopics.add(image);
                 }
+            }
+        }
+
+        if(inputStream!=null){
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
         return imageWithTopics;

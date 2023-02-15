@@ -4,6 +4,7 @@ package com.acimage.user.web.controller;
 import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
 import com.acimage.common.global.enums.AuthenticationType;
+import com.acimage.common.model.domain.user.User;
 import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
@@ -35,6 +36,10 @@ public class LoginController {
     LoginService loginService;
     @Autowired
     UserQueryService userQueryService;
+
+
+
+    @RequestLimit(limitTimes = {1}, durations = {1}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @GetMapping("/isExist/{username}")
     public Result<Boolean> isUsernameExist(@Size(min = 2, max = 12, message = "用户名长度在2到12之间") @PathVariable String username) {
         return Result.ok(userQueryService.isUsernameExist(username));
@@ -46,8 +51,10 @@ public class LoginController {
         return Result.ok(loginService.getPublicKey());
     }
 
+    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/sendCode")
-    public Result<?> sendVerifyCodeToEmail(@Email @Size(min=6,max=32,message = "邮箱长度在6到32之间") @RequestParam("email") String email) {
+    public Result<?> sendVerifyCodeToEmail(@Email @Size(min=6,max=32,message = "邮箱长度在6到32之间") @RequestParam("email") String email,
+                                           HttpServletRequest request) {
         loginService.checkAndSendCodeToEmail(email);
         return Result.ok();
     }
@@ -55,11 +62,16 @@ public class LoginController {
     @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/doRegister")
     public Result<?> register(@Validated @RequestBody UserRegisterReq userRegister) {
-
+        String username=userRegister.getUsername().trim();
         String code=userRegister.getVerifyCode().trim();
         String email= userRegister.getEmail().trim();
         userRegister.setVerifyCode(code);
         userRegister.setEmail(email);
+        userRegister.setUsername(username);
+
+        if(username.length()<2){
+            return Result.fail("用户名有效长度不能少于2");
+        }
 
         if(code.length()!=UserRegisterReq.VERIFY_CODE_LENGTH){
             return Result.fail("邮箱验证码错误");

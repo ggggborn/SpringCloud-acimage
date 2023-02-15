@@ -84,6 +84,7 @@ public class MinioUtils {
         try {
             String slashBucket = String.format("/%s", minioProperties.getBucket());
             boolean isInnerUrl = url.startsWith(slashBucket);
+            //不是站内图片则不下载
             if (!isInnerUrl) {
                 return;
             }

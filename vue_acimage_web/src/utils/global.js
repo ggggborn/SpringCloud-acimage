@@ -34,13 +34,13 @@ global.getTopicUrl = function(topicId) {
 	return '/topic/' + topicId;
 }
 
-global.isEmpty=function(object) {
+global.isEmpty = function(object) {
 	return CommonUtils.isEmpty(object);
 }
 
-global.buttonType=function(id){
-	let types=['success', 'primary',  'warning', 'danger'];
-	return types[id%4];
+global.buttonType = function(id) {
+	let types = ['success', 'primary', 'warning', 'danger'];
+	return types[id % 4];
 }
 
 //限制显示长度
@@ -55,31 +55,31 @@ global.omitStr = function(content, totalLength) {
 global.timeView = function(datetime) {
 	let d1 = new Date(datetime);
 	let d2 = new Date();
-	let days = d2.getTime() - d1.getTime();
+	let duration = d2.getTime() - d1.getTime();
 
-	let time = parseInt(days / (1000 * 60 * 60 * 24 * 30));
+	let time = parseInt(Math.floor(duration / (1000 * 60 * 60 * 24 * 30)));
 	if (time >= 1) {
-		return time + '个月前';
+		return datetime;
 	}
 
-	time = parseInt(days / (1000 * 60 * 60 * 24));
+	time = parseInt(Math.floor(duration / (1000 * 60 * 60 * 24)));
 	if (time == 1) {
 		return '昨天';
 	} else if (time > 1) {
 		return time + '天前';
 	}
 
-	time = parseInt(days / (1000 * 60 * 60));
+	time = parseInt(Math.floor(duration / (1000 * 60 * 60)));
 	if (time >= 1) {
 		return time + '小时前'
 	}
 
-	time = parseInt(days / (1000 * 60));
+	time = parseInt(Math.floor(duration / (1000 * 60)));
 	if (time >= 1) {
 		return time + '分钟前'
 	}
 
-	time = parseInt(days / (1000));
+	time = parseInt(Math.floor(duration / (1000)));
 	if (time >= 1) {
 		return time + '秒前'
 	}

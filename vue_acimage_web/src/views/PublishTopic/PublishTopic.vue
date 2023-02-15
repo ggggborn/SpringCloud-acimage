@@ -214,10 +214,11 @@
 				if (pureText.trim().length < 4) {
 					MessageUtils.notice("内容至少要四个字符");
 					return false;
-				} else if (text.length > 5000) {
-					MessageUtils.notice("文本过长，请缩减");
-					return false;
-				}
+				} 
+				// else if (text.length > 4500) {
+				// 	MessageUtils.notice("文本过长，请缩减");
+				// 	return false;
+				// }
 				return true;
 			},
 			submitTopic() {

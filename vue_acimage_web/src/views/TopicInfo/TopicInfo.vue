@@ -116,7 +116,7 @@
 				<!--End 右侧话题主人信息-->
 
 				<div v-if="!$global.isEmpty(topic.similarTopics)" style="margin-top: 10px;">
-					<topic-list label="相关话题" :topics="topic.similarTopics"></topic-list>
+					<topic-rank :labels="['相关推荐']" :topics="topic.similarTopics" headerSrc="static/image/similar-topics-header.webp"></topic-rank>
 				</div>
 			</div>
 		</div>
@@ -151,7 +151,7 @@
 	import UserComment from './UserComment/UserComment.vue'
 	import PublishComment from './PublishComment/PublishComment.vue'
 	import EditBoard from '@/components/EditBoard/EditBoard.vue'
-	import TopicList from '@/components/TopicList/TopicList.vue'
+	import TopicRank from '@/components/TopicRank/TopicRank.vue'
 
 
 	import {
@@ -174,7 +174,7 @@
 			UserComment,
 			PublishComment,
 			EditBoard,
-			TopicList
+			TopicRank
 		},
 		data() {
 			return {

@@ -18,7 +18,7 @@
 					<template v-if="index<endIndex">
 						<div class="image-container">
 							<el-image fit="cover" lazy
-								src="topic.coverImageUrl"></el-image>
+								:src="topic.coverImageUrl"></el-image>
 							<div class="index image-index">
 								{{index+1}}
 							</div>

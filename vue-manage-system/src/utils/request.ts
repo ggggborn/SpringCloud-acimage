@@ -19,7 +19,7 @@ service.interceptors.request.use(
 		// config.headers['arg1'] = "arg1Value";
 
 		//开始loading
-		config.headers['authorization'] = "token";
+		config.headers['authorization'] = localStorage.getItem('token');
 		requestNum++;
 		if (loading == null) {
 			loading = ElLoading.service({ fullscreen: true, text: '正在努力加载中~' });

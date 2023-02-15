@@ -30,7 +30,7 @@
 						</el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column prop="createTime" label="注册时间" width="70"></el-table-column>
+				<el-table-column prop="registerTime" label="注册时间" width="70"></el-table-column>
 
 				<el-table-column label="操作" width="250" align="center">
 					<template #default="scope">

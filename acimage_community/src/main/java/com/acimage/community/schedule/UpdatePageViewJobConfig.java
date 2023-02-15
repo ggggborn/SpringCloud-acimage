@@ -1,13 +1,15 @@
 package com.acimage.community.schedule;
 
 import org.quartz.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class UpdatePageViewJobConfig {
 
-    private String cron ="0 */2 * * * ?";
+    @Value("${cron.page-view-job}")
+    private String cron ;
 
     @Bean
     public JobDetail updatePageViewJobDetail() {

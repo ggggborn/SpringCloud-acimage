@@ -1,4 +1,4 @@
-package com.acimage.admin.config.mybatis;
+package com.acimage.common.global.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

@@ -121,6 +121,8 @@
 		},
 		watch: {
 			'$route'(to, from) {
+				CommonUtils.copyPropertiesTo(this.$route.query, this.query)
+				this.toSearch();
 				// CommonUtils.copyPropertiesTo(this.$route.query, this.query)
 				// if (!CommonUtils.isEmpty(this.query.search.trim()) ||
 				// 	this.query.pageNo != 1 ||
@@ -133,7 +135,7 @@
 				// }
 			},
 		},
-		mounted() {
+		created() {
 			CommonUtils.copyPropertiesTo(this.$route.query, this.query)
 			if (!CommonUtils.isEmpty(this.query.search.trim()) ||
 				this.query.pageNo != 1 ||
@@ -142,7 +144,6 @@
 				this.query.sortMode != 'NORMAL') {
 
 				this.toSearch();
-
 			}
 		},
 		methods: {
@@ -156,7 +157,7 @@
 			submitSearch() {
 				if (JSON.stringify(this.query) != JSON.stringify(this.$route.query)) {
 					this.$router.replace({ query: this.query })
-					this.toSearch();
+					// this.toSearch();
 				} else {
 					MessageUtils.notice("请改变搜索选项")
 				}
@@ -168,7 +169,6 @@
 					this.query.categoryId = null;
 				}
 				this.loading = true;
-				// let searchForm = CommonUtils.toFormData(this.query);
 				searchTopics(_this.query).then(res => {
 					if (res.code == Code.OK) {
 						MessageUtils.success("搜索成功", 1);

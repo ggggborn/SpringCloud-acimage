@@ -58,8 +58,8 @@
 	const store = useStore();
 	const router = useRouter();
 	const param = reactive < LoginInfo > ({
-		email: 'xlg@qq.com',
-		password: 'xlg123456',
+		email: '',
+		password: '',
 		verifyCode: ''
 	});
 
@@ -97,7 +97,7 @@
 						}
 						doLogin(adminLoginReq).then((res: any) => {
 							if (res.code == Code.OK) {
-								store.setToken(res.token)
+								store.setToken(res.data)
 								MessageUtils.success('登录成功', 1);
 								setTimeout(() => { router.push({ path: '/' }); }, 500);
 							}

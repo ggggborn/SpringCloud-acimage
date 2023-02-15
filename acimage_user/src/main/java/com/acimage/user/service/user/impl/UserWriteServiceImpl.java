@@ -8,6 +8,7 @@ import com.acimage.common.global.context.UserContext;
 import com.acimage.common.model.domain.user.User;
 import com.acimage.common.model.mq.dto.UserIdWithPhotoUrl;
 import com.acimage.common.model.mq.dto.UserIdWithUsername;
+import com.acimage.common.utils.SensitiveWordUtils;
 import com.acimage.common.utils.common.FileUtils;
 import com.acimage.common.utils.IdGenerator;
 import com.acimage.common.deprecated.QiniuUtils;
@@ -45,13 +46,14 @@ public class UserWriteServiceImpl implements UserWriteService {
 
     @Override
     public String updateUsername(String username) {
+        String filterUsername=SensitiveWordUtils.filter(username);
         LambdaUpdateWrapper<User> qw = new LambdaUpdateWrapper<>();
         qw.eq(User::getId, UserContext.getUserId())
-                .set(User::getUsername, username);
+                .set(User::getUsername, filterUsername);
         userDao.update(null, qw);
 
         String token = tokenService.createAndRecordToken(UserContext.getUserId(),
-                username,
+                filterUsername,
                 UserContext.getPhotoUrl(),
                 JwtConstants.USER_EXPIRE_DAYS);
         //删除redis数据
@@ -59,7 +61,7 @@ public class UserWriteServiceImpl implements UserWriteService {
         redisUtils.delete(key);
 
         //mq发送同步用户名消息
-        syncUserMqProducer.sendSyncUsernameMessage(new UserIdWithUsername(UserContext.getUserId(),username));
+        syncUserMqProducer.sendSyncUsernameMessage(new UserIdWithUsername(UserContext.getUserId(),filterUsername));
         return token;
     }
 

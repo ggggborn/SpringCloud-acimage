@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 public class TopicHtml {
     public static final int HTML_MIN = 4;
-    public static final int HTML_MAX = 5000;
+    public static final int HTML_MAX = 4500;
     public static final String HTML_VALIDATION_MSG = "html源码长度在" + HTML_MIN + "-" + HTML_MAX + "之间";
 
     @TableId(type= IdType.INPUT)

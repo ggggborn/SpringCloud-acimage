@@ -53,7 +53,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (!tokenService.isMatch(token, ip)) {
+        if (!tokenService.hasRecorded(token)) {
             return true;
         }
 

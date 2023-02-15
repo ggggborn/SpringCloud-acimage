@@ -18,14 +18,13 @@ import java.util.List;
 @RestController
 @Slf4j
 @Validated
-@RequestMapping("/api/image/images")
+@RequestMapping("/image/images")
 public class ImageProvider {
     @Autowired
     ImageMixWriteService imageMixWriteService;
     @Autowired
     ImageQueryService imageQueryService;
 
-    @Authentication(type = AuthenticationType.NONE)
     @GetMapping("/topicId/{topicId}")
     public Result<List<Image>> queryTopicImages(@PathVariable Long topicId) {
         return Result.ok(imageQueryService.listImagesOrderById(topicId));

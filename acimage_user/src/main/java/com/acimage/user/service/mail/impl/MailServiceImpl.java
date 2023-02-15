@@ -59,7 +59,7 @@ public class MailServiceImpl implements MainService {
     @Override
     public void sendVerifyCodeMailMessage(String to, String code,int timeoutMinute) {
 
-        String content = "acimage网站验证邮箱<br/>" +
+        String content = "acimage网站正在验证邮箱<br/>" +
                 "验证码：" + code+"<br/>"+
                 "有效时间"+timeoutMinute+"分钟";
 

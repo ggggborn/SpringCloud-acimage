@@ -7,9 +7,9 @@
 					<div class="header-title">用户排行</div>
 				</div>
 			</div>
-			<el-tabs type="card" style="margin-top:-5px;" v-model="sortMode">
-				<el-tab-pane label="星星收割者" name="starCount" @click="onClickSortByStarCount"></el-tab-pane>
-				<el-tab-pane label="话题达人" name="topicCount" @click="onClickSortByTopicCount"></el-tab-pane>
+			<el-tabs type="card" style="margin-top:-5px;" v-model="query.column">
+				<el-tab-pane label="星星收割者" name="starCount"></el-tab-pane>
+				<el-tab-pane label="话题达人" name="topicCount"></el-tab-pane>
 			</el-tabs>
 
 			<el-skeleton v-if="loading" :rows="6" animated style="width: 90%;margin-left:5%" />
@@ -27,65 +27,58 @@
 					</div>
 				</div>
 			</div>
+			<div style="text-align: center;">
+				<el-pagination v-if="users.length>0" layout="prev, pager, next" :total="totalCount"
+					:current-page.sync="curPage" @current-change="handlePageNoChange" :page-size="10">
+				</el-pagination>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-	import { pageUserRankByTopicCount, pageUserRankByStarCount } from '@/api/UserRank.js'
+	import { pageUserRankBy } from '@/api/UserRank.js'
 	import { Code } from '@/utils/result.js'
-	let Mode = {
-		starCount: 1,
-		topicCount: 2
-	};
+
 	export default {
 		name: 'UserRank',
 		data() {
 			return {
-				sortMode: 'starCount',
+				curPage: 1,
+				query: {
+					pageNo: 1,
+					column: 'starCount'
+				},
+				totalCount: 0,
 				loading: true,
 				users: []
 			}
 		},
 		watch: {
-			sortMode: {
-				handler(newVal) {
-					if (newVal == "starCount") {
-						this.getUserPageRankByStarCount(1);
-					} else if (newVal == "topicCount") {
-						this.getUserPageRankByTopicCount(1);
-					}
-				}
+			query: {
+				handler(newVal, oldVal) {
+					this.getUserRankPage();
+				},
+				deep: true
 			}
 		},
-		mounted() {
-			let _this = this;
-			this.getUserPageRankByStarCount(1);
+		created() {
+			this.getUserRankPage();
 		},
 		methods: {
-			getUserPageRankByStarCount(pageNo) {
+			getUserRankPage() {
 				let _this = this;
-				pageUserRankByStarCount(pageNo).then(result => {
-					if (result.code == Code.OK) {
-						_this.users = result.data;
+				pageUserRankBy(this.query).then(res => {
+					if (res.code == Code.OK) {
+						_this.users = res.data.dataList;
+						_this.totalCount = res.data.totalCount;
 						_this.loading = false;
 					}
 				});
 			},
-			getUserPageRankByTopicCount(pageNo) {
-				let _this = this;
-				pageUserRankByTopicCount(pageNo).then(result => {
-					if (result.code == Code.OK) {
-						_this.users = result.data;
-					}
-				});
-			},
-			onClickSortByStarCount() {
-				this.sortMode = Mode.starCount;
-			},
-			onClickSortByTopicCount() {
-				this.sortMode = Mode.topicCount;
-			},
+			handlePageNoChange() {
+				this.query.pageNo = this.curPage;
+			}
 		}
 	}
 </script>

@@ -44,11 +44,6 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     QiniuUtils qiniuUtils;
     @Autowired
     RedisUtils redisUtils;
-    @Autowired
-    MinioUtils minioUtils;
-    @Autowired
-    SearchImageService searchImageService;
-
 
 
     @Override
@@ -94,28 +89,6 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     }
 
     @Override
-    public void updateDescription(long imageId, String description) {
-        log.info("user:{} 修改图片描述 imageId:{} description:{}", UserContext.getUsername(), imageId, description);
-        LambdaUpdateWrapper<Image> uw = new LambdaUpdateWrapper<>();
-        uw.set(Image::getDescription, description).eq(Image::getId, imageId);
-        imageDao.update(null, uw);
-
-        //删除相应缓存
-        Image image = imageQueryService.getImage(imageId);
-        redisUtils.delete(TopicImageKeyConstants.STRINGKP_IMAGE + imageId);
-        redisUtils.delete(TopicImageKeyConstants.STRINGKP_TOPIC_IMAGES + image.getTopicId());
-    }
-
-    @Override
-    public void updateDescriptions(List<Long> imageIds, List<String> descriptions) {
-        List<Pair<Long, String>> idAndDescriptions = PairUtils.combine(imageIds, descriptions);
-        if (!CollectionUtil.isEmpty(idAndDescriptions)) {
-            imageDao.updateDescription(idAndDescriptions);
-        }
-
-    }
-
-    @Override
     public void updateTopicId(List<Long> imageIds, long topicId) {
         if (CollectionUtil.isEmpty(imageIds)) {
             return;
@@ -139,31 +112,6 @@ public class ImageWriteServiceImpl extends ServiceImpl<ImageDao, Image> implemen
     }
 
 
-    @Override
-    public List<Image> createImages(@NotNull MultipartFile[] imageFiles, String urlPrefix) {
-        //根据MultipartFile创建image对象
-        List<Image> images = new ArrayList<>();
-        for (MultipartFile imageFile : imageFiles) {
-            //取文件名前30字符作为文件初始描述
-            String description = StrUtil.subPre(imageFile.getOriginalFilename(), Image.DESCRIPTION_MAX);
-            long id = IdGenerator.getSnowflakeNextId();
-            int size = (int) imageFile.getSize();
-            Date now = new Date();
-            String suffix = String.format("%s.%s", id, FileUtils.formatOf(imageFile.getOriginalFilename()));
-            String url = qiniuUtils.generateUrl(suffix, now, urlPrefix);
-
-            Image image = new Image(id, null, size, description);
-            image.setUrl(url);
-
-            images.add(image);
-        }
-        return images;
-    }
-
-    @Override
-    public Image createImage(MultipartFile imageFile, String urlPrefix) {
-        return null;
-    }
 
 
 

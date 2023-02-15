@@ -2,6 +2,7 @@ package com.acimage.image.web.controller;
 
 
 import com.acimage.common.deprecated.annotation.Authentication;
+import com.acimage.common.global.consts.TimeConstants;
 import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
@@ -25,7 +26,10 @@ public class PhotoOperateController {
     @Autowired
     PhotoServiceImpl photoService;
 
-    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
+    @RequestLimit(limitTimes = {1,3},
+            durations = {2, TimeConstants.DAY_SECONDS},
+            penaltyTimes = {-1,-1},
+            targets = {LimitTarget.IP,LimitTarget.USER})
     @PostMapping("/upload")
     public Result<String> uploadPhoto(@RequestParam("photoFile") MultipartFile photoFile) {
         String url = photoService.uploadPhotoAndUpdatePhotoUrl(photoFile);

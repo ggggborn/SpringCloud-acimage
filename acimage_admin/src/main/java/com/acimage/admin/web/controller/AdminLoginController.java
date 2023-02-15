@@ -28,14 +28,13 @@ public class AdminLoginController {
 
     @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
     @PostMapping("/doLogin")
-    public Result<?> doLogin(@Validated @RequestBody AdminLoginReq adminLoginReq, HttpServletRequest request) {
+    public Result<String> doLogin(@Validated @RequestBody AdminLoginReq adminLoginReq, HttpServletRequest request) {
         String code = adminLoginReq.getVerifyCode();
         boolean verifyCorrect = verifyCodeService.verifyAndRemoveIfSuccess(request, code);
         if (!verifyCorrect) {
             return Result.fail("验证码错误，请重新验证");
         }
-        loginService.login(adminLoginReq);
-        return Result.ok();
+        return Result.ok(loginService.login(adminLoginReq));
     }
 
     @GetMapping("/publicKey")

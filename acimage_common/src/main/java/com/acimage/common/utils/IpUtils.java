@@ -59,16 +59,15 @@ public class IpUtils {
         // 多次反向代理后会有多个ip值 的分割符
         // 根据 HttpHeaders 获取 请求 IP地址
         String ip = request.getHeaders().getFirst("X-Forwarded-For");
-        if (StrUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
-            ip = request.getHeaders().getFirst("x-forwarded-for");
-            if (ip != null && ip.length() != 0 && !UNKNOWN.equalsIgnoreCase(ip)) {
-                // 多次反向代理后会有多个ip值，第一个ip才是真实ip
-                if (ip.contains(IP_UTILS_FLAG)) {
-                    ip = ip.split(IP_UTILS_FLAG)[0];
-                }
-            }
-        }
-
+//        if (StrUtil.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
+//            ip = request.getHeaders().getFirst("x-forwarded-for");
+//            if (ip != null && ip.length() != 0 && !UNKNOWN.equalsIgnoreCase(ip)) {
+//                // 多次反向代理后会有多个ip值，第一个ip才是真实ip
+//                if (ip.contains(IP_UTILS_FLAG)) {
+//                    ip = ip.split(IP_UTILS_FLAG)[0];
+//                }
+//            }
+//        }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
             ip = request.getHeaders().getFirst("Proxy-Client-IP");
         }
@@ -96,9 +95,9 @@ public class IpUtils {
                 } catch (UnknownHostException e) {
                     log.error("getClientIp error:{}", e.getMessage());
                 }
-
             }
         }
+
         return ip;
     }
 

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class VerifyCodeServiceImpl implements VerifyCodeService {
     public static final String STRINGKP_VERIFY_CODE = "acimage:user:verifyCode:sessionId:";
-    public static final String STRINGKP_EMAIL_VERIFY = "acimage:user:logins:emailVerify:email";
+    public static final String STRINGKP_EMAIL_VERIFY = "acimage:user:logins:verify:email";
     @Autowired
     RedisUtils redisUtils;
     @Autowired

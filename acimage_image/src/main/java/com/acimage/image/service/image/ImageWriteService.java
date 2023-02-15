@@ -18,17 +18,10 @@ public interface ImageWriteService extends IService<Image> {
 
     int removeImages(long topicId, List<String> imageUrls);
 
-    @Deprecated
-    void updateDescription(long imageId, String description);
-    @Transactional
-    void updateDescriptions(List<Long> imageIds,List<String> descriptions);
     void updateTopicId(List<Long> imageIds,long topicId);
 
     void updateTopicIdForHavingNullTopicId(List<Long> imageIds, long topicId);
 
-    @Deprecated
-    List<Image> createImages(MultipartFile[] imageFiles, String urlPrefix);
-    Image createImage(MultipartFile imageFile,String urlPrefix);
 
 
 }
