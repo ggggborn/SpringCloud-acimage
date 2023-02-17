@@ -15,19 +15,23 @@ import org.springframework.context.annotation.Profile;
 
 import java.util.concurrent.TimeUnit;
 
-
-@Profile(value = {"test","dev","dev2","server"})
+@Profile("prod")
 @Configuration
 @ConditionalOnClass(RestHighLevelClient.class)
-public class EsConfig {
-
+public class EsProdConfig {
+    @Value("${spring.elasticsearch.username}")
+    private String username;
+    @Value("${spring.elasticsearch.password}")
+    private String password;
     @Bean
-    public RestHighLevelClient devRestHighLevelClient(@Autowired RestClientBuilder restClientBuilder) {
+    public RestHighLevelClient prodRestHighLevelClient(@Autowired RestClientBuilder restClientBuilder) {
+
 
         return new RestHighLevelClient(restClientBuilder.setHttpClientConfigCallback(requestConfig -> {
             final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+            requestConfig.setKeepAliveStrategy((response, context) -> TimeUnit.MINUTES.toMillis(3));
             return requestConfig.setDefaultCredentialsProvider(credentialsProvider);
         }));
     }
-
 }

@@ -37,9 +37,9 @@
 						<el-button size="small" @click="handleEdit(scope.$index, scope.row)">
 							编辑角色
 						</el-button>
-						<el-button type="danger" size="small" @click="handleDelete(scope.$index)" v-permiss="16">
+<!-- 						<el-button type="danger" size="small" @click="handleDelete(scope.$index)" v-permiss="16">
 							删除
-						</el-button>
+						</el-button> -->
 					</template>
 				</el-table-column>
 			</el-table>

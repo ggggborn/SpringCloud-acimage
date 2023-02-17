@@ -43,49 +43,52 @@ public class PermissionFilter implements GlobalFilter {
         ServerHttpRequest request = exchange.getRequest();
         String url = request.getURI().getPath();
         HttpMethod httpMethod = request.getMethod();
+        if (httpMethod != HttpMethod.GET) {
+            log.info("{} {} ip:{} user:{}", url, httpMethod, UserContext.getIp(), UserContext.getUsername());
+        }
         //获取匹配的api树
         Api api = ApiTreeUtils.getMatchApi(apiTreeFactory.getApiTree(), url, httpMethod);
 
         //api不存在
         if (api == null) {
-            log.info(url+" 不存在");
+            log.info(url + " 不存在");
             UserContext.remove();
             return exchange.getResponse().setComplete();
         }
-        Map<Integer, List<Integer>> map=authorizeQueryService.getRolePermissionIdsMap();
+        Map<Integer, List<Integer>> map = authorizeQueryService.getRolePermissionIdsMap();
 
         //获取访客权限
-        List<Integer> permissionIds=map.get(roleConfig.getVisitorId());
-        if(permissionIds!=null&&permissionIds.contains(api.getPermissionId())){
-            log.debug(api.getPath()+api.getMethod()+"通过");
+        List<Integer> permissionIds = map.get(roleConfig.getVisitorId());
+        if (permissionIds != null && permissionIds.contains(api.getPermissionId())) {
+            log.debug(api.getPath() + api.getMethod() + "通过");
             UserContext.remove();
             return chain.filter(exchange);
         }
 
         //获取用户权限
-        if(UserContext.getUserId()!=null){
-            permissionIds=map.get(roleConfig.getUserId());
-            if(permissionIds!=null&&permissionIds.contains(api.getPermissionId())){
-                log.debug(api.getPath()+api.getMethod()+"通过");
+        if (UserContext.getUserId() != null) {
+            permissionIds = map.get(roleConfig.getUserId());
+            if (permissionIds != null && permissionIds.contains(api.getPermissionId())) {
+                log.debug(api.getPath() + api.getMethod() + "通过");
                 UserContext.remove();
                 return chain.filter(exchange);
             }
         }
 
-        if(UserContext.getUserId()!=null){
+        if (UserContext.getUserId() != null) {
             //获取用户具体角色的权限
-            List<Integer> roleIds=userRoleQueryService.listRoleIds(UserContext.getUserId());
-            for(Integer roleId:roleIds){
-                permissionIds=map.get(roleId);
-                if(permissionIds!=null&&permissionIds.contains(api.getPermissionId())){
-                    log.debug(api.getPath()+api.getMethod()+"通过");
+            List<Integer> roleIds = userRoleQueryService.listRoleIds(UserContext.getUserId());
+            for (Integer roleId : roleIds) {
+                permissionIds = map.get(roleId);
+                if (permissionIds != null && permissionIds.contains(api.getPermissionId())) {
+                    log.debug(api.getPath() + api.getMethod() + "通过");
                     UserContext.remove();
                     return chain.filter(exchange);
                 }
             }
         }
 
-        log.info(api.getPath()+"权限不足");
+        log.info("{} {} 权限不足 ip:{}", api.getPath(), api.getMethod(), UserContext.getIp());
         UserContext.remove();
         exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
         return exchange.getResponse().setComplete();

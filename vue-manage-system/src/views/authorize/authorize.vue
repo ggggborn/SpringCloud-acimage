@@ -76,7 +76,7 @@
 
 	//查询角色权限
 	let roleAuthorizeList: any = ref([]);
-	let query = reactive({
+	let query = reactive < any > ({
 		roleId: null,
 	})
 	const getRoleAuthorizeList = () => {
@@ -107,7 +107,7 @@
 	}
 	const treeRef = ref < InstanceType < typeof ElTree >> ()
 	const handleCheck = (node: Permission) => {
-		if (node.isModule) {
+		if (node.module) {
 			treeRef.value!.setCheckedKeys(checkedKeys.value, false);
 			MessageUtils.notice("不可操作模块", 1);
 			return false;

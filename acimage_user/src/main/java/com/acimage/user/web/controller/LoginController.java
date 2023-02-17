@@ -1,10 +1,8 @@
 package com.acimage.user.web.controller;
 
 
-import com.acimage.common.deprecated.annotation.Authentication;
+
 import com.acimage.common.global.context.UserContext;
-import com.acimage.common.global.enums.AuthenticationType;
-import com.acimage.common.model.domain.user.User;
 import com.acimage.common.redis.annotation.RequestLimit;
 import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
@@ -26,7 +24,6 @@ import javax.validation.constraints.Size;
 
 @Slf4j
 @RestController
-@Authentication(type = AuthenticationType.NONE)
 @Validated
 @RequestMapping("/api/user/logins")
 public class LoginController {
@@ -51,7 +48,7 @@ public class LoginController {
         return Result.ok(loginService.getPublicKey());
     }
 
-    @RequestLimit(limitTimes = {1}, durations = {2}, penaltyTimes = {-1}, targets = {LimitTarget.IP})
+    @RequestLimit(limitTimes = {1,5}, durations = {2,1}, penaltyTimes = {-1,-1}, targets = {LimitTarget.IP,LimitTarget.ALL})
     @PostMapping("/sendCode")
     public Result<?> sendVerifyCodeToEmail(@Email @Size(min=6,max=32,message = "邮箱长度在6到32之间") @RequestParam("email") String email,
                                            HttpServletRequest request) {

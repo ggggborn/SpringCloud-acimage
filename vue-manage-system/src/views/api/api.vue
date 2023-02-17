@@ -48,8 +48,7 @@
 					<el-input v-model="addForm.path" maxlength="200"></el-input>
 				</el-form-item>
 				<el-form-item label="权限">
-					<el-select v-model="addForm.permissionId" placeholder="权限" class="handle-select mr10"
-						@change="getRoleAuthorizeList">
+					<el-select v-model="addForm.permissionId" placeholder="权限" class="handle-select mr10">
 						<el-option v-for="permission in permissions" :key="permission.id" :label="permission.code"
 							:value="permission.id">
 						</el-option>
@@ -89,8 +88,7 @@
 					<el-input v-model="editForm.path" maxlength="200"></el-input>
 				</el-form-item>
 				<el-form-item label="权限">
-					<el-select v-model="editForm.permissionId" placeholder="权限" class="handle-select mr10"
-						@change="getRoleAuthorizeList">
+					<el-select v-model="editForm.permissionId" placeholder="权限" class="handle-select mr10">
 						<el-option v-for="permission in permissions" :key="permission.id" :label="permission.code"
 							:value="permission.id">
 						</el-option>

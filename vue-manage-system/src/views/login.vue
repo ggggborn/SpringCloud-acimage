@@ -21,7 +21,7 @@
 				<el-input placeholder="验证码" v-model="param.verifyCode" maxlength="8" style="width:130px;" clearable>
 				</el-input>
 				<br />
-				<img alt="单击图片刷新!" src="/api/admin/logins/commonCode"
+				<img id="code-img" alt="单击图片刷新!" :src="codeSrc"
 					onclick="this.src='/api/admin/logins/commonCode?d='+new Date()*1">
 				<br />
 				<div class="login-btn">
@@ -62,6 +62,8 @@
 		password: '',
 		verifyCode: ''
 	});
+
+	let codeSrc=ref('/api/admin/logins/commonCode');
 
 	const rules: FormRules = {
 		email: [{

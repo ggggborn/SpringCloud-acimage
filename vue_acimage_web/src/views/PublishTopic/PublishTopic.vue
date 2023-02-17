@@ -196,7 +196,7 @@
 			},
 			validateForm() {
 				if (this.imageList.length == 0) {
-					MessageUtils.notice("请选择至少一张图片");
+					MessageUtils.notice("请选择封面");
 					return false;
 				}
 
@@ -215,10 +215,10 @@
 					MessageUtils.notice("内容至少要四个字符");
 					return false;
 				} 
-				// else if (text.length > 4500) {
-				// 	MessageUtils.notice("文本过长，请缩减");
-				// 	return false;
-				// }
+				else if (text.length > 4500) {
+					MessageUtils.notice("文本过长，请缩减");
+					return false;
+				}
 				return true;
 			},
 			submitTopic() {

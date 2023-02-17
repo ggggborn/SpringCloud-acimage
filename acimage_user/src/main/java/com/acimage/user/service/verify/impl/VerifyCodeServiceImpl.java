@@ -10,8 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -31,20 +33,29 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
         int height = 40;
         int codeCount = 4;
         int thickness = 4;
+        /**
+         * 注意验证码需要系统有默认字体，如果使用docker alpine，会因为没有默认字体而出错
+         */
         ShearCaptcha captcha = CaptchaUtil.createShearCaptcha(width, height, codeCount, thickness);
         //图形验证码写出，可以写出到文件，也可以写出到流
+        ServletOutputStream outputStream=null;
         try {
-            captcha.write(response.getOutputStream());
+            outputStream = response.getOutputStream();
+            captcha.write(outputStream);
         } catch (IOException e) {
-            log.error("response.getOutputStream()错误 {}", e.getMessage());
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
         }
+
         //获取验证码中的文字内容
         String verifyCode = captcha.getCode();
         //记录到redis
         String sessionId = request.getSession().getId();
+
         long timeout = 30L;
+
         redisUtils.setAsString(STRINGKP_VERIFY_CODE + sessionId, verifyCode, timeout, TimeUnit.SECONDS);
+
+
 
     }
 

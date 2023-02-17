@@ -14,15 +14,6 @@ public class ApiDaoTest {
     @Autowired
     ApiDao apiDao;
 
-    @Test
-    void testInsert(){
-        Api it=new Api();
-        it.setPath("/dasjdhaks/asdjhaskd");
-        it.setMethod(HttpMethod.GET);
-        it.setMatchRule(MatchRule.PREFIX);
-        it.setPermissionId(55);
-        apiDao.insert(it);
-    }
 
     @Test
     void testSelect(){

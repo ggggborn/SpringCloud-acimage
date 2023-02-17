@@ -72,6 +72,7 @@
 
     <springProfile name="dev2">
         <logger name="com.acimage.gateway.dao" level="INFO" additivity="false">
+            <appender-ref ref="console"/>
             <appender-ref ref="info"/>
             <appender-ref ref="warn"/>
             <appender-ref ref="error"/>

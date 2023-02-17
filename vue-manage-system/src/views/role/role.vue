@@ -94,22 +94,7 @@
 
 	const store = useStore();
 	store.init();
-	//查询首页图片
-	// let roleList = ref < Role[] > ([{
-	// 	id: 1,
-	// 	roleName: 'user',
-	// 	createTime: '2022-2-22',
-	// 	updateTime: '2022-2-22',
-	// 	note: '用户',
-	// }]);
-	// const getRoleList = () => {
-	// 	queryAllRoles().then((res: any) => {
-	// 		if (res.code == Code.OK) {
-	// 			roleList.value = res.data;
-	// 		}
-	// 	})
-	// };
-	// getRoleList();
+
 
 	//新增角色
 	let addVisible = ref(false);
@@ -153,7 +138,7 @@
 	//删除
 	const handleDelete = (index: number) => {
 		MessageUtils.confirm("确定删除吗？操作不可逆！").then(() => {
-			const deleteId = roleList.value[index].id;
+			const deleteId = store.roleList[index].id;
 			deleteRole(deleteId)
 				.then((res: any) => {
 					if (res.code == Code.OK) {

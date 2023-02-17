@@ -1,8 +1,0 @@
-/*隐藏上传框*/
-.hide .el-upload--picture-card {
-	display: none;
-}
-
-.hover-pointer:hover{
-	cursor: pointer;
-}

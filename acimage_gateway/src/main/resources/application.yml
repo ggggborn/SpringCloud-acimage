@@ -10,6 +10,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
     gateway:
+      discovery:
+        locator: false
+      default-filters:
+        - name: RequestRateLimiter #reids版本太低会无法生效
+          args:
+            redis-rate-limiter.replenishRate: 20 #补充速率
+            redis-rate-limiter.burstCapacity: 30  #桶容量
+            key-resolver: '#{@ipKeyResolver}' #这个必须要配置，否则返回403
       routes:
         - id: community-service-route
           uri: lb://community-service
@@ -30,12 +38,7 @@ spring:
           uri: lb://admin-service
           predicates:
             - Path=/api/admin/**
-      filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 20 #补充速率
-            redis-rate-limiter.burstCapacity: 30 #桶容量
-            key-resolver: "#{@ipKeyResolver}" #这个必须要配置，否则返回403
+
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml

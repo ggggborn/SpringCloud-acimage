@@ -9,7 +9,7 @@
 							prefix-icon="el-icon-edit-outline" maxlength="15" clearable></el-input>
 						<el-button @click="submitSearch" style="margin-left:30px;" type="primary" plain>提交搜索</el-button>
 					</el-form-item>
-					<el-form-item label="分类">
+					<el-form-item label="分类" prop="categoryId">
 						<el-select v-model="query.categoryId" placeholder="选择分类" clearable>
 							<el-option v-for="item in $store.state.categoryList" :label="item.label" :value="item.id"
 								:key="item.id">
@@ -156,8 +156,8 @@
 			},
 			submitSearch() {
 				if (JSON.stringify(this.query) != JSON.stringify(this.$route.query)) {
-					this.$router.replace({ query: this.query })
-					// this.toSearch();
+					// this.$router.replace({ query: this.query })
+					this.toSearch();
 				} else {
 					MessageUtils.notice("请改变搜索选项")
 				}

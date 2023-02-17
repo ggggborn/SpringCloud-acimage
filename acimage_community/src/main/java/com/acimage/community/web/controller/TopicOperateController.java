@@ -45,13 +45,16 @@ public class TopicOperateController {
         if (title.length() < Topic.TITLE_MIN || title.length() > Topic.TITLE_MAX) {
             return Result.fail(Topic.TAG_VALIDATION_MSG);
         }
+
+
         log.info("用户：{} 请求新增话题{}", UserContext.getUsername(), topicAddReq);
         String format = FileUtils.formatOf(coverImage);
         if (!FileFormatConstants.ALLOWED_COVER_IMAGE_FORMAT.contains(format)) {
             return Result.fail("封面图片格式需为" + FileFormatConstants.ALLOWED_IMAGE_FORMAT);
         }
+
         Integer[] tagIds = topicAddReq.getTagIds();
-        if (tagIds.length > Topic.TAG_MAX || tagIds.length < Topic.TAG_MIN) {
+        if (tagIds==null||tagIds.length > Topic.TAG_MAX || tagIds.length < Topic.TAG_MIN) {
             return Result.fail(Topic.TAG_VALIDATION_MSG);
         }
 

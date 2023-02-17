@@ -3,8 +3,6 @@
 		<div class="container">
 			<div class="handle-box">
 				<div class="handle-box">
-					<el-input placeholder="关键字" class="handle-input mr10" v-model="query.keyword"></el-input>
-					<el-button type="primary" @click="getData">搜索</el-button>
 					<el-button type="primary" :icon="Plus" @click="addVisible=true">新增</el-button>
 				</div>
 			</div>

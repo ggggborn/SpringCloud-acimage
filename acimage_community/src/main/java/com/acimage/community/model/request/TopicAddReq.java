@@ -20,6 +20,6 @@ public class TopicAddReq {
     @Positive
     @NotNull
     Integer CategoryId;
-    @NotNull(message = "请选择至少一个标签")
+
     Integer[] tagIds;
 }

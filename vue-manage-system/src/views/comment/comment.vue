@@ -37,37 +37,23 @@
 			</div>
 		</div>
 
-		<!-- 编辑弹出框 -->
-		<el-dialog title="编辑" v-model="editVisible">
-			<el-form label-width="70px">
-				<el-form-item label="标题">
-					<el-input v-model="editForm.content" maxlength="30"></el-input>
-				</el-form-item>
-			</el-form>
-			<template #footer>
-				<span class="dialog-footer">
-					<el-button @click="editVisible = false">取 消</el-button>
-					<el-button type="primary" @click="saveEdit">确 定</el-button>
-				</span>
-			</template>
-		</el-dialog>
 	</div>
 </template>
 
 <script setup lang="ts" name="comment">
 	import { ref, reactive } from 'vue';
 
-	import { queryCommentsBy,deleteComment } from '@/api/comment'
+	import { queryCommentsBy, deleteComment } from '@/api/comment'
 	import { Code } from '@/utils/result';
 	import CommonUtils from '@/utils/CommonUtils';
 	import MessageUtils from '@/utils/MessageUtils';
 	import global from '@/utils/global'
 
-	
+
 	interface Comment {
 		id: number;
-		topicId:number;
-		userId:number;
+		topicId: number;
+		userId: number;
 		content: string;
 		updateTime: string;
 		createTime: string;
@@ -75,24 +61,24 @@
 	//查询话题
 	let comments = ref < Comment[] > ([{
 		id: 1008610086,
-		userId:1054054,
-		topicId:546545,
+		userId: 1054054,
+		topicId: 546545,
 		content: "阿坎吉合肥市拉开收到货拉愧疚但是",
 		updateTime: '2016-05-02 22:22:22',
 		createTime: '2016-05-02 22:22:22',
 	}]);
-	
+
 	let totalCount = ref(1);
 
-	let query = reactive({
+	let query = reactive < any > ({
 		keyword: '',
-		topicId:-1,
+		topicId: -1,
 		pageNo: 1,
 		pageSize: 10,
 	});
 	const getData = () => {
-		if(query.topicId<0||query.topicId==null||query.topicId.toString().trim().length==0){
-			query.topicId=null;
+		if (query.topicId < 0 || query.topicId == null || query.topicId.toString().trim().length == 0) {
+			query.topicId = null;
 		}
 		queryCommentsBy(query).then((res: any) => {
 			if (res.code == Code.OK) {
@@ -119,9 +105,6 @@
 				})
 		}).catch(e => e);
 	}
-
-
-
 </script>
 
 <style scoped>
