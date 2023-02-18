@@ -17,8 +17,7 @@
 				<div v-for="(topic,index) in topics" :key="topic.id" class="item-container">
 					<template v-if="index<endIndex">
 						<div class="image-container">
-							<el-image fit="cover" lazy
-								:src="topic.coverImageUrl"></el-image>
+							<el-image fit="cover" lazy :src="topic.coverImageUrl"></el-image>
 							<div class="index image-index">
 								{{index+1}}
 							</div>
@@ -55,14 +54,14 @@
 	export default {
 		name: 'TopicList',
 		props: {
-			handleTabHover:{
-				type:Function
+			handleTabHover: {
+				type: Function
 			},
 			endIndex: {
 				default: 3
 			},
-			headerSrc:{
-				default:'static/image/topic-rank.webp'
+			headerSrc: {
+				default: 'static/image/topic-rank.webp'
 			},
 			showData: {
 				type: Boolean,
@@ -126,7 +125,7 @@
 						document.querySelector("#header-item" + i).style.backgroundColor = "#CCCCCC";
 					}
 					document.querySelector("#header-item" + newVal).style.backgroundColor = "#FF566A";
-					this.handleTabHover(this.activeIndex)
+					this.handleTabHover(this.activeIndex);
 				},
 				immediate: false
 			}

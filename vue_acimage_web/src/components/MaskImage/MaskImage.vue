@@ -33,7 +33,7 @@
 
 		</div>
 		<span class="bottom-title">
-			{{$global.omitStr(title,18)}}
+			{{$global.omitStr(title,17)}}
 		</span>
 
 	</div>

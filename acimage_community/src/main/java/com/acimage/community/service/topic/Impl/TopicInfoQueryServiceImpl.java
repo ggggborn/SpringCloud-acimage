@@ -107,7 +107,7 @@ public class TopicInfoQueryServiceImpl implements TopicInfoQueryService {
         List<Topic> topicList = new ArrayList<>();
 
         if (pageNo == 1 && rankList.size() < pageSize) {
-            String column = LambdaUtils.underlineColumnNameOf(Topic::getPageView);
+            String column = attr.toFieldName();
             topicList = topicDao.selectTopicsWithUserOrderBy(column, pageSize);
         } else {
             for (Long topicId : rankList) {

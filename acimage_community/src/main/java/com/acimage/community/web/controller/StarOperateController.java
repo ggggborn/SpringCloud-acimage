@@ -2,6 +2,9 @@ package com.acimage.community.web.controller;
 
 
 
+import com.acimage.common.global.consts.TimeConstants;
+import com.acimage.common.redis.annotation.RequestLimit;
+import com.acimage.common.redis.enums.LimitTarget;
 import com.acimage.common.result.Result;
 import com.acimage.common.deprecated.annotation.Authentication;
 import com.acimage.common.global.context.UserContext;
@@ -28,12 +31,20 @@ public class StarOperateController {
     @Autowired
     StarMixQueryService starMixQueryService;
 
+    @RequestLimit(limitTimes = {1},
+            durations = {3},
+            penaltyTimes = {-1},
+            targets = {LimitTarget.USER})
     @PostMapping("/{topicId}")
     public Result<?> addStar(@Positive @PathVariable("topicId") Long topicId) {
         starWriteService.saveStar(UserContext.getUserId(),topicId);
         return Result.ok();
     }
 
+    @RequestLimit(limitTimes = {1},
+            durations = {3},
+            penaltyTimes = {-1},
+            targets = {LimitTarget.USER})
     @DeleteMapping("/{topicId}")
     public Result<?> deleteStar(@Positive @PathVariable("topicId") Long topicId) {
         starWriteService.removeStar(UserContext.getUserId(),topicId);
