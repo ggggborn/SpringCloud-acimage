@@ -28,7 +28,9 @@
 
 ## 项目介绍
 
-**次元印象** ( **acimage**) 是一个**基于SpringCloud**构建的**前后端分离**的动漫交流论坛。后端使用 **SpringCloud**+**Mybatis-Plus**+**Reids**+**Rabbitmq**+**Elasticsearch**。前端使用 **Vue** + **ElementUi** + **Vite** 。项目已经上线。如果喜欢的话点个star吧๑乛◡乛๑。
+**次元印象** ( **acimage**) 是一个**基于SpringCloud**构建的**前后端分离**的动漫交流论坛。后端使用 **SpringCloud**+**Mybatis-Plus**+**Reids**+**Rabbitmq**+**Elasticsearch**。前端使用 **Vue** + **ElementUi** + **Vite** 。项目已经上线。各位Github的二次元们，还不来点个star(๑•̀ㅂ•́)و✧。
+
+
 
 ## 网址
 
