@@ -4,7 +4,7 @@
 <img src="./doc/images/website-icon.jpg" ></img>
 </p>
 <p align="center">
-次元印象，一个SpringCloud构建的二次元动漫交流论坛
+次元印象，一个SpringCloud构建的动漫交流论坛
 </p>
 
 <p align="center">
