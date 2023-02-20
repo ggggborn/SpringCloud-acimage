@@ -19,25 +19,6 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("/templates/**").addResourceLocations("/templates/");
-//        registry.addResourceHandler("/favicon.ico").addResourceLocations("/static/images/favicon.ico");
-//        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
-//        registry.addResourceHandler("/storage/images/**").addResourceLocations("/storage/images/");
-//        registry.addResourceHandler("/storage/photos/**").addResourceLocations("/storage/photos/");
-//    }
-//
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("login");
-//        registry.addViewController("/home").setViewName("home");
-//        registry.addViewController("/share").setViewName("share");
-//        registry.addViewController("/showTopic").setViewName("ShowTopic");
-//        registry.addViewController("/profile").setViewName("profile");
-//        registry.addViewController("/MyActivity").setViewName("MyActivity");
-//    }
-
     @Autowired
     JwtInterceptor jwtInterceptor;
 

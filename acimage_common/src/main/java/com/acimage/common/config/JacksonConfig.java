@@ -1,4 +1,4 @@
-package com.acimage.common.global.config;
+package com.acimage.common.config;
 
 
 import cn.hutool.core.date.DatePattern;

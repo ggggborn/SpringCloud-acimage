@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages="com.acimage.feign")
 @MapperScan("com.acimage.image.dao")
-@ComponentScan(value={"com.acimage.*"})
+@ComponentScan(value={"com.acimage"})
 public class ImageApplication {
 
 	public static void main(String[] args) {

@@ -53,7 +53,7 @@
         <elasticsearch.version>7.12.0</elasticsearch.version>
         <data-elasticsearch.version>4.2.12</data-elasticsearch.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
-        <caffeine.version>3.1.0</caffeine.version>
+        <caffeine.version>2.8.8</caffeine.version>
 <!--        <quartz.version>3.0.1</quartz.version>-->
 <!--        <quartz-scheduler.version>2.3.2</quartz-scheduler.version>-->
 
