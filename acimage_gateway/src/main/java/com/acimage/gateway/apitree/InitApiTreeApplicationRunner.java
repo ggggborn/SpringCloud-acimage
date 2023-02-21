@@ -1,11 +1,13 @@
 package com.acimage.gateway.apitree;
 
 
+import com.acimage.common.utils.redis.RedisUtils;
 import com.acimage.gateway.serivce.ApiQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -16,6 +18,7 @@ public class InitApiTreeApplicationRunner implements ApplicationRunner {
     ApiQueryService apiQueryService;
     @Autowired
     ApiTreeFactory apiTreeFactory;
+
 
     @Override
     public void run(ApplicationArguments args) {

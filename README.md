@@ -1,7 +1,7 @@
 # 次元印象
 
 <p align="center">
-<img src="./doc/images/website-icon.jpg" ></img>
+<img widht="240px" height="240px" src="./doc/images/website-icon.jpg" ></img>
 </p>
 <p align="center">
 次元印象，一个SpringCloud构建的动漫交流论坛
