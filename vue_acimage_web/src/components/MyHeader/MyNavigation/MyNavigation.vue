@@ -9,6 +9,11 @@
 					<el-menu-item index="/MyActivity">
 						<i class="el-icon-magic-stick" style="color:orange"></i>我的动态
 					</el-menu-item>
+					<el-menu-item index="/MyMessage">
+						<i class="el-icon-magic-stick" style="color:orange"></i>消息
+						<el-badge :value="messageNum" :max="99" style="position: fixed;top: -20px;">
+						</el-badge>
+					</el-menu-item>
 
 					<el-submenu index="3">
 						<template slot="title">
@@ -48,8 +53,52 @@
 		name: 'MyNavigation',
 		data() {
 			return {
-				search: ''
+				search: '',
+				webSocket: null,
+				messageNum: null,
 			}
+		},
+		mounted() {
+			let _this = this;
+			if (!this.$store.getters.isLogin) {
+				return;
+			}
+
+			let loc = window.location,
+				new_uri;
+			if (loc.protocol === "https:") {
+				new_uri = "wss:";
+			} else {
+				new_uri = "ws:";
+			}
+			new_uri += "//" + loc.host + "/websocket";
+			let ws = new WebSocket(new_uri, this.$store.state.token);
+			// let ws = new WebSocket("ws:localhost:81/websocket", this.$store.state.token);
+			//监听是否连接成功
+			ws.onopen = function() {
+				console.log('连接成功');
+				//连接成功则发送一个数据
+				ws.send('test1');
+			}
+			// 接听服务器发回的信息并处理展示
+			ws.onmessage = function(messageEvent) {
+				console.log('接收到来自服务器的消息：' + messageEvent.data);
+				if (messageEvent.data != 0) {
+					_this.messageNum = messageEvent.data;
+				}
+			}
+			// 监听连接关闭事件
+			ws.onclose = function() {
+				// 监听整个过程中websocket的状态
+				console.log('关闭成功');
+				ws.close()
+			}
+			// 监听并处理error事件
+			ws.onerror = function(error) {
+				console.log(error);
+			}
+			this.webSocket = ws;
+
 		},
 		methods: {
 			logout() {

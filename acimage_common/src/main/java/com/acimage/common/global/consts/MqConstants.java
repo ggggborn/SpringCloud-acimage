@@ -17,6 +17,9 @@ public class MqConstants {
     public static final String SYNC_USER_QUEUE = "sync-user-queue";
     public static final String SYNC_USER_ROUTE = "sync-user-route";
 
+    public static final String USER_MSG_QUEUE="user-msg-queue";
+    public static final String USER_MSG_ROUTE="user-msg-route";
+
 
     public static final String TOPIC_IMAGES_EXCHANGE = "topic-images-exchange";
     public static final String SYNC_ES_EXCHANGE = "sync-es-exchange";

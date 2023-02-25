@@ -8,6 +8,7 @@ import Login from '@/views/Login/Login.vue'
 import PublishTopic from '@/views/PublishTopic/PublishTopic.vue'
 import MyProfile from '@/views/MyProfile/MyProfile.vue'
 import MyActivity from '@/views/MyActivity/MyActivity.vue'
+import MyMessage from '@/views/MyMessage/MyMessage.vue'
 import Forum from '@/views/Forum/Forum.vue'
 import About from '@/views/About/About.vue'
 import SearchImage from '@/views/SearchImage/SearchImage.vue'
@@ -39,6 +40,10 @@ const router = new VueRouter({
 		{
 			path: '/MyActivity',
 			component: MyActivity
+		},
+		{
+			path: '/MyMessage',
+			component: MyMessage
 		},
 		{
 			path: '/forum',

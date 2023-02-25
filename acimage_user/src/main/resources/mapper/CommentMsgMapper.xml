@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.acimage.user.dao.CommentMsgDao" >
+    <resultMap id="commentMsgWithUser" type="CommentMsg">
+        <id property="commentId" column="comment_id"/>
+        <result property="fromUserId" column="from_user_id"/>
+        <result property="toUserId" column="to_user_id"/>
+        <result property="topicId" column="topic_id"/>
+        <result property="topicTitle" column="topic_title"/>
+        <result property="createTime" column="create_time"/>
+        <association property="user" javaType="User" column="from_user_id" select="com.acimage.user.dao.UserDao.selectById"/>
+    </resultMap>
+
+    <select id="selectCommentMsgsWithUser" resultMap="commentMsgWithUser">
+        select * from tb_comment_msg where to_user_id=#{toUserId} order by comment_id desc limit #{startIndex},#{size}
+    </select>
+
+</mapper>

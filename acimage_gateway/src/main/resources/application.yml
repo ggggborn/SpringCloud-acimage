@@ -34,6 +34,11 @@ spring:
           predicates:
             - Path=/api/user/**
 
+        - id: websocket-route
+          uri: lb:ws://user-service
+          predicates:
+            - Path=/websocket
+
         - id: admin-service-route
           uri: lb://admin-service
           predicates:

@@ -22,6 +22,7 @@ import com.acimage.user.model.request.UserRegisterReq;
 import com.acimage.user.mq.producer.SyncUserMqProducer;
 import com.acimage.user.service.user.LoginService;
 import com.acimage.common.utils.RsaUtils;
+import com.acimage.user.service.usermsg.UserMsgWriteService;
 import com.acimage.user.service.verify.VerifyCodeService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,8 @@ public class LoginServiceImpl implements LoginService {
     UserDao userDao;
     @Autowired
     UserPrivacyDao userPrivacyDao;
+    @Autowired
+    UserMsgWriteService userMsgWriteService;
     @Autowired
     TokenService tokenService;
     @Autowired
@@ -104,6 +107,8 @@ public class LoginServiceImpl implements LoginService {
         userDao.insert(insertedUser);
         UserPrivacy userPrivacy = new UserPrivacy(userId, passwordDigest, salt, email);
         userPrivacyDao.insert(userPrivacy);
+        userMsgWriteService.insert(userId);
+
 
         //返回token
         String defaultPhotoUrl = "";

@@ -24,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> commonExcludePathPatterns = new ArrayList<>(
-                Arrays.asList("/templates/**", "/static/**", "/", "/storage/**", "/favicon.ico", "/error"));
+                Arrays.asList( "/", "/error"));
 
         registry.addInterceptor(jwtInterceptor).addPathPatterns("/**")
                 .excludePathPatterns(commonExcludePathPatterns).order(20);

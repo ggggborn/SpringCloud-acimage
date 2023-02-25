@@ -22,7 +22,6 @@ import javax.validation.constraints.Size;
 @RestController
 @RequestMapping("/api/user/users/query")
 @Validated
-@Authentication
 public class UserQueryController {
 
     @Autowired

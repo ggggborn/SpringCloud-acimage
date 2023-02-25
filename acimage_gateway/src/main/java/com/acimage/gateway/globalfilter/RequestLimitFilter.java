@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-@Order(1)
+@Order(5)
 @Component
 public class RequestLimitFilter implements GlobalFilter {
     @Autowired

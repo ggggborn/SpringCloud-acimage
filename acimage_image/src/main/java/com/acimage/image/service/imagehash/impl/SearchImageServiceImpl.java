@@ -113,30 +113,30 @@ public class SearchImageServiceImpl implements SearchImageService {
         int rankEnd = 10;
         final int threshold = 20;
 
-        InputStream inputStream=null;
+        InputStream inputStream = null;
         try {
             inputStream = imageFile.getInputStream();
         } catch (IOException e) {
             log.error("用户：{} 以图搜图 错误：传入文件getInputStream异常", UserContext.getUsername());
-            if(inputStream!=null){
-                try {
-                    inputStream.close();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+
+            try {
+                inputStream.close();
+            } catch (IOException ex) {
+                log.error(e.getMessage());
+                throw new RuntimeException(ex);
             }
+
             throw new BusinessException("文件IO异常");
         }
         long hashValue;
         try {
             hashValue = DhashUtils.getImageDhashFrom(inputStream);
         } catch (IOException e) {
-            if(inputStream!=null){
-                try {
-                    inputStream.close();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+            try {
+                inputStream.close();
+            } catch (IOException ex) {
+                log.error(e.getMessage());
+                throw new RuntimeException(ex);
             }
             throw new BusinessException("文件IO异常");
         }
@@ -154,15 +154,15 @@ public class SearchImageServiceImpl implements SearchImageService {
         log.debug("搜索结果：{}", resultList);
 
         //找到图片对象
-        List<Long> imageIds=ListUtils.extract(ImageHash::getImageId, resultList.subList(0, toIndex));
-        List<Image> images=imageQueryService.listImagesByIds(imageIds);
-        if(CollectionUtil.isEmpty(images)){
+        List<Long> imageIds = ListUtils.extract(ImageHash::getImageId, resultList.subList(0, toIndex));
+        List<Image> images = imageQueryService.listImagesByIds(imageIds);
+        if (CollectionUtil.isEmpty(images)) {
             return new ArrayList<>();
         }
         //找到对应话题
-        List<Long> topicIds=ListUtils.extract(Image::getTopicId,images);
-        List<Topic> topics=topicClient.queryTopics(topicIds).getData();
-        List<Image> imageWithTopics=new ArrayList<>();
+        List<Long> topicIds = ListUtils.extract(Image::getTopicId, images);
+        List<Topic> topics = topicClient.queryTopics(topicIds).getData();
+        List<Image> imageWithTopics = new ArrayList<>();
         for (Image image : images) {
             for (Topic topic : topics) {
                 if (topic.getId().equals(image.getTopicId())) {
@@ -172,7 +172,7 @@ public class SearchImageServiceImpl implements SearchImageService {
             }
         }
 
-        if(inputStream!=null){
+        if (inputStream != null) {
             try {
                 inputStream.close();
             } catch (IOException e) {
