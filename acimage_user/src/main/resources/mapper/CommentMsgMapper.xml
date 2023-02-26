@@ -5,6 +5,7 @@
 <mapper namespace="com.acimage.user.dao.CommentMsgDao" >
     <resultMap id="commentMsgWithUser" type="CommentMsg">
         <id property="commentId" column="comment_id"/>
+        <result property="content" column="content"/>
         <result property="fromUserId" column="from_user_id"/>
         <result property="toUserId" column="to_user_id"/>
         <result property="topicId" column="topic_id"/>

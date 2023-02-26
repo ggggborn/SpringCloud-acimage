@@ -36,11 +36,8 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         log.info("websocket消息: 有新的连接，总数为:{} 用户id:{}", redisUtils.getForString(WEBSOCKET_KEY), userId);
 
         sessionPool.put(userId, session);
-        Integer msgNum = userMsgQueryService.getMsgCount(userId);
-        if (msgNum == null) {
-            msgNum = 0;
-        }
-        sendMessage(userId, msgNum);
+        sendMsgCount(userId);
+
     }
 
     @Override
@@ -67,6 +64,14 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 log.error(e.getMessage());
                 throw new RuntimeException(e);
             }
+        }
+
+    }
+
+    public void sendMsgCount(long userId) {
+        Integer msgNum = userMsgQueryService.getMsgCount(userId);
+        if (msgNum != null && msgNum != 0) {
+            sendMessage(userId, msgNum);
         }
     }
 

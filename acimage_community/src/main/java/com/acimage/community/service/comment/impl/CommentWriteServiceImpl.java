@@ -82,6 +82,7 @@ public class CommentWriteServiceImpl implements CommentWriteService {
         Topic topic = topicQueryService.getTopic(topicId);
         CommentMsg commentMsg = CommentMsg.builder()
                 .commentId(id)
+                .content(filterContent)
                 .createTime(now)
                 .fromUserId(UserContext.getUserId())
                 .toUserId(topic.getUserId())

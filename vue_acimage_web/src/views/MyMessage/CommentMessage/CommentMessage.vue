@@ -14,7 +14,7 @@
 						</router-link>
 						<br />
 					</div>
-					<!-- <span style="color: #666666;">{{comment.content}}</span> -->
+					<span style="color: #666666;">{{commentMsg.content}}</span>
 
 					<div class="activity-time">
 						{{commentMsg.createTime}}
@@ -30,7 +30,7 @@
 		<!-- 分页 -->
 		<div style="text-align: center;margin-top:20px;">
 			<el-pagination background layout="prev, pager, next" :total="totalCount" :current-page.sync="pageNo"
-				@current-change="onPageNoChange" :page-size="10">
+				@current-change="onPageNoChange" :page-size="5">
 			</el-pagination>
 		</div>
 	</div>
@@ -58,16 +58,19 @@
 		methods: {
 			getCommentMsgPage(pageNo) {
 				let _this = this;
-				pageCommentMessages(pageNo, 10).then(result => {
+				pageCommentMessages(pageNo, 5).then(result => {
 					if (result.code == Code.OK) {
 						_this.commentMsgs = result.data.dataList;
 						_this.totalCount = result.data.totalCount;
+						if (_this.pageNo == 1) {
+							_this.$store.state.messageNum = null;
+						}
 					}
 				})
 			},
 			//更新对应页
 			onPageNoChange() {
-				this.getCommentPage(this.pageNo);
+				this.getCommentMsgPage(this.pageNo);
 			},
 		}
 	}

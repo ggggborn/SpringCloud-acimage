@@ -55,7 +55,8 @@
 		name: 'TopicList',
 		props: {
 			handleTabHover: {
-				type: Function
+				type: Function,
+				default: null
 			},
 			endIndex: {
 				default: 3
@@ -77,34 +78,8 @@
 			topics: {
 				type: Array,
 				default: () => {
-					return [{
-							id: 1,
-							title: '发家史客户端卡技术大家看爱打架深三等奖安徽的',
-							commentCount: 55,
-							starCount: 66,
-							pageView: 77,
-						},
-						{
-							id: 2,
-							title: '发家史客户端卡技术大家看爱打架深',
-							commentCount: 55,
-							starCount: 66,
-							pageView: 77
-						},
-						{
-							id: 3,
-							title: '发家史客户端卡技术大家看爱打架深',
-							commentCount: 55,
-							starCount: 66,
-							pageView: 77
-						},
-						{
-							id: 4,
-							title: '发家史客户端卡技术大家看爱打架深',
-							commentCount: 55,
-							starCount: 66,
-							pageView: 77
-						}
+					return [
+
 					]
 				}
 			}
@@ -125,7 +100,10 @@
 						document.querySelector("#header-item" + i).style.backgroundColor = "#CCCCCC";
 					}
 					document.querySelector("#header-item" + newVal).style.backgroundColor = "#FF566A";
-					this.handleTabHover(this.activeIndex);
+					if (this.handleTabHover !== null) {
+						this.handleTabHover(this.activeIndex);
+					}
+
 				},
 				immediate: false
 			}

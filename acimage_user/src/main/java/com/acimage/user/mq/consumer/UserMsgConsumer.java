@@ -9,7 +9,9 @@ import com.acimage.common.model.mq.dto.EsUpdateByIdDto;
 import com.acimage.common.utils.EsUtils;
 import com.acimage.common.utils.ExceptionUtils;
 import com.acimage.user.service.commentmsg.CommentMsgWriteService;
+import com.acimage.user.service.usermsg.UserMsgQueryService;
 import com.acimage.user.service.usermsg.UserMsgWriteService;
+import com.acimage.user.web.websocket.MyWebSocketHandler;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
@@ -29,6 +31,8 @@ public class UserMsgConsumer {
     UserMsgWriteService userMsgWriteService;
     @Autowired
     CommentMsgWriteService commentMsgWriteService;
+    @Autowired
+    MyWebSocketHandler webSocketHandler;
 
     @RabbitHandler
     public void commentMsg(Channel channel, Message message, CommentMsg commentMsg) {
@@ -37,7 +41,9 @@ public class UserMsgConsumer {
             //插入用户消息
             commentMsgWriteService.insert(commentMsg);
             //评论消息+1
-            userMsgWriteService.increaseMsg(commentMsg.getToUserId(), UserMsg::getCommentMsgCount,1);
+            userMsgWriteService.increaseMsg(commentMsg.getToUserId(), UserMsg::getCommentMsgCount, 1);
+            //推送消息给用户
+            webSocketHandler.sendMsgCount(commentMsg.getToUserId());
 
         } catch (Exception e) {
             ExceptionUtils.printIfDev(e);

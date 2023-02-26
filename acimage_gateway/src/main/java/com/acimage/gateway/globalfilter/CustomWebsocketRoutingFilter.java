@@ -59,6 +59,7 @@ public class CustomWebsocketRoutingFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         changeSchemeIfIsWebSocketUpgrade(exchange);
         URI requestUrl = (URI)exchange.getRequiredAttribute(ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR);
+        //log.debug(requestUrl);
         String scheme = requestUrl.getScheme();
         if (!ServerWebExchangeUtils.isAlreadyRouted(exchange) && ("ws".equals(scheme) || "wss".equals(scheme))) {
             ServerWebExchangeUtils.setAlreadyRouted(exchange);

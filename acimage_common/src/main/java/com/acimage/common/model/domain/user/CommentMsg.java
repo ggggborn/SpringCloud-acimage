@@ -17,6 +17,7 @@ import java.util.Date;
 public class CommentMsg {
     @TableId(type = IdType.INPUT)
     Long commentId;
+    String content;
     Long fromUserId;
     Long toUserId;
     Long topicId;

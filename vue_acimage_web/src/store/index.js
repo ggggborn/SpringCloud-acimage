@@ -20,6 +20,8 @@ export default new Vuex.Store({
 		token: '',
 		categoryList: [],
 		tagList: [],
+		messageNum: null,
+		hasWebSocket:false,
 		//elementui五种按钮类型
 		// types: ['success', 'primary', 'info', 'warning', 'danger']
 	},
