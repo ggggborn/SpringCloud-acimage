@@ -1,7 +1,7 @@
 package com.acimage.gateway.globalfilter;
 
 
-import com.acimage.common.global.consts.JwtConstants;
+
 import com.acimage.common.global.consts.SysKeyConstants;
 import com.acimage.common.global.exception.NullTokenException;
 import com.acimage.common.global.consts.HeaderKeyConstants;
