@@ -16,11 +16,9 @@
 <img src="https://img.shields.io/badge/license-Apache2.0-blue" ></img>
 </p>
 
-## 
-
 ## 前言
 
-传说Github上的中国程序员有一半是二次元，于是~~为了吸引更多star，~~我边学习SpringCloud技术边开发了这个动漫交流论坛。
+传说Github上的中国程序员有一半是二次元，于是~~为了吸引更多star~~我边学习SpringCloud技术边开发了这个动漫交流论坛。
 
 <p align="center">
 <img width="240px" src="./doc/images/二次元段子.jpg" ></img>
@@ -86,7 +84,8 @@
 - 较为完善的RBAC权限控制，可动态调整用户角色、角色权限、接口权限等。
 - 网站基本数据展示，访客量，接口调用数等。
 - 首页轮播图片管理。
-- 话题、评论管理。
+- 话题、评论、用户管理。
+- 
 
 ## 项目特点
 
