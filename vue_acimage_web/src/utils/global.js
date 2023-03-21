@@ -59,7 +59,7 @@ global.timeView = function(datetime) {
 
 	let time = parseInt(Math.floor(duration / (1000 * 60 * 60 * 24 * 30)));
 	if (time >= 1) {
-		return datetime;
+		return d1.getFullYear()+'-'+(d1.getMonth()+1)+'-'+d1.getDate();
 	}
 
 	time = parseInt(Math.floor(duration / (1000 * 60 * 60 * 24)));
